@@ -1,0 +1,352 @@
+package ai.nettogrof.battlesnake.snakes;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ai.nettogrof.battlesnake.snakes.neural.GameHistory;
+import ai.nettogrof.battlesnake.snakes.neural.NNMove;
+
+public class FloodFillSnake extends SnakeAI {
+
+	static int maxd = 99;
+	static int foodx = 99;
+	static int foody = 99;
+	int[][] board;
+	int[][] space;
+	double nnboard[][];
+	double nnfood[][];
+	double nnhead[][];
+	GameHistory hist = new GameHistory();
+	int heigth;
+	int width;
+
+	int floodEnemyBigger = -59;
+	int floodEnemySmaller = 20;
+	int foodValue = 115;
+	int floodEnemyGap = 35;
+
+	public FloodFillSnake() {
+		super();
+	}
+
+	public FloodFillSnake(Logger l, String gi) {
+		super(l, gi);
+
+	}
+
+	@Override
+	public Map<String, String> end(JsonNode endRequest) {
+		Map<String, String> response = new HashMap<>();
+
+		try {
+			LOG.info("Winner is : {}", endRequest.get("board").get("snakes").get(0).get("name").asText());
+			if (endRequest.get("board").get("snakes").get(0).get("name").asText()
+					.equals(endRequest.get("you").get("name").asText())) {
+				hist.winGame(50);
+			} else {
+				hist.lostGame(50);
+			}
+		} catch (NullPointerException e) {
+			LOG.info("DRAW");
+			hist.lostGame(25);
+		}
+
+		try {
+			hist.saveDataset(width, heigth);
+		} catch (IOException e) {
+			LOG.error(e.getLocalizedMessage());
+
+		}
+		return response;
+	}
+
+	@Override
+	public Map<String, String> move(JsonNode moveRequest) {
+
+		Map<String, String> response = new HashMap<>();
+		Map<String, Integer> possiblemove = new HashMap<>();
+		possiblemove.put("up", 0);
+		possiblemove.put("down", 0);
+		possiblemove.put("left", 0);
+		possiblemove.put("right", 0);
+
+		for (int x = 0; x < moveRequest.get("board").get("width").asInt(); x++) {
+			for (int y = 0; y < moveRequest.get("board").get("height").asInt(); y++) {
+				board[x][y] = 0;
+				space[x][y] = 0;
+				nnboard[x][y] = 0.0;
+				nnfood[x][y] = 0.0;
+				nnhead[x][y] = 0.0;
+
+			}
+		}
+		String name = moveRequest.get("you").get("name").asText();
+		int mysnakelength = moveRequest.get("you").get("body").size();
+		int turn = moveRequest.get("turn").asInt();
+		moveRequest.get("board").withArray("snakes").forEach(s -> {
+			int enemylength = s.get("body").size();
+			if (!s.get("name").asText().equals(name) && enemylength >= mysnakelength) {
+				floodEnemy(s.get("body").get(0).get("x").asInt(), s.get("body").get(0).get("y").asInt(),
+						floodEnemyBigger);
+				nnboard[s.get("body").get(0).get("x").asInt()][s.get("body").get(0).get("y").asInt()] = 1;
+			} else if (!s.get("name").asText().equals(name)) {
+				flood(s.get("body").get(0).get("x").asInt(), s.get("body").get(0).get("y").asInt(), floodEnemySmaller);
+				nnfood[s.get("body").get(0).get("x").asInt()][s.get("body").get(0).get("y").asInt()] = 0.5;
+			}
+
+			s.withArray("body").forEach(c -> {
+
+				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
+				nnboard[c.get("x").asInt()][c.get("y").asInt()] = nnboard[c.get("x").asInt()][c.get("y").asInt()] == 0
+						? 0.5
+						: nnboard[c.get("x").asInt()][c.get("y").asInt()];
+			});
+
+			if (s.get("health").asInt() < 100 && turn > 3) {
+				board[s.get("body").get(enemylength - 1).get("x").asInt()][s.get("body").get(enemylength - 1).get("y")
+						.asInt()] = 0;
+				nnboard[s.get("body").get(enemylength - 1).get("x").asInt()][s.get("body").get(enemylength - 1).get("y")
+						.asInt()] = 0;
+			}
+
+		});
+
+		int snakex = moveRequest.get("you").withArray("body").get(0).get("x").asInt();
+		int snakey = moveRequest.get("you").withArray("body").get(0).get("y").asInt();
+		nnhead[snakex][snakey] = 1;
+		maxd = 99;
+
+		int health = moveRequest.get("you").get("health").asInt();
+
+		moveRequest.get("board").withArray("food").forEach(f -> {
+
+			flood(f.get("x").asInt(), f.get("y").asInt(), foodValue - health);
+			nnfood[f.get("x").asInt()][f.get("y").asInt()] = 1;
+		});
+
+		double result[] = { 0.5, 0.5, 0.5, 0.5 };
+		if (snakey == 0) {
+			possiblemove.put("up", -90);
+			result[0] = 0.0;
+		} else {
+			space(snakex, snakey - 1, 5000);
+			possiblemove.put("up", possiblemove.get("up") + board[snakex][snakey - 1] + count5000());
+		}
+
+		if (snakey == heigth - 1) {
+			possiblemove.put("down", -90);
+			result[1] = 0.0;
+		} else {
+			space(snakex, snakey + 1, 5000);
+			possiblemove.put("down", possiblemove.get("down") + board[snakex][snakey + 1] + count5000());
+		}
+
+		if (snakex == 0) {
+			possiblemove.put("left", -90);
+			result[2] = 0.0;
+		} else {
+			space(snakex - 1, snakey, 5000);
+			possiblemove.put("left", possiblemove.get("left") + board[snakex - 1][snakey] + count5000());
+		}
+
+		if (snakex == width - 1) {
+			possiblemove.put("right", -90);
+			result[3] = 0.0;
+		} else {
+			space(snakex + 1, snakey, 5000);
+			possiblemove.put("right", possiblemove.get("right") + board[snakex + 1][snakey] + count5000());
+		}
+
+		/*
+		 * if (Math.abs(snakex - ((width-1)/2)) > Math.abs(snakey - ((heigth-1)/2))){
+		 * 
+		 * }
+		 */
+		String res = "up";
+		int value = possiblemove.get("up");
+
+		if (possiblemove.get("down") > value) {
+			value = possiblemove.get("down");
+			res = "down";
+		}
+
+		if (possiblemove.get("left") > value) {
+			value = possiblemove.get("left");
+			res = "left";
+		}
+		if (possiblemove.get("right") > value) {
+			value = possiblemove.get("right");
+			res = "right";
+		}
+
+		String bm = res;
+		NNMove m = new NNMove(transforme(nnboard, nnfood, nnhead), result, 0);
+		switch (bm) {
+		case "up":
+			m = new NNMove(transforme(nnboard, nnfood, nnhead), result, 0);
+			break;
+		case "down":
+			m = new NNMove(transforme(nnboard, nnfood, nnhead), result, 1);
+			break;
+		case "left":
+			m = new NNMove(transforme(nnboard, nnfood, nnhead), result, 2);
+			break;
+		case "right":
+			m = new NNMove(transforme(nnboard, nnfood, nnhead), result, 3);
+			break;
+		}
+
+		hist.add(m);
+
+		response.put("move", res);
+
+		return response;
+	}
+
+	@Override
+	public Map<String, String> start(JsonNode startRequest) {
+		Map<String, String> response = new HashMap<>();
+		response.put("color", "#FF0000");
+		response.put("headType", "sand-worm");
+		response.put("tailType", "sharp");
+		width = startRequest.get("board").get("width").asInt();
+		heigth = startRequest.get("board").get("height").asInt();
+		board = new int[width][heigth];
+		space = new int[width][heigth];
+		nnboard = new double[width][heigth];
+		nnfood = new double[width][heigth];
+		nnhead = new double[width][heigth];
+		hist.setName("Flood");
+		return response;
+	}
+
+	private void flood(int x, int y, int value) {
+		if (board[x][y] >= 0 && board[x][y] < value) {
+			board[x][y] = (value > board[x][y] ? value : board[x][y]);
+			if (value > 0) {
+				if (x > 0) {
+					flood(x - 1, y, value - 1);
+				}
+				if (y > 0) {
+					flood(x, y - 1, value - 1);
+				}
+				if (y < heigth - 1) {
+					flood(x, y + 1, value - 1);
+				}
+
+				if (x < width - 1) {
+					flood(x + 1, y, value - 1);
+				}
+			}
+		}
+	}
+
+	private void floodEnemy(int x, int y, int value) {
+		if (board[x][y] > -90) {
+			board[x][y] = (value < board[x][y] ? value : board[x][y]);
+			if (value < 0 - floodEnemyGap) {
+				if (x > 0) {
+					floodEnemy(x - 1, y, value + floodEnemyGap);
+				}
+				if (y > 0) {
+					floodEnemy(x, y - 1, value + floodEnemyGap);
+				}
+				if (y < heigth - 1) {
+					floodEnemy(x, y + 1, value + floodEnemyGap);
+				}
+
+				if (x < width - 1) {
+					floodEnemy(x + 1, y, value + floodEnemyGap);
+				}
+			}
+		}
+	}
+
+	private void space(int x, int y, int value) {
+		if (board[x][y] >= 0 && space[x][y] < 1000) {
+			space[x][y] = value;
+			if (value > 0) {
+				if (x > 0) {
+					space(x - 1, y, value);
+				}
+				if (y > 0) {
+					space(x, y - 1, value);
+				}
+				if (y < heigth - 1) {
+					space(x, y + 1, value);
+				}
+
+				if (x < width - 1) {
+					space(x + 1, y, value);
+				}
+			}
+		}
+	}
+
+	private int count5000() {
+		int c = 0;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < heigth; y++) {
+
+				if (space[x][y] == 5000) {
+					c++;
+				}
+				space[x][y] = 0;
+			}
+		}
+		return c;
+	}
+
+	public static void main(String args[]) {
+		ObjectMapper JSON_MAPPER = new ObjectMapper();
+		String test = "{\"game\":{\"id\":\"a9d04cd2-344b-46a5-bd54-e8e7f2946155\"},\"turn\":1,\"board\":{\"height\":15,\"width\":15,\"food\":[{\"x\":2,\"y\":11}],\"snakes\":[{\"id\":\"e1e5b6d8-7451-41bf-bfa9-bd1241b64def\",\"name\":\"Basic\",\"health\":99,\"body\":[{\"x\":6,\"y\":13},{\"x\":7,\"y\":13},{\"x\":7,\"y\":13}]},{\"id\":\"7d7d1082-b640-4732-94d8-8dd10a49e681\",\"name\":\"Flood\",\"health\":99,\"body\":[{\"x\":6,\"y\":1},{\"x\":6,\"y\":0},{\"x\":6,\"y\":0}]}]},\"you\":{\"id\":\"7d7d1082-b640-4732-94d8-8dd10a49e681\",\"name\":\"Flood\",\"health\":99,\"body\":[{\"x\":6,\"y\":1},{\"x\":6,\"y\":0},{\"x\":6,\"y\":0}]}}";
+		try {
+			JsonNode parsedRequest = JSON_MAPPER.readTree(test);
+			int size = parsedRequest.get("board").get("height").asInt();
+			FloodFillSnake t = new FloodFillSnake();
+			t.board = new int[size][size];
+			t.space = new int[size][size];
+			t.heigth = size;
+			t.width = size;
+			t.move(parsedRequest);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	private double[] transforme(double[][] board, double[][] food, double[][] head) {
+		// System.out.println(nn.getInputsCount());
+		double maps[] = new double[width * heigth * 3];
+		int i = 0;
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < heigth; y++) {
+				maps[i] = board[x][y];
+				i++;
+			}
+		}
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < heigth; y++) {
+				maps[i] = food[x][y];
+				i++;
+			}
+		}
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < heigth; y++) {
+				maps[i] = head[x][y];
+				i++;
+			}
+		}
+		return maps;
+	}
+
+}

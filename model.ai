@@ -1,0 +1,1 @@
+{"actionSelection":"epsilon=0.1;prototype=com.github.chen0040.rl.actionselection.EpsilonGreedyActionSelectionStrategy","model":{"actionCount":4,"alphaMatrix":{"columnCount":4,"defaultValue":0.1,"rowCount":1000,"rows":{}},"gamma":0.7,"q":{"columnCount":4,"defaultValue":0.1,"rowCount":1000,"rows":{}},"stateCount":1000}}

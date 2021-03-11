@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/Users/carl.lajeunesse/Downloads/snake.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/starter-snake-java-master/snake.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=starter-snake-java-master/src\/main\/java=/org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY=/C:\/Users\/carl.lajeunesse\/Downloads\/starter-snake-java-master=/=/optional=/true=/=/maven.pomderived=/true=/&lt;ai.nettogrof.battlesnake.snakes{Snake.java[Snake" manifestLocation="/starter-snake-java-master/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=starter-snake-java-master/src\/main\/java=/org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY=/C:\/Users\/carl.lajeunesse\/Downloads\/starter-snake-java-master=/=/optional=/true=/=/maven.pomderived=/true=/"/>
+        <file path="/starter-snake-java-master/LICENSE"/>
+        <file path="/starter-snake-java-master/N3N11x11"/>
+        <file path="/starter-snake-java-master/.gitignore"/>
+        <file path="/starter-snake-java-master/.project"/>
+        <file path="/starter-snake-java-master/Procfile"/>
+        <file path="/starter-snake-java-master/myMlPerceptron.nnet"/>
+        <file path="/starter-snake-java-master/libtensorflow-1.14.0.jar"/>
+        <file path="/starter-snake-java-master/pom.xml"/>
+        <folder path="/starter-snake-java-master/src"/>
+        <file path="/starter-snake-java-master/app.json"/>
+        <file path="/starter-snake-java-master/N3N11x11ts1584074229806"/>
+        <file path="/starter-snake-java-master/GFF3.properties"/>
+        <file path="/starter-snake-java-master/.classpath"/>
+        <file path="/starter-snake-java-master/config.properties"/>
+        <javaElement handleIdentifier="=starter-snake-java-master/src\/test\/java=/test=/true=/=/optional=/true=/=/maven.pomderived=/true=/"/>
+        <file path="/starter-snake-java-master/model.ai"/>
+        <file path="/starter-snake-java-master/msvcp140.dll"/>
+        <file path="/starter-snake-java-master/GFF2.properties"/>
+        <file path="/starter-snake-java-master/.travis.yml"/>
+        <folder path="/starter-snake-java-master/target"/>
+        <file path="/starter-snake-java-master/README.md"/>
+        <file path="/starter-snake-java-master/GFF.properties"/>
+        <file path="/starter-snake-java-master/N3N211x11"/>
+        <file path="/starter-snake-java-master/CONTRIBUTING.md"/>
+        <file path="/starter-snake-java-master/snake.properties"/>
+        <folder path="/starter-snake-java-master/bin"/>
+    </selectedElements>
+</jardesc>
