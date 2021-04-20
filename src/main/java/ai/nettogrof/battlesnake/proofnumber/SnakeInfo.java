@@ -10,7 +10,7 @@ import com.google.common.flogger.FluentLogger;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
- *  Data related to a Snake
+ *  Data related to a Snake in non-squad modes
  * 
  * @author carl.lajeunesse
  * @version  Spring 2021 
@@ -75,7 +75,6 @@ public class SnakeInfo implements Cloneable {
 		snakeBody = new TIntArrayList(prevSnakeInfo.getSnakeBody());
 		snakeBody.insert(0,moveSquare);
 		if (!prevSnakeInfo.eat) {
-						
 			snakeBody.removeAt(snakeBody.size()-1);
 		}
 		
@@ -141,7 +140,6 @@ public class SnakeInfo implements Cloneable {
 	public void setSnake(final JsonNode snakeInfo) {
 		for (JsonNode bodyPos: snakeInfo.get("body") ) {
 			snakeBody.add(bodyPos.get("x").asInt()*1000+ bodyPos.get("y").asInt());
-
 		}
 
 	}
@@ -151,8 +149,9 @@ public class SnakeInfo implements Cloneable {
 	
 	
 	/**
-	 * @param pos
-	 * @return
+	 * Check if there will be a snake on square on next move
+	 * @param pos   int square  (based on square formula)
+	 * @return If there's a snake body
 	 */
 	public boolean isSnake( final int pos) {
 		
@@ -167,35 +166,34 @@ public class SnakeInfo implements Cloneable {
 			}
 			  
 		}
-		
-		
-		
 	}
 
 	/**
-	 * @return
+	 * Get the square of the snake head ( first element of the snakeBody)
+	 * @return int square  (based on square formula)
 	 */
 	public int getHead() {
-
 		return snakeBody.getQuick(0);
-
 	}
 
 	/**
-	 * @return
+	 * Get the square of the snake head ( last element of the snakeBody)
+	 * @return int square  (based on square formula)
 	 */
 	public int getTail() {
 		return snakeBody.getQuick(snakeBody.size()-1);
 	}
 
 	/**
-	 * @return
+	 * Get the snake's name
+	 * @return String name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Set the snake's name
 	 * @param name
 	 */
 	public void setName(final String name) {
@@ -203,13 +201,15 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 * @return
+	 * Get the health of the snake
+	 * @return int health
 	 */
 	public int getHealth() {
 		return health;
 	}
 
 	/**
+	 * Set the health of the snake
 	 * @param health
 	 */
 	public void setHealth( final int health) {
@@ -220,7 +220,8 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 * @return
+	 * Clone the snake
+	 * @return the new object clone 
 	 */
 	public SnakeInfo cloneSnake() {
 		SnakeInfo clonedSnake = null ;
@@ -236,7 +237,8 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 *
+	 * Clone the snake
+	 * @return the new object clone 
 	 */
 	@Override
 	public SnakeInfo clone() throws CloneNotSupportedException {
@@ -244,7 +246,8 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 * @return
+	 * Return if the snake is alive or not
+	 * @return boolean 
 	 */
 	public boolean isAlive() {
 		return alive;
@@ -252,28 +255,12 @@ public class SnakeInfo implements Cloneable {
 
 	
 	/**
-	 * @return
+	 * Return if the snake just eat.
+	 * @return boolean
 	 */
 	public boolean isEat() {
 		return eat;
 	}
-
-
-	/**
-	 * @param eat
-	 */
-	public void setEat(final boolean eat) {
-		this.eat = eat;
-	}
-
-
-	/**
-	 * @param alive
-	 */
-	public void setAlive(final boolean alive) {
-		this.alive = alive;
-	}
-
 
 	/**
 	 * @param other
@@ -306,25 +293,4 @@ public class SnakeInfo implements Cloneable {
 		return Objects.hash(alive, eat, health, name, snakeBody);
 	}
 
-/*
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final SnakeInfo other = (SnakeInfo) obj;
-		return alive == other.alive && eat == other.eat && health == other.health && Objects.equals(name, other.name)
-				&& Objects.equals(snakebody, other.snakebody) && Objects.equals(squad, other.squad);
-	}*/
-	
-
-	/*
-	 * public void setAlive(boolean alive) { this.alive = alive; }
-	 */
 }
