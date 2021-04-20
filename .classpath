@@ -24,21 +24,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/httpcomponents-client-5.0-bin/httpcomponents-client-5.0/lib/httpclient5-5.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/httpcomponents-client-5.0-bin/httpcomponents-client-5.0/lib/httpclient5-win-5.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/ajt-2.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/javaml-0.1.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/visrec-api-1.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/android-1.5_r4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/logback-classic-1.0.13.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/logback-core-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/slf4j-nop-1.7.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/libs/weka.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/neuroph-core-2.96-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/neuroph-framework-2.96/Framework/neuroph-core-2.96.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/libtensorflow-1.14.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/trove-3.1a1/3.1a1/lib/trove-3.1a1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/carl.lajeunesse/Downloads/mcts.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

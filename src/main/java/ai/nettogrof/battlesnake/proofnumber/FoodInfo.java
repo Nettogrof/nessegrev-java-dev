@@ -5,14 +5,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.array.TIntArrayList;
 
+/**
+ * @author carl.lajeunesse
+ *
+ */
 public class FoodInfo {
 	//private short[][] food;
+	/**
+	 * 
+	 */
 	private transient  final TIntArrayList integers = new TIntArrayList();
 
 	/*public FoodInfo() {
 
 	}*/
 
+	/**
+	 * @param board
+	 */
 	public FoodInfo(final JsonNode board) {
 		setFoodInfo(board.get("food"));
 	}
@@ -21,16 +31,21 @@ public class FoodInfo {
 		return food;
 	}
 */
-	public int getShortestDistance(final int x, final int y) {
+	/**
+	 * @param headX
+	 * @param headY
+	 * @return
+	 */
+	public int getShortestDistance(final int headX, final int headY) {
 		int shortDis = Integer.MAX_VALUE;
 		final TIntIterator longIterator = integers.iterator();
 		while (longIterator.hasNext()) {
-			final int it = longIterator.next();
-			final int tx = it / 1000;
-			final int ty = it % 1000;
+			final int foodpos = longIterator.next();
+			final int targetx = foodpos / 1000;
+			final int targety = foodpos % 1000;
 
-			if (Math.abs(tx - x) + Math.abs(ty - y) < shortDis) {
-				shortDis = Math.abs(tx - x) + Math.abs(ty - y);
+			if (Math.abs(targetx - headX) + Math.abs(targety - headY) < shortDis) {
+				shortDis = Math.abs(targetx - headX) + Math.abs(targety - headY);
 
 			}
 		}
@@ -39,21 +54,36 @@ public class FoodInfo {
 
 	}
 
+	/**
+	 * @param board
+	 */
 	public void setFood(final JsonNode board) {
 		setFoodInfo(board.get("food"));
 	}
 
-	public boolean isFood(final int x, final int y) {
+	/**
+	 * @param squareX
+	 * @param squareY
+	 * @return
+	 */
+	public boolean isFood(final int squareX, final int squareY) {
 
-		return integers.contains(x * 1000 + y);
+		return integers.contains(squareX * 1000 + squareY);
 
 	}
+	/**
+	 * @param pos
+	 * @return
+	 */
 	public boolean isFood(final int pos) {
 
 		return integers.contains(pos);
 
 	}
 
+	/**
+	 * @param foodI
+	 */
 	private void setFoodInfo(final JsonNode foodI) {
 
 		for (int x = 0; x < foodI.size(); x++) {
@@ -64,14 +94,42 @@ public class FoodInfo {
 
 	}
 	
-	public boolean equals(FoodInfo b) {
-		if (integers.size() != b.integers.size()) {
+	
+	/*public boolean equals(final FoodInfo original) {
+		if (integers.size() != original.integers.size()) {
 			return false;
 		}
 		for (int x = 0 ; x <integers.size() ; x++ ) {
-			if (!b.isFood(integers.get(x))) {
+			if (!original.isFood(integers.get(x))) {
 				return false;
 			}
+		}
+		return true;
+	}*/
+
+	
+
+	/**
+	 *
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final FoodInfo other = (FoodInfo) obj;
+		if (integers == null) {
+			if (other.integers != null) {
+				return false;
+			}
+		} else if (!integers.equals(other.integers)) {
+			return false;
 		}
 		return true;
 	}

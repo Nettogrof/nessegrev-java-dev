@@ -1,451 +1,342 @@
 package ai.nettogrof.battlesnake.snakes;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
-
-import org.slf4j.Logger;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.nettogrof.battlesnake.alpha.AlphaNode;
-import ai.nettogrof.battlesnake.alpha.AlphaSearch;
 import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
 import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.treesearch.AlphaSearch;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.node.AlphaNode;
+import gnu.trove.list.array.TFloatArrayList;
+
+public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 
-public class AlphaSnake extends ABSnakeAI {
-	private int width;
-	private int heigth;
-	
-	public int timeout = 300;
-	private boolean multiThread=false;
-	private String losing ="I have a bad feeling about this";
-	private String winning = "I'm your father";
-	private int minusbuffer = 250;
-	
-	private AlphaNode lastRoot;
-	protected static String fileConfig="Alpha.properties";
+	private transient AlphaNode lastRoot;
+	protected static String fileConfig = "Alpha.properties";
+
 	public AlphaSnake() {
+		super();
 	}
 
-	public AlphaSnake(Logger l, String gi) {
-		super(l, gi);
-		try (InputStream input = new FileInputStream(fileConfig)) {
-
-            Properties prop = new Properties();
-
-            // load a properties file
-            prop.load(input);
-
-            // get the property value and print it out
-            apiversion= Integer.parseInt(prop.getProperty("apiversion"));
-            minusbuffer= Integer.parseInt(prop.getProperty("minusbuffer"));
-            multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
-            
-            String[] lose = {"I have a bad feeling about this","help me obiwan you're my only hope", "Nooooo!!","Sorry master, I failed"};
-            String[] win = {"You gonna die", "I'm your father","All your base belong to me","42 is the answer of life","Astalavista baby!"};
-            Random r = new Random();
-            losing = lose[r.nextInt(lose.length)];
-            winning = win[r.nextInt(win.length)];
-           
-            
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
+	public AlphaSnake(final String gameId) {
+		super(gameId);
+		
 	}
 
 	@Override
-	public Map<String, String> move(JsonNode moveRequest) {
-		Long st = System.currentTimeMillis();
-		Map<String, String> response = new HashMap<>();
-		Map<String, Integer> possiblemove = new HashMap<>();
-		possiblemove.put("up", 0);
-		possiblemove.put("down", 0);
-		possiblemove.put("left", 0);
-		possiblemove.put("right", 0);
+	public Map<String, String> move(final JsonNode moveRequest) {
+		final Long startTime = System.currentTimeMillis();
+		final Map<String, String> response = new ConcurrentHashMap<>();
+		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
+		possiblemove.put(UPWARD, 0);
+		possiblemove.put(DOWN, 0);
+		possiblemove.put(LEFT, 0);
+		possiblemove.put(RIGHT, 0);
 
-		// String name = moveRequest.get("you").get("name").asText();
+		// String name = moveRequest.get("you").get(NAME).asText();
 
 		// int turn = moveRequest.get("turn").asInt();
 
-		int snakex = moveRequest.get("you").withArray("body").get(0).get("x").asInt();
-		int snakey = moveRequest.get("you").withArray("body").get(0).get("y").asInt();
+		final int snakex = moveRequest.get("you").withArray(BODY).get(0).get("x").asInt();
+		final int snakey = moveRequest.get("you").withArray(BODY).get(0).get("y").asInt();
 
-		FoodInfo food = new FoodInfo(moveRequest.get("board"));
-		SnakeInfo[] snakes = new SnakeInfo[moveRequest.get("board").get("snakes").size()];
-		
-	
-		JsonNode me = moveRequest.get("you");
+		final FoodInfo food = new FoodInfo(moveRequest.get(BOARD));
+		SnakeInfo[] snakes = new SnakeInfo[moveRequest.get(BOARD).get("snakes").size()];
+
+		final JsonNode yourSnake = moveRequest.get("you");
 		snakes[0] = new SnakeInfo();
-		snakes[0].setHealth((short) me.get("health").asInt());
-		snakes[0].setName(me.get("name").asText());
-		snakes[0].setSnake(me);
+		snakes[0].setHealth((short) yourSnake.get("health").asInt());
+		snakes[0].setName(yourSnake.get(NAME).asText());
+		snakes[0].setSnake(yourSnake);
 
 		for (int i = 0, j = 1; i < snakes.length; i++, j++) {
-			JsonNode s = moveRequest.get("board").get("snakes").get(i);
-			if (s.get("name").asText().equals(me.get("name").asText())) {
+			final JsonNode snake = moveRequest.get(BOARD).get("snakes").get(i);
+			if (snake.get(NAME).asText().equals(yourSnake.get(NAME).asText())) {
 				j--;
 			} else {
 				snakes[j] = new SnakeInfo();
-				snakes[j].setHealth((short) s.get("health").asInt());
-				snakes[j].setName(s.get("name").asText());
-				snakes[j].setSnake(s);
+				snakes[j].setHealth((short) snake.get("health").asInt());
+				snakes[j].setName(snake.get(NAME).asText());
+				snakes[j].setSnake(snake);
 			}
 		}
-		
+
 		AlphaNode root = null;
 		if (lastRoot != null) {
-			
-			for (AlphaNode c : lastRoot.getChild()) {
-				if (food.equals(c.getFood())) {
-					if (Arrays.deepEquals(c.getSnakes().toArray(), snakes)) {
-						root = c;
-						lastRoot=null;
+
+			for (final AbstractNode child : lastRoot.getChild()) {
+				if (food.equals(child.getFood()) && Arrays.deepEquals(child.getSnakes().toArray(), snakes) ) {
+				
+						root = (AlphaNode) child;
+						lastRoot = null;
 						break;
-							
-						
-					}
+
+					
 				}
 			}
 		}
-		if(root == null) {
+		if (root == null) {
 			root = new AlphaNode(snakes, food);
 		}
-		
-		// boolean multichoice = true;
 
-		/********
-		 * Old single thread int count = 0; while (System.currentTimeMillis() - st <
-		 * timeout) { count++; if (count == 400000) { System.out.println("120k"); }
-		 * CNode bm = root.getBestChild(count % 100 ==0); generateChild(bm);
-		 * root.updateScore();
-		 * 
-		 * } System.out.println("Count:"+count);
-		 */
-
-		/*************************** NEW Multithread */
-		if(multiThread) {
-			new AlphaSearch(root,width,heigth).generateChild();
-		//	MoveGenerator.generateChild(root,width,heigth);
-			ArrayList<AlphaSearch> lt = new ArrayList<AlphaSearch>();
-			for (AlphaNode c : root.getChild()) {
-				lt.add(new AlphaSearch(c, width, heigth,st, timeout-minusbuffer));
-	
-			}
-	
-			for (AlphaSearch s : lt) {
-				Thread t = new Thread(s);
-				t.setPriority(1);
-				t.start();
-				//System.out.println("start" + (System.currentTimeMillis() -st));
-			}
-	
-			try {
 		
-				Thread.sleep(timeout-minusbuffer-50);
-			} catch (InterruptedException e) {
+		if (multiThread) {
+			new AlphaSearch(root, width, heigth).generateChild();
+			// MoveGenerator.generateChild(root,width,heigth);
+			final ArrayList<AlphaSearch> listThread = new ArrayList<>();
+			for (final AbstractNode childNode : root.getChild()) {
+				listThread.add(new AlphaSearch((AlphaNode) childNode, width, heigth, startTime, timeout - minusbuffer));
+
+			}
+
+			for (final AlphaSearch search : listThread) {
+				final Thread searchThread = new Thread(search);
+				searchThread.setPriority(1);
+				searchThread.start();
 				
-				e.printStackTrace();
 			}
-		
-			for (AlphaSearch s : lt) {
-				s.stopSearching();
-				//System.out.println("stop" + (System.currentTimeMillis() -st));
+
+			try {
+
+				Thread.sleep(timeout - minusbuffer - 50);
+			} catch (InterruptedException e) {
+
+				log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
 			}
-			
+
+			for (final AlphaSearch search : listThread) {
+				search.stopSearching();
+				
+			}
+
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				
-				e.printStackTrace();
+
+				log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
 			}
 			root.updateScore();
-		}else {
-			AlphaSearch main = new AlphaSearch(root,width,heigth,st,timeout-minusbuffer);
+		} else {
+			final AlphaSearch main = new AlphaSearch(root, width, heigth, startTime, timeout - minusbuffer);
 			main.run();
 		}
 		AlphaNode winner = (AlphaNode) chooseBestMove(root);
-		
+
 		String res = "";
-		if (winner == null) {
-			if (!root.getChild().isEmpty()) {
-				
+		if (winner == null && !root.getChild().isEmpty()) {
 			
-				winner = (AlphaNode) root.getChild().get(0);
+			winner = (AlphaNode) root.getChild().get(0);
+			
+		}
+
+		if (winner == null) {
+			response.put("shout", losing);
+			res = DOWN;
+			
+
+		} else {
+			if (winner.getScoreRatio() == 0) {
+				response.put("shout", losing);
+				winner = (AlphaNode) lastChance(root);
+			}
+
+			if (winner.getScoreRatio() > 100) {
+				response.put("shout", winning);
+				winner = (AlphaNode) finishHim(root, winner);
+			}
+
+			final int move = winner.getSnakes().get(0).getHead();
+			if (move / 1000 < snakex) {
+				res = LEFT;
+			} else if (move / 1000 > snakex) {
+				res = RIGHT;
+			} else if (move % 1000 < snakey) {
+				res = UPWARD;
+			} else if (move % 1000 > snakey) {
+				res = DOWN;
+			}
+
+			/* for api 1 */
+			if (UPWARD.equals(res)) {
+				res = DOWN;
+			} else if (DOWN.equals(res)) {
+				res = UPWARD;
 			}
 		}
-		
-		if (winner  != null) {
-
-		if (winner.getScoreRatio() == 0) {
-			response.put("shout", losing);
-			winner = (AlphaNode) lastChance(root);
-		}
-		
-		if (winner.getScoreRatio() > 100) {
-			response.put("shout", winning);
-			winner = (AlphaNode) finishHim(root,winner);
-		}
-		
-		int move = winner.getSnakes().get(0).getHead();
-		if (move /1000 < snakex) {
-			res = "left";
-		}else if (move/1000 > snakex) {
-			res = "right";
-		}else if (move%1000 < snakey) {
-			res = "up";
-		}else if (move%1000 > snakey) {
-			res = "down";
-		}
-		
-		
-		/* for api 1 */
-		if (res.equals("up")) {
-			res = "down";
-		}else if (res.equals("down")) {
-			res = "up";
-		}
-	
-		
-		}else {
-			response.put("shout", losing);
-			res ="down";
-		}
-		response.put("move", res);
+		response.put(MOVESTR, res);
 		lastRoot = root;
-		
-		System.out.println("nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - st));
+
+		log.atInfo().log("nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - startTime));
 		nodeTotalCount += root.getChildCount();
-		timeTotal += (System.currentTimeMillis() - st);
+		timeTotal += System.currentTimeMillis() - startTime;
 		return response;
 	}
-	
 
-	
-
-	private AlphaNode finishHim(AlphaNode root, AlphaNode winner) {
+	private AlphaNode finishHim(final AlphaNode root, final AlphaNode winner) {
 		AlphaNode ret = null;
-		int nb = Integer.MAX_VALUE;
-		for (AlphaNode c : root.getChild()) {
-			if ( c.getChildCount() < nb && c.getScoreRatio()> 100) {
-				ret = c;
-				nb = c.getChildCount();
+		int nbnumberChild = Integer.MAX_VALUE;
+		for (final AbstractNode childNode : root.getChild()) {
+			if (childNode.getChildCount() < nbnumberChild && childNode.getScoreRatio() > 100) {
+				ret = (AlphaNode) childNode;
+				nbnumberChild = childNode.getChildCount();
 			}
 		}
-		if (ret == null ) {
+		if (ret == null) {
 			ret = winner;
 		}
 		return ret;
 	}
 
-	private AlphaNode lastChance(AlphaNode root) {
+	private AlphaNode lastChance(final AlphaNode root) {
 		AlphaNode ret = null;
-		int nb =0;
-		for (AlphaNode c : root.getChild()) {
-			if ( c.getChildCount() > nb) {
-				ret = c;
-				nb = c.getChildCount();
+		int numberChild = 0;
+		for (final AbstractNode c : root.getChild()) {
+			if (c.getChildCount() > numberChild) {
+				ret = (AlphaNode) c;
+				numberChild = c.getChildCount();
 			}
 		}
-		
+
 		return ret;
 	}
 
 	@Override
-	public Map<String, String> start(JsonNode startRequest) {
-		Map<String, String> response = new HashMap<>();
+	public Map<String, String> start(final JsonNode startRequest) {
+		final Map<String, String> response = new ConcurrentHashMap<>();
 		response.put("color", "#212121");
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
-		width = startRequest.get("board").get("width").asInt();
-		heigth = startRequest.get("board").get("height").asInt();
-	//	nbSnake = startRequest.get("board").get("snakes").size();
+		width = startRequest.get(BOARD).get("width").asInt();
+		heigth = startRequest.get(BOARD).get("height").asInt();
+		// nbSnake = startRequest.get(BOARD).get("snakes").size();
 		try {
-		timeout = startRequest.get("game").get("timeout").asInt();
-		}catch (Exception e) {
+			timeout = startRequest.get("game").get("timeout").asInt();
+		} catch (Exception e) {
 			timeout = 500;
-		};
-		
-		//timeout = timeout-200;
+		}
+
+		// timeout = timeout-200;
 
 		return response;
 	}
 
-	
-
-	private AlphaNode chooseBestMove(AlphaNode root) {
+	private AlphaNode chooseBestMove(final AlphaNode root) {
 		// double score =-200;
-		ArrayList<AlphaNode> child = root.getChild();
+		final ArrayList<AbstractNode> child = (ArrayList<AbstractNode>) root.getChild();
 		AlphaNode winner = null;
-		ArrayList<Double> up = new ArrayList<Double>();
-		ArrayList<Double> down = new ArrayList<Double>();
-		ArrayList<Double> left = new ArrayList<Double>();
-		ArrayList<Double> right = new ArrayList<Double>();
+		final TFloatArrayList upward = new TFloatArrayList();
+		final TFloatArrayList down = new TFloatArrayList();
+		final TFloatArrayList left = new TFloatArrayList();
+		final TFloatArrayList right = new TFloatArrayList();
 		// ArrayList<Double> choice = new ArrayList<Double>();
-		int head = root.getSnakes().get(0).getHead();
+		final int head = root.getSnakes().get(0).getHead();
 
-		for (int i = 0; i < child.size(); i++) {
+		for(final AbstractNode childNode : child){
 			// if (child.get(i).getSnakes()[0].alive) {
-			int move = child.get(i).getSnakes().get(0).getHead();
+			final int move = childNode.getSnakes().get(0).getHead();
 
-			if (move/1000 < head/1000) {
-				left.add(child.get(i).getScoreRatio());
+			if (move / 1000 < head / 1000) {
+				left.add(childNode.getScoreRatio());
 			}
 
-			if (move/1000 > head/1000) {
-				right.add(child.get(i).getScoreRatio());
+			if (move / 1000 > head / 1000) {
+				right.add(childNode.getScoreRatio());
 			}
-			if (move%1000 < head%1000) {
-				up.add(child.get(i).getScoreRatio());
+			if (move % 1000 < head % 1000) {
+				upward.add(childNode.getScoreRatio());
 			}
-			if (move%1000 > head%1000) {
-				down.add(child.get(i).getScoreRatio());
+			if (move % 1000 > head % 1000) {
+				down.add(childNode.getScoreRatio());
 			}
 			// }
 		}
-		double wup = Double.MAX_VALUE;
-		double wdown = Double.MAX_VALUE;
-		double wleft = Double.MAX_VALUE;
-		double wright = Double.MAX_VALUE;
-		for (Double v : up) {
-			if (v < wup) {
-				wup = v;
-			}
-		}
-		for (Double v : down) {
-			if (v < wdown) {
-				wdown = v;
-			}
-		}
-		for (Double v : left) {
-			if (v < wleft) {
-				wleft = v;
-			}
-		}
-		for (Double v : right) {
-			if (v < wright) {
-				wright = v;
-			}
-		}
+		final float wup = upward.min();
+		final float wdown = down.min();
+		final float wleft = left.min();
+		final float wright = right.min();
+
 		double choiceValue = Double.MIN_VALUE;
 		if (wup != Double.MAX_VALUE) {
-			System.out.println("up" + wup);
+			log.atInfo().log(UPWARD + wup);
 			if (wup > choiceValue) {
 				choiceValue = wup;
 			}
 		}
 		if (wdown != Double.MAX_VALUE) {
-			System.out.println("down" + wdown);
+			log.atInfo().log(DOWN + wdown);
 			if (wdown > choiceValue) {
 				choiceValue = wdown;
 			}
 		}
 		if (wleft != Double.MAX_VALUE) {
-			System.out.println("left" + wleft);
+			log.atInfo().log(LEFT + wleft);
 			if (wleft > choiceValue) {
 				choiceValue = wleft;
 			}
 		}
 		if (wright != Double.MAX_VALUE) {
-			System.out.println("right" + wright);
+			log.atInfo().log(RIGHT + wright);
 			if (wright > choiceValue) {
 				choiceValue = wright;
 			}
 		}
 
 		for (int i = 0; i < child.size(); i++) {
-			double c = child.get(i).getScoreRatio();
-			if (c == choiceValue && child.get(i).getSnakes().get(0).isAlive()) {
-				winner = child.get(i);
+			final double childRatio = child.get(i).getScoreRatio();
+			if (childRatio == choiceValue && child.get(i).getSnakes().get(0).isAlive()) {
+				winner = (AlphaNode) child.get(i);
 				i = child.size();
 			}
-			
-			
+
 		}
 
-		
 		return winner;
-	}
-
-	public static void main(String args[]) {
-		ObjectMapper JSON_MAPPER = new ObjectMapper();
-
-//		String test = "{\"game\":{\"id\":\"1958e8e0-c0bb-4d4e-94e0-a2ac52a2ee79\"},\"turn\":14,\"board\":{\"height\":7,\"width\":7,\"food\":[{\"x\":1,\"y\":3},{\"x\":0,\"y\":3},{\"x\":1,\"y\":1},{\"x\":4,\"y\":5},{\"x\":2,\"y\":1},{\"x\":0,\"y\":1},{\"x\":1,\"y\":6}],\"snakes\":[{\"id\":\"b58f9a3a-099a-4e18-88e4-8554c2e67b2b\",\"name\":\"Basic\",\"health\":100,\"body\":[{\"x\":3,\"y\":1},{\"x\":3,\"y\":0},{\"x\":4,\"y\":0},{\"x\":5,\"y\":0},{\"x\":6,\"y\":0},{\"x\":6,\"y\":1},{\"x\":6,\"y\":2},{\"x\":5,\"y\":2},{\"x\":4,\"y\":2},{\"x\":3,\"y\":2},{\"x\":3,\"y\":2}]},{\"id\":\"617e9e2a-d04e-467d-9702-e09a286bfa34\",\"name\":\"Flood\",\"health\":99,\"body\":[{\"x\":5,\"y\":3},{\"x\":6,\"y\":3},{\"x\":6,\"y\":4},{\"x\":6,\"y\":5},{\"x\":6,\"y\":6},{\"x\":5,\"y\":6},{\"x\":5,\"y\":5},{\"x\":5,\"y\":4}]},{\"id\":\"92a92c7d-e932-4926-8405-6ce6dd492aa4\",\"name\":\"Alpha\",\"health\":96,\"body\":[{\"x\":4,\"y\":4},{\"x\":4,\"y\":3},{\"x\":3,\"y\":3},{\"x\":2,\"y\":3},{\"x\":2,\"y\":4},{\"x\":1,\"y\":4},{\"x\":0,\"y\":4}]}]},\"you\":{\"id\":\"92a92c7d-e932-4926-8405-6ce6dd492aa4\",\"name\":\"Alpha\",\"health\":96,\"body\":[{\"x\":4,\"y\":4},{\"x\":4,\"y\":3},{\"x\":3,\"y\":3},{\"x\":2,\"y\":3},{\"x\":2,\"y\":4},{\"x\":1,\"y\":4},{\"x\":0,\"y\":4}]}}";// {"game":{"id":"e961706c-6cfb-4367-9f05-b53d3fe6f3f5"},"turn":40,"board":{"height":11,"width":11,"food":[{"x":7,"y":10},{"x":2,"y":4},{"x":0,"y":9},{"x":8,"y":5},{"x":7,"y":8},{"x":1,"y":6},{"x":5,"y":6},{"x":8,"y":10},{"x":10,"y":5},{"x":8,"y":2}],"snakes":[{"id":"bf3f98e1-e434-4a58-bf98-6e05d626db27","name":"pn","health":100,"body":[{"x":2,"y":0},{"x":2,"y":1},{"x":1,"y":1},{"x":0,"y":1},{"x":0,"y":2},{"x":1,"y":2},{"x":1,"y":2}]}]},"you":{"id":"bf3f98e1-e434-4a58-bf98-6e05d626db27","name":"pn","health":100,"body":[{"x":2,"y":0},{"x":2,"y":1},{"x":1,"y":1},{"x":0,"y":1},{"x":0,"y":2},{"x":1,"y":2},{"x":1,"y":2}]}}
-		String test = "{\"game\":{\"id\":\"5c8f3a2b-e917-4c97-8ebe-f129a470f7b1\",\"timeout\":500},\"turn\":142,\"board\":{\"height\":11,\"width\":11,\"food\":[{\"x\":1,\"y\":9}],\"snakes\":[{\"id\":\"gs_p7KtVK7mvj7QCVvBtWphMBBS\",\"name\":\"Nessegrev\",\"health\":84,\"body\":[{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":2,\"y\":6},{\"x\":2,\"y\":7},{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":3,\"y\":9},{\"x\":3,\"y\":8},{\"x\":3,\"y\":7},{\"x\":3,\"y\":6},{\"x\":4,\"y\":6}],\"head\":{\"x\":4,\"y\":2},\"length\":15,\"shout\":\"\"},{\"id\":\"gs_gVf8yppRbgVD87yyYfhx4bvF\",\"name\":\"Ravioli\",\"health\":86,\"body\":[{\"x\":0,\"y\":8},{\"x\":0,\"y\":7},{\"x\":0,\"y\":6},{\"x\":0,\"y\":5},{\"x\":0,\"y\":4},{\"x\":1,\"y\":4},{\"x\":2,\"y\":4},{\"x\":2,\"y\":3},{\"x\":1,\"y\":3},{\"x\":1,\"y\":2},{\"x\":1,\"y\":1},{\"x\":2,\"y\":1},{\"x\":2,\"y\":2},{\"x\":3,\"y\":2}],\"head\":{\"x\":0,\"y\":8},\"length\":14,\"shout\":\"\"}]},\"you\":{\"id\":\"gs_p7KtVK7mvj7QCVvBtWphMBBS\",\"name\":\"Nessegrev\",\"health\":84,\"body\":[{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":2,\"y\":6},{\"x\":2,\"y\":7},{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":3,\"y\":9},{\"x\":3,\"y\":8},{\"x\":3,\"y\":7},{\"x\":3,\"y\":6},{\"x\":4,\"y\":6}],\"head\":{\"x\":4,\"y\":2},\"length\":15,\"shout\":\"\"}}";
-		try {
-			JsonNode parsedRequest = JSON_MAPPER.readTree(test);
-			int size = parsedRequest.get("board").get("height").asInt();
-			AlphaSnake t = new AlphaSnake();
-
-			t.heigth = size;
-			t.width = size;
-			t.timeout = 500;
-			t.multiThread = false;
-			//t.nbSnake = 3;
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				
-				e.printStackTrace();
-			}
-			System.out.println(t.move(parsedRequest));
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	protected void setFileConfig() {
-		fileConfig="Alpha.properties";
-		
+		fileConfig = "Alpha.properties";
+
 	}
-	
-	 public static Map<String, String> getInfo() {
-			Map<String, String> response = new HashMap<>();
-			try (InputStream input = new FileInputStream(fileConfig)) {
 
-	            Properties prop = new Properties();
+	public static Map<String, String> getInfo() {
+		final Map<String, String> response = new ConcurrentHashMap<>();
+		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
-	            // load a properties file
-	            prop.load(input);
+			final Properties prop = new Properties();
 
-	            // get the property value and print it out
-	            
-	           
-	        	response.put("apiversion", prop.getProperty("apiversion"));
-	    		response.put("head",  prop.getProperty("headType"));
-	    		response.put("tail",  prop.getProperty("tailType"));
-	    		response.put("color",  prop.getProperty("color"));
-	    		response.put("author", "nettogrof");
+			// load a properties file
+			prop.load(input);
 
-	            
+			// get the property value and print it out
 
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        }
+			response.put("apiversion", prop.getProperty("apiversion"));
+			response.put("head", prop.getProperty("headType"));
+			response.put("tail", prop.getProperty("tailType"));
+			response.put("color", prop.getProperty("color"));
+			response.put("author", "nettogrof");
 
-		
-			return response;
+		} catch (IOException ex) {
+			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
 		}
+
+		return response;
+	}
 
 	@Override
 	protected String getFileConfig() {
 		return fileConfig;
 	}
-
-	
 
 }

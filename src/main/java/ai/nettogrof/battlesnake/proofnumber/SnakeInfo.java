@@ -2,39 +2,76 @@ package ai.nettogrof.battlesnake.proofnumber;
 
 
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.flogger.FluentLogger;
 
 import gnu.trove.list.array.TIntArrayList;
 
+/**
+ *  Data related to a Snake
+ * 
+ * @author carl.lajeunesse
+ * @version  Spring 2021 %G%
+ *
+ */
 public class SnakeInfo implements Cloneable {
+	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
+	
+	/**
+	 *  Arraylist of the Snake Body.  Starting at the head. This array of Integer of the square
+	 */
+	protected final TIntArrayList snakeBody ;
+	
+	/**
+	 * 
+	 */
+	protected String name;
+	/**
+	 * 
+	 */
+	protected int health;
+	/**
+	 * 
+	 */
+	protected boolean eat = Boolean.FALSE;
+	/**
+	 * 
+	 */
+	protected boolean alive = true;
+	/**
+	 * 
+	 */
 	
 	
-	private final transient TIntArrayList snakebody ;
-	
-	private String name;
-	private int health;
-	public transient boolean eat = Boolean.FALSE;
-	private transient boolean alive = true;
-	private String squad = "";
-	
+	/**
+	 * 
+	 */
 	public SnakeInfo() {
-		snakebody = new TIntArrayList();
+		snakeBody = new TIntArrayList();
 	}
 
 		
-	public SnakeInfo(final SnakeInfo sn,final int m,final boolean eat,final boolean hazard) {
+	/**
+	 * @param prevSnakeInfo
+	 * @param moveSquare
+	 * @param eat
+	 * @param hazard
+	 */
+	public SnakeInfo(final SnakeInfo prevSnakeInfo,final int moveSquare,final boolean eat,final boolean hazard) {
 		if (eat) {
 			health = 100;
 			this.eat = true;
 		} else {
-			health = sn.getHealth() - 1;
+			health = prevSnakeInfo.getHealth() - 1;
 		}
 
-		snakebody = new TIntArrayList(sn.getSnakeBody());
-		snakebody.insert(0,m);
-		if (!eat) {
+		snakeBody = new TIntArrayList(prevSnakeInfo.getSnakeBody());
+		snakeBody.insert(0,moveSquare);
+		if (!prevSnakeInfo.eat) {
 						
-			snakebody.removeAt(snakebody.size()-1);
+			snakeBody.removeAt(snakeBody.size()-1);
 		}
 		
 		
@@ -44,51 +81,64 @@ public class SnakeInfo implements Cloneable {
 		if (health <= 0) {
 			alive =false;
 		}
-		name = sn.getName();
+		name = prevSnakeInfo.getName();
 		
-		squad = sn.getSquad();
 	}
 	
-	public SnakeInfo(final SnakeInfo sn,final int m,final boolean eat) {
+	/**
+	 * @param prevSnakeInfo
+	 * @param moveSquare
+	 * @param eat
+	 */
+	public SnakeInfo(final SnakeInfo prevSnakeInfo,final int moveSquare,final boolean eat) {
 		if (eat) {
 			health = 100;
 			this.eat = true;
 		} else {
-			health = sn.getHealth() - 1;
+			health = prevSnakeInfo.getHealth() - 1;
 		}
 
-		snakebody = new TIntArrayList(sn.getSnakeBody());
-		snakebody.insert(0,m);
-		if (!eat) {
-						
-			snakebody.removeAt(snakebody.size()-1);
+		snakeBody = new TIntArrayList(prevSnakeInfo.getSnakeBody());
+		snakeBody.insert(0,moveSquare);
+		
+		snakeBody.removeAt(snakeBody.size()-1);
+		if (eat) {
+			snakeBody.insert(snakeBody.size(), snakeBody.getQuick(snakeBody.size()-1));
 		}
 		
 		if (health <= 0) {
 			alive =false;
 		}
-		name = sn.getName();
+		name = prevSnakeInfo.getName();
 		
-		squad = sn.getSquad();
 	}
 
+	/**
+	 * @return
+	 */
 	public TIntArrayList getSnakeBody() {
 
-		return snakebody;
+		return snakeBody;
 
 	}
 
+	/**
+	 * 
+	 */
 	public void die() {
 
 		alive = false;
 	}
 
+	/**
+	 * @param snakeI
+	 */
 	public void setSnake(final JsonNode snakeI) {
 		
 		
 
 		for (int x = 0; x < snakeI.get("body").size(); x++) {
-			snakebody.add(snakeI.get("body").get(x).get("x").asInt()*1000+ snakeI.get("body").get(x).get("y").asInt());
+			snakeBody.add(snakeI.get("body").get(x).get("x").asInt()*1000+ snakeI.get("body").get(x).get("y").asInt());
 
 		}
 
@@ -96,36 +146,27 @@ public class SnakeInfo implements Cloneable {
 
 	
 	
-	public boolean isSnake( final int pos, String squad) {
-		if (!squad.equals("")) {
-			if(squad.equals(this.squad)) {
-				return false;
-			}
-		}
-		
-		if (eat) {
-			return snakebody.contains(pos);
-		}else {
-			if ( snakebody.contains(pos)) {
-				return snakebody.indexOf(pos) < snakebody.size() -1;
-			}else {
-				return false;
-			}
-			  
-		}
-		
-		
-		
+	/**
+	 * @param pos
+	 * @param squad
+	 * @return
+	 */
+	public boolean isSnake( final int pos,final String squad) {
+		return isSnake(pos);
 	}
 	
+	/**
+	 * @param pos
+	 * @return
+	 */
 	public boolean isSnake( final int pos) {
 		
 		
 		if (eat) {
-			return snakebody.contains(pos);
+			return snakeBody.contains(pos);
 		}else {
-			if ( snakebody.contains(pos)) {
-				return snakebody.indexOf(pos) < snakebody.size() -1;
+			if ( snakeBody.contains(pos)) {
+				return snakeBody.indexOf(pos) < snakeBody.size() -1;
 			}else {
 				return false;
 			}
@@ -136,28 +177,46 @@ public class SnakeInfo implements Cloneable {
 		
 	}
 
+	/**
+	 * @return
+	 */
 	public int getHead() {
 
-		return snakebody.get(0);
+		return snakeBody.getQuick(0);
 
 	}
 
+	/**
+	 * @return
+	 */
 	public int getTail() {
-		return snakebody.get(snakebody.size()-1);
+		return snakeBody.getQuick(snakeBody.size()-1);
 	}
 
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getHealth() {
 		return health;
 	}
 
+	/**
+	 * @param health
+	 */
 	public void setHealth( final int health) {
 		if (health == 100) {
 			eat = true;
@@ -165,62 +224,109 @@ public class SnakeInfo implements Cloneable {
 		this.health = health;
 	}
 
+	/**
+	 * @return
+	 */
 	public SnakeInfo cloneSnake() {
-		SnakeInfo cl = null ;
+		SnakeInfo clonedSnake = null ;
 		try {
-			cl = clone();
+			clonedSnake = clone();
 		} catch (CloneNotSupportedException e) {
 		
-			e.printStackTrace();
+			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
 			
 		}
-		return cl;
+		return clonedSnake;
 
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public SnakeInfo clone() throws CloneNotSupportedException {
 		return (SnakeInfo) super.clone();
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isAlive() {
 		return alive;
 	}
 
+	
 	/**
-	 * @return the squad
+	 * @return
 	 */
-	public String getSquad() {
-		return squad;
+	public boolean isEat() {
+		return eat;
 	}
 
+
 	/**
-	 * @param squad the squad to set
+	 * @param eat
 	 */
-	public void setSquad(String squad) {
-		this.squad = squad;
+	public void setEat(final boolean eat) {
+		this.eat = eat;
 	}
 
-	public boolean equals(SnakeInfo b) {
-		if (!name.equals(b.name)) {
+
+	/**
+	 * @param alive
+	 */
+	public void setAlive(final boolean alive) {
+		this.alive = alive;
+	}
+
+
+	/**
+	 * @param other
+	 * @return
+	 */
+	public boolean equals(final SnakeInfo other) {
+		if (!name.equals(other.name)) {
 			return false;
 		}
-		if (health != b.getHealth()) {
+		if (health != other.getHealth()) {
 			return false;
 		}
 		
-		if (snakebody.size() != b.getSnakeBody().size()) {
+		if (snakeBody.size() != other.getSnakeBody().size()) {
 			return false;
 		}
-		if (getHead() != b.getHead()) {
+		if (getHead() != other.getHead()) {
 			return false;
 		}
-		if (getTail() != b.getTail()) {
-			return false;
-		}
-		
-		return true;
+				
+		return getTail() == other.getTail();
 	}
+
+
+	/**
+	 *
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(alive, eat, health, name, snakeBody);
+	}
+
+/*
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final SnakeInfo other = (SnakeInfo) obj;
+		return alive == other.alive && eat == other.eat && health == other.health && Objects.equals(name, other.name)
+				&& Objects.equals(snakebody, other.snakebody) && Objects.equals(squad, other.squad);
+	}*/
 	
 
 	/*

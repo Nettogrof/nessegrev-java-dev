@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.snakes.common.CorsFilter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.flogger.FluentLogger;
 import spark.Request;
 import spark.Response;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,23 +27,25 @@ import static spark.Spark.get;
  * It follows the spec here:
  * https://github.com/battlesnakeio/docs/tree/master/apis/snake
  */
-public class Snake {
+public final class Snake {
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static final Handler HANDLER = new Handler();
-    private static final Logger LOG = LoggerFactory.getLogger(Snake.class);
-    private static Map<String, SnakeAI> bots = new ConcurrentHashMap<>();
+    private static final FluentLogger LOG = FluentLogger.forEnclosingClass();
+    private static Map<String, AbstractSnakeAI> bots = new ConcurrentHashMap<>();
     public static String snakeType="FloodFill";
     
-    private static String color ;
-    private static String headType;
-    private static String tailType;
+   
     private static String port = "8081";
+    
+    
+    private Snake() {}
+    
     /**
      * Main entry point.
      *
      * @param args are ignored.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
     	
     	
     	if (args.length ==2) {
@@ -55,17 +57,19 @@ public class Snake {
     		snakeType = args[0];
     		loadProperties(snakeType);
     	}else {
-    		System.out.println("Must provide java args  SnakeType");
+    		 LOG.atInfo().log("Must provide java args  SnakeType");
     	}
     	
     	
     	
         if (port == null) {
-        	 LOG.info("Using default port: {}", port);
-             port = "8081";
+        	 port = "8081";
+        	 
+        	 LOG.atInfo().log("Using default port: " + port);
+             
             
         } else {
-        	LOG.info("Found system provided port: {}", port);
+        	LOG.atInfo().log("Using system provide port: " + port);
         }
         port(Integer.parseInt(port));
         CorsFilter.apply();
@@ -77,8 +81,9 @@ public class Snake {
         post("/end", HANDLER::process, JSON_MAPPER::writeValueAsString);
        
     }
-    private static void loadProperties(String snakeType) {
-		try (InputStream input = new FileInputStream(snakeType+".properties")) {
+    
+    private static void loadProperties(final String snakeType) {
+		try (InputStream input = Files.newInputStream(Paths.get(snakeType+".properties"))) {
 
             final Properties prop = new Properties();
 
@@ -87,9 +92,7 @@ public class Snake {
 
             // get the property value and print it out
             port = prop.getProperty("port");
-            color =prop.getProperty("color");
-            headType =prop.getProperty("headType");
-            tailType =prop.getProperty("tailType");
+          
           
             
 
@@ -114,43 +117,28 @@ public class Snake {
          * @param res
          * @return
          */
-        public Map<String, String> process(Request req, Response res) {
+        public Map<String, String> process(final Request req,final Response res) {
         	
             try {
-                JsonNode parsedRequest = JSON_MAPPER.readTree(req.body());
-                String uri = req.uri();
-                LOG.info("{} called with: {}", uri, req.body());
+              
+                final String uri = req.uri();
+                LOG.atInfo().log("%s called with: %s", uri, req.body());
                 Map<String, String> snakeResponse;
-                if (uri.equals("/start")) {
-                    snakeResponse = start(parsedRequest);
-                    if (color != null) {
-                    	snakeResponse.remove("color");
-                    	snakeResponse.put("color", color);
-                    }
-                    if (headType != null) {
-                    	snakeResponse.remove("headType");
-                    	snakeResponse.put("headType", headType);
-                    }
-                    if (tailType != null) {
-                    	snakeResponse.remove("tailType");
-                    	snakeResponse.put("tailType", tailType);
-                    }
-                } else if (uri.equals("/ping")) {
-                    snakeResponse = ping();
-                }else if (uri.equals("/")) {
-                    snakeResponse = root();
-                } else if (uri.equals("/move")) {
-                    snakeResponse = move(parsedRequest);
-                } else if (uri.equals("/end")) {
-                	
-                    snakeResponse = end(parsedRequest);
-                } else {
-                    throw new IllegalAccessError("Strange call made to the snake: " + uri);
+                final JsonNode parsedRequest = JSON_MAPPER.readTree(req.body());
+                switch(uri) {
+               
+                case "/ping" :snakeResponse = ping(); break;
+                case "/" :  snakeResponse = root(); break;
+                case "/start" : snakeResponse = start(parsedRequest); break;
+                case "/move" : snakeResponse = move(parsedRequest); break;
+                case "/end":  snakeResponse = end(parsedRequest); break;
+                default:throw new IllegalAccessError("Strange call made to the snake: " + uri);
                 }
-                LOG.info("Responding with: {}", JSON_MAPPER.writeValueAsString(snakeResponse));
+              
+                LOG.atInfo().log("Responding with: %s", JSON_MAPPER.writeValueAsString(snakeResponse));
                 return snakeResponse;
             } catch (IOException e) {
-                LOG.warn("Something went wrong!", e);
+            	LOG.atWarning().log("Something went wrong!", e);
                 return null;
             }
         }
@@ -203,21 +191,21 @@ color:string - Optional custom color for this Battlesnake
          * @param startRequest a map containing the JSON sent to this snake. 
          * @return a response back to the engine containing the snake setup values.
          */
-        public Map<String, String> start(JsonNode startRequest) {
+        public Map<String, String> start(final JsonNode startRequest) {
+        	final String gameId= startRequest.get("game").get("id").asText();
         	switch(snakeType) {
-        	case "FloodFill" : bots.put(startRequest.get("game").get("id").asText(), new FloodFillSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Basic" : bots.put(startRequest.get("game").get("id").asText(), new BasicSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "RL" : bots.put(startRequest.get("game").get("id").asText(), new RL(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Neural" : bots.put(startRequest.get("game").get("id").asText(), new NNSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Alpha": bots.put(startRequest.get("game").get("id").asText(), new AlphaSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Beta": bots.put(startRequest.get("game").get("id").asText(), new BetaSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Gamma": bots.put(startRequest.get("game").get("id").asText(), new GammaSnake(LOG,startRequest.get("game").get("id").asText() ));break;
-        	case "Challenger": bots.put(startRequest.get("game").get("id").asText(), new Challenger(LOG,startRequest.get("game").get("id").asText() ));break;
+        	case "FloodFill" : bots.put(gameId, new FloodFillSnake(gameId ));break;
+        	case "Basic" : bots.put(gameId, new BasicSnake(gameId ));break;
+        	case "Alpha": bots.put(gameId, new AlphaSnake(gameId ));break;
+        	case "Beta": bots.put(gameId, new BetaSnake(gameId ));break;
+        	case "Gamma": bots.put(gameId, new GammaSnake(gameId ));break;
+        	case "Challenger": bots.put(gameId, new Challenger(gameId ));break;
+        	default: bots.put(gameId, new BetaSnake(gameId ));break;
         	}
         	
         
             
-            return bots.get(startRequest.get("game").get("id").asText()).start(startRequest);
+            return bots.get(gameId).start(startRequest);
         }
 
         /**
@@ -226,14 +214,14 @@ color:string - Optional custom color for this Battlesnake
          * @param moveRequest a map containing the JSON sent to this snake. See the spec for details of what this contains.
          * @return a response back to the engine containing snake movement values.
          */
-        public Map<String, String> move(JsonNode moveRequest) {     
-        	
-        		SnakeAI m = bots.get(moveRequest.get("game").get("id").asText());
-        		if (m ==null) {
-        			bots.put(moveRequest.get("game").get("id").asText(), new BetaSnake(LOG,moveRequest.get("game").get("id").asText() ));
-        			 m = bots.get(moveRequest.get("game").get("id").asText());
+        public Map<String, String> move(final JsonNode moveRequest) {     
+        	final String gameId = moveRequest.get("game").get("id").asText();
+        		AbstractSnakeAI bot = bots.get(gameId);
+        		if (bot ==null) {
+        			bots.put(gameId, new BetaSnake(gameId));
+        			 bot = bots.get(gameId);
         		}
-        	 return m.move(moveRequest);
+        	 return bot.move(moveRequest);
         
         }
 
@@ -243,10 +231,10 @@ color:string - Optional custom color for this Battlesnake
          * @param endRequest a map containing the JSON sent to this snake. See the spec for details of what this contains.
          * @return responses back to the engine are ignored.
          */
-        public Map<String, String> end(JsonNode endRequest) {
-        	
-        	Map<String, String> res = bots.get(endRequest.get("game").get("id").asText()).end(endRequest);
-        	bots.remove(endRequest.get("game").get("id").asText());
+        public Map<String, String> end(final JsonNode endRequest) {
+        	final String gameId = endRequest.get("game").get("id").asText();
+        	final Map<String, String> res = bots.get(gameId).end(endRequest);
+        	bots.remove(gameId);
         	System.gc();
         	return res;
             
