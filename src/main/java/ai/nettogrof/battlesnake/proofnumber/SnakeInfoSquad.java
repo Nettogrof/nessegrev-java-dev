@@ -77,7 +77,6 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * @param squad
 	 * @return
 	 */
-	@Override
 	public boolean isSnake( final int pos,final String squad) {
 		if (!"".equals(squad) && squad.equals(this.squad)) {
 			return false;

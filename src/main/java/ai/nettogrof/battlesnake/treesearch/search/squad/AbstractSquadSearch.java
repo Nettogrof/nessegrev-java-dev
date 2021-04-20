@@ -44,7 +44,7 @@ public abstract class AbstractSquadSearch extends AbstractBestFirstSearch {
 		
 	}
 
-	protected boolean freeSpace(final int square, final List<SnakeInfo> snakes,final SnakeInfoSquad currentSnake) {
+	protected boolean freeSpace(final int square, final List<SnakeInfoSquad> snakes,final SnakeInfoSquad currentSnake) {
 		boolean free = true;
 		for (int i = 0; i < snakes.size() && free; i++) {
 			free = snakes.get(i).equals(currentSnake) ? !snakes.get(i).isSnake(square)  :  !snakes.get(i).isSnake(square,currentSnake.getSquad()) ;			
