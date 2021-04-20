@@ -13,40 +13,44 @@ import gnu.trove.list.array.TIntArrayList;
  *  Data related to a Snake
  * 
  * @author carl.lajeunesse
- * @version  Spring 2021 %G%
- *
+ * @version  Spring 2021 
+ * 
  */
 public class SnakeInfo implements Cloneable {
+	
+	/**
+	 * Logging object
+	 */
 	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
 	
 	/**
-	 *  Arraylist of the Snake Body.  Starting at the head. This array of Integer of the square
+	 *  Arraylist of the Snake Body.  Starting at the head. This array of Integer of the square (based on square formula)
 	 */
 	protected final TIntArrayList snakeBody ;
 	
 	/**
-	 * 
+	 * Name of the snake
 	 */
 	protected String name;
+	
 	/**
-	 * 
+	 * Current health of the snake 
 	 */
 	protected int health;
+	
 	/**
-	 * 
+	 * Does the snake just eat
 	 */
 	protected boolean eat = Boolean.FALSE;
+	
 	/**
-	 * 
+	 * If the snake is still alive
 	 */
 	protected boolean alive = true;
-	/**
-	 * 
-	 */
-	
+		
 	
 	/**
-	 * 
+	 * Basic constructor with a empty body.
 	 */
 	public SnakeInfo() {
 		snakeBody = new TIntArrayList();
@@ -54,10 +58,11 @@ public class SnakeInfo implements Cloneable {
 
 		
 	/**
-	 * @param prevSnakeInfo
-	 * @param moveSquare
-	 * @param eat
-	 * @param hazard
+	 * Constructor with all informations
+	 * @param prevSnakeInfo Same snake on the previous move
+	 * @param moveSquare The destination square of the snake move
+	 * @param eat  Is destination square a food 
+	 * @param hazard Is destination square a hazard
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo,final int moveSquare,final boolean eat,final boolean hazard) {
 		if (eat) {
@@ -86,9 +91,10 @@ public class SnakeInfo implements Cloneable {
 	}
 	
 	/**
-	 * @param prevSnakeInfo
-	 * @param moveSquare
-	 * @param eat
+	 * Constructor with all informations except hazard  ( use in non-royale mode) 
+	 * @param prevSnakeInfo Same snake on the previous move
+	 * @param moveSquare The destination square of the snake move
+	 * @param eat  Is destination square a food 
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo,final int moveSquare,final boolean eat) {
 		if (eat) {
@@ -114,31 +120,27 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 * @return
+	 * Get the full snake bodies
+	 * @return arraylist int of the snake's bodies
 	 */
 	public TIntArrayList getSnakeBody() {
-
 		return snakeBody;
-
 	}
 
 	/**
-	 * 
+	 * Kill the snake
 	 */
 	public void die() {
-
 		alive = false;
 	}
 
 	/**
-	 * @param snakeI
+	 * Set the snake bodies
+	 * @param snakeInfo JsonNode Snake field
 	 */
-	public void setSnake(final JsonNode snakeI) {
-		
-		
-
-		for (int x = 0; x < snakeI.get("body").size(); x++) {
-			snakeBody.add(snakeI.get("body").get(x).get("x").asInt()*1000+ snakeI.get("body").get(x).get("y").asInt());
+	public void setSnake(final JsonNode snakeInfo) {
+		for (JsonNode bodyPos: snakeInfo.get("body") ) {
+			snakeBody.add(bodyPos.get("x").asInt()*1000+ bodyPos.get("y").asInt());
 
 		}
 
@@ -146,14 +148,7 @@ public class SnakeInfo implements Cloneable {
 
 	
 	
-	/**
-	 * @param pos
-	 * @param squad
-	 * @return
-	 */
-	public boolean isSnake( final int pos,final String squad) {
-		return isSnake(pos);
-	}
+	
 	
 	/**
 	 * @param pos

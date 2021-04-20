@@ -8,7 +8,7 @@ import gnu.trove.list.array.TIntArrayList;
 /**
  * FoodInfo is the class that contain all the informations and related methods to foods
  * @author carl.lajeunesse
- * @version     %I%, %G%
+ * @version  Spring 2021 
  */
 public class FoodInfo {
 	

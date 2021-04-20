@@ -22,9 +22,10 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 
 /**
- * Snake server that deals with requests from the snake engine. Just boiler
- * plate code. See the readme to get started.
+ * Snake server that deals with requests from the snake engine. 
+ * This class route the incoming transaction to the right object/method
  * 
+ * @version  Spring 2021 
  */
 public final class Snake {
 	/**
