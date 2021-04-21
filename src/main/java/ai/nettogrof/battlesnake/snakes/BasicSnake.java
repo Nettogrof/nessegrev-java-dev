@@ -39,25 +39,25 @@ public class BasicSnake extends AbstractSnakeAI {
 		possiblemove.put(DOWN, 0);
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
-		final JsonNode boardJsonNode = moveRequest.get("board");
-		final int boardWidth = boardJsonNode.get("width").asInt();
-		final int boardHeight = boardJsonNode.get("height").asInt();
-		int[][] board = new int[boardWidth][boardHeight];
-		for (int x = 0; x < boardWidth; x++) {
-			for (int y = 0; y < boardHeight; y++) {
+		final JsonNode boardJsonNode = moveRequest.get(BOARD);
+		width = boardJsonNode.get(WIDTH_FIELD).asInt();
+		heigth = boardJsonNode.get(HEIGTH_FIELD).asInt();
+		int[][] board = new int[width][heigth];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < heigth; y++) {
 				board[x][y] = 0;
 			}
 		}
-		boardJsonNode.withArray("snakes").forEach(s -> {
-			s.withArray("body").forEach(c -> {
+		boardJsonNode.withArray(SNAKES).forEach(s -> {
+			s.withArray(BODY).forEach(c -> {
 				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
 
 			});
 
 		});
 
-		final int snakex = moveRequest.get("you").withArray("body").get(0).get("x").asInt();
-		final int snakey = moveRequest.get("you").withArray("body").get(0).get("y").asInt();
+		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
+		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 		int maxd[] = { 99 };
 
 		int[] foodxy = new int[2];
@@ -76,7 +76,7 @@ public class BasicSnake extends AbstractSnakeAI {
 		possiblemove.put(LEFT, snakex - foodx);
 		possiblemove.put(RIGHT, foodx - snakex);
 
-		response.put("move", bestMove(snakex, snakey, possiblemove, board, boardHeight, boardWidth));
+		response.put("move", bestMove(snakex, snakey, possiblemove, board, heigth, width));
 		return response;
 	}
 
