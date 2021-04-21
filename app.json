@@ -1,6 +1,6 @@
 {
-  "name": "Battlesnake Java Starter Snake",
-  "description": "A sample starter snake for battlesnake written in java",
-  "repository": "https://github.com/battlesnakeio/starter-snake-java",
+  "name": "Battlesnake Nessegrev all snakes",
+  "description": "All Nessegrev snakes in java",
+  "repository": "https://github.com/Nettogrof/nessegrev-java-dev",
   "keywords": ["battlesnake", "java"]
 }
