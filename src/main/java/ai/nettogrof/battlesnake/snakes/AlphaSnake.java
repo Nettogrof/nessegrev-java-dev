@@ -92,11 +92,11 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 		
 		if (multiThread) {
-			new AlphaSearch(root, width, heigth).generateChild();
+			new AlphaSearch(root, width, height).generateChild();
 			// MoveGenerator.generateChild(root,width,heigth);
 			final ArrayList<AlphaSearch> listThread = new ArrayList<>();
 			for (final AbstractNode childNode : root.getChild()) {
-				listThread.add(new AlphaSearch((AlphaNode) childNode, width, heigth, startTime, timeout - minusbuffer));
+				listThread.add(new AlphaSearch((AlphaNode) childNode, width, height, startTime, timeout - minusbuffer));
 
 			}
 
@@ -128,7 +128,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 			}
 			root.updateScore();
 		} else {
-			final AlphaSearch main = new AlphaSearch(root, width, heigth, startTime, timeout - minusbuffer);
+			final AlphaSearch main = new AlphaSearch(root, width, height, startTime, timeout - minusbuffer);
 			main.run();
 		}
 		AlphaNode winner = (AlphaNode) chooseBestMove(root);
@@ -218,7 +218,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get("width").asInt();
-		heigth = startRequest.get(BOARD).get("height").asInt();
+		height = startRequest.get(BOARD).get("height").asInt();
 		// nbSnake = startRequest.get(BOARD).get("snakes").size();
 		try {
 			timeout = startRequest.get("game").get("timeout").asInt();

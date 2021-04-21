@@ -108,14 +108,14 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 
 	private void treeSearch(final AbstractRoyaleNode root,final Long startTime) {
 		if (multiThread && root.getSnakes().size() <5) {
-			new RoyaleSearch(root, width, heigth).generateChild();
+			new RoyaleSearch(root, width, height).generateChild();
 			// final int cpu =2;
 
 			final ArrayList<RoyaleSearch> listSearchThread = new ArrayList<>();
 
 			for (final AbstractNode c : root.getChild()) {
 				listSearchThread
-						.add(new RoyaleSearch((AbstractRoyaleNode) c, width, heigth, startTime, timeout - minusbuffer));
+						.add(new RoyaleSearch((AbstractRoyaleNode) c, width, height, startTime, timeout - minusbuffer));
 
 			}
 
@@ -147,7 +147,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			}
 			root.updateScore();
 		} else {
-			final RoyaleSearch main = new RoyaleSearch(root, width, heigth, startTime, timeout - minusbuffer);
+			final RoyaleSearch main = new RoyaleSearch(root, width, height, startTime, timeout - minusbuffer);
 			main.run();
 		}
 		
@@ -257,7 +257,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
-		heigth = startRequest.get(BOARD).get(HEIGTH_FIELD).asInt();
+		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 
 		timeout = startRequest.get("game").get("timeout").asInt();
 
@@ -275,16 +275,16 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		
 		if (snakes.size() > 4) {
 			RoyaleFourNode.width = width;
-			RoyaleFourNode.heigth = heigth;
+			RoyaleFourNode.heigth = height;
 			return new RoyaleFourNode(snakes, food, hazard);
 		} else if (snakes.size() > 2) {
 			RoyaleFourNode.width = width;
-			RoyaleFourNode.heigth = heigth;
+			RoyaleFourNode.heigth = height;
 			return new RoyaleFourNode(snakes, food, hazard);
 		}
 	
 		RoyaleDuelNode.width = width;
-		RoyaleDuelNode.heigth = heigth;
+		RoyaleDuelNode.heigth = height;
 		return new RoyaleDuelNode(snakes, food, hazard);
 	}
 

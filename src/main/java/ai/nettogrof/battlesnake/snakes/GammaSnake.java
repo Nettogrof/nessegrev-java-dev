@@ -74,7 +74,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	public Map<String, String> move(final JsonNode moveRequest) {
 	
 		if ( moveRequest.get(YOU).has("head")) {
-			api = 1;
+			apiversion = 1;
 			
 		}
 		
@@ -117,7 +117,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
 			
 			for (final AbstractNode c : nodelist) {
-				listSearchThread.add(new MctsSearch( c, width, heigth, System.currentTimeMillis(), timeout - minusbuffer));
+				listSearchThread.add(new MctsSearch( c, width, height, System.currentTimeMillis(), timeout - minusbuffer));
 
 			}
 		
@@ -151,7 +151,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			}
 			log.atInfo().log("Nb Thread: "+nodelist.size());
 		} else {
-			final MctsSearch main = new MctsSearch(root, width, heigth, startTime, timeout - minusbuffer);
+			final MctsSearch main = new MctsSearch(root, width, height, startTime, timeout - minusbuffer);
 			main.run();
 		}
 		
@@ -161,7 +161,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		if (nodelist.isEmpty()) {
 			return false;
 		}
-		new RegularSearch(nodelist.get(0), width, heigth).generateChild();
+		new RegularSearch(nodelist.get(0), width, height).generateChild();
 		if (nodelist.size() - 1 + nodelist.get(0).getChild().size()  < cpu_limit  ) {
 			final AbstractNode oldroot = nodelist.remove(0);
 			expandedlist.add(oldroot);
@@ -241,15 +241,15 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	private AbstractNode genNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		if (snakes.size()>4) {
 			ManyNode.width=width;
-			ManyNode.heigth=heigth;
+			ManyNode.heigth=height;
 			return new ManyNode(snakes,food);
 		}else if (snakes.size()>2){
 			FourNode.width=width;
-			FourNode.heigth=heigth;
+			FourNode.heigth=height;
 			return new FourNode(snakes,food);
 		}
 		DuelNode.width=width;
-		DuelNode.heigth=heigth;
+		DuelNode.heigth=height;
 		return new DuelNode(snakes,food);
 	}
 
@@ -263,7 +263,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			
 		}else {
 			
-			api = 1;
+			apiversion = 1;
 			timeout = startRequest.get("game").get("timeout").asInt();
 		}
 
@@ -275,7 +275,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
-		heigth = startRequest.get(BOARD).get(HEIGTH_FIELD).asInt();
+		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 		
 		
 		

@@ -59,8 +59,8 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	public Map<String, String> move(final JsonNode moveRequest) {
 		final JsonNode boardJson = moveRequest.get("board");
 		width = boardJson.get("width").asInt();
-		heigth = boardJson.get("height").asInt();
-		int[][]board = new int[width][heigth];
+		height = boardJson.get("height").asInt();
+		int[][]board = new int[width][height];
 		final JsonNode you = moveRequest.get("you");
 		
 		
@@ -71,7 +71,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		
 	
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < heigth; y++) {
+			for (int y = 0; y < height; y++) {
 				board[x][y] = 0;
 				space[x][y] = 0;
 				
@@ -161,7 +161,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 			possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + countEmptySquare());
 		}
 
-		if (snakey == heigth - 1) {
+		if (snakey == height - 1) {
 			possiblemove.put(DOWN, -90);
 			
 		} else {
@@ -226,9 +226,9 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		response.put("headType", "sand-worm");
 		response.put("tailType", "sharp");
 		width = startRequest.get("board").get("width").asInt();
-		heigth = startRequest.get("board").get("height").asInt();
+		height = startRequest.get("board").get("height").asInt();
 		//board = new int[width][heigth];
-		space = new int[width][heigth];
+		space = new int[width][height];
 		
 		return response;
 	}
@@ -250,7 +250,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 				if (posY > 0) {
 					floodPositive(posX, posY - 1, value - 1,board); //spread the flood to the position Y - 1, with the value - 1 
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					floodPositive(posX, posY + 1, value - 1,board);//spread the flood to the position Y - 1, with the value - 1 
 				}
 
@@ -279,7 +279,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 				if (posY > 0) {
 					floodNegative(posX, posY - 1, value + FLODDENEMYGAP,board);
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					floodNegative(posX, posY + 1, value + FLODDENEMYGAP,board);
 				}
 
@@ -307,7 +307,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 				if (posY > 0) {
 					floodEmptySpace(posX, posY - 1, value,board);
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					floodEmptySpace(posX, posY + 1, value,board);
 				}
 
@@ -326,7 +326,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	private int countEmptySquare() {
 		int countEmpty = 0;
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < heigth; y++) {
+			for (int y = 0; y < height; y++) {
 
 				if (space[x][y] == EMPTY) {
 					countEmpty++;

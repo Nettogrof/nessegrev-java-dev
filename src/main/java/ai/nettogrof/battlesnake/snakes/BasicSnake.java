@@ -41,10 +41,10 @@ public class BasicSnake extends AbstractSnakeAI {
 		possiblemove.put(RIGHT, 0);
 		final JsonNode boardJsonNode = moveRequest.get(BOARD);
 		width = boardJsonNode.get(WIDTH_FIELD).asInt();
-		heigth = boardJsonNode.get(HEIGTH_FIELD).asInt();
-		int[][] board = new int[width][heigth];
+		height = boardJsonNode.get(HEIGHT_FIELD).asInt();
+		int[][] board = new int[width][height];
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < heigth; y++) {
+			for (int y = 0; y < height; y++) {
 				board[x][y] = 0;
 			}
 		}
@@ -76,7 +76,7 @@ public class BasicSnake extends AbstractSnakeAI {
 		possiblemove.put(LEFT, snakex - foodx);
 		possiblemove.put(RIGHT, foodx - snakex);
 
-		response.put("move", bestMove(snakex, snakey, possiblemove, board, heigth, width));
+		response.put("move", bestMove(snakex, snakey, possiblemove, board, height, width));
 		return response;
 	}
 
