@@ -10,22 +10,65 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * FloodFill snake. This class is the "Nessegrev-flood" snake on Battlesnake.
+ * My first snake that I entered in a tournament (Stay Home and Code / Rookie division)
+ * This snake use flood fill algorithm to find the best move.
+ * It tries to target food and shorter snakes, and avoids bigger snakes.
+ * 
+ * This snake should work  with API v0 and API v1.
+ * All the move calculation are based on API v0,  and if it's API v1, then the snake switch UP and DOWN response. 
+ * 
+ * @author carl.lajeunesse
+ * @version Winter 2020
+ */
 public class FloodFillSnake extends AbstractSnakeAI {
 
 	
 	private transient int[][] space;
 	
-	private final static int FLOODENEMYBIGGER = -59;
-	private final static int FLODDENEMYSMALLER = 20;
-	private final static int FOODVALUE = 115;
-	private final static int FLODDENEMYGAP = 35;
-	private final static int EMPTY = 5000;
-	private transient int apiversion;
+	/**
+	 * Constant value
+	 */
+	private static final int FLOODENEMYBIGGER = -59;
+	
+	/**
+	 * Constant value
+	 */
+	private static final int FLODDENEMYSMALLER = 20;
+	
+	/**
+	 * Constant value
+	 */
+	private static final int FOODVALUE = 115;
+	
+	/**
+	 * Constant value
+	 */
+	private static final int FLODDENEMYGAP = 35;
+	
+	/**
+	 * Constant value
+	 */
+	private static final int EMPTY = 5000;
 
+	/**
+	 * 
+	 */
+	private static final int HAZARD_VALUE = 25;
+	
+	/**
+	 * Basic / unused constructor
+	 */
 	public FloodFillSnake() {
 		super();
 	}
 
+	/**
+	 * Constructor with the gameid,
+	 * 
+	 * @param gameId String of the gameid field receive in the start request.
+	 */
 	public FloodFillSnake(final String gameId) {
 		super(gameId);
 	
@@ -36,14 +79,8 @@ public class FloodFillSnake extends AbstractSnakeAI {
             // load a properties file
             prop.load(input);
 
-            // get the property value and print it out
-            
-           
         	apiversion = Integer.parseInt(prop.getProperty("apiversion"));
     		
-
-            
-
         } catch (IOException ex) {
         	log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
         }
@@ -53,15 +90,17 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	
 	/**
-	 * Move function is the main function, 
+	 * This method will be call on each move request receive by BattleSnake
+	 * @param moveRequest Json call received
+	 * @return map of field to be return to battlesnake,  example   "move" , "up"
 	 */
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
-		final JsonNode boardJson = moveRequest.get("board");
-		width = boardJson.get("width").asInt();
-		height = boardJson.get("height").asInt();
+		final JsonNode boardJson = moveRequest.get(BOARD);
+		width = boardJson.get(WIDTH_FIELD).asInt();
+		height = boardJson.get(HEIGHT_FIELD).asInt();
 		int[][]board = new int[width][height];
-		final JsonNode you = moveRequest.get("you");
+		final JsonNode you = moveRequest.get(YOU);
 		
 		
 		// To determine if the game is under api version 1 or 0 ( default 0)
@@ -74,18 +113,16 @@ public class FloodFillSnake extends AbstractSnakeAI {
 			for (int y = 0; y < height; y++) {
 				board[x][y] = 0;
 				space[x][y] = 0;
-				
-
 			}
 		}
-		final String yourName = you.get("name").asText();
+		final String yourName = you.get(NAME).asText();
 		final int mysnakelength = you.get(BODY).size();
 		
 		
-		boardJson.withArray("snakes").forEach(s -> {  //Foreach snake
+		boardJson.withArray(SNAKES).forEach(s -> {  //Foreach snake
 			final JsonNode snakeBody =  s.get(BODY);
 			final int enemylength = snakeBody.size();
-			final String snakeName = s.get("name").asText();
+			final String snakeName = s.get(NAME).asText();
 			final boolean isYourSnake = snakeName.equals(yourName);
 			
 			if (!isYourSnake && enemylength >= mysnakelength) {
@@ -103,7 +140,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 				
 			});
 
-			if (s.get("health").asInt() < 100 && moveRequest.get("turn").asInt() > 3) {
+			if (s.get(HEALTH).asInt() < 100 && moveRequest.get(TURN).asInt() > 3) {
 				board[snakeBody.get(enemylength - 1).get("x").asInt()][snakeBody.get(enemylength - 1).get("y").asInt()] = 0;  // Put value = 0 for tail,  because usually you can move on tail  ( I didn't check if the snake have eaten or not)
 			}
 
@@ -119,19 +156,31 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		return response;
 	}
 
-		
+	
+	
+	/**
+	 * This method add a value on each square of hazards
+	 * @param board  the board of value
+	 * @param boardJson  the field Board fron the Json request
+	 */
 	private void addHazardsValue(final int[][] board,final JsonNode boardJson) {
 		boardJson.withArray("hazards").forEach(f -> { // For BattleRoyale only remove -25 for square in hazard
-			board[f.get("x").asInt()][f.get("y").asInt()] -= 25;
+			board[f.get("x").asInt()][f.get("y").asInt()] -= HAZARD_VALUE;
 			
 		});
 		
 	}
 
+	/**
+	 * This method add food value on the board  based on your current  <code>FOORVALUE - health</CODE>
+	 * @param board  the board of value 
+	 * @param you the field "you" fron the Json request
+	 * @param boardJson the field Board fron the Json request
+	 */
 	private void addFoodValue(final int[][] board,final JsonNode you,final JsonNode boardJson) {
 
-		final int health = you.get("health").asInt();
-		final int nbsnake = boardJson.get("snakes").size();
+		final int health = you.get(HEALTH).asInt();
+		final int nbsnake = boardJson.get(SNAKES).size();
 		boardJson.withArray("food").forEach(f -> {
 			if (health < 10 || nbsnake >1) {
 				floodPositive(f.get("x").asInt(), f.get("y").asInt(), FOODVALUE - health,board); // Floodfill positive value for food (  if snake is more hungry the value is higher)
@@ -144,15 +193,25 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		
 	}
 
+	/**
+	 * Create a map of possible move and assign a value to them. a negative value is bad. 
+	 * @param you
+	 * @param board
+	 * @return
+	 */
 	private Map<String, Integer> checkPossibleMove(final JsonNode you,final int[][] board) {
 		final int snakex = you.withArray(BODY).get(0).get("x").asInt();
 		final int snakey = you.withArray(BODY).get(0).get("y").asInt();
 		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
+		
+		//Put possible move to value 0 
 		possiblemove.put(UPWARD, 0);
 		possiblemove.put(DOWN, 0);
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
 		
+		
+		//Put a value of -90 if out of bounds.  Value is the current value + board value +  countEmptySquare value
 		if (snakey == 0) {
 			possiblemove.put(UPWARD, -90);
 		
@@ -187,6 +246,11 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		return possiblemove;
 	}
 
+	/**
+	 * Choose the best move 
+	 * @param possiblemove  map of possible move 
+	 * @return String for the move  (up ,down, left or right)
+	 */
 	private String chooseBestMove(final Map<String, Integer> possiblemove) {
 		String res = UPWARD;
 		int value = possiblemove.get(UPWARD);
@@ -341,7 +405,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	
 	/**
 	 * Function used to retrieve snake info ( api version, color, snake head, etc)
-	 * @return  HashMap of properties
+	 * @return  Map of properties
 	 */
 	public static Map<String, String> getInfo() {
 		final Map<String, String> response = new ConcurrentHashMap<>();

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * This snake should work only with API v1.
  * 
  * @author carl.lajeunesse
- * @version Spring 2021
+ * @version Winter 2020
  */
 public class BasicSnake extends AbstractSnakeAI {
 
