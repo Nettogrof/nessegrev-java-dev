@@ -41,8 +41,8 @@ Please take note that sometimes (maybe cause by Java's garbage collection) my sn
 ## How-to
 
 To run a snake, you need Java installed  (any recent version).
-In the command line, type `java -jar snake.jar <SnakeName>` e.g. `java -jar snake.jar Beta`
+In the command line, type `java -Djava.util.logging.config.file=logging.properties -jar snake.jar <SnakeName>` e.g. `java -jar snake.jar Beta`
 
-For Alpha, Beta and Gamma, you may add memory config, e.g. `java  -Xmx1024m -Xms1024m -jar snake.jar Beta`
+For Alpha, Beta and Gamma, you may add memory config, e.g. `java -Djava.util.logging.config.file=logging.properties -Xmx1024m -Xms1024m -jar snake.jar Beta`
 
 The snake will listen on the port number from the `.properties` file.
