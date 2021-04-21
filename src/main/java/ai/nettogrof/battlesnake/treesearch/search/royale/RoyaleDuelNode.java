@@ -51,7 +51,7 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 		for(int i =0 ; i <snakes.size();i++) {
 			score[i] += snakes.get(i).getHealth()/250f;
 			if (hazard.isHazard(snakes.get(i).getHead())){
-				score[i]*=0.9;
+				score[i]*=0.9f;
 			}
 		}
 		

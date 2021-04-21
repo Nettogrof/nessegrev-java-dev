@@ -72,7 +72,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 
 	protected void addScoreDistance(final int head) {
 		
-		score[0] += (width - food.getShortestDistance(head/ 1000, head % 1000)) * 0.095;
+		score[0] += (width - food.getShortestDistance(head/ 1000, head % 1000)) * 0.095f;
 
 	}
 	
@@ -86,11 +86,11 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	protected void addSizeCompareScore() {
 		for (int i = 1; i < snakes.size(); i++) {
 			if (snakes.get(i).getSnakeBody().size() > snakes.get(0).getSnakeBody().size()) {
-				score[0] -=0.2;
-				score[i] +=0.2;
+				score[0] -=0.2f;
+				score[i] +=0.2f;
 			}else if (snakes.get(i).getSnakeBody().size() < snakes.get(0).getSnakeBody().size()) {
-				score[0] +=0.2;
-				score[i] -=0.2;
+				score[0] +=0.2f;
+				score[i] -=0.2f;
 			}
 		}
 		

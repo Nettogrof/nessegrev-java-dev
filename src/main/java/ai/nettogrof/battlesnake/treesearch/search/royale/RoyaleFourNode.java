@@ -36,7 +36,7 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 		for(int i =0 ; i <snakes.size();i++) {
 			
 			if (hazard.isHazard(snakes.get(i).getHead())){
-				score[i]*=0.9;
+				score[i]*=0.9f;
 			}
 		}
 		if (snakes.size() > 1) {

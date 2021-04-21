@@ -42,7 +42,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 		
 		}else {
 			
-			int totalOther = 1;
+			float totalOther = 0.01f;
 			for (int i = 1; i < score.length; i++) {
 				if (!((SnakeInfoSquad)snakes.get(0)).getSquad().equals(((SnakeInfoSquad)snakes.get(0)).getSquad())) {
 					totalOther += score[i];

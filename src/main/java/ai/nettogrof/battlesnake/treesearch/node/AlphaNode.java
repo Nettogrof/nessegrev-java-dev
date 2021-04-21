@@ -116,7 +116,7 @@ public class AlphaNode extends AbstractNode{
 		}
 		int totalOther = 0;
 		for (int i = 0; i < score.length; i++) {
-			totalOther += score[i];
+			totalOther += Math.round(score[i]);
 		}
 
 		return totalOther;
