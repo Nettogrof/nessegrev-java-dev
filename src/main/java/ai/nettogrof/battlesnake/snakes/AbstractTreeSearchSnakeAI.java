@@ -111,6 +111,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected abstract String getFileConfig();
 
 	/**
+	 * Return the infos need by Battlesnake when receive a (root GET /) request 
 	 * @return
 	 */
 	public static Map<String, String> getInfo() {
@@ -290,6 +291,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 	
 	/**
+	 * Return the best value
+	 * 
 	 * @param upward
 	 * @param down
 	 * @param left
@@ -329,6 +332,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
+	 * Fill the each list with the score of each chjld score
 	 * @param upward
 	 * @param down
 	 * @param left
@@ -358,6 +362,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 	
 	/**
+	 * Log value for each possible move, that help to debug/understand why the snake choose which move.
 	 * @param upward
 	 * @param down
 	 * @param left
