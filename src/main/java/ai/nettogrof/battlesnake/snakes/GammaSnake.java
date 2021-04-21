@@ -21,7 +21,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 import ai.nettogrof.battlesnake.treesearch.search.standard.RegularSearch;
-import gnu.trove.list.array.TFloatArrayList;
 
 /**
  * @author carl.lajeunesse
@@ -333,7 +332,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	/**
 	 * @param args
 	 */
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		final TFloatArrayList right = new TFloatArrayList();
 		System.out.println(right.min());
 		
@@ -373,8 +372,8 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		} catch (IOException e) {
 
 			e.printStackTrace();
-		}*/
-	}
+		}
+	}*/
 
 	
 }
