@@ -73,7 +73,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 	
-		if ( moveRequest.get("you").has("head")) {
+		if ( moveRequest.get(YOU).has("head")) {
 			api = 1;
 			
 		}
@@ -94,10 +94,10 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		
 		lastRoot = root;
 				
-		log.atInfo().log("Turn:" +moveRequest.get("turn").asInt() +" nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - startTime));
+		log.atInfo().log("Turn:" +moveRequest.get(TURN).asInt() +" nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - startTime));
 		nodeTotalCount += root.getChildCount();
 		timeTotal += System.currentTimeMillis() - startTime;
-		return generateResponse(winner,root, moveRequest.get("you").withArray(BODY).get(0));
+		return generateResponse(winner,root, moveRequest.get(YOU).withArray(BODY).get(0));
 	}
 
 		
@@ -190,7 +190,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		final ArrayList<SnakeInfo> snakes = new ArrayList<>();
 		//SnakeInfo[] snakes = new SnakeInfo[board.get(SNAKES).size()];
 
-		final JsonNode gammaSnake = moveRequest.get("you");
+		final JsonNode gammaSnake = moveRequest.get(YOU);
 		
 		snakes.add(new SnakeInfo());
 		snakes.get(0).setHealth((short) (gammaSnake.get(HEALTH).asInt()));
@@ -274,8 +274,8 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("color", "#216121");
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
-		width = startRequest.get(BOARD).get("width").asInt();
-		heigth = startRequest.get(BOARD).get("height").asInt();
+		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
+		heigth = startRequest.get(BOARD).get(HEIGTH_FIELD).asInt();
 		
 		
 		

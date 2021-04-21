@@ -8,8 +8,7 @@ import com.google.common.flogger.FluentLogger;
 
 public abstract class AbstractSnakeAI {
 
-	// public abstract Map<String, String> root(JsonNode startRequest);
-	// public static abstract Map<String, String> getInfo();
+	
 	protected final static String UPWARD = "up";
 	protected final static String DOWN = "down";
 	protected final static String LEFT = "left";
@@ -21,6 +20,12 @@ public abstract class AbstractSnakeAI {
 	protected final static String SQUAD = "squad";
 	protected final static String HEALTH = "HEALTH";
 	protected final static String SNAKES = "snakes";
+	protected final static String YOU = "you";
+	protected final static String TURN = "turn";
+	protected final static String HEAD = "head";
+	protected final static String WIDTH_FIELD = "width";
+	protected final static String HEIGTH_FIELD = "heigth";
+	
 	
 	public static String fileConfig;
 
@@ -60,8 +65,8 @@ public abstract class AbstractSnakeAI {
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 
-		if (endRequest.get("board").get("snakes").size() > 0) {
-			log.atInfo().log("Winner is : %s", endRequest.get("board").get("snakes").get(0).get("name").asText());
+		if (endRequest.get(BOARD).get(SNAKES).size() > 0) {
+			log.atInfo().log("Winner is : %s", endRequest.get(BOARD).get(SNAKES).get(0).get(NAME).asText());
 
 		} else {
 			log.atInfo().log("DRAW");

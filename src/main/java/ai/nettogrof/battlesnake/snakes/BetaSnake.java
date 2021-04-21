@@ -75,7 +75,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 
-		if (moveRequest.get("you").has("head")) {
+		if (moveRequest.get(YOU).has("head")) {
 			apiversion = 1;
 		}
 		
@@ -100,10 +100,10 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		
 		lastRoot = root;
 				
-		log.atInfo().log("Turn:" +moveRequest.get("turn").asInt() +" nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - startTime));
+		log.atInfo().log("Turn:" +moveRequest.get(TURN).asInt() +" nb nodes" + root.getChildCount() + "  time: " + (System.currentTimeMillis() - startTime));
 		nodeTotalCount += root.getChildCount();
 		timeTotal += System.currentTimeMillis() - startTime;
-		return generateResponse(winner,root, moveRequest.get("you").withArray(BODY).get(0));
+		return generateResponse(winner,root, moveRequest.get(YOU).withArray(BODY).get(0));
 	}
 
 	private void treeSearch(final AbstractRoyaleNode root,final Long startTime) {
@@ -162,7 +162,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		final FoodInfo food = new FoodInfo(board);
 
 		final ArrayList<SnakeInfo> snakes = new ArrayList<>();
-		final JsonNode betaSnake = moveRequest.get("you");
+		final JsonNode betaSnake = moveRequest.get(YOU);
 		if (squad) {
 			genSnakeInfoSquad(snakes, board, betaSnake);
 		}else {
@@ -256,8 +256,8 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("color", "#216121");
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
-		width = startRequest.get(BOARD).get("width").asInt();
-		heigth = startRequest.get(BOARD).get("height").asInt();
+		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
+		heigth = startRequest.get(BOARD).get(HEIGTH_FIELD).asInt();
 
 		timeout = startRequest.get("game").get("timeout").asInt();
 
