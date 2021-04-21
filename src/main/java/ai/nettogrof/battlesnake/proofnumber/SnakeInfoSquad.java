@@ -30,8 +30,8 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * Constructor with all informations
 	 * @param prevSnakeInfo Same snake on the previous move
 	 * @param moveSquare The destination square of the snake move
-	 * @param eat  Is destination square a food 
-	 * @param hazard Is destination square a hazard
+	 * @param eat  		boolean is destination square a food 
+	 * @param hazard  	boolean is destination square a hazard
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo,final int moveSquare,final boolean eat,final boolean hazard) {
 		super(prevSnakeInfo, moveSquare, eat, hazard);
@@ -43,7 +43,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * Constructor with all informations except hazard  ( use in non-royale mode) 
 	 * @param prevSnakeInfo Same snake on the previous move
 	 * @param moveSquare The destination square of the snake move
-	 * @param eat  Is destination square a food 
+	 * @param eat  		 boolean Is destination square a food 
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo,final int moveSquare,final boolean eat) {
 		super(prevSnakeInfo, moveSquare, eat);
@@ -52,7 +52,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	}
 	
 	/**
-	 * Get the squad name
+	 * Gets the squad name
 	 * @return the squad name
 	 */
 	public String getSquad() {
