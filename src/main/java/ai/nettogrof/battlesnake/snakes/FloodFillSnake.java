@@ -15,9 +15,6 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	
 	private transient int[][] space;
 	
-	private transient int heigth;
-	private transient int width;
-
 	private final static int FLOODENEMYBIGGER = -59;
 	private final static int FLODDENEMYSMALLER = 20;
 	private final static int FOODVALUE = 115;
@@ -48,7 +45,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
             
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+        	log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
         }
 
 
@@ -367,7 +364,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
             
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+        	log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
         }
 
 		return response;
