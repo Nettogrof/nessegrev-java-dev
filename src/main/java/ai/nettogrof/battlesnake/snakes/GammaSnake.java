@@ -21,6 +21,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 import ai.nettogrof.battlesnake.treesearch.search.standard.RegularSearch;
+import gnu.trove.list.array.TFloatArrayList;
 
 /**
  * @author carl.lajeunesse
@@ -332,8 +333,11 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	/**
 	 * @param args
 	 */
-	/*public static void main(String args[]) {
-		ObjectMapper json = new ObjectMapper();
+	public static void main(String args[]) {
+		final TFloatArrayList right = new TFloatArrayList();
+		System.out.println(right.min());
+		
+		/*ObjectMapper json = new ObjectMapper();
 
 		//String test = " {\"game\":{\"id\":\"35bfc780-a042-4f7d-a830-e3f387c3263e\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":132,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_XPcwfQmpdGt3jqbDjWcMCCg3\",\"name\":\"BlackHole\",\"latency\":\"410\",\"health\":77,\"body\":[{\"x\":9,\"y\":3},{\"x\":9,\"y\":2},{\"x\":9,\"y\":1},{\"x\":8,\"y\":1},{\"x\":8,\"y\":2},{\"x\":7,\"y\":2},{\"x\":6,\"y\":2},{\"x\":5,\"y\":2},{\"x\":5,\"y\":3},{\"x\":6,\"y\":3},{\"x\":6,\"y\":4},{\"x\":6,\"y\":5}],\"head\":{\"x\":9,\"y\":3},\"length\":12,\"shout\":\"When life gives you melons, you're probably dyslexic.\"},{\"id\":\"gs_wRvwhDHSMVg7QHX9b6C46J69\",\"name\":\"Nessegrev-gamma\",\"latency\":\"341\",\"health\":93,\"body\":[{\"x\":10,\"y\":4},{\"x\":10,\"y\":3},{\"x\":10,\"y\":2},{\"x\":10,\"y\":1},{\"x\":10,\"y\":0},{\"x\":9,\"y\":0},{\"x\":8,\"y\":0},{\"x\":7,\"y\":0},{\"x\":6,\"y\":0},{\"x\":5,\"y\":0}],\"head\":{\"x\":10,\"y\":4},\"length\":10,\"shout\":\"\"}],\"food\":[{\"x\":4,\"y\":10},{\"x\":7,\"y\":9},{\"x\":4,\"y\":8},{\"x\":0,\"y\":10},{\"x\":0,\"y\":9},{\"x\":2,\"y\":8},{\"x\":10,\"y\":6},{\"x\":9,\"y\":4},{\"x\":9,\"y\":9},{\"x\":10,\"y\":5},{\"x\":8,\"y\":7}],\"hazards\":[]},\"you\":{\"id\":\"gs_wRvwhDHSMVg7QHX9b6C46J69\",\"name\":\"Nessegrev-gamma\",\"latency\":\"341\",\"health\":93,\"body\":[{\"x\":10,\"y\":4},{\"x\":10,\"y\":3},{\"x\":10,\"y\":2},{\"x\":10,\"y\":1},{\"x\":10,\"y\":0},{\"x\":9,\"y\":0},{\"x\":8,\"y\":0},{\"x\":7,\"y\":0},{\"x\":6,\"y\":0},{\"x\":5,\"y\":0}],\"head\":{\"x\":10,\"y\":4},\"length\":10,\"shout\":\"\"}}";
 		String test = "{\"game\":{\"id\":\"1fb065e8-b77e-47db-9b69-c11f02a3206c\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":0,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":9,\"y\":5},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":5},\"length\":3,\"shout\":\"\"},{\"id\":\"gs_fdpFF9kyG68rGjcQmjYtBrHS\",\"name\":\"Nessegrev-BadlyCoded\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":1,\"y\":9},{\"x\":1,\"y\":9},{\"x\":1,\"y\":9}],\"head\":{\"x\":1,\"y\":9},\"length\":3,\"shout\":\"\"}],\"food\":[{\"x\":8,\"y\":4},{\"x\":2,\"y\":8},{\"x\":5,\"y\":5}],\"hazards\":[]},\"you\":{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":9,\"y\":5},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":5},\"length\":3,\"shout\":\"\"}}";
@@ -369,8 +373,8 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		} catch (IOException e) {
 
 			e.printStackTrace();
-		}
+		}*/
 	}
 
-	*/
+	
 }

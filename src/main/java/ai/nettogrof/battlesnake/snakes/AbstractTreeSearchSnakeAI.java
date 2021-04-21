@@ -1,5 +1,7 @@
 package ai.nettogrof.battlesnake.snakes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import gnu.trove.list.array.TFloatArrayList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -9,68 +11,108 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import gnu.trove.list.array.TFloatArrayList;
 
-public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
-	protected int width;
-	protected int heigth;
-	
-	public int timeout = 300;
-	protected transient int apiversion ;
-	protected transient boolean multiThread;
-	protected transient String losing ="I have a bad feeling about this";
-	protected transient String winning = "I'm your father";
-	protected transient int minusbuffer = 250;
-	protected transient long nodeTotalCount;
-	protected transient long timeTotal;
-	public transient int api;
-	protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+/**
+ * Any snake using a tree-search could extend this abstract class it contains
+ * basic constant fields, related to the field name in json call from
+ * BattleSnake. Also some method that any snake must implements.
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
+public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
+
 	/**
-	 * 
+	 * Int value use to check how much time does the snake have do to tree-search,
+	 * value define by json field
 	 */
-	protected  transient AbstractNode lastRoot;
-	
+	public int timeout = 300;
+
+	/**
+	 * Boolean if multithread is use by the snake value define by the config file
+	 */
+	protected transient boolean multiThread;
+
+	/**
+	 * String that gonna be shout by the snake if snake is in a losing position.
+	 */
+	protected transient String losing = "I have a bad feeling about this";
+
+	/**
+	 * String that gonna be shout by the snake if snake is in a winning position.
+	 */
+	protected transient String winning = "I'm your father";
+
+	/**
+	 * Int value that will be subtract from timeout, it's a buffer define in the
+	 * config file, to take latency/lag into account
+	 */
+	protected transient int minusbuffer = 250;
+
+	/**
+	 * Number of node analyze during the whole game
+	 */
+	protected transient long nodeTotalCount;
+
+	/**
+	 * Total of time used to compute during the whole game
+	 */
+	protected transient long timeTotal;
+
+	/**
+	 * Keep the root node from the previous move, to be able to continue search from
+	 * the previous "tree"
+	 */
+	protected transient AbstractNode lastRoot;
+
+	/**
+	 * Basic and unsed constructor
+	 */
 	public AbstractTreeSearchSnakeAI() {
 		super();
 	}
 
+	/**
+	 * Constructor with the gameid,
+	 * 
+	 * @param gameId String of the gameid field receive in the start request.
+	 */
 	public AbstractTreeSearchSnakeAI(final String gameId) {
-		super( gameId);
+		super(gameId);
 		setFileConfig();
-		try (InputStream input =Files.newInputStream(Paths.get(getFileConfig()))) {
+		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
 
-            final Properties prop = new Properties();
+			final Properties prop = new Properties();
 
-            // load a properties file
-            prop.load(input);
+			// load a properties file
+			prop.load(input);
 
-            // get the property value and print it out
-            apiversion= Integer.parseInt(prop.getProperty("apiversion"));
-            minusbuffer= Integer.parseInt(prop.getProperty("minusbuffer"));
-            multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
-            
-           
-            final Random rand = new Random();
-            losing = BattleSnakeConstant.LOSE_SHOUT[rand.nextInt(BattleSnakeConstant.LOSE_SHOUT.length)];
-            winning = BattleSnakeConstant.WIN_SHOUT[rand.nextInt(BattleSnakeConstant.WIN_SHOUT.length)];
-           
-            
+			// get the property value and print it out
+			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
+			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
+			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
 
-        } catch (IOException ex) {
-        	log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());          
-        }
+			final Random rand = new Random();
+			losing = BattleSnakeConstant.LOSE_SHOUT[rand.nextInt(BattleSnakeConstant.LOSE_SHOUT.length)];
+			winning = BattleSnakeConstant.WIN_SHOUT[rand.nextInt(BattleSnakeConstant.WIN_SHOUT.length)];
+
+		} catch (IOException ex) {
+			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
+		}
 	}
-	
-	
 
+	/**
+	 * Gets the config file to set properties correctly
+	 * 
+	 * @return
+	 */
 	protected abstract String getFileConfig();
 
+	/**
+	 * @return
+	 */
 	public static Map<String, String> getInfo() {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
@@ -89,29 +131,43 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 			response.put("author", "nettogrof");
 
 		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());      
+			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
 		}
 
 		return response;
 	}
-	
+
+	/**
+	 * This method will be call at the end of the game, can be override if you want
+	 * to clean-up some game info. And log some info about computing stats.
+	 * 
+	 * @param endRequest Json call received
+	 * @return map that can be empty because it will be ignore by BattleSnake server
+	 */
 	@Override
 	public Map<String, String> end(final JsonNode endRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 
-		if (endRequest.get("board").get("snakes").size() > 0){
-			log.atInfo().log("Winner is : %s", endRequest.get("board").get("snakes").get(0).get("name").asText());
-			
+		if (endRequest.get(BOARD).get(SNAKES).size() > 0) {
+			log.atInfo().log("Winner is : %s", endRequest.get(BOARD).get(SNAKES).get(0).get(NAME).asText());
+
 		} else {
 			log.atInfo().log("DRAW");
 
 		}
-				
-		log.atInfo().log("Average node/s : "+(nodeTotalCount/timeTotal*1000));
+
+		log.atInfo().log("Average node/s : " + (nodeTotalCount / timeTotal * 1000));
 
 		return response;
 	}
-	
+
+	/**
+	 * In a winning position, this method try to find the shortest way to win.
+	 * 
+	 * @param root   The current Root node
+	 * @param winner The predetermine best move
+	 * @return the best AbstractNode
+	 */
 	protected AbstractNode finishHim(final AbstractNode root, final AbstractNode winner) {
 
 		AbstractNode ret = null;
@@ -140,13 +196,18 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 		}
 		return ret;
 	}
-	
+
+	/**
+	 * In a losing position, this method try to find the longest way, hpoing that
+	 * the opponent make a mistake.
+	 * 
+	 * @param root The current Root node
+	 * @return the best AbstractNode
+	 */
 	protected AbstractNode lastChance(final AbstractNode root) {
 
 		AbstractNode ret = null;
 		float score = 0;
-		
-
 		for (final AbstractNode c : root.getChild()) {
 
 			if (c.getScoreRatio() > score) {
@@ -154,8 +215,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 				ret = c;
 			}
 		}
+
 		if (ret == null) {
-			int numberChild =0;
+			int numberChild = 0;
 			for (final AbstractNode c : root.getChild()) {
 
 				if (c.getChildCount() > numberChild) {
@@ -164,71 +226,76 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 				}
 			}
 		}
-		
+
 		if (ret == null) {
 			return root.getChild().get(0);
 		}
 
 		return ret;
 	}
-	
+
+	/**
+	 * Choose the best move, based on the assumption that the opponent will always
+	 * choose the best counter.
+	 * 
+	 * @param root The current Root node
+	 * @return the best AbstractNode
+	 */
 	protected AbstractNode chooseBestMove(final AbstractNode root) {
-		// double score =-200;
-		final List<AbstractNode> child =   root.getChild();
-		AbstractNode winner = null;
+
+		final List<AbstractNode> children = root.getChild();
+
 		final TFloatArrayList upward = new TFloatArrayList();
 		final TFloatArrayList down = new TFloatArrayList();
 		final TFloatArrayList left = new TFloatArrayList();
 		final TFloatArrayList right = new TFloatArrayList();
-		fillList(upward,down,left,right,root);
-		
-		float choiceValue = -1;
-		int move =0;
-		final StringBuilder logtext = new StringBuilder();
+		fillList(upward, down, left, right, root);
+		logValue(upward, down, left, right);
+		Float choiceValue = new Float(-1);
+		Integer move = 0;
 		final int head = root.getSnakes().get(0).getHead();
-		if (!upward.isEmpty()) {
-			logtext.append("\nup ").append(upward.min());
-			if (upward.min() > choiceValue) {
-				choiceValue = upward.min();
-				move = head+1;
-			}
+		if (!upward.isEmpty() && upward.min() > choiceValue) {
+			choiceValue = upward.min();
+			move = head + 1;
+
 		}
-		if (!down.isEmpty()) {
-			logtext.append("\ndown ").append(down.min());
-			if (down.min() > choiceValue) {
-				choiceValue = down.min();
-				move = head-1;
-			}
+		if (!down.isEmpty() && down.min() > choiceValue) {
+			choiceValue = down.min();
+			move = head - 1;
+
 		}
-		if (!left.isEmpty()) {
-			logtext.append("\nleft ").append( left.min());
-			if ( left.min()> choiceValue) {
-				choiceValue = left.min();
-				move = head-1000;
-			}
+		if (!left.isEmpty() && left.min() > choiceValue) {
+			choiceValue = left.min();
+			move = head - 1000;
+
 		}
-		if (!right.isEmpty()) {
-			logtext.append("\nright ").append(right.min());
-			if (right.min() > choiceValue) {
-				choiceValue = right.min();
-				move = head+1000;
-			}
+		if (!right.isEmpty() && right.min() > choiceValue) {
+			choiceValue = right.min();
+			move = head + 1000;
+
 		}
 		
-		log.atInfo().log(logtext.toString());
 
-		for (int i = 0; i < child.size() && winner==null; i++) {
-			final float childScoreRatio = child.get(i).getScoreRatio();
-			if (childScoreRatio == choiceValue && child.get(i).getSnakes().get(0).isAlive() && move == child.get(i).getSnakes().get(0).getHead() ) {
-				winner =  child.get(i);
-			
+		for (final AbstractNode child : children) {
+			if (child.getScoreRatio() == choiceValue && child.getSnakes().get(0).isAlive()
+					&& move == child.getSnakes().get(0).getHead()) {
+				return child;
+
 			}
 
 		}
 
-		return winner;
+		return null;
 	}
+
 	
+	/**
+	 * @param upward
+	 * @param down
+	 * @param left
+	 * @param right
+	 * @return
+	 */
 	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
 			final TFloatArrayList left, final TFloatArrayList right) {
 		float temp;
@@ -260,8 +327,16 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 		}
 		return choiceValue;
 	}
-	
-	private void fillList(final TFloatArrayList upward,final TFloatArrayList down,final TFloatArrayList left,final TFloatArrayList right,final AbstractNode node) {
+
+	/**
+	 * @param upward
+	 * @param down
+	 * @param left
+	 * @param right
+	 * @param node
+	 */
+	private void fillList(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
+			final TFloatArrayList right, final AbstractNode node) {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
@@ -283,12 +358,39 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 	}
 	
 	/**
-	 * @param winner
-	 * @param root
-	 * @param head
+	 * @param upward
+	 * @param down
+	 * @param left
+	 * @param right
+	 */
+	private void logValue(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
+			final TFloatArrayList right) {
+		final StringBuilder logtext = new StringBuilder();
+		if (!upward.isEmpty()) {
+			logtext.append("\nup ").append(upward.min());
+		}
+		if (!down.isEmpty()) {
+			logtext.append("\ndown ").append(down.min());
+		}
+		if (!left.isEmpty()) {
+			logtext.append("\nleft ").append(left.min());
+		}
+		if (!right.isEmpty()) {
+			logtext.append("\nright ").append(right.min());
+		}
+		log.atInfo().log(logtext.toString());
+	}
+
+	/**
+	 * Generate the response to send, adding a shout if in winning/losing position.
+	 * 
+	 * @param winner the best node
+	 * @param root   the current root node
+	 * @param head   current snake head from the json
 	 * @return
 	 */
-	protected Map<String, String> generateResponse(final AbstractNode winner,final AbstractNode root,final JsonNode head) {
+	protected Map<String, String> generateResponse(final AbstractNode winner, final AbstractNode root,
+			final JsonNode head) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		String res;
 		if (winner == null) {
@@ -299,7 +401,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 			if (winner.getScoreRatio() < 0.001) {
 				response.put("shout", losing);
 				choosenNode = lastChance(root);
-			} else if (winner.getScoreRatio() > 8) {
+			} else if (winner.getScoreRatio() > 100) {
 				response.put("shout", winning);
 				choosenNode = finishHim(root, winner);
 			}
@@ -307,18 +409,17 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI{
 			final int move = choosenNode.getSnakes().get(0).getHead();
 
 			final int snakex = head.get("x").asInt();
-			
-			if (move/1000 < snakex) {
+
+			if (move / 1000 < snakex) {
 				res = LEFT;
-			} else if (move/1000 > snakex) {
+			} else if (move / 1000 > snakex) {
 				res = RIGHT;
-			} else if (move%1000 < head.get("y").asInt()) {
-				res = api == 1 ? DOWN : UPWARD	;
+			} else if (move % 1000 < head.get("y").asInt()) {
+				res = apiversion == 1 ? DOWN : UPWARD;
 			} else {
-				res = api == 1 ? UPWARD : DOWN;
+				res = apiversion == 1 ? UPWARD : DOWN;
 			}
-		
-			
+
 		}
 		response.put(MOVESTR, res);
 		return response;

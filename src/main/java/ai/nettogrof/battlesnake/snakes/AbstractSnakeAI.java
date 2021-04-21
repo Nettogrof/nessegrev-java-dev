@@ -19,83 +19,97 @@ public abstract class AbstractSnakeAI {
 	/**
 	 * Constant Field name
 	 */
-	protected final static String UPWARD = "up";
+	protected static final String UPWARD = "up";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String DOWN = "down";
+	protected static final String DOWN = "down";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String LEFT = "left";
+	protected static final String LEFT = "left";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String RIGHT = "right";
+	protected static final String RIGHT = "right";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String MOVESTR = "move";
+	protected static final String MOVESTR = "move";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String BODY = "body";
+	protected static final String BODY = "body";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String BOARD = "board";
+	protected static final String BOARD = "board";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String NAME = "name";
+	protected static final String NAME = "name";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String SQUAD = "squad";
+	protected static final String SQUAD = "squad";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String HEALTH = "HEALTH";
+	protected static final String HEALTH = "HEALTH";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String SNAKES = "snakes";
+	protected static final String SNAKES = "snakes";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String YOU = "you";
+	protected static final String YOU = "you";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String TURN = "turn";
+	protected static final String TURN = "turn";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String HEAD = "head";
+	protected static final String HEAD = "head";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String WIDTH_FIELD = "width";
+	protected static final String WIDTH_FIELD = "width";
 	
 	/**
 	 * Constant Field name
 	 */
-	protected final static String HEIGTH_FIELD = "heigth";
+	protected static final String HEIGHT_FIELD = "height";
 	
+	/**
+	 * Board width 
+	 */
+	protected int width;
+	
+	/**
+	 * Board height
+	 */
+	protected int height;
+	
+	/**
+	 * API version use, some snakes are able to play both version v0 and v1.
+	 */
+	protected transient int apiversion ;
 	
 	/**
 	 * Any snake must use a fileConfig  (a properties files), and the name of the file must store in the string
