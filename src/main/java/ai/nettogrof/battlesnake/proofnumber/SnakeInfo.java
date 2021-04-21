@@ -41,12 +41,12 @@ public class SnakeInfo implements Cloneable {
 	/**
 	 * Does the snake just eat
 	 */
-	protected boolean eat = Boolean.FALSE;
+	protected transient boolean eat ;
 	
 	/**
 	 * If the snake is still alive
 	 */
-	protected boolean alive = true;
+	protected transient boolean alive = true;
 		
 	
 	/**
@@ -138,7 +138,7 @@ public class SnakeInfo implements Cloneable {
 	 * @param snakeInfo JsonNode Snake field
 	 */
 	public void setSnake(final JsonNode snakeInfo) {
-		for (JsonNode bodyPos: snakeInfo.get("body") ) {
+		for (final JsonNode bodyPos: snakeInfo.get("body") ) {
 			snakeBody.add(bodyPos.get("x").asInt()*1000+ bodyPos.get("y").asInt());
 		}
 

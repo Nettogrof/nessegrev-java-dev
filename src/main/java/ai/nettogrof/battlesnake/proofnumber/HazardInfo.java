@@ -30,7 +30,7 @@ public class HazardInfo {
 	 */
 	private void setInfo(final JsonNode hazardsInfo) {
 		if (hazardsInfo != null) {
-			for (JsonNode hazardPos : hazardsInfo) {
+			for (final JsonNode hazardPos : hazardsInfo) {
 				hazard.add(hazardPos.get("x").asInt() * 1000 + hazardPos.get("y").asInt());
 			}
 		}

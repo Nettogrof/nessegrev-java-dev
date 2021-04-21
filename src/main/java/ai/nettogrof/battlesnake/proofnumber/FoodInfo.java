@@ -90,7 +90,7 @@ public class FoodInfo {
 	 * @param foodArray  JsonNode field food
 	 */
 	private void setFoodInfo(final JsonNode foodArray) {
-		for (JsonNode foodPos : foodArray) {
+		for (final JsonNode foodPos : foodArray) {
 			position.add(foodPos.get("x").asInt() * 1000 + foodPos.get("y").asInt());
 
 		}
