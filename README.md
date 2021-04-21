@@ -1,3 +1,5 @@
+![GitHub](https://img.shields.io/github/license/nettogrof/nessegrev-java-dev) ![GitHub issues](https://img.shields.io/github/issues/nettogrof/nessegrev-java-dev) ![GitHub last commit](https://img.shields.io/github/last-commit/nettogrof/nessegrev-java-dev)
+
 # Battlesnake Nessegrev snakes
 
 This is the source code  of my current snakes.
