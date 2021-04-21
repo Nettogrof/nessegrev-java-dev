@@ -6,26 +6,32 @@ package ai.nettogrof.battlesnake.proofnumber;
 import java.util.Objects;
 
 /**
+ *  Data related to a Snake in squad modes
+ * 
  * @author carl.lajeunesse
- *
+ * @version  Spring 2021 
+ * 
  */
 public class SnakeInfoSquad extends SnakeInfo {
 
-	
+	/**
+	 * Name of the squad of the current snake
+	 */
 	private String squad = "";
 	
 	/**
-	 * 
+	 * Basic constructor
 	 */
 	public SnakeInfoSquad() {
 		super();
 	}
 
 	/**
-	 * @param prevSnakeInfo
-	 * @param moveSquare
-	 * @param eat
-	 * @param hazard
+	 * Constructor with all informations
+	 * @param prevSnakeInfo Same snake on the previous move
+	 * @param moveSquare The destination square of the snake move
+	 * @param eat  Is destination square a food 
+	 * @param hazard Is destination square a hazard
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo,final int moveSquare,final boolean eat,final boolean hazard) {
 		super(prevSnakeInfo, moveSquare, eat, hazard);
@@ -34,9 +40,10 @@ public class SnakeInfoSquad extends SnakeInfo {
 	}
 
 	/**
-	 * @param prevSnakeInfo
-	 * @param moveSquare
-	 * @param eat
+	 * Constructor with all informations except hazard  ( use in non-royale mode) 
+	 * @param prevSnakeInfo Same snake on the previous move
+	 * @param moveSquare The destination square of the snake move
+	 * @param eat  Is destination square a food 
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo,final int moveSquare,final boolean eat) {
 		super(prevSnakeInfo, moveSquare, eat);
@@ -45,20 +52,16 @@ public class SnakeInfoSquad extends SnakeInfo {
 	}
 	
 	/**
-	 * @return the squad
-	 */
-	/**
-	 * @return
+	 * Get the squad name
+	 * @return the squad name
 	 */
 	public String getSquad() {
 		return squad;
 	}
 
 	/**
+	 * Fill the squad name,  if use in a non-squad mode, squad name should be left empty
 	 * @param squad the squad to set
-	 */
-	/**
-	 * @param squad
 	 */
 	public void setSquad(final String squad) {
 		this.squad = squad;
@@ -73,9 +76,10 @@ public class SnakeInfoSquad extends SnakeInfo {
 	}
 	
 	/**
-	 * @param pos
-	 * @param squad
-	 * @return
+	 * Check if there will be a snake on square on next move, if it's the same squad should return false.
+	 * @param pos   int square  (based on square formula)
+	 * @param squad String name of the squad
+	 * @return If there's a snake body
 	 */
 	public boolean isSnake( final int pos,final String squad) {
 		if (!"".equals(squad) && squad.equals(this.squad)) {
