@@ -9,7 +9,9 @@ import spark.Response;
 import spark.Spark;
 
 /**
+ * This class is used by the "webserver" to accept use CORS header to let a https webpage to call snakes directly
  * Really simple helper for enabling CORS in a spark application;
+ * 
  */
 public final class CorsFilter /*implements Apply*/{
 
