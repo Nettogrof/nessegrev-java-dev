@@ -23,7 +23,9 @@ import static spark.Spark.get;
 
 /**
  * Snake server that deals with requests from the snake engine. 
- * This class route the incoming transaction to the right object/method
+ * This class route the incoming transaction to the right object/method.
+ * 
+ * Based on the starter-snake-java of Battlesnake
  * 
  * @version  Spring 2021 
  */

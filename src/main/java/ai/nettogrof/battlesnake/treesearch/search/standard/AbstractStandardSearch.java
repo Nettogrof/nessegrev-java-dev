@@ -6,12 +6,27 @@ import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.AbstractMCTS;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+/**
+ *  This abstract Standard search, provide basic method use in any search in battlesnake standard mode 
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
 public abstract class AbstractStandardSearch extends AbstractMCTS {
 
+	/**
+	 * Basic constructor
+	 */
 	public AbstractStandardSearch() {
 		super();		
 	}
 	
+	/**
+	 * Constructor used to expand the tree once.
+	 * @param root Root node 
+	 * @param width Board width
+	 * @param height Board height
+	 */
 	public AbstractStandardSearch(final AbstractNode root, final int width, final int heigth) {
 		super();
 		this.root = root;
