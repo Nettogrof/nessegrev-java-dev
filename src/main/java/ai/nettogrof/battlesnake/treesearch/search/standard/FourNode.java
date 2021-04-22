@@ -3,29 +3,27 @@
  */
 package ai.nettogrof.battlesnake.treesearch.search.standard;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
 import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
+ * This FourNode class must be use when only 3 or 4 snakes left, and in standard
+ * mode.
+ * 
  * @author carl.lajeunesse
- *
+ * @version Spring 2021
  */
 public class FourNode extends AbstractStandardNode {
 
 	/**
+	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 */
-	public FourNode() {
-		super();
-	}
-
-	/**
-	 * @param snakes
-	 * @param food
+	 * @param snakes   List of snakes
+	 * @param foodInfo Food information
 	 */
 	public FourNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
@@ -33,11 +31,17 @@ public class FourNode extends AbstractStandardNode {
 		setScore();
 	}
 
+	/**
+	 * Uses to create fourNode type
+	 */
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakes,final AbstractNode currentNode) {
-		return new FourNode((ArrayList<SnakeInfo>) snakes, currentNode.getFood());
+		return new FourNode(snakes, currentNode.getFood());
 	}
 	
+	/**
+	 * Sets the node score
+	 */
 	private void setScore() {
 		addBasicLengthScore();
 		
@@ -46,8 +50,6 @@ public class FourNode extends AbstractStandardNode {
 		adjustBorderScore(head);
 		addSizeCompareScore();
 		
-		
-		//score[0] += (snakes.get(0).getHealth() - 50) * 0.01;
 		if (snakes.size() > 1) {
 			int nbAlive = 0;
 			for (final SnakeInfo s : snakes) {
@@ -58,18 +60,9 @@ public class FourNode extends AbstractStandardNode {
 			if (nbAlive < 2) {
 				exp = false;
 			}
-			
-			
-
 		}else if (snakes.size() == 1) {
-			score[0] += 1000;
+			score[0] += BattleSnakeConstant.MAX_SCORE;
 		}
-		
-
 	}
-
-	
-
-	
 
 }

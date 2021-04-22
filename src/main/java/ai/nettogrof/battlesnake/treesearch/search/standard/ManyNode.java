@@ -7,24 +7,24 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
 import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
+ * This ManyNode class must be use when more than 4 snakes left, and in standard
+ * mode.
+ * 
  * @author carl.lajeunesse
- *
+ * @version Spring 2021
  */
 public class ManyNode extends AbstractStandardNode {
 
+	
 	/**
+	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 */
-	public ManyNode() {
-		super();
-	}
-
-	/**
-	 * @param snakes
-	 * @param food
+	 * @param snakes   List of snakes
+	 * @param foodInfo Food information
 	 */
 	public ManyNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
@@ -32,6 +32,9 @@ public class ManyNode extends AbstractStandardNode {
 		setScore();
 	}
 
+	/**
+	 * Sets the node score
+	 */
 	private void setScore() {
 
 		addBasicLengthScore();
@@ -50,17 +53,14 @@ public class ManyNode extends AbstractStandardNode {
 			if (nbAlive < 2) {
 				exp = false;
 			}
-			
-			
-
 		}else if (snakes.size() == 1) {
-			score[0] += 1000;
+			score[0] += BattleSnakeConstant.MAX_SCORE;
 		}
-			
-
-		
 	}
 
+	/**
+	 * Uses to create ManyNode type
+	 */
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakes,final AbstractNode currentNode) {
 		return new ManyNode(snakes, currentNode.getFood());
