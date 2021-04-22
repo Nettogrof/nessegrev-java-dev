@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class FloodFillSnake extends AbstractSnakeAI {
 
 	
+	/**
+	 *  Boardd of empty space
+	 */
 	private transient int[][] space;
 	
 	/**
@@ -195,9 +198,9 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Create a map of possible move and assign a value to them. a negative value is bad. 
-	 * @param you
-	 * @param board
-	 * @return
+	 * @param you  Json field you
+	 * @param board the board (array of value)
+	 * @return map of possible move and their value
 	 */
 	private Map<String, Integer> checkPossibleMove(final JsonNode you,final int[][] board) {
 		final int snakex = you.withArray(BODY).get(0).get("x").asInt();
@@ -299,10 +302,10 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Recursive function to "flood" positive value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - 1
-	 * @param posX
-	 * @param posY
-	 * @param value
-	 * @param board
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
 	 */
 	private void floodPositive(final int posX,final int posY,final int value,final int[][] board) {
 		if (board[posX][posY] >= 0 && board[posX][posY] < value) {  // Only on positive square value  and where the current value is lower than the value we want to assign 
@@ -328,10 +331,10 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	
 	/**
 	 * Recursive function to "flood" negative  value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - "floodEnemyGap "
-	 * @param posX
-	 * @param posY
-	 * @param value
-	 * @param board
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
 	 */
 	private void floodNegative(final int posX,final int posY,final int value,final int[][] board) {
 		if (board[posX][posY] > -90) {
@@ -356,10 +359,10 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Recursive function to "flood" EMPTY value on positive square. It's assign the EMPTY to the space [ x ] [ y]  then recall this function for adjacent square with EMPTY
-	 * @param posX
-	 * @param posY
-	 * @param value
-	 * @param board
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
 	 */
 	private void floodEmptySpace(final int posX,final int posY,final int value,final int[][] board) {
 		if (board[posX][posY] >= 0 && space[posX][posY] < 1000) {
@@ -385,7 +388,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	
 	/**
 	 * Scan the space[][]  to count empty square. And put square[][] back to 0 value
-	 * @return
+	 * @return the count of empty space
 	 */
 	private int countEmptySquare() {
 		int countEmpty = 0;

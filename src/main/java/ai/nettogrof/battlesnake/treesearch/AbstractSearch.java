@@ -62,8 +62,8 @@ public abstract class AbstractSearch implements Runnable {
 
 	/**
 	 * This abstract method will be use to "kill" a snake  
-	 * @param death
-	 * @param all
+	 * @param death  SnakeInfo of the snake to kill
+	 * @param all  List of all snakeinfo
 	 */
 	protected abstract void kill(SnakeInfo death, List<SnakeInfo> all);
 
@@ -205,7 +205,7 @@ public abstract class AbstractSearch implements Runnable {
 	 * @param square  the int sqaure
 	 * @param allSnakes List of all snakes
 	 * @param currentSnake current Snake
-	 * @return
+	 * @return boolean free to move on that square
 	 */
 	protected abstract boolean freeSpace(final int square, final List<SnakeInfo> allSnakes, SnakeInfo currentSnake);
 

@@ -106,13 +106,13 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	/**
 	 * Gets the config file to set properties correctly
 	 * 
-	 * @return
+	 * @return the config filename
 	 */
 	protected abstract String getFileConfig();
 
 	/**
 	 * Return the infos need by Battlesnake when receive a (root GET /) request 
-	 * @return
+	 * @return map of info for Battlesnake
 	 */
 	public static Map<String, String> getInfo() {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -291,13 +291,13 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 	
 	/**
-	 * Return the best value
+	 * This method return the scoreRatio of the best choice based on payoff Matrix
 	 * 
-	 * @param upward
-	 * @param down
-	 * @param left
-	 * @param right
-	 * @return
+	 * @param upward float array list
+	 * @param down   float array list
+	 * @param left   float array list
+	 * @param right  float array list
+	 * @return  score float
 	 */
 	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
 			final TFloatArrayList left, final TFloatArrayList right) {
@@ -332,12 +332,14 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Fill the each list with the score of each chjld score
-	 * @param upward
-	 * @param down
-	 * @param left
-	 * @param right
-	 * @param node
+	 * This method fill 4 list (one for each direction ) with the score of each node
+	 * based on the move direction
+	 * 
+	 * @param upward float array list
+	 * @param down   float array list
+	 * @param left   float array list
+	 * @param right  float array list
+	 * @param node   parent node
 	 */
 	private void fillList(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
 			final TFloatArrayList right, final AbstractNode node) {
@@ -363,10 +365,10 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	
 	/**
 	 * Log value for each possible move, that help to debug/understand why the snake choose which move.
-	 * @param upward
-	 * @param down
-	 * @param left
-	 * @param right
+	 * @param upward float array list
+	 * @param down   float array list
+	 * @param left   float array list
+	 * @param right  float array list
 	 */
 	private void logValue(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
 			final TFloatArrayList right) {
@@ -392,7 +394,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param winner the best node
 	 * @param root   the current root node
 	 * @param head   current snake head from the json
-	 * @return
+	 * @return  response for Battlesnake
 	 */
 	protected Map<String, String> generateResponse(final AbstractNode winner, final AbstractNode root,
 			final JsonNode head) {

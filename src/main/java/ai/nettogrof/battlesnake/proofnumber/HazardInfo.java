@@ -48,7 +48,7 @@ public class HazardInfo {
 
 	/**
 	 * Check if a particular square is an hazard square  (based on square formula)
-	 * @param pos
+	 * @param pos  the square position
 	 * @return boolean if square is hazard
 	 */
 	public boolean isHazard(final int pos) {

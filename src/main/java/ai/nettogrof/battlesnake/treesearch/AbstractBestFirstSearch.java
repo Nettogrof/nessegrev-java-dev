@@ -44,7 +44,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	 * This method get a branch, update score starting from the leaf. if a node
 	 * score have changed, remove the node from the list.
 	 * 
-	 * @param branch
+	 * @param branch List of node of that branch
 	 * @return list of node that score doesn't have changed.
 	 */
 	protected List<AbstractNode> updateListNode(final List<AbstractNode> branch) {

@@ -27,11 +27,11 @@ public abstract class AbstractStandardSearch extends AbstractMCTS {
 	 * @param width Board width
 	 * @param height Board height
 	 */
-	public AbstractStandardSearch(final AbstractNode root, final int width, final int heigth) {
+	public AbstractStandardSearch(final AbstractNode root, final int width, final int height) {
 		super();
 		this.root = root;
 		this.width = width;
-		this.height = heigth;
+		this.height = height;
 		
 
 	}

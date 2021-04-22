@@ -194,7 +194,7 @@ public class SnakeInfo implements Cloneable {
 
 	/**
 	 * Set the snake's name
-	 * @param name
+	 * @param name Snake name
 	 */
 	public void setName(final String name) {
 		this.name = name;
@@ -210,7 +210,7 @@ public class SnakeInfo implements Cloneable {
 
 	/**
 	 * Set the health of the snake
-	 * @param health
+	 * @param health  health of the snake
 	 */
 	public void setHealth( final int health) {
 		if (health == 100) {
@@ -263,8 +263,9 @@ public class SnakeInfo implements Cloneable {
 	}
 
 	/**
-	 * @param other
-	 * @return
+	 * Equals method
+	 * @param other  other Snakeinfo
+	 * @return true if equals
 	 */
 	public boolean equals(final SnakeInfo other) {
 		if (!name.equals(other.name)) {

@@ -76,7 +76,7 @@ public class FoodInfo {
 	
 	/**
 	 * Check if there's a food on a particular square (based on square formula)
-	 * @param pos
+	 * @param pos square position
 	 * @return boolean if there's a food
 	 */
 	public boolean isFood(final int pos) {

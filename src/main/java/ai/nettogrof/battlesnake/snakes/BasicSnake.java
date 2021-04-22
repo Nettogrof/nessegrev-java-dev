@@ -112,7 +112,7 @@ public class BasicSnake extends AbstractSnakeAI {
 	 * @param snakey snake head Y 
 	 * @param possiblemove map of possible move
 	 * @param board the board[][] 
-	 * @return
+	 * @return String of the best move (up , down , left or right)
 	 */
 	private String bestMove(final int snakex, final int snakey, final Map<String, Integer> possiblemove,
 			final int[][] board) {
@@ -164,7 +164,7 @@ public class BasicSnake extends AbstractSnakeAI {
 	
 	/**
 	 * Return the infos need by Battlesnake when receive a (root GET /) request 
-	 * @return
+	 * @return map of info for battlesnake
 	 */
 	public static Map<String, String> getInfo() {
 
