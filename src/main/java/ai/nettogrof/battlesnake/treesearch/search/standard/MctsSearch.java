@@ -36,8 +36,8 @@ public class MctsSearch extends AbstractStandardSearch {
 	 * @param width Board width
 	 * @param height Board height
 	 */
-	public MctsSearch(final AbstractNode root, final int width, final int heigth) {
-		super(root, width, heigth);
+	public MctsSearch(final AbstractNode root, final int width, final int height) {
+		super(root, width, height);
 
 	}
 

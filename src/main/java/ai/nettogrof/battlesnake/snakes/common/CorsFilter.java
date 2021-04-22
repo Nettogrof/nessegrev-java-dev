@@ -15,6 +15,9 @@ import spark.Spark;
  */
 public final class CorsFilter /*implements Apply*/{
 
+    /**
+     * CORS maps info
+     */
     private final static Map<String, String> corsHeaders = new ConcurrentHashMap<>();
 
     /**
