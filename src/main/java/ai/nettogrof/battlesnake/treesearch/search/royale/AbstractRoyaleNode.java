@@ -11,8 +11,8 @@ import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
- * This abstract standard node class is the based of all node class, provide
- * basic method use in any node for standard rules.
+ * This abstract royale node class is the based of all node class, provide
+ * basic method use in any node for royale rules.
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
