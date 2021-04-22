@@ -66,7 +66,7 @@ public abstract class AbstractStandardNode extends AbstractNode {
 	/**
 	 * Adjust our snake score for the distance between head and the nearest food
 	 * 
-	 * @param head Sqaure of the snake head
+	 * @param head Square of the snake head
 	 */
 	protected void addScoreDistance(final int head) {
 		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
@@ -228,7 +228,7 @@ public abstract class AbstractStandardNode extends AbstractNode {
 	}
 
 	/**
-	 * Adding basic length to score and health score = legth + health /50
+	 * Adding basic length to score and health score = length + health /50
 	 */
 	protected void addBasicLengthScore() {
 		for (int i = 0; i < snakes.size(); i++) {
