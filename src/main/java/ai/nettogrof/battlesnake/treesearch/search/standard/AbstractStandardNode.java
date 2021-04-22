@@ -50,20 +50,14 @@ public abstract class AbstractStandardNode extends AbstractNode {
 	protected void adjustBorderScore(final int head) {
 		final int headX = head / 1000;
 		final int headY = head % 1000;
-		if (headX == 0) {
-			score[0] -= 0.4;
+		if (headX == 0  || headX == width - 1) {
+			score[0] -= BattleSnakeConstant.BORDER_SCORE;
 		}
-		if (headX == width - 1) {
-			score[0] -= 0.4;
-
+		
+		if (headY == 0 || headY == height - 1) {
+			score[0] -= BattleSnakeConstant.BORDER_SCORE;;
 		}
-		if (headY == 0) {
-			score[0] -= 0.4;
-		}
-		if (headY == height - 1) {
-			score[0] -= 0.4;
-
-		}
+		
 
 	}
 
@@ -121,7 +115,7 @@ public abstract class AbstractStandardNode extends AbstractNode {
 			for (int j = 0; j < height; j++) {
 				if (board[i][j] > 0) {
 					count[board[i][j] - 1]++;
-				} else if (board[i][j] == -50) {
+				} else if (board[i][j] == BattleSnakeConstant.SPLIT_AREA) {
 
 					count[biggestSnake]++;
 				}
@@ -222,7 +216,7 @@ public abstract class AbstractStandardNode extends AbstractNode {
 	protected void addToHash(final Int2IntOpenHashMap newHash, final int position, final int value) {
 		final int prev = newHash.putIfAbsent(position, value);
 		if (prev != defaultv && prev != value) {
-			newHash.put(position, -50);
+			newHash.put(position, BattleSnakeConstant.SPLIT_AREA);
 		}
 
 	}

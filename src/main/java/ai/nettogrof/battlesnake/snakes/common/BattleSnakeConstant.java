@@ -46,4 +46,24 @@ public final class BattleSnakeConstant {
 	 * Basic score assign to all snakes to avoid division by 0 
 	 */
 	public final static float BASIC_SCORE = 0.0001f;
+	
+	/**
+	 * Border score to subtract if head on the border of the board 
+	 */
+	public final static float BORDER_SCORE = 0.4f;
+	
+	/**
+	 * Value for square controlled by two snakes
+	 */
+	public final static int SPLIT_AREA = -50;
+	
+	/**
+	 * Value if a tail is found in the controlled AREA
+	 */
+	public final static int TAIL_VALUE_AREA = 5;
+	
+	/**
+	 * Value of a snake body
+	 */
+	public final static int SNAKE_BODY = -99;
 }
