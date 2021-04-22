@@ -11,7 +11,7 @@ public abstract class AbstractSearch implements Runnable {
 	protected transient boolean cont = true;
 	protected transient AbstractNode root;
 
-	protected transient int heigth;
+	protected transient int height;
 	protected transient int width;
 	protected transient int timeout = 250;
 	protected transient long startTime;
@@ -133,7 +133,7 @@ public abstract class AbstractSearch implements Runnable {
 
 			}
 
-			if (head % 1000 < heigth - 1) {
+			if (head % 1000 < height - 1) {
 
 				newhead = head + 1;
 				if (freeSpace(newhead, all, snakeInfo)) {

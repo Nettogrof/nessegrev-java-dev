@@ -36,7 +36,7 @@ public class MctsSearch extends AbstractStandardSearch {
 		super();
 		this.root = root;
 		this.width = width;
-		this.heigth = heigth;
+		this.height = heigth;
 		startTime = starttime;
 		this.timeout = timeout;
 

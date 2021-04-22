@@ -16,7 +16,7 @@ public abstract class AbstractStandardSearch extends AbstractMCTS {
 		super();
 		this.root = root;
 		this.width = width;
-		this.heigth = heigth;
+		this.height = heigth;
 		
 
 	}

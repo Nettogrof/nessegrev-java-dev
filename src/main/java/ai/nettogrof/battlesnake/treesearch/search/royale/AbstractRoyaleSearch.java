@@ -16,7 +16,7 @@ public abstract class AbstractRoyaleSearch extends AbstractBestFirstSearch {
 		super();
 		this.root = root;
 		this.width = width;
-		this.heigth = heigth;
+		this.height = heigth;
 		
 
 	}
@@ -24,7 +24,7 @@ public abstract class AbstractRoyaleSearch extends AbstractBestFirstSearch {
 		super();
 		this.root=root;
 		this.width=width;
-		this.heigth=heigth;
+		this.height=heigth;
 		this.startTime=starttime;
 		this.timeout=timeout;
 	}
