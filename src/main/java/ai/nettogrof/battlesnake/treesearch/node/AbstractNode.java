@@ -17,58 +17,66 @@ import gnu.trove.list.array.TIntArrayList;
 public abstract class AbstractNode {
 	
 	/**
-	 * 
+	 * Board width useful for some evaluation method
 	 */
 	public static int width;
 	
 	/**
-	 * 
+	 * Board height useful for some evaluation method
 	 */
 	public static int height;
 	
 	/**
-	 * 
+	 * List of child node
 	 */
 	protected transient List<AbstractNode> child = new ArrayList<>();
+	
 	/**
-	 * 
+	 * List of snakes 
 	 */
-	protected List<SnakeInfo> snakes;
+	protected transient List<SnakeInfo> snakes;
+	
 	/**
-	 * 
+	 *  Food information 
 	 */
-	protected FoodInfo food;
+	protected transient FoodInfo food;
+	
 	/**
-	 * 
+	 *  Current scoreRatio  
 	 */
-	protected transient float scoreRatio; 
+	protected transient float scoreRatio;
+	
 	/**
-	 * 
+	 *  Array of score of each snake 
 	 */
 	public transient float score[];
+	
 	/**
-	 * 
+	 *  Number of possible move of our snake
 	 */
-	public int possibleMove;
+	public transient int possibleMove;
+	
 	/**
-	 * 
+	 *  Counts of all node of that branch 
 	 */
-	public int allChildsCount = 1;
+	public transient int allChildsCount = 1;
+	
 	/**
-	 * 
+	 *  Does that node can be explore 
 	 */
-	public boolean exp = true;
+	public transient boolean exp = true;
 
 	/**
-	 * 
+	 * Basic  constructor
 	 */
 	public AbstractNode() {
-		// Empty top levet
+		// Empty top level
 	}
 
 	/**
-	 * @param snakes
-	 * @param food
+	 * Constructor with the minimal info needed
+	 * @param snakes  List of snakes
+	 * @param food Food information
 	 */
 	public AbstractNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		this.snakes =  snakes;
@@ -76,80 +84,25 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * @return
+	 * Gets food information, 
+	 * @return return the food information
 	 */
 	public FoodInfo getFood() {
 		return food;
 	}
 
 	/**
-	 * @param food
-	 */
-	public void setFood(final FoodInfo food) {
-		this.food = food;
-	}
-
-	/**
-	 * @param snakes
-	 */
-	public void setSnakes(final SnakeInfo... snakes) {
-		for(final SnakeInfo snake : snakes) {
-			this.snakes.add(snake);
-		}
-
-	}
-
-	/**
-	 * @return
+	 * Gets list of snakes from this node
+	 * @return  Lost of snakeInfo
 	 */
 	public List< SnakeInfo> getSnakes() {
 		return snakes;
 	}
 
 	/**
-	 * @return
-	 */
-	public int getPossibleMove() {
-		return possibleMove;
-	}
-
-	/**
-	 * @param possibleMove
-	 */
-	public void setPossibleMove(final int possibleMove) {
-		this.possibleMove = possibleMove;
-	}
-
-	/**
-	 * @return
-	 */
-	public int getAllChildsCount() {
-		return allChildsCount;
-	}
-
-	/**
-	 * @param allChildsCount
-	 */
-	public void setAllChildsCount(final int allChildsCount) {
-		this.allChildsCount = allChildsCount;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean isExp() {
-		return exp;
-	}
-
-	/**
-	 * @param exp
-	 */
-	public void setExp(final boolean exp) {
-		this.exp = exp;
-	}
-
-	/**
-	 * @return
+	 * Return counts of all node of that branch 
+	 *
+	 * @return  All Childs count
 	 */
 	public int getChildCount() {
 
@@ -157,18 +110,17 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * @return
+	 * Gets the score ratio,  the score ratio is compute has follow
+	 * Our snake score  / (all others snakes score added)
+	 * @return float score ratio
 	 */
 	public float getScoreRatio() {
 		return scoreRatio;
-		
-
 	}
 
-	
-
 	/**
-	 * @param newChild
+	 * Add a child to this node
+	 * @param newChild  Node to be added
 	 */
 	public void addChild(final AbstractNode newChild) {
 		child.add(newChild);
@@ -176,7 +128,7 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * 
+	 * Update this node score
 	 */
 	public void updateScore() {
 
@@ -184,11 +136,8 @@ public abstract class AbstractNode {
 
 			if (possibleMove == 1) {
 				updateScoreSinglePossibleMove();
-
 			} else {
 				updateScoreMultiplePossibleMove();
-				
-
 			}
 		}
 	
@@ -198,36 +147,34 @@ public abstract class AbstractNode {
 	}
 	
 	/**
-	 * 
+	 *  Update the score ratio
 	 */
 	public void updateScoreRatio() {
-		float totalOther = 0.01f;
+		float totalOther = BattleSnakeConstant.BASIC_SCORE;
 		for (int i = 1; i < score.length; i++) {
 			totalOther += score[i];
 		}
 
 		scoreRatio= (float) (score[0] / (float) totalOther);
-		if (scoreRatio == 0.0) {
+		if (scoreRatio == 0.0 || scoreRatio > BattleSnakeConstant.STOP_EXPAND_LIMIT) {
 			exp =false;
 		}
 	}
 
 	/**
-	 * 
+	 * Update score if more than 1 possible move
 	 */
 	private void updateScoreMultiplePossibleMove() {
-		
 		final ArrayList<float[]> scores = new ArrayList<>();
 
 		initPayoffMatrix(scores);
 		computePayoffMatrix(scores);
-
-		
 		
 	}
 
 	/**
-	 * @param scores
+	 * Compute the payoff Matric
+	 * @param scores List of score array
 	 */
 	private void computePayoffMatrix(final List<float[]> scores) {
 		final int ind = findBestIndex(scores);		
@@ -256,8 +203,9 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * @param scores
-	 * @return
+	 * Find the best index in the payoff matrix 
+	 * @param scores List of score array
+	 * @return int the index 
 	 */
 	private int findBestIndex(final List<float[]> scores) {
 		int ind = -1;
@@ -279,7 +227,8 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * @param scores
+	 * Initiate the payoff matrix 
+	 * @param scores List of score array 
 	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
@@ -296,7 +245,7 @@ public abstract class AbstractNode {
 
 				if (score.length > c.score.length) {
 					for (int i = c.score.length; i < score.length; i++) {
-						currentS[i] = (float) 0.0001;
+						currentS[i] = BattleSnakeConstant.BASIC_SCORE;
 					}
 				}
 			} else {
@@ -308,7 +257,7 @@ public abstract class AbstractNode {
 				 */
 
 				for (int i = c.score.length; i < score.length; i++) {
-					beta[i] = (float) 0.0001;
+					beta[i] = BattleSnakeConstant.BASIC_SCORE;
 				}
 
 				scores.add(beta);
@@ -319,7 +268,7 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * 
+	 * Update the child count 
 	 */
 	private void updateChildCount() {
 		allChildsCount = 1;
@@ -327,14 +276,10 @@ public abstract class AbstractNode {
 			allChildsCount += c.getChildCount();
 		}
 
-		if (getScoreRatio() > BattleSnakeConstant.STOP_EXPAND_LIMIT) {
-			exp = false;
-		}
-
 	}
 
 	/**
-	 * 
+	 * Update score if just one possible move.
 	 */
 	private void updateScoreSinglePossibleMove() {
 		for (int i = 1; i < score.length; i++) {
@@ -352,16 +297,18 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * @return
+	 * Gets list of  child from this node
+	 * @return list of  child
 	 */
 	public List<AbstractNode> getChild() {
-		return (ArrayList<AbstractNode>) child;
+		return  child;
 	}
 
 	/**
-	 * @param snakes
-	 * @param currentNode
-	 * @return
+	 * Create a node from the same type
+	 * @param snakes List of snake Info
+	 * @param currentNode Current node 
+	 * @return new node from this type
 	 */
 	public abstract AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode);
 
