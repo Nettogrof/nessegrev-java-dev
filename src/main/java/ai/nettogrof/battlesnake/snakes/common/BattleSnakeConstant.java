@@ -41,4 +41,9 @@ public final class BattleSnakeConstant {
 	 * The Bias value for the Monte-Carlo Tree Search  
 	 */
 	public final static float MCTS_BIAS = 0.7f;
+	
+	/**
+	 * Basic score assign to all snakes to avoid division by 0 
+	 */
+	public final static float BASIC_SCORE = 0.0001f;
 }
