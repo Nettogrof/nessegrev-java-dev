@@ -17,6 +17,9 @@ public final class CorsFilter /*implements Apply*/{
 
     private final static Map<String, String> corsHeaders = new ConcurrentHashMap<>();
 
+    /**
+     * Basic filter to accept incoming https/web request
+     */
     private CorsFilter() {
         corsHeaders.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
         corsHeaders.put("Access-Control-Allow-Origin", "*");
@@ -25,6 +28,9 @@ public final class CorsFilter /*implements Apply*/{
     }
 
    
+    /**
+     * Apply https filter to the incoming connection
+     */
     public static void apply() {
         final Filter filter = new Filter() {
             @Override
