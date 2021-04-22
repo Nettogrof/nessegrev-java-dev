@@ -11,16 +11,21 @@ import ai.nettogrof.battlesnake.proofnumber.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
+ * This abstract squad node class is the based of all node class, provide
+ * basic method use in any node for squad rules.
+ * 
  * @author carl.lajeunesse
- *
+ * @version Spring 2021
  */
 public abstract class AbstractSquadNode extends AbstractNode {
-	//protected List<SnakeInfoSquad> snakes;
+	
 	
 	
 	/**
-	 * @param snakes
-	 * @param food
+	 * Constructor with snakes and food information
+	 * 
+	 * @param snakes List of snakes
+	 * @param food   Food information
 	 */
 	@SuppressWarnings("unchecked")
 	public AbstractSquadNode(final List<? extends SnakeInfo> snakes,final FoodInfo food) {
@@ -48,7 +53,6 @@ public abstract class AbstractSquadNode extends AbstractNode {
 					totalOther += score[i];
 				}
 			}
-			
 			
 			return score[0] / (float) totalOther;
 			

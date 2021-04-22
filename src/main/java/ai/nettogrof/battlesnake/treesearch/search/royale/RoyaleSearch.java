@@ -3,36 +3,49 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+
+/**
+ *  This regular search was used during the Spring 2021 league  Nessegrev-Beta snake
+ *  It start by search the smallest branch and expand it (12 times) then :
+ *  1. find the best branch from the previous best branch that the score doesn't change (root the first time)
+ *  2. expand the best leaf node 
+ *  3. update score of the branch keep branch info if score doesn't changed
+ *  
+ *  Repeat those 3 steps until no time left or the root is not more expandable.
+ *    
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
 public class RoyaleSearch extends AbstractRoyaleSearch {
 
-	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int heigth) {
-		super(root, width, heigth);
-
-	}
-
-	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int heigth, final long starttime,
-			final int timeout) {
-		super(root, width, heigth, starttime, timeout);
-	}
-
-	/*
-	 * public void run() {
-	 * 
-	 * 
-	 * for ( int i = 0 ; i < 100 ; i++) { generateChild(root.getSmallestChild()); }
-	 * while (cont && System.currentTimeMillis() - startTime < timeout && root.exp)
-	 * { // && root.getScoreRatio() > 0 final RoyaleFourNode bc = (RoyaleFourNode)
-	 * root.getBestChild(); generateChild(bc); generateChild(bc.getBestChild());
-	 * generateChild(bc.getBestChild()); generateChild(bc.getBestChild());
-	 * generateChild(bc.getBestChild()); generateChild(bc.getBestChild()); //
-	 * root.updateScore(); Thread.yield(); }
-	 * 
-	 * }
+	/**
+	 * Constructor used to expand the tree once.
+	 * @param root Root node 
+	 * @param width Board width
+	 * @param height Board height
 	 */
+	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int height) {
+		super(root, width, height);
 
+	}
+
+	/**
+	 * Constructor used to expand to do the tree search.
+	 * @param root Root node 
+	 * @param width Board width
+	 * @param height Board height
+	 * @param starttime  starting time for the search in millisecond  
+	 * @param timeout  the time limit to run the search 
+	 */
+	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int height, final long starttime,
+			final int timeout) {
+		super(root, width, height, starttime, timeout);
+	}
+
+	
 	@Override
 	public void run() {
 		for (int i = 0; i < 12; i++) {
@@ -59,26 +72,5 @@ public class RoyaleSearch extends AbstractRoyaleSearch {
 	}
 
 	
-	
-
-	@Override
-	protected SnakeInfo createSnakeInfo(final SnakeInfo currentSnake,final  int newHead,final  AbstractNode node) {
-		return new SnakeInfo(currentSnake, newHead, node.getFood().isFood(newHead),
-				((AbstractRoyaleNode) node).getHazard().isHazard(newHead));
-	}
-
-	@Override
-	protected boolean freeSpace(final int square, final List<SnakeInfo> snakes,final SnakeInfo yourSnake) {
-		boolean free = true;
-		for (int i = 0; i < snakes.size() && free; i++) {
-				free = !snakes.get(i).isSnake(square);
-		}
-		return free;
-	}
-
-	@Override
-	protected void kill(final SnakeInfo death,final List<SnakeInfo> all ) {
-		death.die();
-	}
 
 }

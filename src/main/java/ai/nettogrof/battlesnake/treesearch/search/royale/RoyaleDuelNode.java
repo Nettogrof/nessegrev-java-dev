@@ -11,31 +11,32 @@ import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
+ * This Royale Duel node class must be use when only 2 snakes left, and in royale
+ * mode. Used by Nessegrev-Beta in the Spring 2021 league
+ * 
  * @author carl.lajeunesse
- *
+ * @version Spring 2021
  */
 public class RoyaleDuelNode extends AbstractRoyaleNode {
 
+	
 	/**
+	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 */
-	public RoyaleDuelNode() {
-		super();
-	}
-
-	/**
-	 * @param snakes
-	 * @param food
+	 * @param snakes   List of snakes
+	 * @param food Food information
 	 */
 	public RoyaleDuelNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
+		score = new float[snakes.size()];
 		setScore();
 	}
 
 	/**
-	 * @param snakes
-	 * @param food
-	 * @param hazard
+	 * Constructor, set the information and evaluate/ set score directly
+	 * @param snakes List of snakes
+	 * @param food Food information
+	 * @param hazard Hazard Information
 	 */
 	public RoyaleDuelNode(final List<SnakeInfo> snakes,final FoodInfo food,final HazardInfo hazard) {
 		super(snakes, food, hazard);
@@ -43,7 +44,9 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 		setScore();
 	}
 	
-	
+	/**
+	 * Sets the node score
+	 */
 	private void setScore() {
 
 		listAreaControl();
@@ -75,7 +78,9 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 
 	}
 
-	
+	/**
+	 * Uses to create royale duel node
+	 */
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakeInfo,final AbstractNode currentNode) {
 		return new RoyaleDuelNode(snakeInfo, currentNode.getFood(), ((RoyaleDuelNode)currentNode).getHazard());
