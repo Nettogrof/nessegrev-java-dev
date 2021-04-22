@@ -2,7 +2,7 @@ package ai.nettogrof.battlesnake.treesearch.search.standard;
 
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.AbstractMCTS;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 

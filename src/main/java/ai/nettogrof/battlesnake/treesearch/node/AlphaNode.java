@@ -1,11 +1,11 @@
 package ai.nettogrof.battlesnake.treesearch.node;
 
-import ai.nettogrof.battlesnake.proofnumber.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.flogger.FluentLogger;
+
+import ai.nettogrof.battlesnake.info.*;
 
 public class AlphaNode extends AbstractNode{
 	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();

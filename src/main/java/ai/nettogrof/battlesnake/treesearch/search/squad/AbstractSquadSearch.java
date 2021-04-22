@@ -2,8 +2,8 @@ package ai.nettogrof.battlesnake.treesearch.search.squad;
 
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfoSquad;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.treesearch.AbstractBestFirstSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 

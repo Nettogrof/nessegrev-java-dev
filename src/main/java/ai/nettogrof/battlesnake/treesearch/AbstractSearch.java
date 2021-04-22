@@ -3,7 +3,7 @@ package ai.nettogrof.battlesnake.treesearch;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**

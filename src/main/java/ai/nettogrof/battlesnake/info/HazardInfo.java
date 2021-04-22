@@ -1,4 +1,4 @@
-package ai.nettogrof.battlesnake.proofnumber;
+package ai.nettogrof.battlesnake.info;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.list.array.TIntArrayList;

@@ -3,8 +3,8 @@ package ai.nettogrof.battlesnake.treesearch.node;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import gnu.trove.list.array.TIntArrayList;
 

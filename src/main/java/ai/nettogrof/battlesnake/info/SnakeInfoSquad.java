@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ai.nettogrof.battlesnake.proofnumber;
+package ai.nettogrof.battlesnake.info;
 
 import java.util.Objects;
 

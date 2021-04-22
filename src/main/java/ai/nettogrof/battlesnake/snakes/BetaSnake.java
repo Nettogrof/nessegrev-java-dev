@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
-import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
-import ai.nettogrof.battlesnake.proofnumber.HazardInfo;
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfoSquad;
+
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.HazardInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;

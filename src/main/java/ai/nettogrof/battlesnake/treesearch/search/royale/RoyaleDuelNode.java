@@ -5,9 +5,9 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 
 import java.util.List;
 
-import ai.nettogrof.battlesnake.proofnumber.FoodInfo;
-import ai.nettogrof.battlesnake.proofnumber.HazardInfo;
-import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.HazardInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
