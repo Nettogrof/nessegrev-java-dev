@@ -14,6 +14,8 @@ Few thing to know to understand this code:
 2. Part of my code is still based on API v0, so something UP and DOWN are inverted.
 3. My code don't use "real" algorithm, example: my MCTS search, does something similar to Monte-Carlo Tree Search, but not exactly.
 
+link to the [JavaDoc](https://nettogrof.github.io/nessegrev-java-dev/)
+
 Release
 -------
 
