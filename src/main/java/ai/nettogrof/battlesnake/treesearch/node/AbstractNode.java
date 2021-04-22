@@ -8,75 +8,157 @@ import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import gnu.trove.list.array.TIntArrayList;
 
+/**
+ * This abstract node class is the based of all node class, provide basic method use in any node.
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
 public abstract class AbstractNode {
+	
+	/**
+	 * 
+	 */
 	public static int width;
-	public static int heigth;
+	
+	/**
+	 * 
+	 */
+	public static int height;
+	
+	/**
+	 * 
+	 */
 	protected transient List<AbstractNode> child = new ArrayList<>();
+	/**
+	 * 
+	 */
 	protected List<SnakeInfo> snakes;
+	/**
+	 * 
+	 */
 	protected FoodInfo food;
+	/**
+	 * 
+	 */
 	protected transient float scoreRatio; 
+	/**
+	 * 
+	 */
 	public transient float score[];
+	/**
+	 * 
+	 */
 	public int possibleMove;
+	/**
+	 * 
+	 */
 	public int allChildsCount = 1;
+	/**
+	 * 
+	 */
 	public boolean exp = true;
 
+	/**
+	 * 
+	 */
 	public AbstractNode() {
 		// Empty top levet
 	}
 
+	/**
+	 * @param snakes
+	 * @param food
+	 */
 	public AbstractNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		this.snakes =  snakes;
 		this.food = food;
 	}
 
+	/**
+	 * @return
+	 */
 	public FoodInfo getFood() {
 		return food;
 	}
 
+	/**
+	 * @param food
+	 */
 	public void setFood(final FoodInfo food) {
 		this.food = food;
 	}
 
+	/**
+	 * @param snakes
+	 */
 	public void setSnakes(final SnakeInfo... snakes) {
-		for(SnakeInfo snake : snakes) {
+		for(final SnakeInfo snake : snakes) {
 			this.snakes.add(snake);
 		}
 
 	}
 
+	/**
+	 * @return
+	 */
 	public List< SnakeInfo> getSnakes() {
 		return snakes;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getPossibleMove() {
 		return possibleMove;
 	}
 
+	/**
+	 * @param possibleMove
+	 */
 	public void setPossibleMove(final int possibleMove) {
 		this.possibleMove = possibleMove;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getAllChildsCount() {
 		return allChildsCount;
 	}
 
+	/**
+	 * @param allChildsCount
+	 */
 	public void setAllChildsCount(final int allChildsCount) {
 		this.allChildsCount = allChildsCount;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isExp() {
 		return exp;
 	}
 
+	/**
+	 * @param exp
+	 */
 	public void setExp(final boolean exp) {
 		this.exp = exp;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getChildCount() {
 
 		return allChildsCount;
 	}
 
+	/**
+	 * @return
+	 */
 	public float getScoreRatio() {
 		return scoreRatio;
 		
@@ -85,11 +167,17 @@ public abstract class AbstractNode {
 
 	
 
+	/**
+	 * @param newChild
+	 */
 	public void addChild(final AbstractNode newChild) {
 		child.add(newChild);
 		allChildsCount++;
 	}
 
+	/**
+	 * 
+	 */
 	public void updateScore() {
 
 		if (!child.isEmpty()) {
@@ -109,6 +197,9 @@ public abstract class AbstractNode {
 
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateScoreRatio() {
 		float totalOther = 0.01f;
 		for (int i = 1; i < score.length; i++) {
@@ -121,6 +212,9 @@ public abstract class AbstractNode {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void updateScoreMultiplePossibleMove() {
 		
 		final ArrayList<float[]> scores = new ArrayList<>();
@@ -132,6 +226,9 @@ public abstract class AbstractNode {
 		
 	}
 
+	/**
+	 * @param scores
+	 */
 	private void computePayoffMatrix(final List<float[]> scores) {
 		final int ind = findBestIndex(scores);		
 		if (ind > -1) {
@@ -148,7 +245,7 @@ public abstract class AbstractNode {
 			for (int i = 0; i < score.length; i++) {
 				score[i] = 0;
 			}
-			for(AbstractNode current: child) {
+			for(final AbstractNode current: child) {
 				for (int j = 0; j < current.score.length; j++) {
 					score[j] += current.score[j];
 				}
@@ -158,6 +255,10 @@ public abstract class AbstractNode {
 		
 	}
 
+	/**
+	 * @param scores
+	 * @return
+	 */
 	private int findBestIndex(final List<float[]> scores) {
 		int ind = -1;
 		float ration = -1;
@@ -177,6 +278,9 @@ public abstract class AbstractNode {
 		return ind;
 	}
 
+	/**
+	 * @param scores
+	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
 		for (final AbstractNode c : child) {
@@ -214,6 +318,9 @@ public abstract class AbstractNode {
 		
 	}
 
+	/**
+	 * 
+	 */
 	private void updateChildCount() {
 		allChildsCount = 1;
 		for (final AbstractNode c : child) {
@@ -226,6 +333,9 @@ public abstract class AbstractNode {
 
 	}
 
+	/**
+	 * 
+	 */
 	private void updateScoreSinglePossibleMove() {
 		for (int i = 1; i < score.length; i++) {
 			score[i] = 0;
@@ -241,10 +351,18 @@ public abstract class AbstractNode {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public List<AbstractNode> getChild() {
 		return (ArrayList<AbstractNode>) child;
 	}
 
+	/**
+	 * @param snakes
+	 * @param currentNode
+	 * @return
+	 */
 	public abstract AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode);
 
 }

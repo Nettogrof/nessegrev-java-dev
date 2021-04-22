@@ -275,16 +275,16 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		
 		if (snakes.size() > 4) {
 			RoyaleFourNode.width = width;
-			RoyaleFourNode.heigth = height;
+			RoyaleFourNode.height = height;
 			return new RoyaleFourNode(snakes, food, hazard);
 		} else if (snakes.size() > 2) {
 			RoyaleFourNode.width = width;
-			RoyaleFourNode.heigth = height;
+			RoyaleFourNode.height = height;
 			return new RoyaleFourNode(snakes, food, hazard);
 		}
 	
 		RoyaleDuelNode.width = width;
-		RoyaleDuelNode.heigth = height;
+		RoyaleDuelNode.height = height;
 		return new RoyaleDuelNode(snakes, food, hazard);
 	}
 

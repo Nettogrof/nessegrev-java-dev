@@ -63,7 +63,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 		if (posY == 0) {
 			score[0] -= 0.4;
 		}
-		if (posY == heigth - 1) {
+		if (posY == height - 1) {
 			score[0] -= 0.4;
 
 		}
@@ -139,7 +139,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 		final int biggestSnake = snakes.get(0).getSnakeBody().size() > snakes.get(1).getSnakeBody().size() ? 0 : 1;
 		int[] count = new int[snakes.size()];
 		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < heigth; j++) {
+			for (int j = 0; j < height; j++) {
 				if (board[i][j] > 0) {
 					count[board[i][j] - 1]++;
 				} else if (board[i][j] == -50) {
@@ -163,7 +163,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	}
 
 	protected int[][] initBoard() {
-		int[][] board = new int[width][heigth];
+		int[][] board = new int[width][height];
 
 		for (final SnakeInfo snake : snakes) {
 			final TIntArrayList body = snake.getSnakeBody();
@@ -202,7 +202,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 
 			}
 
-			if (posY + 1 < heigth && board[posX][posY + 1] == 0) {
+			if (posY + 1 < height && board[posX][posY + 1] == 0) {
 				addToHash(newHash, position + 1, valeur);
 			}
 			if (posY - 1 >= 0 && board[posX][posY - 1] == 0) {
