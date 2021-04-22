@@ -5,34 +5,80 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.proofnumber.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import gnu.trove.list.array.TFloatArrayList;
 
+/**
+ * This abstract search class is the based of all search class, provide basic method use in any search.
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
 public abstract class AbstractSearch implements Runnable {
+	
+	/**
+	 *  Control variable to continue the search or not 
+	 */
 	protected transient boolean cont = true;
+	
+	/**
+	 * Root node for the search
+	 */
 	protected transient AbstractNode root;
 
+	/**
+	 * Board height
+	 */
 	protected transient int height;
+	
+	/**
+	 * Board width 
+	 */
 	protected transient int width;
+	
+	/**
+	 * Time allowed for the search
+	 */
 	protected transient int timeout = 250;
+	
+	
+	/**
+	 * Starting time for the search in millisecond
+	 */
 	protected transient long startTime;
 	
-	public AbstractSearch() {
-		//basic constructor
-	}
-
+	
+	
+	/**
+	 *  The execution of the search 
+	 */
 	@Override
 	public abstract void run();
 
+	/** 
+	 * This method is used to stop the search 
+	 */
 	public void stopSearching() {
 		cont = false;
 	}
 
+	/**
+	 * This abstract method will be use to "kill" a snake  
+	 * @param death
+	 * @param all
+	 */
 	protected abstract void kill(SnakeInfo death, List<SnakeInfo> all);
 
+	/**
+	 * This method is used to generate child node from the root. Mostly used for multithreading
+	 */
 	public void generateChild() {
 		generateChild(root);
 	}
 
+	/**
+	 * This method check if there's a head-to-head collision.
+	 * Shorter snake die,  and if both snakes are the same length both dies
+	 * @param moves  List of all possible move 
+	 */
 	protected void checkHeadToHead(final List<ArrayList<SnakeInfo>> moves) {
 		for (final ArrayList<SnakeInfo> move : moves) {
 
@@ -55,14 +101,18 @@ public abstract class AbstractSearch implements Runnable {
 					}
 				}
 			}
-
 		}
-
 	}
 
-	protected ArrayList<ArrayList<SnakeInfo>> merge(final ArrayList<ArrayList<SnakeInfo>> list,
+	/**
+	 * This method merge previous snake move (list) , with new snake move
+	 * @param list  Previous list 
+	 * @param snakes New move list 
+	 * @return List of List of move
+	 */
+	protected List<ArrayList<SnakeInfo>> merge(final List<ArrayList<SnakeInfo>> list,
 			final List<SnakeInfo> snakes) {
-		ArrayList<ArrayList<SnakeInfo>> ret;
+		List<ArrayList<SnakeInfo>> ret;
 		if (snakes.isEmpty()) {
 			ret = list;
 
@@ -76,88 +126,99 @@ public abstract class AbstractSearch implements Runnable {
 				}
 
 			} else {
-				for (int i = 0; i < snakes.size(); i++) {
-					// 2 3 4
-
+				for (final SnakeInfo snakeinfo : snakes) {
 					for (final ArrayList<SnakeInfo> s : list) {
 						final ArrayList<SnakeInfo> merged = new ArrayList<>(s.size() + 1);
 						for (final SnakeInfo si : s) {
 							merged.add(si.cloneSnake());
 						}
 
-						merged.add(snakes.get(i).cloneSnake());
+						merged.add(snakeinfo.cloneSnake());
 						ret.add(merged);
 					}
 
 				}
 			}
-
 		}
-
 		return ret;
 	}
 
 
+	/**
+	 *  Create new SnakeInfo based on the current node and the new head square
+	 * @param snakeInfo previous snakeInfo
+	 * @param newHead  New head square
+	 * @param node Previous node
+	 * @return  new SnakeInfo
+	 */
 	protected abstract SnakeInfo createSnakeInfo(SnakeInfo snakeInfo, int newHead, AbstractNode node);
 
-	protected ArrayList<SnakeInfo> multi(final SnakeInfo snakeInfo, final AbstractNode node, final List<SnakeInfo> all) {
-		final ArrayList<SnakeInfo> ret = new ArrayList<>();
+	/**
+	 * Generate all moves possible for a snake given.
+	 * @param snakeInfo  Information about the snake
+	 * @param node Parent node
+	 * @param allSnakes List of all snakes
+	 * @return list of snakeinfo
+	 */
+	protected List<SnakeInfo> generateSnakeInfoDestination(final SnakeInfo snakeInfo, final AbstractNode node, final List<SnakeInfo> allSnakes) {
+		final ArrayList<SnakeInfo> listNewSnakeInfo = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {
 			final int head = snakeInfo.getHead();
-			int newhead;
+			
 			if (head / 1000 > 0) {
-
-				newhead = head - 1000;
-				if (freeSpace(newhead, all, snakeInfo)) {
-					ret.add(createSnakeInfo(snakeInfo, newhead, node));
-				}
-
+				addMove(head - 1000,allSnakes,snakeInfo,node, listNewSnakeInfo);
 			}
 
 			if (head / 1000 < width - 1) {
-
-				newhead = head + 1000;
-				if (freeSpace(newhead, all, snakeInfo)) {
-					ret.add(createSnakeInfo(snakeInfo, newhead, node));
-				}
-
+				addMove(head + 1000,allSnakes,snakeInfo,node, listNewSnakeInfo);
 			}
 
 			if (head % 1000 > 0) {
-
-				newhead = head - 1;
-				if (freeSpace(newhead, all, snakeInfo)) {
-					ret.add(createSnakeInfo(snakeInfo, newhead, node));
-				}
-
+				addMove(head - 1,allSnakes,snakeInfo,node, listNewSnakeInfo);
 			}
-
 			if (head % 1000 < height - 1) {
-
-				newhead = head + 1;
-				if (freeSpace(newhead, all, snakeInfo)) {
-					ret.add(createSnakeInfo(snakeInfo, newhead, node));
-				}
-
+				addMove(head + 1,allSnakes,snakeInfo,node, listNewSnakeInfo);
 			}
 		}
-
-		return ret;
+		return listNewSnakeInfo;
 	}
 
-	protected abstract boolean freeSpace(final int square, final List<SnakeInfo> all, SnakeInfo yourSnake);
+	/**
+	 * This method add move to the list if the snake can move in the new head position.
+	 * @param newhead  New head
+	 * @param allSnakes List of all snakes
+	 * @param snakeInfo Information about the snake
+	 * @param node Parent node
+	 * @param listNewSnakeInfo  Current list of snakeinfo
+	 */
+	private void addMove(final int newhead, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo, final AbstractNode node,
+			final List<SnakeInfo> listNewSnakeInfo) {
+		if (freeSpace(newhead, allSnakes, snakeInfo)) {
+			listNewSnakeInfo.add(createSnakeInfo(snakeInfo, newhead, node));
+		}
+		
+	}
 
+	/**
+	 * Check if the snake can move on the square
+	 * @param square  the int sqaure
+	 * @param allSnakes List of all snakes
+	 * @param currentSnake current Snake
+	 * @return
+	 */
+	protected abstract boolean freeSpace(final int square, final List<SnakeInfo> allSnakes, SnakeInfo currentSnake);
+
+	/**
+	 * Expand / Generate child from a node
+	 * @param node the Abstractnode to be expand
+	 */
 	protected void generateChild(final AbstractNode node) {
 		if (node.getChild().size() > 0) {
-
 			node.exp = false;
-
 		} else {
-
 			final List<SnakeInfo> current = node.getSnakes();
-
-			final ArrayList<SnakeInfo> alphaMove = multi(current.get(0), node, current);
+			final List<SnakeInfo> alphaMove = generateSnakeInfoDestination(current.get(0), node, current);
 			node.possibleMove = alphaMove.size();
 
 			if (alphaMove.isEmpty()) {
@@ -167,12 +228,12 @@ public abstract class AbstractSearch implements Runnable {
 				node.updateScoreRatio();
 
 			} else {
-				ArrayList<ArrayList<SnakeInfo>> moves = new ArrayList<>();
+				List<ArrayList<SnakeInfo>> moves = new ArrayList<>();
 				final int nbSnake = current.size();
 				moves = merge(moves, alphaMove);
 
 				for (int i = 1; i < nbSnake; i++) {
-					moves = merge(moves, multi(current.get(i), node, current));
+					moves = merge(moves, generateSnakeInfoDestination(current.get(i), node, current));
 				}
 
 				checkHeadToHead(moves);
@@ -201,6 +262,11 @@ public abstract class AbstractSearch implements Runnable {
 		}
 	}
 	
+	/**
+	 * Get the leaf from the smallest branch
+	 * @param node  Root node
+	 * @return leaf node 
+	 */
 	protected AbstractNode getSmallestChild(final AbstractNode node) {
 		if (node.getChild().isEmpty()) {
 			return node;
@@ -211,10 +277,10 @@ public abstract class AbstractSearch implements Runnable {
 
 				float maxR = -1000;
 
-				for (final AbstractNode c : node.getChild()) {
-					if (c.getScoreRatio() > maxR) {
-						maxR = c.getScoreRatio();
-						smallChild = c;
+				for (final AbstractNode childNode : node.getChild()) {
+					if (childNode.getScoreRatio() > maxR) {
+						maxR = childNode.getScoreRatio();
+						smallChild = childNode;
 					}
 
 				}
@@ -231,7 +297,6 @@ public abstract class AbstractSearch implements Runnable {
 
 			}
 			if (smallChild == null) {
-				// System.out.println("exp"+exp);
 				node.exp = false;
 				return node;
 			}
@@ -240,121 +305,7 @@ public abstract class AbstractSearch implements Runnable {
 		}
 	}
 	
-	protected List<AbstractNode> getBestPath(AbstractNode node) {
-
-			if (node.getChild().isEmpty()) {
-				final List<AbstractNode> list = new ArrayList<>();
-				list.add(node);
-				return list;
-			}
-		
-			AbstractNode winner = null;
-			final TFloatArrayList upward = new TFloatArrayList();
-			final TFloatArrayList down = new TFloatArrayList();
-			final TFloatArrayList left = new TFloatArrayList();
-			final TFloatArrayList right = new TFloatArrayList();
-
-			fillList(upward, down, left, right, node);
-			
-
-			final float choiceValue = getbestChildValue(upward, down, left, right);
-
-			for (int i = 0; i < node.getChild().size() && winner == null; i++) {
-				final AbstractNode childNode = node.getChild().get(i);
-				if (childNode.getScoreRatio() == choiceValue && childNode.exp) {
-					winner = childNode;
-				}
-
-			}
-			final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
-			list.add(node);
-			return list;
-		
-	}
 	
-	private void fillList(final TFloatArrayList upward,final TFloatArrayList down,final TFloatArrayList left,final TFloatArrayList right, AbstractNode node) {
-		final int head = node.getSnakes().get(0).getHead();
-
-		for (int i = 0; i < node.getChild().size(); i++) {
-			if (node.getChild().get(i).exp) {
-				final int move = node.getChild().get(i).getSnakes().get(0).getHead();
-
-				if (move / 1000 < head / 1000) {
-					left.add(node.getChild().get(i).getScoreRatio());
-				} else if (move / 1000 > head / 1000) {
-					right.add(node.getChild().get(i).getScoreRatio());
-				} else if (move % 1000 < head % 1000) {
-					down.add(node.getChild().get(i).getScoreRatio());
-				} else {
-					upward.add(node.getChild().get(i).getScoreRatio());
-				}
-			}
-		}
-		
-	}
-	
-	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
-			final TFloatArrayList left, final TFloatArrayList right) {
-		float temp;
-		float choiceValue = Float.MIN_VALUE;
-		if (!upward.isEmpty()) {
-			choiceValue = upward.min();
-
-		}
-
-		if (!down.isEmpty()) {
-			temp = down.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-
-		if (!left.isEmpty()) {
-			temp = left.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-
-		if (!right.isEmpty()) {
-			temp = right.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-		return choiceValue;
-	}
-	
-	public AbstractNode getBestChild(AbstractNode node) {
-		// double score =-200;
-		if (node.getChild().isEmpty()) {
-			return node;
-		}
-		node.updateScore();
-		AbstractNode winner = null;
-		final TFloatArrayList upward = new TFloatArrayList();
-		final TFloatArrayList down = new TFloatArrayList();
-		final TFloatArrayList left = new TFloatArrayList();
-		final TFloatArrayList right = new TFloatArrayList();
-		fillList(upward, down, left, right, node);
-
-		final float choiceValue = getbestChildValue(upward, down, left, right);
-
-		for (int i = 0; i < node.getChild().size() && winner == null; i++) {
-			final AbstractNode childNode = node.getChild().get(i);
-			if (childNode.getScoreRatio() == choiceValue && childNode.getSnakes().get(0).isAlive()) {
-				winner = childNode;
-			}
-
-		}
-		if (winner == null) {
-			node.exp = false;
-			return node;
-			
-		}
-
-		return getBestChild(winner);
-	}
 	
 	
 
