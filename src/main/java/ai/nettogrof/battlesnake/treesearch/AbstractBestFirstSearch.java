@@ -117,7 +117,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	private void fillList(final TFloatArrayList upward,final TFloatArrayList down,final TFloatArrayList left,final TFloatArrayList right,final AbstractNode node) {
 		final int head = node.getSnakes().get(0).getHead();
 
-		for (AbstractNode child : node.getChild()) {
+		for (final AbstractNode child : node.getChild()) {
 			if (child.exp) {
 				final int move = child.getSnakes().get(0).getHead();
 
