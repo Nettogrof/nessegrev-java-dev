@@ -323,8 +323,6 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		fileConfig = "Beta.properties";
 	}
 
-	
-
 	/**
 	 * @param args
 	 */
