@@ -65,7 +65,7 @@ public class AlphaSearch  extends AbstractSearch  {
 		final List<SnakeInfo> alphaMove=generateSnakeInfoDestination(current.get(0), node,current);
 		
 		//SnakeInfo[][] poss = new SnakeInfo[nbSnake][3];
-		List<ArrayList<SnakeInfo>> moves = new ArrayList<ArrayList<SnakeInfo>>(); 
+		List<ArrayList<SnakeInfo>> moves = new ArrayList<>(); 
 		if (alphaMove.isEmpty()) {
 			node.getSnakes().get(0).die();
 			node.exp=false;
@@ -196,16 +196,16 @@ public class AlphaSearch  extends AbstractSearch  {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected  ArrayList<ArrayList<SnakeInfo>> merge (final ArrayList<ArrayList<SnakeInfo>> list,final ArrayList<SnakeInfo> snakeInfo) {
+	protected  List<ArrayList<SnakeInfo>> merge (final ArrayList<ArrayList<SnakeInfo>> list,final ArrayList<SnakeInfo> snakeInfo) {
 		if (snakeInfo.isEmpty()) {
 			return list;
 		}
-		final ArrayList<ArrayList<SnakeInfo>> ret = new ArrayList<ArrayList<SnakeInfo>>();
+		final ArrayList<ArrayList<SnakeInfo>> ret = new ArrayList<>();
 		if (list.isEmpty()) {
 			
-			for (SnakeInfo info: snakeInfo) {
+			for (final SnakeInfo info: snakeInfo) {
 				
-					ArrayList<SnakeInfo> m = new ArrayList<SnakeInfo>();
+					ArrayList<SnakeInfo> m = new ArrayList<>();
 					m.add(info);
 					ret.add(m);
 				
