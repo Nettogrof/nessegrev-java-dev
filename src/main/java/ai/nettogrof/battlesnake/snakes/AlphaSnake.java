@@ -1,13 +1,8 @@
 package ai.nettogrof.battlesnake.snakes;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,23 +12,47 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.AlphaSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.node.AlphaNode;
-import gnu.trove.list.array.TFloatArrayList;
 
+/**
+ * Alpha snake. This class is the "Nessegrev-Alpha" snake on Battlesnake.This
+ * snake participated in the Communitech tournament in the Rookie division.
+ * Still has some search bugs. It uses the minimax algorithm. This snake work 
+ * only API v1. All the move calculation are based on API v0,
+ * and then the snake switch UP and DOWN response.
+ * 
+ * @author carl.lajeunesse
+ * @version Fall 2020
+ */
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
-
-	private transient AlphaNode lastRoot;
+	/**
+	 * The config filename
+	 */
 	protected static String fileConfig = "Alpha.properties";
 
+	/**
+	 * Basic / unused constructor
+	 */
 	public AlphaSnake() {
 		super();
 	}
 
+	/**
+	 * Constructor with the gameid,
+	 * 
+	 * @param gameId String of the gameid field receive in the start request.
+	 */
 	public AlphaSnake(final String gameId) {
 		super(gameId);
-		
+
 	}
 
+	/**
+	 * This method will be call on each move request receive by BattleSnake
+	 * 
+	 * @param moveRequest Json call received
+	 * @return map of field to be return to battlesnake, example "move" , "up"
+	 */
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 		final Long startTime = System.currentTimeMillis();
@@ -44,24 +63,24 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
 
-		// String name = moveRequest.get("you").get(NAME).asText();
+		// String name = moveRequest.get(YOU).get(NAME).asText();
 
 		// int turn = moveRequest.get("turn").asInt();
 
-		final int snakex = moveRequest.get("you").withArray(BODY).get(0).get("x").asInt();
-		final int snakey = moveRequest.get("you").withArray(BODY).get(0).get("y").asInt();
+		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
+		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
 		final FoodInfo food = new FoodInfo(moveRequest.get(BOARD));
-		SnakeInfo[] snakes = new SnakeInfo[moveRequest.get(BOARD).get("snakes").size()];
+		SnakeInfo[] snakes = new SnakeInfo[moveRequest.get(BOARD).get(SNAKES).size()];
 
-		final JsonNode yourSnake = moveRequest.get("you");
+		final JsonNode yourSnake = moveRequest.get(YOU);
 		snakes[0] = new SnakeInfo();
 		snakes[0].setHealth((short) yourSnake.get("health").asInt());
 		snakes[0].setName(yourSnake.get(NAME).asText());
 		snakes[0].setSnake(yourSnake);
 
 		for (int i = 0, j = 1; i < snakes.length; i++, j++) {
-			final JsonNode snake = moveRequest.get(BOARD).get("snakes").get(i);
+			final JsonNode snake = moveRequest.get(BOARD).get(SNAKES).get(i);
 			if (snake.get(NAME).asText().equals(yourSnake.get(NAME).asText())) {
 				j--;
 			} else {
@@ -76,13 +95,11 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		if (lastRoot != null) {
 
 			for (final AbstractNode child : lastRoot.getChild()) {
-				if (food.equals(child.getFood()) && Arrays.deepEquals(child.getSnakes().toArray(), snakes) ) {
-				
-						root = (AlphaNode) child;
-						lastRoot = null;
-						break;
+				if (food.equals(child.getFood()) && Arrays.deepEquals(child.getSnakes().toArray(), snakes)) {
 
-					
+					root = (AlphaNode) child;					
+					break;
+
 				}
 			}
 		}
@@ -90,7 +107,6 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 			root = new AlphaNode(snakes, food);
 		}
 
-		
 		if (multiThread) {
 			new AlphaSearch(root, width, height).generateChild();
 			// MoveGenerator.generateChild(root,width,heigth);
@@ -104,7 +120,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 				final Thread searchThread = new Thread(search);
 				searchThread.setPriority(1);
 				searchThread.start();
-				
+
 			}
 
 			try {
@@ -117,7 +133,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 			for (final AlphaSearch search : listThread) {
 				search.stopSearching();
-				
+
 			}
 
 			try {
@@ -135,15 +151,14 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 		String res = "";
 		if (winner == null && !root.getChild().isEmpty()) {
-			
+
 			winner = (AlphaNode) root.getChild().get(0);
-			
+
 		}
 
 		if (winner == null) {
 			response.put("shout", losing);
 			res = DOWN;
-			
 
 		} else {
 			if (winner.getScoreRatio() == 0) {
@@ -183,160 +198,40 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		return response;
 	}
 
-	private AlphaNode finishHim(final AlphaNode root, final AlphaNode winner) {
-		AlphaNode ret = null;
-		int nbnumberChild = Integer.MAX_VALUE;
-		for (final AbstractNode childNode : root.getChild()) {
-			if (childNode.getChildCount() < nbnumberChild && childNode.getScoreRatio() > 100) {
-				ret = (AlphaNode) childNode;
-				nbnumberChild = childNode.getChildCount();
-			}
-		}
-		if (ret == null) {
-			ret = winner;
-		}
-		return ret;
-	}
-
-	private AlphaNode lastChance(final AlphaNode root) {
-		AlphaNode ret = null;
-		int numberChild = 0;
-		for (final AbstractNode c : root.getChild()) {
-			if (c.getChildCount() > numberChild) {
-				ret = (AlphaNode) c;
-				numberChild = c.getChildCount();
-			}
-		}
-
-		return ret;
-	}
-
+	/**
+	 * This method was used in API v0 to retrieve snake info, but in API v1 the
+	 * method is call but Battlesnake doesn't need a response. Beta snake is
+	 * compatible for both API version that why it's return snake info
+	 * 
+	 * @param startRequest Json call received
+	 * @return map that can be empty because it will be ignore by BattleSnake server
+	 */
 	@Override
 	public Map<String, String> start(final JsonNode startRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		response.put("color", "#212121");
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
-		width = startRequest.get(BOARD).get("width").asInt();
-		height = startRequest.get(BOARD).get("height").asInt();
-		// nbSnake = startRequest.get(BOARD).get("snakes").size();
-		try {
-			timeout = startRequest.get("game").get("timeout").asInt();
-		} catch (Exception e) {
-			timeout = 500;
-		}
+		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
+		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+	
+		timeout = startRequest.get("game").get("timeout").asInt();
+		
 
 		// timeout = timeout-200;
 
 		return response;
 	}
-
-	private AlphaNode chooseBestMove(final AlphaNode root) {
-		// double score =-200;
-		final ArrayList<AbstractNode> child = (ArrayList<AbstractNode>) root.getChild();
-		AlphaNode winner = null;
-		final TFloatArrayList upward = new TFloatArrayList();
-		final TFloatArrayList down = new TFloatArrayList();
-		final TFloatArrayList left = new TFloatArrayList();
-		final TFloatArrayList right = new TFloatArrayList();
-		// ArrayList<Double> choice = new ArrayList<Double>();
-		final int head = root.getSnakes().get(0).getHead();
-
-		for(final AbstractNode childNode : child){
-			// if (child.get(i).getSnakes()[0].alive) {
-			final int move = childNode.getSnakes().get(0).getHead();
-
-			if (move / 1000 < head / 1000) {
-				left.add(childNode.getScoreRatio());
-			}
-
-			if (move / 1000 > head / 1000) {
-				right.add(childNode.getScoreRatio());
-			}
-			if (move % 1000 < head % 1000) {
-				upward.add(childNode.getScoreRatio());
-			}
-			if (move % 1000 > head % 1000) {
-				down.add(childNode.getScoreRatio());
-			}
-			// }
-		}
-		final float wup = upward.min();
-		final float wdown = down.min();
-		final float wleft = left.min();
-		final float wright = right.min();
-
-		double choiceValue = Double.MIN_VALUE;
-		if (wup != Double.MAX_VALUE) {
-			log.atInfo().log(UPWARD + wup);
-			if (wup > choiceValue) {
-				choiceValue = wup;
-			}
-		}
-		if (wdown != Double.MAX_VALUE) {
-			log.atInfo().log(DOWN + wdown);
-			if (wdown > choiceValue) {
-				choiceValue = wdown;
-			}
-		}
-		if (wleft != Double.MAX_VALUE) {
-			log.atInfo().log(LEFT + wleft);
-			if (wleft > choiceValue) {
-				choiceValue = wleft;
-			}
-		}
-		if (wright != Double.MAX_VALUE) {
-			log.atInfo().log(RIGHT + wright);
-			if (wright > choiceValue) {
-				choiceValue = wright;
-			}
-		}
-
-		for (int i = 0; i < child.size(); i++) {
-			final double childRatio = child.get(i).getScoreRatio();
-			if (childRatio == choiceValue && child.get(i).getSnakes().get(0).isAlive()) {
-				winner = (AlphaNode) child.get(i);
-				i = child.size();
-			}
-
-		}
-
-		return winner;
-	}
-
+	
+	/**
+	 * Method use to set the fileConfig string
+	 */
 	@Override
 	protected void setFileConfig() {
 		fileConfig = "Alpha.properties";
 
 	}
 
-	public static Map<String, String> getInfo() {
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-			response.put("author", "nettogrof");
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
-	}
-
-	@Override
-	protected String getFileConfig() {
-		return fileConfig;
-	}
 
 }

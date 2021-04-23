@@ -28,7 +28,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	/**
 	 * Hazards info
 	 */
-	protected HazardInfo hazard;
+	protected transient HazardInfo hazard;
 	
 	/**
 	 * Basic constructor
