@@ -36,12 +36,12 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
 public class BetaSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
-	 * 
+	 * The config filename
 	 */
 	protected static String fileConfig = "Beta.properties";
 
 	/**
-	 * 
+	 * Boolean if a squad game
 	 */
 	public transient boolean squad;
 
