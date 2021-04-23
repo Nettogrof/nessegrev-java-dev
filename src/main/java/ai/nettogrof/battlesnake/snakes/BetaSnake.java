@@ -31,7 +31,7 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
  * snake switch UP and DOWN response.
  * 
  * @author carl.lajeunesse
- * @version Winter 2020
+ * @version Spring 2021
  */
 public class BetaSnake extends AbstractTreeSearchSnakeAI {
 
@@ -212,8 +212,8 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
-				
-				//TODO  seem that could be improve
+
+				// TODO seem that could be improve
 				final SnakeInfo otherSnake = new SnakeInfo();
 				otherSnake.setHealth(currentSnake.get(HEALTH).asInt());
 				otherSnake.setName(currentSnake.get(NAME).asText());
@@ -292,14 +292,15 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	/**
-	 * This method generate the root node  type
+	 * This method generate the root node type
+	 * 
 	 * @param snakes List of snakes
-	 * @param food  Food Information
+	 * @param food   Food Information
 	 * @param hazard Hazard Information
-	 * @return Abstract node 
+	 * @return Abstract node
 	 */
 	private AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
-		//TODO Add others type of node/rule.
+		// TODO Add others type of node/rule.
 		if (snakes.size() > 4) {
 			RoyaleFourNode.width = width;
 			RoyaleFourNode.height = height;
