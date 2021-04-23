@@ -27,8 +27,8 @@ public class SquadSearch extends AbstractSquadSearch {
 	 * @param width  Board width
 	 * @param height Board height
 	 */
-	public SquadSearch(final AbstractNode root, final int width, final int heigth) {
-		super(root, width, heigth);
+	public SquadSearch(final AbstractNode root, final int width, final int height) {
+		super(root, width, height);
 
 	}
 

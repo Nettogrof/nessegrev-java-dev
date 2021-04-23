@@ -201,6 +201,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * 
 	 * @param board     Json board field
 	 * @param betaSnake Json you field
+	 * @return list of snakes info
 	 */
 	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode betaSnake) {
 		final List<SnakeInfo> snakes = new ArrayList<>();
@@ -230,6 +231,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * 
 	 * @param board     Json board field
 	 * @param betaSnake Json you field
+	 * @return list of snakes info
 	 */
 	private List<SnakeInfo> genSnakeInfoSquad(final JsonNode board, final JsonNode betaSnake) {
 		// TODO Refactoring this method, way too similar to the other genSnakeInfo

@@ -99,7 +99,7 @@ public abstract class AbstractSquadSearch extends AbstractBestFirstSearch {
 	 * Check if the snake can move on the square for squad mode
 	 * 
 	 * @param square       the int square
-	 * @param allSnakes    List of all snakes
+	 * @param snakes    List of all snakes
 	 * @param currentSnake current Snake
 	 * @return boolean free to move on that square
 	 */

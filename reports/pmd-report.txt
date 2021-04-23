@@ -1,26 +1,222 @@
-src/test/java/io/battlesnake/starter/SnakeTest.java:17:	AtLeastOneConstructor: Each class should declare at least one constructor
-src/test/java/io/battlesnake/starter/SnakeTest.java:17:	AtLeastOneConstructor: Each class should declare at least one constructor
-src/test/java/io/battlesnake/starter/SnakeTest.java:24:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
-src/test/java/io/battlesnake/starter/SnakeTest.java:24:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
-src/test/java/io/battlesnake/starter/SnakeTest.java:33:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:33:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:34:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:34:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:39:	LocalVariableCouldBeFinal: Local variable 'startRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:39:	LocalVariableCouldBeFinal: Local variable 'startRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:40:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:40:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:41:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:41:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:46:	LocalVariableCouldBeFinal: Local variable 'moveRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:46:	LocalVariableCouldBeFinal: Local variable 'moveRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:47:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:47:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:48:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:48:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:53:	LocalVariableCouldBeFinal: Local variable 'endRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:53:	LocalVariableCouldBeFinal: Local variable 'endRequest' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:54:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:54:	LocalVariableCouldBeFinal: Local variable 'response' could be declared final
-src/test/java/io/battlesnake/starter/SnakeTest.java:55:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
-src/test/java/io/battlesnake/starter/SnakeTest.java:55:	JUnitAssertionsShouldIncludeMessage: JUnit assertions should include a message
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractSnakeAI.java:153:	UnnecessaryLocalBeforeReturn:	UnnecessaryLocalBeforeReturn: Consider simply returning the value vs storing it in local variable 'response'
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractSnakeAI.java:153:	UnnecessaryLocalBeforeReturn:	UnnecessaryLocalBeforeReturn: Consider simply returning the value vs storing it in local variable 'response'
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractTreeSearchSnakeAI.java:25:	GodClass:	GodClass: Possible God Class (WMC=63, ATFD=110, TCC=0.000%)
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractTreeSearchSnakeAI.java:25:	GodClass:	GodClass: Possible God Class (WMC=63, ATFD=110, TCC=0.000%)
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractTreeSearchSnakeAI.java:239:	NPathComplexity:	NPathComplexity: The method 'chooseBestMove(AbstractNode)' has an NPath complexity of 405, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AbstractTreeSearchSnakeAI.java:239:	NPathComplexity:	NPathComplexity: The method 'chooseBestMove(AbstractNode)' has an NPath complexity of 405, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:22:	GodClass:	GodClass: Possible God Class (WMC=58, ATFD=83, TCC=10.714%)
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:22:	GodClass:	GodClass: Possible God Class (WMC=58, ATFD=83, TCC=10.714%)
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:22:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaSnake' has a Modified Cyclomatic Complexity of 6 (Highest = 23).
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:22:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaSnake' has a Modified Cyclomatic Complexity of 6 (Highest = 23).
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'move' has a Modified Cyclomatic Complexity of 23.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'move' has a Modified Cyclomatic Complexity of 23.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	NPathComplexity:	NPathComplexity: The method 'move(JsonNode)' has an NPath complexity of 181170, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	NPathComplexity:	NPathComplexity: The method 'move(JsonNode)' has an NPath complexity of 181170, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	NcssCount:	NcssCount: The method 'move(JsonNode)' has a NCSS line count of 97.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:38:	NcssCount:	NcssCount: The method 'move(JsonNode)' has a NCSS line count of 97.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:63:	ForLoopVariableCount:	ForLoopVariableCount: Too many control variables in the for statement
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:63:	ForLoopVariableCount:	ForLoopVariableCount: Too many control variables in the for statement
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:66:	AvoidReassigningLoopVariables:	AvoidReassigningLoopVariables: Avoid reassigning the loop control variable 'j'
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:66:	AvoidReassigningLoopVariables:	AvoidReassigningLoopVariables: Avoid reassigning the loop control variable 'j'
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:82:	NullAssignment:	NullAssignment: Assigning an Object to null is a code smell.  Consider refactoring.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:82:	NullAssignment:	NullAssignment: Assigning an Object to null is a code smell.  Consider refactoring.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:104:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:104:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:225:	AvoidCatchingGenericException:	AvoidCatchingGenericException: Avoid catching generic exceptions such as NullPointerException, RuntimeException, Exception in try-catch block
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:225:	AvoidCatchingGenericException:	AvoidCatchingGenericException: Avoid catching generic exceptions such as NullPointerException, RuntimeException, Exception in try-catch block
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:234:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'chooseBestMove' has a Modified Cyclomatic Complexity of 16.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:234:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'chooseBestMove' has a Modified Cyclomatic Complexity of 16.
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:234:	NPathComplexity:	NPathComplexity: The method 'chooseBestMove(AlphaNode)' has an NPath complexity of 5508, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:234:	NPathComplexity:	NPathComplexity: The method 'chooseBestMove(AlphaNode)' has an NPath complexity of 5508, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:299:	AvoidReassigningLoopVariables:	AvoidReassigningLoopVariables: Avoid reassigning the loop control variable 'i'
+src/main/java/ai/nettogrof/battlesnake/snakes/AlphaSnake.java:299:	AvoidReassigningLoopVariables:	AvoidReassigningLoopVariables: Avoid reassigning the loop control variable 'i'
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:133:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:133:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:217:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:217:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:248:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/BetaSnake.java:248:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	GodClass:	GodClass: Possible God Class (WMC=253, ATFD=245, TCC=24.211%)
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	GodClass:	GodClass: Possible God Class (WMC=253, ATFD=245, TCC=24.211%)
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'Challenger' has a Modified Cyclomatic Complexity of 10 (Highest = 38).
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'Challenger' has a Modified Cyclomatic Complexity of 10 (Highest = 38).
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:23:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:49:	ShortVariable:	ShortVariable: Avoid variables with short names like GO
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:49:	ShortVariable:	ShortVariable: Avoid variables with short names like GO
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:65:	LongVariable:	LongVariable: Avoid excessively long variable names like keepFourBattlesnakeAlive
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:65:	LongVariable:	LongVariable: Avoid excessively long variable names like keepFourBattlesnakeAlive
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:100:	MissingOverride:	MissingOverride: The method 'getFileConfig()' is missing an @Override annotation.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:100:	MissingOverride:	MissingOverride: The method 'getFileConfig()' is missing an @Override annotation.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:105:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'move' has a Modified Cyclomatic Complexity of 11.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:105:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'move' has a Modified Cyclomatic Complexity of 11.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:147:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'keepFourSnakeAliveChallenge' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:147:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'keepFourSnakeAliveChallenge' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:164:	AvoidDuplicateLiterals:	AvoidDuplicateLiterals: The String literal "shout" appears 5 times in this file; the first occurrence is on line 164
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:164:	AvoidDuplicateLiterals:	AvoidDuplicateLiterals: The String literal "shout" appears 5 times in this file; the first occurrence is on line 164
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:166:	PrematureDeclaration:	PrematureDeclaration: Avoid declaring a variable if it is unreferenced before a possible exit point.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:166:	PrematureDeclaration:	PrematureDeclaration: Avoid declaring a variable if it is unreferenced before a possible exit point.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	MethodArgumentCouldBeFinal:	MethodArgumentCouldBeFinal: Parameter 'moveRequest' is not assigned and could be declared final
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	MethodArgumentCouldBeFinal:	MethodArgumentCouldBeFinal: Parameter 'moveRequest' is not assigned and could be declared final
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'fourCornerChallenge' has a Modified Cyclomatic Complexity of 17.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'fourCornerChallenge' has a Modified Cyclomatic Complexity of 17.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	NPathComplexity:	NPathComplexity: The method 'fourCornerChallenge(JsonNode)' has an NPath complexity of 6966, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	NPathComplexity:	NPathComplexity: The method 'fourCornerChallenge(JsonNode)' has an NPath complexity of 6966, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	NcssCount:	NcssCount: The method 'fourCornerChallenge(JsonNode)' has a NCSS line count of 82.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:197:	NcssCount:	NcssCount: The method 'fourCornerChallenge(JsonNode)' has a NCSS line count of 82.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:236:	AvoidDuplicateLiterals:	AvoidDuplicateLiterals: The String literal "food" appears 6 times in this file; the first occurrence is on line 236
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:236:	AvoidDuplicateLiterals:	AvoidDuplicateLiterals: The String literal "food" appears 6 times in this file; the first occurrence is on line 236
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:269:	LiteralsFirstInComparisons:	LiteralsFirstInComparisons: Position literals first in String comparisons
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:269:	LiteralsFirstInComparisons:	LiteralsFirstInComparisons: Position literals first in String comparisons
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:269:	PositionLiteralsFirstInCaseInsensitiveComparisons:	PositionLiteralsFirstInCaseInsensitiveComparisons: Position literals first in String comparisons for EqualsIgnoreCase
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:269:	PositionLiteralsFirstInCaseInsensitiveComparisons:	PositionLiteralsFirstInCaseInsensitiveComparisons: Position literals first in String comparisons for EqualsIgnoreCase
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'moveTriplePlayer2' has a Modified Cyclomatic Complexity of 12.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'moveTriplePlayer2' has a Modified Cyclomatic Complexity of 12.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	NPathComplexity:	NPathComplexity: The method 'moveTriplePlayer2(JsonNode)' has an NPath complexity of 1536, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	NPathComplexity:	NPathComplexity: The method 'moveTriplePlayer2(JsonNode)' has an NPath complexity of 1536, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	NcssCount:	NcssCount: The method 'moveTriplePlayer2(JsonNode)' has a NCSS line count of 61.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:338:	NcssCount:	NcssCount: The method 'moveTriplePlayer2(JsonNode)' has a NCSS line count of 61.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'moveTriplePlayer1' has a Modified Cyclomatic Complexity of 12.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'moveTriplePlayer1' has a Modified Cyclomatic Complexity of 12.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	NPathComplexity:	NPathComplexity: The method 'moveTriplePlayer1(JsonNode)' has an NPath complexity of 1536, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	NPathComplexity:	NPathComplexity: The method 'moveTriplePlayer1(JsonNode)' has an NPath complexity of 1536, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	NcssCount:	NcssCount: The method 'moveTriplePlayer1(JsonNode)' has a NCSS line count of 61.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:449:	NcssCount:	NcssCount: The method 'moveTriplePlayer1(JsonNode)' has a NCSS line count of 61.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:469:	ShortVariable:	ShortVariable: Avoid variables with short names like id
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:469:	ShortVariable:	ShortVariable: Avoid variables with short names like id
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:559:	UnusedAssignment:	UnusedAssignment: The initializer for variable 'response' is never used (overwritten on lines 571 and 573)
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:559:	UnusedAssignment:	UnusedAssignment: The initializer for variable 'response' is never used (overwritten on lines 571 and 573)
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:564:	LocalVariableCouldBeFinal:	LocalVariableCouldBeFinal: Local variable 'temp' could be declared final
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:564:	LocalVariableCouldBeFinal:	LocalVariableCouldBeFinal: Local variable 'temp' could be declared final
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:566:	UnusedAssignment:	UnusedAssignment: The value assigned to variable 'id2' is never used
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:566:	UnusedAssignment:	UnusedAssignment: The value assigned to variable 'id2' is never used
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'movePlayer1' has a Modified Cyclomatic Complexity of 38.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'movePlayer1' has a Modified Cyclomatic Complexity of 38.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	NPathComplexity:	NPathComplexity: The method 'movePlayer1(JsonNode)' has an NPath complexity of 3600099, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	NPathComplexity:	NPathComplexity: The method 'movePlayer1(JsonNode)' has an NPath complexity of 3600099, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	NcssCount:	NcssCount: The method 'movePlayer1(JsonNode)' has a NCSS line count of 98.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:579:	NcssCount:	NcssCount: The method 'movePlayer1(JsonNode)' has a NCSS line count of 98.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:597:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:597:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:598:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:598:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:604:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:604:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:689:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:689:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:691:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:691:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'movePlayer2' has a Modified Cyclomatic Complexity of 38.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'movePlayer2' has a Modified Cyclomatic Complexity of 38.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	NPathComplexity:	NPathComplexity: The method 'movePlayer2(JsonNode)' has an NPath complexity of 2880099, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	NPathComplexity:	NPathComplexity: The method 'movePlayer2(JsonNode)' has an NPath complexity of 2880099, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	NcssCount:	NcssCount: The method 'movePlayer2(JsonNode)' has a NCSS line count of 98.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:704:	NcssCount:	NcssCount: The method 'movePlayer2(JsonNode)' has a NCSS line count of 98.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:721:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:721:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:722:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:722:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:728:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:728:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:816:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:816:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:818:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:818:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	ExcessiveMethodLength:	ExcessiveMethodLength: Avoid really long methods.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'soloChallenge' has a Modified Cyclomatic Complexity of 29.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'soloChallenge' has a Modified Cyclomatic Complexity of 29.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	NPathComplexity:	NPathComplexity: The method 'soloChallenge(JsonNode)' has an NPath complexity of 960009, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	NPathComplexity:	NPathComplexity: The method 'soloChallenge(JsonNode)' has an NPath complexity of 960009, current threshold is 200
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	NcssCount:	NcssCount: The method 'soloChallenge(JsonNode)' has a NCSS line count of 75.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:831:	NcssCount:	NcssCount: The method 'soloChallenge(JsonNode)' has a NCSS line count of 75.
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:840:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:840:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:919:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:919:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:921:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/Challenger.java:921:	ConfusingTernary:	ConfusingTernary: Avoid if (x != y) ..; else ..;
+src/main/java/ai/nettogrof/battlesnake/snakes/FloodFillSnake.java:25:	GodClass:	GodClass: Possible God Class (WMC=53, ATFD=57, TCC=12.121%)
+src/main/java/ai/nettogrof/battlesnake/snakes/FloodFillSnake.java:25:	GodClass:	GodClass: Possible God Class (WMC=53, ATFD=57, TCC=12.121%)
+src/main/java/ai/nettogrof/battlesnake/snakes/GammaSnake.java:131:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/GammaSnake.java:131:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/GammaSnake.java:211:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/GammaSnake.java:211:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/snakes/Snake.java:88:	NonThreadSafeSingleton:	NonThreadSafeSingleton: Singleton is not thread safe
+src/main/java/ai/nettogrof/battlesnake/snakes/Snake.java:88:	NonThreadSafeSingleton:	NonThreadSafeSingleton: Singleton is not thread safe
+src/main/java/ai/nettogrof/battlesnake/snakes/Snake.java:291:	DoNotCallGarbageCollectionExplicitly:	DoNotCallGarbageCollectionExplicitly: Do not explicitly trigger a garbage collection.
+src/main/java/ai/nettogrof/battlesnake/snakes/Snake.java:291:	DoNotCallGarbageCollectionExplicitly:	DoNotCallGarbageCollectionExplicitly: Do not explicitly trigger a garbage collection.
+src/main/java/ai/nettogrof/battlesnake/snakes/common/BattleSnakeConstant.java:13:	LongVariable:	LongVariable: Avoid excessively long variable names like HEALTH_LOST_HAZARD
+src/main/java/ai/nettogrof/battlesnake/snakes/common/BattleSnakeConstant.java:13:	LongVariable:	LongVariable: Avoid excessively long variable names like HEALTH_LOST_HAZARD
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractBestFirstSearch.java:18:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractBestFirstSearch.java:18:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractMCTS.java:20:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractMCTS.java:20:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:15:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:15:	AtLeastOneConstructor:	AtLeastOneConstructor: Each class should declare at least one constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:15:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:15:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:123:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:123:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:131:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AbstractSearch.java:131:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:12:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaSearch' has a Modified Cyclomatic Complexity of 3 (Highest = 10).
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:12:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaSearch' has a Modified Cyclomatic Complexity of 3 (Highest = 10).
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:89:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:89:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:93:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:93:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'multi' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:109:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'multi' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:199:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:199:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:199:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:199:	LooseCoupling:	LooseCoupling: Avoid using implementation types like 'ArrayList'; use the interface instead
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	AvoidInstantiatingObjectsInLoops:	AvoidInstantiatingObjectsInLoops: Avoid instantiating new objects inside loops
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	LocalVariableCouldBeFinal:	LocalVariableCouldBeFinal: Local variable 'm' could be declared final
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	LocalVariableCouldBeFinal:	LocalVariableCouldBeFinal: Local variable 'm' could be declared final
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	ShortVariable:	ShortVariable: Avoid variables with short names like m
+src/main/java/ai/nettogrof/battlesnake/treesearch/AlphaSearch.java:208:	ShortVariable:	ShortVariable: Avoid variables with short names like m
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AbstractNode.java:17:	GodClass:	GodClass: Possible God Class (WMC=47, ATFD=47, TCC=29.670%)
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AbstractNode.java:17:	GodClass:	GodClass: Possible God Class (WMC=47, ATFD=47, TCC=29.670%)
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:10:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaNode' has a Modified Cyclomatic Complexity of 4 (Highest = 10).
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:10:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The class 'AlphaNode' has a Modified Cyclomatic Complexity of 4 (Highest = 10).
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:13:	BeanMembersShouldSerialize:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:13:	BeanMembersShouldSerialize:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:20:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:20:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:35:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:35:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:55:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:55:	CallSuperInConstructor:	CallSuperInConstructor: It is a good practice to call super() in a constructor
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:74:	MissingOverride:	MissingOverride: The method 'updateScore()' is missing an @Override annotation.
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:74:	MissingOverride:	MissingOverride: The method 'updateScore()' is missing an @Override annotation.
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:97:	AvoidCatchingGenericException:	AvoidCatchingGenericException: Avoid catching generic exceptions such as NullPointerException, RuntimeException, Exception in try-catch block
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:97:	AvoidCatchingGenericException:	AvoidCatchingGenericException: Avoid catching generic exceptions such as NullPointerException, RuntimeException, Exception in try-catch block
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:126:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'getBestChild' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/treesearch/node/AlphaNode.java:126:	ModifiedCyclomaticComplexity:	ModifiedCyclomaticComplexity: The method 'getBestChild' has a Modified Cyclomatic Complexity of 10.
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:20:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:20:	TooManyMethods:	TooManyMethods: This class has too many methods, consider refactoring it.
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:31:	BeanMembersShouldSerialize:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:31:	BeanMembersShouldSerialize:	BeanMembersShouldSerialize: Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:99:	EmptyStatementNotInLoop:	EmptyStatementNotInLoop: An empty statement (semicolon) not part of a loop
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/royale/AbstractRoyaleNode.java:99:	EmptyStatementNotInLoop:	EmptyStatementNotInLoop: An empty statement (semicolon) not part of a loop
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/standard/AbstractStandardNode.java:61:	EmptyStatementNotInLoop:	EmptyStatementNotInLoop: An empty statement (semicolon) not part of a loop
+src/main/java/ai/nettogrof/battlesnake/treesearch/search/standard/AbstractStandardNode.java:61:	EmptyStatementNotInLoop:	EmptyStatementNotInLoop: An empty statement (semicolon) not part of a loop
