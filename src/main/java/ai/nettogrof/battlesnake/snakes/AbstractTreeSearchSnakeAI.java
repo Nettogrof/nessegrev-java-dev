@@ -103,12 +103,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 	}
 
-	/**
-	 * Gets the config file to set properties correctly
-	 * 
-	 * @return the config filename
-	 */
-	protected abstract String getFileConfig();
 
 	/**
 	 * Return the infos need by Battlesnake when receive a (root GET /) request 

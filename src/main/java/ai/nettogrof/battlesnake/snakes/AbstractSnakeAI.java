@@ -189,6 +189,15 @@ public abstract class AbstractSnakeAI {
 	 * Method use to set the fileConfig string
 	 */
 	protected abstract void setFileConfig();
+	
+	/**
+	 * Gets the config file to set properties correctly
+	 * 
+	 * @return the config filename
+	 */
+	protected String getFileConfig() {
+		return fileConfig;
+	}
 
 
 }
