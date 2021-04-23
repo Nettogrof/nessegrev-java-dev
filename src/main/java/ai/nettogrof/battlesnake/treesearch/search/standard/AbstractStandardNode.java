@@ -58,7 +58,6 @@ public abstract class AbstractStandardNode extends AbstractNode {
 
 		if (headY == 0 || headY == height - 1) {
 			score[0] -= BattleSnakeConstant.BORDER_SCORE;
-			;
 		}
 
 	}
