@@ -15,28 +15,30 @@ import com.fasterxml.jackson.databind.JsonNode;
  * challenge. Nothing to see here. It a mess, it gonna stay like that.
  * 
  * Probably still in API v0, and this is mostly short test, hand made, without
- * thinking. Please save yourself and don't look at this code
- * If you do, you'll may find  funny comments, and crazy code...
+ * thinking. Please save yourself and don't look at this code If you do, you'll
+ * may find funny comments, and crazy code...
  * 
  * @author carl.lajeunesse
  * @version Summer 2020
  */
 public final class Challenger extends AbstractSnakeAI {
 	/**
-	 * max turn after which the snake will goes up...   What I was thinking  never a snake will survive 10 millions turn.
-	 * 10 millions * 0.5 second by turn = almost 58 days  that will be a very long game.
+	 * max turn after which the snake will goes up... What I was thinking never a
+	 * snake will survive 10 millions turn. 10 millions * 0.5 second by turn =
+	 * almost 58 days that will be a very long game.
 	 */
 	private transient int maxturn = 9_999_999;
 
 	/**
-	 *  This is the path that challenger use in solo challenge. always trying to stay in square < than its length
+	 * This is the path that challenger use in solo challenge. always trying to stay
+	 * in square smaller than its length
 	 */
 	private static final int BOARD_ARRAY[][] = { { 4, 4, 44, 38, 36, 33, 34 }, { 4, 4, 43, 37, 35, 31, 32 },
 			{ 6, 5, 49, 47, 48, 29, 30 }, { 8, 7, 39, 41, 45, 27, 28 }, { 10, 9, 40, 42, 46, 25, 26 },
 			{ 12, 11, 15, 17, 19, 21, 23 }, { 14, 13, 16, 18, 20, 22, 24 } };
 
 	/**
-	 * Use board path to keep four snake alive.  Why did I did that...
+	 * Use board path to keep four snake alive. Why did I did that...
 	 */
 	private static final int FOURALIVE[][] = { { 0, 1, 2, 3 }, { 43, 6, 5, 4 }, { 42, 7, 8, 9 }, { 41, 12, 11, 10 },
 			{ 40, 13, 14, 15 }, { 39, 18, 17, 16 }, { 38, 19, 20, 21 }, { 37, 24, 23, 22 }, { 36, 25, 26, 27 },
@@ -47,7 +49,7 @@ public final class Challenger extends AbstractSnakeAI {
 	 * Use in the floodfill method.
 	 */
 	private static final int FLOODENEMYGAP = 25;
-	
+
 	/**
 	 * board path use in duo mode for the 1st snake
 	 */
@@ -58,7 +60,8 @@ public final class Challenger extends AbstractSnakeAI {
 			{ 16, 15, 51, 39, 40, 57, 99, 99, 99, 99, 99 }, { 18, 17, 55, 35, 36, 56, 99, 99, 99, 99, 99 },
 			{ 20, 19, 23, 25, 27, 57, 99, 99, 99, 99, 99 }, { 22, 21, 24, 26, 28, 56, 99, 99, 99, 99, 99 } };
 	/**
-	 *  board path use in duo mode for the 2nd snake, but doesn't seem right... yep I often copy-paste...
+	 * board path use in duo mode for the 2nd snake, but doesn't seem right... yep I
+	 * often copy-paste...
 	 */
 	private static final int DUO_BOARD2[][] = { { 6, 6, 29, 31, 99, 56, 27, 28, 29, 31, 33 },
 			{ 6, 6, 30, 32, 99, 57, 25, 26, 30, 32, 34 }, { 6, 6, 54, 38, 99, 56, 23, 24, 49, 36, 35 },
@@ -68,47 +71,48 @@ public final class Challenger extends AbstractSnakeAI {
 			{ 20, 19, 23, 25, 99, 57, 10, 8, 6, 6, 6 }, { 22, 21, 24, 26, 99, 56, 9, 7, 6, 6, 6 } };
 
 	/**
-	 * Look like board_array[][]  but minus 4   why  I don't know...   I'm already lost.
+	 * Look like board_array[][] but minus 4 why I don't know... I'm already lost.
 	 */
 	private static final int pathMoveArray[][] = { { 0, 0, 4, 5, 6, 7, 8 }, { 0, 0, 3, 12, 11, 10, 9 },
 			{ 0, 0, 2, 13, 14, 15, 16 }, { 0, 0, 1, 26, 25, 24, 17 }, { 0, 39, 40, 27, 28, 23, 18 },
 			{ 37, 38, 33, 32, 29, 22, 19 }, { 36, 35, 34, 31, 30, 21, 20 } };
 	/**
-	 * in duo mode, snakes was dying quick,  so instead of changing the code or the behavior, this variable is used just to lie the length of snake to itself.
+	 * in duo mode, snakes was dying quick, so instead of changing the code or the
+	 * behavior, this variable is used just to lie the length of snake to itself.
 	 */
 	private static final int DOULENGTH = 14;
-	
+
 	/**
 	 * I think it was to check if the snake have reach top-left corner once
 	 */
 	private transient boolean startL;
-	
+
 	/**
 	 * I think it was to check if the second snake have reach top-left corner once
 	 */
 	private transient boolean startR;
-	
+
 	/**
 	 * I think I was messing around
 	 */
 	private transient boolean secondL;
 	/**
-	 *  I think clearly  that is not longer comprehensive
+	 * I think clearly that is not longer comprehensive
 	 */
 	private transient boolean secondR;
 	/**
-	 *  A third  time ?!  What the f....
+	 * A third time ?! What the f....
 	 */
 	private transient boolean thirdL;
-	
+
 	/**
-	 *  Ok I surrender...  I'm going to asylum
+	 * Ok I surrender... I'm going to asylum
 	 */
 	private transient boolean thirdR;
-	
-	
+
 	/**
-	 * boolean to check path follow ( I know that does't help to understand, but I can't do better)
+	 * boolean to check path follow ( I know that does't help to understand, but I
+	 * can't do better)
 	 */
 	private transient boolean pathFollow;
 	/**
@@ -131,7 +135,7 @@ public final class Challenger extends AbstractSnakeAI {
 	private transient boolean keepFourSnakeAlive;
 
 	/**
-	 * Oh that one I know !!  the heigth of the board...  (yes I know the typo)
+	 * Oh that one I know !! the heigth of the board... (yes I know the typo)
 	 */
 	private transient int heigth;
 
@@ -167,7 +171,6 @@ public final class Challenger extends AbstractSnakeAI {
 			// load a properties file
 			prop.load(input);
 
-			
 			maxturn = Integer.parseInt(prop.getProperty("maxturn"));
 			pathFollow = Boolean.parseBoolean(prop.getProperty("path"));
 
@@ -176,13 +179,12 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
-	
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 
 		Map<String, String> response = new ConcurrentHashMap<>();
 
-		//Trying to figure which challenge it is and choose the right method
+		// Trying to figure which challenge it is and choose the right method
 		if (moveRequest.get(BOARD).get(SNAKES).size() == 1) {
 			if (moveRequest.get(BOARD).get(BODY).asInt() == 7) {
 				response = soloChallenge(moveRequest);
@@ -223,8 +225,9 @@ public final class Challenger extends AbstractSnakeAI {
 
 	/**
 	 * Keep 4 snakes live challenge
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> keepFourSnakeAliveChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
@@ -243,7 +246,6 @@ public final class Challenger extends AbstractSnakeAI {
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 
-		
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
 		if (snakey >= (snakeId + 1) * 4) {
@@ -276,8 +278,9 @@ public final class Challenger extends AbstractSnakeAI {
 
 	/**
 	 * 4 corner challenge
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> fourCornerChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
@@ -407,9 +410,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Keep 3 snakes live challenge,  yes I kill the 3rd snakes.  Don't ask why...
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Keep 3 snakes live challenge, yes I kill the 3rd snakes. Don't ask why...
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> tripleChallenge(final JsonNode moveRequest) {
 		Map<String, String> response = new ConcurrentHashMap<>();
@@ -426,9 +430,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Keep 3 snakes live challenge  , player 2 move
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Keep 3 snakes live challenge , player 2 move
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> moveTriplePlayer2(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
@@ -542,9 +547,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Keep 3 snakes live challenge  , player 1 move
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Keep 3 snakes live challenge , player 1 move
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> moveTriplePlayer1(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
@@ -657,8 +663,9 @@ public final class Challenger extends AbstractSnakeAI {
 
 	/**
 	 * Duo challenge
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> duoChallenge(final JsonNode moveRequest) {
 		Map<String, String> response;
@@ -666,7 +673,7 @@ public final class Challenger extends AbstractSnakeAI {
 		final String id2 = moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText();
 
 		if (id1.compareTo(id2) < 0) {
-			
+
 			id1 = id2;
 		}
 
@@ -680,9 +687,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Duo challenge  player 1  (Mario !!)
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Duo challenge player 1 (Mario !!)
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> movePlayer1(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -810,9 +818,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Duo challenge  player 2 ( Luigi !!)
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Duo challenge player 2 ( Luigi !!)
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> movePlayer2(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -942,9 +951,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * All by myself!!  -Celine Dion    
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * All by myself!! -Celine Dion
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> soloChallenge(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -1050,9 +1060,10 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Path move...  also as clear as   move path
-	 * @param moveRequest Move request 
-	 * @return  map response for battlesnake
+	 * Path move... also as clear as move path
+	 * 
+	 * @param moveRequest Move request
+	 * @return map response for battlesnake
 	 */
 	private Map<String, String> pathMove(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -1060,7 +1071,8 @@ public final class Challenger extends AbstractSnakeAI {
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
 		final int foodSize = moveRequest.get(BOARD).get("food").size();
-		if (foodSize == 39 && pathMoveArray[snakex][snakey + 1] == 1 && moveRequest.get(YOU).withArray(BODY).size() == 10) {
+		if (foodSize == 39 && pathMoveArray[snakex][snakey + 1] == 1
+				&& moveRequest.get(YOU).withArray(BODY).size() == 10) {
 			flag = true;
 		}
 
@@ -1091,7 +1103,8 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * This snake was in API v0  so ...  that why
+	 * This snake was in API v0 so ... that why
+	 * 
 	 * @return snake info
 	 */
 	@Override
@@ -1110,7 +1123,9 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Recursive function to "flood"  value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with the same value
+	 * Recursive function to "flood" value. It's assign the value to the board [ x ]
+	 * [ y] then recall this function for adjacent square with the same value
+	 * 
 	 * @param posX  the X position
 	 * @param posY  the Y position
 	 * @param value the value to assign
@@ -1138,7 +1153,9 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Recursive function to "flood" positive value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - 1
+	 * Recursive function to "flood" positive value. It's assign the value to the
+	 * board [ x ] [ y] then recall this function for adjacent square with value - 1
+	 * 
 	 * @param posX  the X position
 	 * @param posY  the Y position
 	 * @param value the value to assign
@@ -1166,8 +1183,9 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Scan the space[][]  to count empty square. And put square[][] back to 0 value
-	 * why count 5000...   I don't remember
+	 * Scan the space[][] to count empty square. And put square[][] back to 0 value
+	 * why count 5000... I don't remember
+	 * 
 	 * @return the count of empty space
 	 */
 	private int count5000() {
@@ -1183,9 +1201,12 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 		return countNb;
 	}
-	
+
 	/**
-	 * Recursive function to "flood" negative  value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - "floodEnemyGap "
+	 * Recursive function to "flood" negative value. It's assign the value to the
+	 * board [ x ] [ y] then recall this function for adjacent square with value -
+	 * "floodEnemyGap "
+	 * 
 	 * @param posX  the X position
 	 * @param posY  the Y position
 	 * @param value the value to assign
@@ -1214,6 +1235,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 	/**
 	 * Returns snake info neede by battlesnake
+	 * 
 	 * @return map of info
 	 */
 	public static Map<String, String> getInfo() {
