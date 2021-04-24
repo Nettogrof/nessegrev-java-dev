@@ -16,29 +16,50 @@ import com.fasterxml.jackson.databind.JsonNode;
  * 
  * Probably still in API v0, and this is mostly short test, hand made, without
  * thinking. Please save yourself and don't look at this code
+ * If you do, you'll may find  funny comments, and crazy code...
  * 
  * @author carl.lajeunesse
  * @version Summer 2020
  */
 public final class Challenger extends AbstractSnakeAI {
+	/**
+	 * max turn after which the snake will goes up...   What I was thinking  never a snake will survive 10 millions turn.
+	 * 10 millions * 0.5 second by turn = almost 58 days  that will be a very long game.
+	 */
 	private transient int maxturn = 9_999_999;
 
+	/**
+	 *  This is the path that challenger use in solo challenge. always trying to stay in square < than its length
+	 */
 	private static final int BOARD_ARRAY[][] = { { 4, 4, 44, 38, 36, 33, 34 }, { 4, 4, 43, 37, 35, 31, 32 },
 			{ 6, 5, 49, 47, 48, 29, 30 }, { 8, 7, 39, 41, 45, 27, 28 }, { 10, 9, 40, 42, 46, 25, 26 },
 			{ 12, 11, 15, 17, 19, 21, 23 }, { 14, 13, 16, 18, 20, 22, 24 } };
 
+	/**
+	 * Use board path to keep four snake alive.  Why did I did that...
+	 */
 	private static final int FOURALIVE[][] = { { 0, 1, 2, 3 }, { 43, 6, 5, 4 }, { 42, 7, 8, 9 }, { 41, 12, 11, 10 },
 			{ 40, 13, 14, 15 }, { 39, 18, 17, 16 }, { 38, 19, 20, 21 }, { 37, 24, 23, 22 }, { 36, 25, 26, 27 },
 			{ 35, 32, 31, 28 }, { 34, 33, 30, 29 }
 
 	};
+	/**
+	 * Use in the floodfill method.
+	 */
 	private static final int FLOODENEMYGAP = 25;
+	
+	/**
+	 * board path use in duo mode for the 1st snake
+	 */
 	private static final int DUO_BOARD[][] = { { 6, 6, 29, 31, 33, 56, 99, 99, 99, 99, 99 },
 			{ 6, 6, 30, 32, 34, 57, 99, 99, 99, 99, 99 }, { 6, 6, 54, 38, 37, 56, 99, 99, 99, 99, 99 },
 			{ 8, 7, 53, 42, 41, 57, 99, 99, 99, 99, 99 }, { 10, 9, 49, 47, 48, 56, 99, 99, 99, 99, 99 },
 			{ 12, 11, 50, 45, 46, 57, 99, 99, 99, 99, 99 }, { 14, 13, 52, 43, 44, 56, 99, 99, 99, 99, 99 },
 			{ 16, 15, 51, 39, 40, 57, 99, 99, 99, 99, 99 }, { 18, 17, 55, 35, 36, 56, 99, 99, 99, 99, 99 },
 			{ 20, 19, 23, 25, 27, 57, 99, 99, 99, 99, 99 }, { 22, 21, 24, 26, 28, 56, 99, 99, 99, 99, 99 } };
+	/**
+	 *  board path use in duo mode for the 2nd snake, but doesn't seem right... yep I often copy-paste...
+	 */
 	private static final int DUO_BOARD2[][] = { { 6, 6, 29, 31, 99, 56, 27, 28, 29, 31, 33 },
 			{ 6, 6, 30, 32, 99, 57, 25, 26, 30, 32, 34 }, { 6, 6, 54, 38, 99, 56, 23, 24, 49, 36, 35 },
 			{ 8, 7, 53, 42, 99, 57, 21, 22, 50, 38, 37 }, { 10, 9, 49, 47, 99, 56, 19, 20, 51, 40, 39 },
@@ -46,28 +67,82 @@ public final class Challenger extends AbstractSnakeAI {
 			{ 16, 15, 51, 39, 99, 57, 13, 14, 54, 46, 45 }, { 18, 17, 55, 35, 99, 56, 11, 12, 55, 48, 49 },
 			{ 20, 19, 23, 25, 99, 57, 10, 8, 6, 6, 6 }, { 22, 21, 24, 26, 99, 56, 9, 7, 6, 6, 6 } };
 
+	/**
+	 * Look like board_array[][]  but minus 4   why  I don't know...   I'm already lost.
+	 */
 	private static final int pathMoveArray[][] = { { 0, 0, 4, 5, 6, 7, 8 }, { 0, 0, 3, 12, 11, 10, 9 },
 			{ 0, 0, 2, 13, 14, 15, 16 }, { 0, 0, 1, 26, 25, 24, 17 }, { 0, 39, 40, 27, 28, 23, 18 },
 			{ 37, 38, 33, 32, 29, 22, 19 }, { 36, 35, 34, 31, 30, 21, 20 } };
+	/**
+	 * in duo mode, snakes was dying quick,  so instead of changing the code or the behavior, this variable is used just to lie the length of snake to itself.
+	 */
 	private static final int DOULENGTH = 14;
+	
+	/**
+	 * I think it was to check if the snake have reach top-left corner once
+	 */
 	private transient boolean startL;
+	
+	/**
+	 * I think it was to check if the second snake have reach top-left corner once
+	 */
 	private transient boolean startR;
+	
+	/**
+	 * I think I was messing around
+	 */
 	private transient boolean secondL;
+	/**
+	 *  I think clearly  that is not longer comprehensive
+	 */
 	private transient boolean secondR;
+	/**
+	 *  A third  time ?!  What the f....
+	 */
 	private transient boolean thirdL;
+	
+	/**
+	 *  Ok I surrender...  I'm going to asylum
+	 */
 	private transient boolean thirdR;
+	
+	
+	/**
+	 * boolean to check path follow ( I know that does't help to understand, but I can't do better)
+	 */
 	private transient boolean pathFollow;
+	/**
+	 * a flag that check if the board was full of food
+	 */
 	private transient boolean flag;
 
+	/**
+	 * is it the mirror Challenge
+	 */
 	private transient boolean mirrorChallenge;
+	/**
+	 * Triple snakes !!
+	 */
 	private transient boolean battleTriple;
 
+	/**
+	 * Keep all four snake alive challenge
+	 */
 	private transient boolean keepFourSnakeAlive;
 
+	/**
+	 * Oh that one I know !!  the heigth of the board...  (yes I know the typo)
+	 */
 	private transient int heigth;
 
+	/**
+	 * Another easy one , the width of the board
+	 */
 	private transient int width;
 
+	/**
+	 * Board array of free space...
+	 */
 	private transient int[][] space;
 
 	/**
@@ -146,6 +221,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Keep 4 snakes live challenge
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> keepFourSnakeAliveChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
 		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
@@ -194,6 +274,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * 4 corner challenge
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> fourCornerChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
 		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
@@ -321,6 +406,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Keep 3 snakes live challenge,  yes I kill the 3rd snakes.  Don't ask why...
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> tripleChallenge(final JsonNode moveRequest) {
 		Map<String, String> response = new ConcurrentHashMap<>();
 		if (moveRequest.get(BOARD).get(SNAKES).get(0).get("id").asText()
@@ -335,6 +425,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Keep 3 snakes live challenge  , player 2 move
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> moveTriplePlayer2(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
 		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
@@ -446,6 +541,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Keep 3 snakes live challenge  , player 1 move
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> moveTriplePlayer1(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
 		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
@@ -555,10 +655,15 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Duo challenge
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> duoChallenge(final JsonNode moveRequest) {
 		Map<String, String> response;
 		String id1 = moveRequest.get(BOARD).get(SNAKES).get(0).get("id").asText();
-		String id2 = moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText();
+		final String id2 = moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText();
 
 		if (id1.compareTo(id2) < 0) {
 			
@@ -574,6 +679,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Duo challenge  player 1  (Mario !!)
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> movePlayer1(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
@@ -699,6 +809,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Duo challenge  player 2 ( Luigi !!)
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> movePlayer2(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
@@ -826,6 +941,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * All by myself!!  -Celine Dion    
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> soloChallenge(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
@@ -929,6 +1049,11 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * Path move...  also as clear as   move path
+	 * @param moveRequest Move request 
+	 * @return  map response for battlesnake
+	 */
 	private Map<String, String> pathMove(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
