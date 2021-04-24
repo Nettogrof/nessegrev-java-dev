@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.treesearch.AlphaSearch;
+import ai.nettogrof.battlesnake.treesearch.alpha.AlphaNode;
+import ai.nettogrof.battlesnake.treesearch.alpha.AlphaSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.node.AlphaNode;
 
 /**
  * Alpha snake. This class is the "Nessegrev-Alpha" snake on Battlesnake.This

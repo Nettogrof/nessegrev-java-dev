@@ -1,4 +1,4 @@
-package ai.nettogrof.battlesnake.treesearch;
+package ai.nettogrof.battlesnake.treesearch.alpha;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,17 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.node.AlphaNode;
+import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardSearch;
 
-public class AlphaSearch  extends AbstractSearch  {
+/**
+ *  This alpha search, used in the alpha snake 
+ * 
+ * @deprecated Alpha snake is so buggy and won't be develop anymore
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
+@Deprecated
+public class AlphaSearch  extends AbstractStandardSearch  {
 
 	protected transient AlphaNode root;
 	
@@ -18,20 +26,33 @@ public class AlphaSearch  extends AbstractSearch  {
 	protected transient int timeout=250;
 	protected transient long startTime;
 	
-	
-	public AlphaSearch(final AlphaNode root,final int width,final int heigth) {
+	/**
+	 * Constructor used to expand the tree once.
+	 * @param root Root node 
+	 * @param width Board width
+	 * @param height Board height
+	 */
+	public AlphaSearch(final AlphaNode root,final int width,final int height) {
 		super();
 		this.root=root;
 		this.width=width;
-		this.heigth=heigth ;
+		this.heigth=height ;
 		
 	}
 	
-	public AlphaSearch(final AlphaNode root, final int width, final int heigth, final long starttime, final int timeout) {
+	/**
+	 * Constructor used to expand to do the tree search.
+	 * @param root Root node 
+	 * @param width Board width
+	 * @param height Board height
+	 * @param starttime  starting time for the search in millisecond  
+	 * @param timeout  the time limit to run the search 
+	 */
+	public AlphaSearch(final AlphaNode root, final int width, final int height, final long starttime, final int timeout) {
 		super();
 		this.root=root;
 		this.width=width;
-		this.heigth=heigth ;
+		this.heigth=height ;
 		this.startTime=starttime;
 		this.timeout = timeout;
 	}
@@ -41,7 +62,7 @@ public class AlphaSearch  extends AbstractSearch  {
 	public void run() {
 		
 		while(cont && System.currentTimeMillis()-startTime < timeout && root.getScoreRatio()>0) {
-			final AlphaNode bestNode = root.getBestChild(true);
+			final AbstractNode bestNode = root.getBestChild(true);
 			
 			
 			generateChild(bestNode);
@@ -58,6 +79,10 @@ public class AlphaSearch  extends AbstractSearch  {
 		generateChild(root);
 	}
 	
+	/**
+	 * Expand / Generate child from a node
+	 * @param node the alphatnode to be expand
+	 */
 	protected void generateChild(final AlphaNode node) {
 		
 		final List<SnakeInfo> current = node.getSnakes();
@@ -72,17 +97,12 @@ public class AlphaSearch  extends AbstractSearch  {
 			node.score[0]=0;
 			
 		}else {
-			
-			
 			moves=merge(moves,alphaMove);
 			for (int i = 1 ;  i < nbSnake;i++) {
 				moves=merge(moves, generateSnakeInfoDestination(current.get(i), node,current));
 			}
 			
-			
-			
-			
-			clean(moves);
+			checkHeadToHead(moves);
 			boolean stillAlive = false;
 			for(final ArrayList<SnakeInfo> move: moves) {
 				if ( move.get(0).isAlive()) {
@@ -106,6 +126,14 @@ public class AlphaSearch  extends AbstractSearch  {
 	
 	
 	
+	/**
+	 * Generate all moves possible for a snake given.
+	 * @param snakeInfo snake info 
+	 * @param foodInfo Food Information 
+	 * @param all List os all snakes
+	 * @param hazard Hazard Info
+	 * @return List of snake info
+	 */
 	protected ArrayList<SnakeInfo> multi(final SnakeInfo snakeInfo, final FoodInfo foodInfo, final ArrayList<SnakeInfo> all, final HazardInfo hazard) {
 		final ArrayList<SnakeInfo> ret = new ArrayList<>();
 
@@ -144,8 +172,7 @@ public class AlphaSearch  extends AbstractSearch  {
 				newhead += 1;
 				if (freeSpace(newhead, all)) {
 					ret.add(new SnakeInfo(snakeInfo,newhead, foodInfo.isFood(newhead), hazard.isHazard(newhead)));
-				}
-				
+				}				
 			}
 		}
 
@@ -153,7 +180,12 @@ public class AlphaSearch  extends AbstractSearch  {
 	}
 	
 
-
+	/**
+	 * Check if the snake can move on the square
+	 * @param square  the int sqaure
+	 * @param allSnakes List of all snakes
+	 * @return boolean free to move on that square
+	 */	
 	protected boolean freeSpace(final int square,final List<SnakeInfo> snakeInfo) {
 		boolean free = true;
 		for (int i = 0; i < snakeInfo.size() && free; i++) {
@@ -162,15 +194,18 @@ public class AlphaSearch  extends AbstractSearch  {
 		return free;
 	}
 	
-	protected  void clean(final List<ArrayList<SnakeInfo>> moves) {
+	/**
+	 * This method check if there's a head-to-head collision.
+	 * Shorter snake die,  and if both snakes are the same length both dies
+	 * @param moves  List of all possible move 
+	 */
+	@Override
+	protected  void checkHeadToHead(final List<ArrayList<SnakeInfo>> moves) {
 		for(final ArrayList<SnakeInfo> move: moves) {
 			
 			if (move.size() >1) {
 				for ( int i = 0 ; i < move.size()-1; i++) {
 					for (int j =i+1 ; j <move.size();j++) {
-						
-						
-
 						if (move.get(i).getHead()==move.get(j).getHead()) {
 							final int firstSnakeLength = move.get(i).getSnakeBody().size();
 							final int secondSnakeLength = move.get(i).getSnakeBody().size();
@@ -183,18 +218,20 @@ public class AlphaSearch  extends AbstractSearch  {
 								move.get(j).die();
 							}else {
 								move.get(i).die();
-							}
+							}  // There's a lot of stairs here
 						}
 					}
 				}
-				
 			}
-			
-			
 		}
-		
 	}
 
+	/**
+	 * This method merge previous snake move (list) , with new snake move
+	 * @param list  Previous list 
+	 * @param snakeInfo New move list 
+	 * @return List of List of move
+	 */
 	@SuppressWarnings("unchecked")
 	protected  List<ArrayList<SnakeInfo>> merge (final ArrayList<ArrayList<SnakeInfo>> list,final ArrayList<SnakeInfo> snakeInfo) {
 		if (snakeInfo.isEmpty()) {
@@ -208,45 +245,19 @@ public class AlphaSearch  extends AbstractSearch  {
 					ArrayList<SnakeInfo> m = new ArrayList<>();
 					m.add(info);
 					ret.add(m);
-				
 			}
 			
 		}else {
 			for (final SnakeInfo info : snakeInfo) {
-				// 2 3 4
-			//	ArrayList<SnakeInfo> m = new ArrayList<SnakeInfo>();
 				for(final ArrayList<SnakeInfo> s : list){
-					// 0 1 
 					final ArrayList<SnakeInfo> newSnakeInfo = (ArrayList<SnakeInfo>) s.clone();
 					
 					newSnakeInfo.add(info);
 					ret.add(newSnakeInfo);
 				}
-				
-			  // ret.add() 0 2
 			}
 		}
-		
-		
 		return ret;
-	}
-
-	@Override
-	protected void kill(final SnakeInfo death,final List<SnakeInfo> all) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected SnakeInfo createSnakeInfo(final SnakeInfo snakeInfo,final int newHead,final AbstractNode node) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected boolean freeSpace(final int square,final List<SnakeInfo> all,final SnakeInfo yourSnake) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
