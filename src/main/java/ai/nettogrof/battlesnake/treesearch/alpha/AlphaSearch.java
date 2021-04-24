@@ -19,12 +19,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardSearc
 @Deprecated
 public class AlphaSearch  extends AbstractStandardSearch  {
 
-	protected transient AlphaNode root;
-	
-	protected transient int heigth;
-	protected transient int width;
-	protected transient int timeout=250;
-	protected transient long startTime;
 	
 	/**
 	 * Constructor used to expand the tree once.
@@ -36,7 +30,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 		super();
 		this.root=root;
 		this.width=width;
-		this.heigth=height ;
+		this.height=height ;
 		
 	}
 	
@@ -52,7 +46,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 		super();
 		this.root=root;
 		this.width=width;
-		this.heigth=height ;
+		this.height=height ;
 		this.startTime=starttime;
 		this.timeout = timeout;
 	}
@@ -62,7 +56,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 	public void run() {
 		
 		while(cont && System.currentTimeMillis()-startTime < timeout && root.getScoreRatio()>0) {
-			final AbstractNode bestNode = root.getBestChild(true);
+			final AbstractNode bestNode = ((AlphaNode) root).getBestChild(true);
 			
 			
 			generateChild(bestNode);
@@ -167,7 +161,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 				newhead += 1;
 			}
 
-			if (head%1000 < heigth - 1) {
+			if (head%1000 < height - 1) {
 				
 				newhead += 1;
 				if (freeSpace(newhead, all)) {
@@ -183,7 +177,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 	/**
 	 * Check if the snake can move on the square
 	 * @param square  the int sqaure
-	 * @param allSnakes List of all snakes
+	 * @param snakeInfo List of all snakes
 	 * @return boolean free to move on that square
 	 */	
 	protected boolean freeSpace(final int square,final List<SnakeInfo> snakeInfo) {

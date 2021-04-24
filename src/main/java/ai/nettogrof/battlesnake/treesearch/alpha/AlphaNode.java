@@ -35,7 +35,7 @@ public class AlphaNode extends AbstractNode {
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes List of snakes
-	 * @param food   Food information
+	 * @param foodInfo   Food information
 	 */
 	public AlphaNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo) {
 		super();
@@ -57,7 +57,7 @@ public class AlphaNode extends AbstractNode {
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes List of snakes
-	 * @param food   Food information
+	 * @param foodInfo   Food information
 	 */
 	public AlphaNode(final SnakeInfo[] snakes, final FoodInfo foodInfo) {
 		super();
@@ -83,7 +83,7 @@ public class AlphaNode extends AbstractNode {
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes single snakes
-	 * @param food   Food information
+	 * @param foodInfo   Food information
 	 */
 	public AlphaNode(final SnakeInfo snakes, final FoodInfo foodInfo) {
 		super();
