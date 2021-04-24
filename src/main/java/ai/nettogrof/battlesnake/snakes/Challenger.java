@@ -46,7 +46,7 @@ public final class Challenger extends AbstractSnakeAI {
 			{ 16, 15, 51, 39, 99, 57, 13, 14, 54, 46, 45 }, { 18, 17, 55, 35, 99, 56, 11, 12, 55, 48, 49 },
 			{ 20, 19, 23, 25, 99, 57, 10, 8, 6, 6, 6 }, { 22, 21, 24, 26, 99, 56, 9, 7, 6, 6, 6 } };
 
-	private static final int GO[][] = { { 0, 0, 4, 5, 6, 7, 8 }, { 0, 0, 3, 12, 11, 10, 9 },
+	private static final int pathMoveArray[][] = { { 0, 0, 4, 5, 6, 7, 8 }, { 0, 0, 3, 12, 11, 10, 9 },
 			{ 0, 0, 2, 13, 14, 15, 16 }, { 0, 0, 1, 26, 25, 24, 17 }, { 0, 39, 40, 27, 28, 23, 18 },
 			{ 37, 38, 33, 32, 29, 22, 19 }, { 36, 35, 34, 31, 30, 21, 20 } };
 	private static final int DOULENGTH = 14;
@@ -62,7 +62,7 @@ public final class Challenger extends AbstractSnakeAI {
 	private transient boolean mirrorChallenge;
 	private transient boolean battleTriple;
 
-	private transient boolean keepFourBattlesnakeAlive;
+	private transient boolean keepFourSnakeAlive;
 
 	private transient int heigth;
 
@@ -77,6 +77,11 @@ public final class Challenger extends AbstractSnakeAI {
 		super();
 	}
 
+	/**
+	 * Constructor with the gameid,
+	 * 
+	 * @param gameId String of the gameid field receive in the start request.
+	 */
 	public Challenger(final String gameId) {
 		super(gameId);
 		setFileConfig();
@@ -87,8 +92,7 @@ public final class Challenger extends AbstractSnakeAI {
 			// load a properties file
 			prop.load(input);
 
-			// get the property value and print it out
-			// apiversion= Integer.parseInt(prop.getProperty("apiversion"));
+			
 			maxturn = Integer.parseInt(prop.getProperty("maxturn"));
 			pathFollow = Boolean.parseBoolean(prop.getProperty("path"));
 
@@ -97,15 +101,13 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
-	protected String getFileConfig() {
-		return fileConfig;
-	}
-
+	
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 
 		Map<String, String> response = new ConcurrentHashMap<>();
 
+		//Trying to figure which challenge it is and choose the right method
 		if (moveRequest.get(BOARD).get(SNAKES).size() == 1) {
 			if (moveRequest.get(BOARD).get(BODY).asInt() == 7) {
 				response = soloChallenge(moveRequest);
@@ -117,7 +119,7 @@ public final class Challenger extends AbstractSnakeAI {
 				response = duoChallenge(moveRequest);
 			} else if (battleTriple) {
 				response = tripleChallenge(moveRequest);
-			} else if (keepFourBattlesnakeAlive) {
+			} else if (keepFourSnakeAlive) {
 				response = keepFourSnakeAliveChallenge(moveRequest);
 			} else {
 				int count = 0;
@@ -135,7 +137,7 @@ public final class Challenger extends AbstractSnakeAI {
 					battleTriple = true;
 					response = tripleChallenge(moveRequest);
 				} else if (count == 4) {
-					keepFourBattlesnakeAlive = true;
+					keepFourSnakeAlive = true;
 					response = keepFourSnakeAliveChallenge(moveRequest);
 				}
 			}
@@ -161,9 +163,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 
-		response.put("shout", moveRequest.get(YOU).get("id").asText());
-
-		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
+		
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
 		if (snakey >= (snakeId + 1) * 4) {
@@ -173,7 +173,7 @@ public final class Challenger extends AbstractSnakeAI {
 			response.put(MOVESTR, DOWN);
 			return response;
 		}
-
+		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
 		int pos = FOURALIVE[snakex][snakey % 4];
 		if (pos == 43) {
 			pos = -1;
@@ -194,7 +194,7 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
-	private Map<String, String> fourCornerChallenge(JsonNode moveRequest) {
+	private Map<String, String> fourCornerChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
 		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 		int[][] board = new int[width][heigth];
@@ -266,7 +266,7 @@ public final class Challenger extends AbstractSnakeAI {
 			res = "continue";
 		}
 
-		if (res.equalsIgnoreCase("continue")) {
+		if ("continue".equalsIgnoreCase(res)) {
 			res = UPWARD;
 			double result[] = { 0.5, 0.5, 0.5, 0.5 };
 			if (snakey == 0) {
@@ -466,9 +466,9 @@ public final class Challenger extends AbstractSnakeAI {
 				space[x][y] = 0;
 			}
 		}
-		final String id = moveRequest.get(YOU).get("id").asText();
+		final String snakeId = moveRequest.get(YOU).get("id").asText();
 		moveRequest.get(BOARD).withArray(SNAKES).forEach(s -> {
-			if (!s.get("id").asText().equals(id)) {
+			if (!s.get("id").asText().equals(snakeId)) {
 				floodEnemy(s.get(BODY).get(0).get("x").asInt(), s.get(BODY).get(0).get("y").asInt(), -35, board);
 			}
 			s.withArray(BODY).forEach(c -> {
@@ -556,15 +556,13 @@ public final class Challenger extends AbstractSnakeAI {
 	}
 
 	private Map<String, String> duoChallenge(final JsonNode moveRequest) {
-		Map<String, String> response = new ConcurrentHashMap<>();
+		Map<String, String> response;
 		String id1 = moveRequest.get(BOARD).get(SNAKES).get(0).get("id").asText();
 		String id2 = moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText();
 
 		if (id1.compareTo(id2) < 0) {
-			String temp = id1;
+			
 			id1 = id2;
-			id2 = temp;
-
 		}
 
 		if (id1.equals(moveRequest.get(YOU).get("id").asText())) {
@@ -937,18 +935,18 @@ public final class Challenger extends AbstractSnakeAI {
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
 		final int foodSize = moveRequest.get(BOARD).get("food").size();
-		if (foodSize == 39 && GO[snakex][snakey + 1] == 1 && moveRequest.get(YOU).withArray(BODY).size() == 10) {
+		if (foodSize == 39 && pathMoveArray[snakex][snakey + 1] == 1 && moveRequest.get(YOU).withArray(BODY).size() == 10) {
 			flag = true;
 		}
 
 		if (flag) {
-			final int snakeId = GO[snakex][snakey] + 1;
+			final int snakeId = pathMoveArray[snakex][snakey] + 1;
 
-			if (snakex < 6 && GO[snakex + 1][snakey] == snakeId) {
+			if (snakex < 6 && pathMoveArray[snakex + 1][snakey] == snakeId) {
 				response.put(MOVESTR, RIGHT);
-			} else if (snakex > 0 && GO[snakex - 1][snakey] == snakeId) {
+			} else if (snakex > 0 && pathMoveArray[snakex - 1][snakey] == snakeId) {
 				response.put(MOVESTR, LEFT);
-			} else if (snakey < 6 && GO[snakex][snakey + 1] == snakeId) {
+			} else if (snakey < 6 && pathMoveArray[snakex][snakey + 1] == snakeId) {
 				response.put(MOVESTR, DOWN);
 			} else {
 				response.put(MOVESTR, UPWARD);
@@ -967,6 +965,10 @@ public final class Challenger extends AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * This snake was in API v0  so ...  that why
+	 * @return snake info
+	 */
 	@Override
 	public Map<String, String> start(final JsonNode startRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
@@ -982,11 +984,13 @@ public final class Challenger extends AbstractSnakeAI {
 
 	}
 
-	@Override
-	public Map<String, String> end(final JsonNode endRequest) {
-		return null;
-	}
-
+	/**
+	 * Recursive function to "flood"  value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with the same value
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
+	 */
 	private void computeSpace(final int posX, final int posY, final int value, final int[][] board) {
 		if (board[posX][posY] >= 0 && space[posX][posY] < 1000) {
 			space[posX][posY] = value;
@@ -1008,6 +1012,13 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
+	/**
+	 * Recursive function to "flood" positive value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - 1
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
+	 */
 	private void flood(final int posX, final int posY, final int value, final int[][] board) {
 		if (board[posX][posY] >= 0 && board[posX][posY] < value) {
 			board[posX][posY] = value > board[posX][posY] ? value : board[posX][posY];
@@ -1029,6 +1040,11 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
+	/**
+	 * Scan the space[][]  to count empty square. And put square[][] back to 0 value
+	 * why count 5000...   I don't remember
+	 * @return the count of empty space
+	 */
 	private int count5000() {
 		int countNb = 0;
 		for (int x = 0; x < width; x++) {
@@ -1042,7 +1058,14 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 		return countNb;
 	}
-
+	
+	/**
+	 * Recursive function to "flood" negative  value. It's assign the value to the board [ x ] [ y]  then recall this function for adjacent square with value - "floodEnemyGap "
+	 * @param posX  the X position
+	 * @param posY  the Y position
+	 * @param value the value to assign
+	 * @param board the board (array of value)
+	 */
 	private void floodEnemy(final int posX, final int posY, final int value, final int[][] board) {
 		if (board[posX][posY] > -90) {
 			board[posX][posY] = value < board[posX][posY] ? value : board[posX][posY];
@@ -1064,6 +1087,10 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
+	/**
+	 * Returns snake info neede by battlesnake
+	 * @return map of info
+	 */
 	public static Map<String, String> getInfo() {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
