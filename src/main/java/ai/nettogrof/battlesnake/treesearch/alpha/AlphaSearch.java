@@ -134,7 +134,7 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 	 * @param hazard Hazard Info
 	 * @return List of snake info
 	 */
-	protected ArrayList<SnakeInfo> multi(final SnakeInfo snakeInfo, final FoodInfo foodInfo, final ArrayList<SnakeInfo> all, final HazardInfo hazard) {
+	protected List<SnakeInfo> multi(final SnakeInfo snakeInfo, final FoodInfo foodInfo, final ArrayList<SnakeInfo> all, final HazardInfo hazard) {
 		final ArrayList<SnakeInfo> ret = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {
@@ -242,9 +242,9 @@ public class AlphaSearch  extends AbstractStandardSearch  {
 			
 			for (final SnakeInfo info: snakeInfo) {
 				
-					ArrayList<SnakeInfo> m = new ArrayList<>();
-					m.add(info);
-					ret.add(m);
+					final ArrayList<SnakeInfo> move = new ArrayList<>();
+					move.add(info);
+					ret.add(move);
 			}
 			
 		}else {
