@@ -115,9 +115,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
 			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
 			nodelist.add(root);
-			while (expand(nodelist, expandedlist)) {
-				//TODO  Code smell awful around here
-			}
+			expand(nodelist, expandedlist);
 
 			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
 
@@ -166,24 +164,28 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 * Expand the base list of node until reaching cpu limit
 	 * @param nodelist List of node that gonna to "rooted" in multithread search
 	 * @param expandedlist List of node to be updated after search
-	 * @return boolean if the list have been expand
 	 */
-	private boolean expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) {
-		if (nodelist.isEmpty()) {
-			return false;
-		}
-		new RegularSearch(nodelist.get(0), width, height).generateChild();
-		if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
-			final AbstractNode oldroot = nodelist.remove(0);
-			expandedlist.add(oldroot);
-
-			for (final AbstractNode c : oldroot.getChild()) {
-				nodelist.add(c);
-
+	private void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) {
+		boolean cont = true;
+		while (cont) {
+			if (nodelist.isEmpty()) {
+				cont = false;
+			}else {
+				new RegularSearch(nodelist.get(0), width, height).generateChild();
+				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
+					final AbstractNode oldroot = nodelist.remove(0);
+					expandedlist.add(oldroot);
+		
+					for (final AbstractNode c : oldroot.getChild()) {
+						nodelist.add(c);
+					}
+					cont = true;
+				}else {
+					cont = false;
+				}
 			}
-			return true;
 		}
-		return false;
+		
 
 	}
 
