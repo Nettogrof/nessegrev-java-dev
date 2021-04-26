@@ -59,11 +59,13 @@ public class SnakeInfo implements Cloneable {
 	 * 
 	 * @param snakeInfo Json field
 	 */
-	public SnakeInfo(JsonNode snakeInfo) {
+	public SnakeInfo(final JsonNode snakeInfo) {
 		snakeBody = new TIntArrayList();
 		health = snakeInfo.get("health").asInt();
 		name = snakeInfo.get("name").asText();
-		setSnake(snakeInfo);
+		for (final JsonNode bodyPos : snakeInfo.get("body")) {
+			snakeBody.add(bodyPos.get("x").asInt() * 1000 + bodyPos.get("y").asInt());
+		}
 	}
 
 	/**

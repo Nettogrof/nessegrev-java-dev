@@ -33,7 +33,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * 
 	 * @param snakeInfo Json field
 	 */
-	public SnakeInfoSquad(JsonNode snakeInfo) {
+	public SnakeInfoSquad(final JsonNode snakeInfo) {
 		super(snakeInfo);
 		if (snakeInfo.get("squad") != null) {
 			squad = snakeInfo.get("squad").asText();
