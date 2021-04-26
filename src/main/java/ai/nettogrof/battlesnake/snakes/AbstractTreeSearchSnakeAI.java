@@ -34,6 +34,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Boolean if multithread is use by the snake value define by the config file
 	 */
 	protected transient boolean multiThread;
+	
+	/**
+	 * Number of cpu / thread permit
+	 */
+	protected transient int cpu_limit = 2;
+
 
 	/**
 	 * String that gonna be shout by the snake if snake is in a losing position.

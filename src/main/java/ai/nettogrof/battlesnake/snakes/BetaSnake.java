@@ -15,11 +15,13 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
+import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.standard.RegularSearch;
 
 /**
  * Beta snake. This class is the "Nessegrev-Beta" snake on Battlesnake. This
@@ -66,7 +68,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			final Properties prop = new Properties();
 
 			prop.load(input);
-
+			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
 		} catch (IOException ex) {
 			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
 		}
@@ -116,11 +118,11 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	private void treeSearch(final AbstractRoyaleNode root, final Long startTime) {
 
 		if (multiThread && root.getSnakes().size() < 5) {
-
-			// multithread
-			// TODO check gamma to do a better way to split for multithread
-			new RoyaleSearch(root, width, height).generateChild();
-
+			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
+			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
+			nodelist.add(root);
+			expand(nodelist, expandedlist);
+			
 			final ArrayList<RoyaleSearch> listSearchThread = new ArrayList<>();
 
 			for (final AbstractNode c : root.getChild()) {
@@ -143,21 +145,52 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 				log.atSevere().log("Thread?!", e);
 			}
 
-			for (final RoyaleSearch search : listSearchThread) {
+			for (final AbstractSearch search : listSearchThread) {
 				search.stopSearching();
+
 			}
 
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				log.atSevere().log("Thread?!", e);
+			for (final AbstractNode c : nodelist) {
+				c.updateScore();
 			}
-			root.updateScore();
+
+			for (int i = expandedlist.size() - 1; i >= 0; i--) {
+				expandedlist.get(i).updateScore();
+			}
+			log.atInfo().log("Nb Thread: " + nodelist.size());
 		} else {
 			// Single thread
 			final RoyaleSearch main = new RoyaleSearch(root, width, height, startTime, timeout - minusbuffer);
 			main.run();
 		}
+
+	}
+	
+	/**
+	 * Expand the base list of node until reaching cpu limit
+	 * @param nodelist List of node that gonna to "rooted" in multithread search
+	 * @param expandedlist List of node to be updated after search
+	 */
+	private void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) {
+		boolean cont = true;
+		while (cont) {
+			if (nodelist.isEmpty()) {
+				cont = false;
+			}else {
+				new RegularSearch(nodelist.get(0), width, height).generateChild();
+				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
+					final AbstractNode oldroot = nodelist.remove(0);
+					expandedlist.add(oldroot);
+		
+					for (final AbstractNode c : oldroot.getChild()) {
+						nodelist.add(c);
+					}
+					cont = true;
+				}else {
+					cont = false;
+				}
+			}
+		}	
 
 	}
 
@@ -205,21 +238,11 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode betaSnake) {
 		final List<SnakeInfo> snakes = new ArrayList<>();
-		snakes.add(new SnakeInfo());
-		snakes.get(0).setHealth(betaSnake.get(HEALTH).asInt());
-		snakes.get(0).setName(betaSnake.get(NAME).asText());
-		snakes.get(0).setSnake(betaSnake);
-
+		snakes.add(new SnakeInfo(betaSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
-
-				// TODO seem that could be improve
-				final SnakeInfo otherSnake = new SnakeInfo();
-				otherSnake.setHealth(currentSnake.get(HEALTH).asInt());
-				otherSnake.setName(currentSnake.get(NAME).asText());
-				otherSnake.setSnake(currentSnake);
-				snakes.add(otherSnake);
+				snakes.add( new SnakeInfo(currentSnake));
 			}
 		}
 		return snakes;
@@ -227,7 +250,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	/**
-	 * Generate all snakes info from the json board field
+	 * Generate all snakes info from the json board field for squad mode
 	 * 
 	 * @param board     Json board field
 	 * @param betaSnake Json you field
@@ -236,27 +259,11 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	private List<SnakeInfo> genSnakeInfoSquad(final JsonNode board, final JsonNode betaSnake) {
 		// TODO Refactoring this method, way too similar to the other genSnakeInfo
 		final List<SnakeInfo> snakes = new ArrayList<>();
-		snakes.add(new SnakeInfoSquad());
-		snakes.get(0).setHealth(betaSnake.get(HEALTH).asInt());
-		snakes.get(0).setName(betaSnake.get(NAME).asText());
-		snakes.get(0).setSnake(betaSnake);
-		if (betaSnake.get(SQUAD) != null) {
-			((SnakeInfoSquad) snakes.get(0)).setSquad(betaSnake.get(SQUAD).asText());
-		}
-
+		snakes.add(new SnakeInfoSquad(betaSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
-				final SnakeInfoSquad otherSnake = new SnakeInfoSquad();
-				otherSnake.setHealth(currentSnake.get(HEALTH).asInt());
-				otherSnake.setName(currentSnake.get(NAME).asText());
-				otherSnake.setSnake(currentSnake);
-				if (currentSnake.get(SQUAD) == null) {
-					otherSnake.setSquad("");
-				} else {
-					otherSnake.setSquad(currentSnake.get(SQUAD).asText());
-				}
-				snakes.add(otherSnake);
+				snakes.add(new SnakeInfoSquad(currentSnake));
 			}
 		}
 		return snakes;

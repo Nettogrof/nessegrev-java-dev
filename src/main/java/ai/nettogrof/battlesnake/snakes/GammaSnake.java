@@ -40,11 +40,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	protected static String fileConfig = "Gamma.properties";
 
-	/**
-	 * Number of cpu / thread permit
-	 */
-	private transient int cpu_limit = 2;
-
+	
 	/**
 	 * Basic / unused constructor
 	 */
