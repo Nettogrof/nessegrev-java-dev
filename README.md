@@ -1,4 +1,4 @@
-![GitHub](https://img.shields.io/github/license/nettogrof/nessegrev-java-dev) ![GitHub issues](https://img.shields.io/github/issues/nettogrof/nessegrev-java-dev) ![GitHub last commit](https://img.shields.io/github/last-commit/nettogrof/nessegrev-java-dev)
+![GitHub](https://img.shields.io/github/license/nettogrof/nessegrev-java-dev) ![GitHub issues](https://img.shields.io/github/issues/nettogrof/nessegrev-java-dev) ![GitHub last commit](https://img.shields.io/github/last-commit/nettogrof/nessegrev-java-dev) [![DeepSource](https://deepsource.io/gh/Nettogrof/nessegrev-java-dev.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/Nettogrof/nessegrev-java-dev/?ref=repository-badge)
 
 # Battlesnake Nessegrev snakes
 
