@@ -382,8 +382,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final TFloatArrayList right = new TFloatArrayList();
 		fillList(upward, down, left, right, root);
 		logValue(upward, down, left, right);
-		Float choiceValue = new Float(-1);
-		Integer move = 0;
+		float choiceValue = -1f;
+		int move = 0;
 		final int head = root.getSnakes().get(0).getHead();
 		if (!upward.isEmpty() && upward.min() > choiceValue) {
 			choiceValue = upward.min();

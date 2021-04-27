@@ -203,15 +203,10 @@ public final class Snake {
 			switch (snakeType) {
 			case "FloodFill":
 				return FloodFillSnake.getInfo();
-
-			// case "RL" : bots.put(startRequest.get("game").get("id").asText(), new
-			// RL(LOG,startRequest.get("game").get("id").asText() ));break;
-			// case "Neural" : bots.put(startRequest.get("game").get("id").asText(), new
-			// NNSnake(LOG,startRequest.get("game").get("id").asText() ));break;
 			case "Alpha":
 				return AlphaSnake.getInfo();
 			case "Beta":
-				return new BetaSnake().getInfo();
+				return BetaSnake.getInfo();
 			case "Gamma":
 				return GammaSnake.getInfo();
 			case "Basic":
