@@ -22,7 +22,9 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * 
  * @author carl.lajeunesse
  * @version Fall 2020
+ * @deprecated
  */
+@Deprecated
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
@@ -43,7 +45,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public AlphaSnake(final String gameId) {
-		super(gameId);
+		super(gameId,fileConfig);
 
 	}
 
@@ -230,6 +232,12 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	protected void setFileConfig() {
 		fileConfig = "Alpha.properties";
 
+	}
+
+	@Override
+	protected AbstractNode genRoot(JsonNode moveRequest) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

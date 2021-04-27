@@ -211,7 +211,7 @@ public final class Snake {
 			case "Alpha":
 				return AlphaSnake.getInfo();
 			case "Beta":
-				return BetaSnake.getInfo();
+				return new BetaSnake().getInfo();
 			case "Gamma":
 				return GammaSnake.getInfo();
 			case "Basic":

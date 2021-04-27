@@ -20,6 +20,13 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
  */
 public class SquadSearch extends AbstractSquadSearch {
 
+	
+	/**
+	 * Basic constructor
+	 */
+	public SquadSearch() {
+		super();
+	}
 	/**
 	 * Constructor used to expand the tree once.
 	 * 

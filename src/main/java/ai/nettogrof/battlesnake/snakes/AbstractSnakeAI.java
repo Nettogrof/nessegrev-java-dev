@@ -150,6 +150,7 @@ public abstract class AbstractSnakeAI {
 	 */
 	public Map<String, String> start(final JsonNode startRequest){
 		final Map<String, String> response = new ConcurrentHashMap<>();
+		response.put("ok","ok");
 		return response;
 	}
 
@@ -195,7 +196,7 @@ public abstract class AbstractSnakeAI {
 	 * 
 	 * @return the config filename
 	 */
-	protected String getFileConfig() {
+	protected static String getFileConfig() {
 		return fileConfig;
 	}
 

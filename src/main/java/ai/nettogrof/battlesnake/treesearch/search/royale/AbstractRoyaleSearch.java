@@ -44,7 +44,7 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	 * @param starttime  starting time for the search in millisecond  
 	 * @param timeout  the time limit to run the search 
 	 */
-	public AbstractRoyaleSearch(final AbstractRoyaleNode root,final  int width,final  int height,final  long starttime,final  int timeout) {
+	public AbstractRoyaleSearch(final AbstractNode root,final  int width,final  int height,final  long starttime,final  int timeout) {
 		super();
 		this.root=root;
 		this.width=width;

@@ -21,13 +21,21 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  */
 public class RoyaleSearch extends AbstractRoyaleSearch {
 
+	
+	/**
+	 * Basic constructor
+	 */
+	public RoyaleSearch() {
+		super();
+	}
+	
 	/**
 	 * Constructor used to expand the tree once.
 	 * @param root Root node 
 	 * @param width Board width
 	 * @param height Board height
 	 */
-	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int height) {
+	public RoyaleSearch(final AbstractNode root, final int width, final int height) {
 		super(root, width, height);
 
 	}
@@ -40,12 +48,11 @@ public class RoyaleSearch extends AbstractRoyaleSearch {
 	 * @param starttime  starting time for the search in millisecond  
 	 * @param timeout  the time limit to run the search 
 	 */
-	public RoyaleSearch(final AbstractRoyaleNode root, final int width, final int height, final long starttime,
+	public RoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout) {
 		super(root, width, height, starttime, timeout);
 	}
 
-	
 	@Override
 	public void run() {
 		for (int i = 0; i < 12; i++) {

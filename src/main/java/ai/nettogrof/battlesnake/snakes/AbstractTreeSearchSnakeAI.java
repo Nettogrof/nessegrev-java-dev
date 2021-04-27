@@ -4,15 +4,21 @@ import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.list.array.TFloatArrayList;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.squad.SquadSearch;
+import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
 /**
  * Any snake using a tree-search could extend this abstract class it contains
@@ -28,7 +34,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
 	 */
-	public int timeout = 300;
+	public transient int timeout = 300;
 
 	/**
 	 * Boolean if multithread is use by the snake value define by the config file
@@ -72,6 +78,16 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * the previous "tree"
 	 */
 	protected transient AbstractNode lastRoot;
+	
+	/**
+	 * Ruleset that this game is played.
+	 */
+	protected transient String ruleset = "standard";
+	
+	/**
+	 * What kind of search that gonne be use
+	 */
+	protected transient Constructor<? extends AbstractSearch> searchType;
 
 	/**
 	 * Basic and unsed constructor
@@ -85,10 +101,10 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractTreeSearchSnakeAI(final String gameId) {
+	public AbstractTreeSearchSnakeAI(final String gameId, String fileConfig) {
 		super(gameId);
-		setFileConfig();
-		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
+	
+		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
 			final Properties prop = new Properties();
 
@@ -99,7 +115,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
 			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
-
+			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
+			
 			final Random rand = new Random();
 			losing = BattleSnakeConstant.LOSE_SHOUT[rand.nextInt(BattleSnakeConstant.LOSE_SHOUT.length)];
 			winning = BattleSnakeConstant.WIN_SHOUT[rand.nextInt(BattleSnakeConstant.WIN_SHOUT.length)];
@@ -115,8 +132,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return map of info for Battlesnake
 	 */
 	public static Map<String, String> getInfo() {
+		
 		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
+		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
 
 			final Properties prop = new Properties();
 
@@ -137,6 +155,119 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 		return response;
 	}
+	
+	/**
+	 * This method will be call on each move request receive by BattleSnake
+	 * 
+	 * @param moveRequest Json call received
+	 * @return map of field to be return to battlesnake, example "move" , "up"
+	 */
+	@Override
+	public Map<String, String> move(final JsonNode moveRequest) {
+
+		if (moveRequest.get(YOU).has("head")) {
+			apiversion = 1;
+		}
+
+		final Long startTime = System.currentTimeMillis();
+
+		final AbstractNode root = genRoot(moveRequest);
+		root.exp = true;
+		try {
+			treeSearch(root, startTime);
+		} catch (ReflectiveOperationException e) {
+			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
+		}
+
+		AbstractNode winner = chooseBestMove(root);
+
+		if (winner == null && !root.getChild().isEmpty()) {
+			winner = root.getChild().get(0);
+		}
+
+		lastRoot = root;
+
+		log.atInfo().log("Turn:" + moveRequest.get(TURN).asInt() + " nb nodes" + root.getChildCount() + "  time: "
+				+ (System.currentTimeMillis() - startTime));
+		nodeTotalCount += root.getChildCount();
+		timeTotal += System.currentTimeMillis() - startTime;
+		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
+	}
+
+
+	/**
+	 * Execute the tree search
+	 * 
+	 * @param root      The root node
+	 * @param startTime The start time in millisecond
+	 * @throws ReflectiveOperationException 
+	 */
+	protected void treeSearch(final AbstractNode root, final Long startTime) throws ReflectiveOperationException {
+	
+		if (multiThread && root.getSnakes().size() < 5) {
+			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
+			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
+			nodelist.add(root);
+			expand(nodelist, expandedlist);
+
+			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
+
+			for (final AbstractNode c : root.getChild()) {
+				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer));
+
+			}
+			
+			for (final AbstractSearch s : listSearchThread) {
+				startThread(s);
+			}
+
+			try {
+
+				Thread.sleep(timeout - minusbuffer - 50);
+			} catch (InterruptedException e) {
+
+				log.atSevere().log("Thread?!", e);
+			}
+
+			for (final AbstractSearch search : listSearchThread) {
+				search.stopSearching();
+
+			}
+
+			for (final AbstractNode c : nodelist) {
+				c.updateScore();
+			}
+
+			for (int i = expandedlist.size() - 1; i >= 0; i--) {
+				expandedlist.get(i).updateScore();
+			}
+			log.atInfo().log("Nb Thread: " + nodelist.size());
+		} else {
+			// Single thread
+			
+			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
+			main.run();
+
+		}
+
+	}
+
+	/**
+	 * Start the thread search
+	 * @param search the search to be executed
+	 */
+	private void startThread(final AbstractSearch search) {
+		final Thread subThread = new Thread(search);
+		subThread.setPriority(3);
+		subThread.start();
+	}
+	/**
+	 * Generate the root node based on the /move request
+	 * 
+	 * @param moveRequest Json request
+	 * @return AbstractNode the root
+	 */
+	protected abstract AbstractNode genRoot(JsonNode moveRequest);
 
 	/**
 	 * This method will be call at the end of the game, can be override if you want
@@ -243,9 +374,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return the best AbstractNode
 	 */
 	protected AbstractNode chooseBestMove(final AbstractNode root) {
-
-		final List<AbstractNode> children = root.getChild();
-
 		final TFloatArrayList upward = new TFloatArrayList();
 		final TFloatArrayList down = new TFloatArrayList();
 		final TFloatArrayList left = new TFloatArrayList();
@@ -277,7 +405,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 		
 
-		for (final AbstractNode child : children) {
+		for (final AbstractNode child : root.getChild()) {
 			if (child.getScoreRatio() == choiceValue && child.getSnakes().get(0).isAlive()
 					&& move == child.getSnakes().get(0).getHead()) {
 				return child;
@@ -346,7 +474,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
-			if (node.getChild().get(i).exp) {
+			//if (node.getChild().get(i).exp) {
 				final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
 				if (move / 1000 < head / 1000) {
@@ -358,7 +486,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 				} else {
 					upward.add(node.getChild().get(i).getScoreRatio());
 				}
-			}
+			//}
 		}
 		
 	}
@@ -430,6 +558,61 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 		response.put(MOVESTR, res);
 		return response;
+	}
+	
+	/**
+	 * This method generate the search type
+	 * 
+	 * @return Abstract Search
+	 * @throws ReflectiveOperationException 
+	 */
+	protected Constructor<? extends AbstractSearch> genSearchType()
+			throws ReflectiveOperationException {
+		
+		switch (ruleset) {
+		case "standard":
+			return MctsSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+			
+			
+			
+		case "royale":
+			return RoyaleSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+		case "squad":
+			return SquadSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+		default:
+			return RoyaleSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+		}
+
+	}
+	
+	/**
+	 * Expand the base list of node until reaching cpu limit
+	 * 
+	 * @param nodelist     List of node that gonna to "rooted" in multithread search
+	 * @param expandedlist List of node to be updated after search
+	 * @throws ReflectiveOperationException
+	 */
+	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) throws ReflectiveOperationException {
+		boolean cont = true;
+		while (cont) {
+			if (nodelist.isEmpty()) {
+				cont = false;
+			} else {
+				searchType.newInstance(nodelist.get(0), width, height, 0, 0).generateChild();
+				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
+					final AbstractNode oldroot = nodelist.remove(0);
+					expandedlist.add(oldroot);
+
+					for (final AbstractNode c : oldroot.getChild()) {
+						nodelist.add(c);
+					}
+					cont = true;
+				} else {
+					cont = false;
+				}
+			}
+		}
+
 	}
 
 }

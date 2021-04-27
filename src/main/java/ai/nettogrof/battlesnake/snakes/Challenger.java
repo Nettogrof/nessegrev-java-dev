@@ -18,9 +18,11 @@ import com.fasterxml.jackson.databind.JsonNode;
  * thinking. Please save yourself and don't look at this code If you do, you'll
  * may find funny comments, and crazy code...
  * 
+ * @deprecated  Old apiv0 and badly coded
  * @author carl.lajeunesse
- * @version Summer 2020
+ * @version Summer 2020  
  */
+@Deprecated
 public final class Challenger extends AbstractSnakeAI {
 	/**
 	 * max turn after which the snake will goes up... What I was thinking never a

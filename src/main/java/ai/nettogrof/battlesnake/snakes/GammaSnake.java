@@ -14,13 +14,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.DuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
-import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
-import ai.nettogrof.battlesnake.treesearch.search.standard.RegularSearch;
 
 /**
  * Gamma snake. This class is the "Nessegrev-gamma" snake on Battlesnake. This
@@ -54,166 +51,35 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public GammaSnake(final String gameId) {
-		super(gameId);
+		super(gameId, fileConfig);
 
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
-
-			final Properties prop = new Properties();
-
-			prop.load(input);
-			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
 
 	}
 
-	/**
-	 * This method will be call on each move request receive by BattleSnake
-	 * 
-	 * @param moveRequest Json call received
-	 * @return map of field to be return to battlesnake, example "move" , "up"
-	 */
-	@Override
-	public Map<String, String> move(final JsonNode moveRequest) {
-
-		if (moveRequest.get(YOU).has("head")) {
-			apiversion = 1;
-		}
-
-		final long startTime = System.currentTimeMillis();
-		final AbstractNode root = genRoot(moveRequest);
-		treeSearch(root, startTime);
-
-		AbstractNode winner = chooseBestMove(root);
-
-		if (winner == null && !root.getChild().isEmpty()) {
-			winner = root.getChild().get(0);
-		}
-
-		lastRoot = root;
-
-		log.atInfo().log("Turn:" + moveRequest.get(TURN).asInt() + " nb nodes" + root.getChildCount() + "  time: "
-				+ (System.currentTimeMillis() - startTime));
-		nodeTotalCount += root.getChildCount();
-		timeTotal += System.currentTimeMillis() - startTime;
-		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
-	}
-
-	/**
-	 * Execute the tree search
-	 * 
-	 * @param root      The root node
-	 * @param startTime The start time in millisecond
-	 */
-	private void treeSearch(final AbstractNode root, final long startTime) {
-		if (multiThread) {
-			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
-			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
-			nodelist.add(root);
-			expand(nodelist, expandedlist);
-
-			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
-
-			for (final AbstractNode c : nodelist) {
-				listSearchThread
-						.add(new MctsSearch(c, width, height, System.currentTimeMillis(), timeout - minusbuffer));
-
-			}
-
-			for (final AbstractSearch s : listSearchThread) {
-				final Thread subThread = new Thread(s);
-				subThread.setPriority(3);
-				subThread.start();
-
-			}
-
-			try {
-
-				Thread.sleep(timeout - minusbuffer - 50);
-			} catch (InterruptedException e) {
-
-				log.atSevere().log("Thread?!", e);
-			}
-
-			for (final AbstractSearch search : listSearchThread) {
-				search.stopSearching();
-
-			}
-
-			for (final AbstractNode c : nodelist) {
-				c.updateScore();
-			}
-
-			for (int i = expandedlist.size() - 1; i >= 0; i--) {
-				expandedlist.get(i).updateScore();
-			}
-			log.atInfo().log("Nb Thread: " + nodelist.size());
-		} else {
-			final MctsSearch main = new MctsSearch(root, width, height, startTime, timeout - minusbuffer);
-			main.run();
-		}
-
-	}
-
-	/**
-	 * Expand the base list of node until reaching cpu limit
-	 * @param nodelist List of node that gonna to "rooted" in multithread search
-	 * @param expandedlist List of node to be updated after search
-	 */
-	private void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) {
-		boolean cont = true;
-		while (cont) {
-			if (nodelist.isEmpty()) {
-				cont = false;
-			}else {
-				new RegularSearch(nodelist.get(0), width, height).generateChild();
-				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
-					final AbstractNode oldroot = nodelist.remove(0);
-					expandedlist.add(oldroot);
 		
-					for (final AbstractNode c : oldroot.getChild()) {
-						nodelist.add(c);
-					}
-					cont = true;
-				}else {
-					cont = false;
-				}
-			}
-		}
-		
-
-	}
-
+	
 	/**
 	 * Generate the root node based on the /move request
 	 * 
 	 * @param moveRequest Json request
 	 * @return AbstractNode the root
 	 */
-	private AbstractNode genRoot(final JsonNode moveRequest) {
+	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
 
-		final ArrayList<SnakeInfo> snakes = new ArrayList<>();
+		final List<SnakeInfo> snakes = new ArrayList<>();
 		final JsonNode gammaSnake = moveRequest.get(YOU);
 
-		snakes.add(new SnakeInfo());
-		snakes.get(0).setHealth((short) (gammaSnake.get(HEALTH).asInt()));
-		snakes.get(0).setName(gammaSnake.get(NAME).asText());
-		snakes.get(0).setSnake(gammaSnake);
-
+		
+		snakes.add(new SnakeInfo(gammaSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(gammaSnake.get("id").asText())) {
-				final SnakeInfo otherSnake = new SnakeInfo();
-				otherSnake.setHealth((short) currentSnake.get(HEALTH).asInt());
-				otherSnake.setName(currentSnake.get(NAME).asText());
-				otherSnake.setSnake(currentSnake);
-
-				snakes.add(otherSnake);
+				snakes.add(new SnakeInfo(currentSnake));
 			}
 		}
+		
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
@@ -275,6 +141,12 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			apiversion = 1;
 			timeout = startRequest.get("game").get("timeout").asInt();
 		}
+		ruleset = "standard"; //Gamma Snake, play only standard game.
+		try {
+			searchType = genSearchType();
+		} catch (ReflectiveOperationException e) {
+			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
+		}
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		response.put("color", "#216121");
@@ -282,6 +154,35 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
 		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+
+		return response;
+	}
+	
+	/**
+	 * Return the infos need by Battlesnake when receive a (root GET /) request 
+	 * @return map of info for Battlesnake
+	 */
+	public static Map<String, String> getInfo() {
+		
+		final Map<String, String> response = new ConcurrentHashMap<>();
+		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
+
+			final Properties prop = new Properties();
+
+			// load a properties file
+			prop.load(input);
+
+			// get the property value and print it out
+
+			response.put("apiversion", prop.getProperty("apiversion"));
+			response.put("head", prop.getProperty("headType"));
+			response.put("tail", prop.getProperty("tailType"));
+			response.put("color", prop.getProperty("color"));
+			response.put("author", "nettogrof");
+
+		} catch (IOException ex) {
+			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
+		}
 
 		return response;
 	}
@@ -297,34 +198,9 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 
 	
 	/*
-	 * public static void main(String args[]) { final TFloatArrayList right = new
-	 * TFloatArrayList(); System.out.println(right.min());
-	 * 
-	 * /*ObjectMapper json = new ObjectMapper();
-	 * 
-	 * //String test =
-	 * " {\"game\":{\"id\":\"35bfc780-a042-4f7d-a830-e3f387c3263e\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":132,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_XPcwfQmpdGt3jqbDjWcMCCg3\",\"name\":\"BlackHole\",\"latency\":\"410\",\"health\":77,\"body\":[{\"x\":9,\"y\":3},{\"x\":9,\"y\":2},{\"x\":9,\"y\":1},{\"x\":8,\"y\":1},{\"x\":8,\"y\":2},{\"x\":7,\"y\":2},{\"x\":6,\"y\":2},{\"x\":5,\"y\":2},{\"x\":5,\"y\":3},{\"x\":6,\"y\":3},{\"x\":6,\"y\":4},{\"x\":6,\"y\":5}],\"head\":{\"x\":9,\"y\":3},\"length\":12,\"shout\":\"When life gives you melons, you're probably dyslexic.\"},{\"id\":\"gs_wRvwhDHSMVg7QHX9b6C46J69\",\"name\":\"Nessegrev-gamma\",\"latency\":\"341\",\"health\":93,\"body\":[{\"x\":10,\"y\":4},{\"x\":10,\"y\":3},{\"x\":10,\"y\":2},{\"x\":10,\"y\":1},{\"x\":10,\"y\":0},{\"x\":9,\"y\":0},{\"x\":8,\"y\":0},{\"x\":7,\"y\":0},{\"x\":6,\"y\":0},{\"x\":5,\"y\":0}],\"head\":{\"x\":10,\"y\":4},\"length\":10,\"shout\":\"\"}],\"food\":[{\"x\":4,\"y\":10},{\"x\":7,\"y\":9},{\"x\":4,\"y\":8},{\"x\":0,\"y\":10},{\"x\":0,\"y\":9},{\"x\":2,\"y\":8},{\"x\":10,\"y\":6},{\"x\":9,\"y\":4},{\"x\":9,\"y\":9},{\"x\":10,\"y\":5},{\"x\":8,\"y\":7}],\"hazards\":[]},\"you\":{\"id\":\"gs_wRvwhDHSMVg7QHX9b6C46J69\",\"name\":\"Nessegrev-gamma\",\"latency\":\"341\",\"health\":93,\"body\":[{\"x\":10,\"y\":4},{\"x\":10,\"y\":3},{\"x\":10,\"y\":2},{\"x\":10,\"y\":1},{\"x\":10,\"y\":0},{\"x\":9,\"y\":0},{\"x\":8,\"y\":0},{\"x\":7,\"y\":0},{\"x\":6,\"y\":0},{\"x\":5,\"y\":0}],\"head\":{\"x\":10,\"y\":4},\"length\":10,\"shout\":\"\"}}"
-	 * ; String test =
-	 * "{\"game\":{\"id\":\"1fb065e8-b77e-47db-9b69-c11f02a3206c\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":0,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":9,\"y\":5},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":5},\"length\":3,\"shout\":\"\"},{\"id\":\"gs_fdpFF9kyG68rGjcQmjYtBrHS\",\"name\":\"Nessegrev-BadlyCoded\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":1,\"y\":9},{\"x\":1,\"y\":9},{\"x\":1,\"y\":9}],\"head\":{\"x\":1,\"y\":9},\"length\":3,\"shout\":\"\"}],\"food\":[{\"x\":8,\"y\":4},{\"x\":2,\"y\":8},{\"x\":5,\"y\":5}],\"hazards\":[]},\"you\":{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"\",\"health\":100,\"body\":[{\"x\":9,\"y\":5},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":5},\"length\":3,\"shout\":\"\"}}";
-	 * String second=
-	 * "{\"game\":{\"id\":\"1fb065e8-b77e-47db-9b69-c11f02a3206c\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":1,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"354\",\"health\":99,\"body\":[{\"x\":9,\"y\":4},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":4},\"length\":3,\"shout\":\"\"},{\"id\":\"gs_fdpFF9kyG68rGjcQmjYtBrHS\",\"name\":\"Nessegrev-BadlyCoded\",\"latency\":\"0\",\"health\":99,\"body\":[{\"x\":1,\"y\":10},{\"x\":1,\"y\":9},{\"x\":1,\"y\":9}],\"head\":{\"x\":1,\"y\":10},\"length\":3,\"shout\":\"\"}],\"food\":[{\"x\":8,\"y\":4},{\"x\":2,\"y\":8},{\"x\":5,\"y\":5}],\"hazards\":[]},\"you\":{\"id\":\"gs_gvVx6kDbPT7xy3FDpqgGdrBH\",\"name\":\"Nessegrev-gamma\",\"latency\":\"354\",\"health\":99,\"body\":[{\"x\":9,\"y\":4},{\"x\":9,\"y\":5},{\"x\":9,\"y\":5}],\"head\":{\"x\":9,\"y\":4},\"length\":3,\"shout\":\"\"}}";
-	 * try { JsonNode parsedRequest = json.readTree(test); int size =
-	 * parsedRequest.get("board").get("height").asInt(); GammaSnake t = new
-	 * GammaSnake("test");
-	 * 
-	 * t.heigth = size; t.width = size; t.timeout =5500; t.multiThread = true;
-	 * 
-	 * 
-	 * try { Thread.sleep(1); } catch (InterruptedException e) {
-	 * 
-	 * e.printStackTrace(); } System.out.println("Starting for real"); //for(int i =
-	 * 0 ; i < 5 ; i++) { System.out.println(t.move(parsedRequest)); try {
-	 * Thread.sleep(510); } catch (InterruptedException e) {
-	 * 
-	 * e.printStackTrace(); } System.out.println(t.move(json.readTree(second))); //}
-	 * } catch (IOException e) {
-	 * 
-	 * e.printStackTrace(); } }
+	  public static void main(String args[]) { 
+		  MctsSearch.class.getConstructor(parameterTypes)
+	  }
 	 */
 
 }
