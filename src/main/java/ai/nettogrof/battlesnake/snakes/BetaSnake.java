@@ -275,7 +275,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			  try {
 				t.searchType=t.genSearchType();
 			} catch (ReflectiveOperationException e1) {
-				// TODO Auto-generated catch block
+			
 				e1.printStackTrace();
 			}
 			  try { Thread.sleep(100); 

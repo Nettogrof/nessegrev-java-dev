@@ -236,7 +236,6 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
 	@Override
 	protected AbstractNode genRoot(JsonNode moveRequest) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

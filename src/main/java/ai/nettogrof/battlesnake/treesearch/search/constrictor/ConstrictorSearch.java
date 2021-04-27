@@ -87,7 +87,7 @@ public class ConstrictorSearch extends AbstractMCTS {
 	}
 
 	@Override
-	protected void kill(SnakeInfo death, List<SnakeInfo> all) {
+	protected void kill(final SnakeInfo death,final List<SnakeInfo> all) {
 		death.die();
 
 	}

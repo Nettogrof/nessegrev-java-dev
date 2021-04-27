@@ -101,6 +101,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Constructor with the gameid,
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
+	 * @param fileConfig  String to the config file
 	 */
 	public AbstractTreeSearchSnakeAI(final String gameId, String fileConfig) {
 		super(gameId);
@@ -201,7 +202,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
-	 * @throws ReflectiveOperationException 
+	 * @throws ReflectiveOperationException  In case of invalid search type
 	 */
 	protected void treeSearch(final AbstractNode root, final Long startTime) throws ReflectiveOperationException {
 	
@@ -565,7 +566,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * This method generate the search type
 	 * 
 	 * @return Abstract Search
-	 * @throws ReflectiveOperationException 
+	 * @throws ReflectiveOperationException  In case of invalid search type
 	 */
 	protected Constructor<? extends AbstractSearch> genSearchType()
 			throws ReflectiveOperationException {
@@ -590,7 +591,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param nodelist     List of node that gonna to "rooted" in multithread search
 	 * @param expandedlist List of node to be updated after search
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) throws ReflectiveOperationException {
 		boolean cont = true;

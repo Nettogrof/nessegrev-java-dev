@@ -4,6 +4,7 @@ ai.nettogrof.battlesnake.snakes.common
 ai.nettogrof.battlesnake.treesearch
 ai.nettogrof.battlesnake.treesearch.alpha
 ai.nettogrof.battlesnake.treesearch.node
+ai.nettogrof.battlesnake.treesearch.search.constrictor
 ai.nettogrof.battlesnake.treesearch.search.royale
 ai.nettogrof.battlesnake.treesearch.search.squad
 ai.nettogrof.battlesnake.treesearch.search.standard
