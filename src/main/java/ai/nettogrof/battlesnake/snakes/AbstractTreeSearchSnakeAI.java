@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.search.constrictor.ConstrictorSearch;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
 import ai.nettogrof.battlesnake.treesearch.search.squad.SquadSearch;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
@@ -337,7 +338,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return the best AbstractNode
 	 */
 	protected AbstractNode lastChance(final AbstractNode root) {
-
+		//TODO In losing posisition snake should choose the path with a the best chance, not the longest child
 		AbstractNode ret = null;
 		float score = 0;
 		for (final AbstractNode c : root.getChild()) {
@@ -572,9 +573,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		switch (ruleset) {
 		case "standard":
 			return MctsSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
-			
-			
-			
+		case "constrictor":
+			return ConstrictorSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);		
 		case "royale":
 			return RoyaleSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
 		case "squad":

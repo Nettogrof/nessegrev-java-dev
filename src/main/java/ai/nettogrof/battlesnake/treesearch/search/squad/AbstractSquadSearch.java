@@ -4,7 +4,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
-import ai.nettogrof.battlesnake.treesearch.AbstractBestFirstSearch;
+import ai.nettogrof.battlesnake.treesearch.AbstractMCTS;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -14,7 +14,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * @author carl.lajeunesse
  * @version Spring 2021
  */
-public abstract class AbstractSquadSearch extends AbstractBestFirstSearch {
+public abstract class AbstractSquadSearch extends AbstractMCTS {
 
 	/**
 	 * Basic constructor
@@ -86,7 +86,7 @@ public abstract class AbstractSquadSearch extends AbstractBestFirstSearch {
 
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
-		return new SnakeInfo(snake, newHead, currentNode.getFood().isFood(newHead));
+		return new SnakeInfoSquad((SnakeInfoSquad)snake, newHead, currentNode.getFood().isFood(newHead));
 	}
 
 	@Override
