@@ -25,13 +25,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Deprecated
 public final class Challenger extends AbstractSnakeAI {
 	/**
-	 * max turn after which the snake will goes up... What I was thinking never a
-	 * snake will survive 10 millions turn. 10 millions * 0.5 second by turn =
-	 * almost 58 days that will be a very long game.
-	 */
-	private transient int maxturn = 9_999_999;
-
-	/**
 	 * This is the path that challenger use in solo challenge. always trying to stay
 	 * in square smaller than its length
 	 */
@@ -134,12 +127,12 @@ public final class Challenger extends AbstractSnakeAI {
 	/**
 	 * Keep all four snake alive challenge
 	 */
-	private transient boolean keepFourSnakeAlive;
+	private transient boolean fourSnakeAlive;
 
 	/**
-	 * Oh that one I know !! the heigth of the board... (yes I know the typo)
+	 * Oh that one I know !! the height of the board... (yes I know the typo)
 	 */
-	private transient int heigth;
+	private transient int height;
 
 	/**
 	 * Another easy one , the width of the board
@@ -169,11 +162,8 @@ public final class Challenger extends AbstractSnakeAI {
 		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
 
 			final Properties prop = new Properties();
-
-			// load a properties file
 			prop.load(input);
 
-			maxturn = Integer.parseInt(prop.getProperty("maxturn"));
 			pathFollow = Boolean.parseBoolean(prop.getProperty("path"));
 
 		} catch (IOException ex) {
@@ -184,45 +174,54 @@ public final class Challenger extends AbstractSnakeAI {
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 
-		Map<String, String> response = new ConcurrentHashMap<>();
-
 		// Trying to figure which challenge it is and choose the right method
 		if (moveRequest.get(BOARD).get(SNAKES).size() == 1) {
+			
 			if (moveRequest.get(BOARD).get(BODY).asInt() == 7) {
-				response = soloChallenge(moveRequest);
+				return soloChallenge(moveRequest);
 			} else {
-				response = fourCornerChallenge(moveRequest);
+				return fourCornerChallenge(moveRequest);
 			}
 		} else {
-			if (mirrorChallenge) {
-				response = duoChallenge(moveRequest);
-			} else if (battleTriple) {
-				response = tripleChallenge(moveRequest);
-			} else if (keepFourSnakeAlive) {
-				response = keepFourSnakeAliveChallenge(moveRequest);
-			} else {
-				int count = 0;
-				for (int j = 0; j < moveRequest.get(BOARD).get(SNAKES).size(); j++) {
-					if (moveRequest.get(BOARD).get(SNAKES).get(j).get(NAME).asText()
-							.equals(moveRequest.get(YOU).get(NAME).asText())) {
-						count++;
-					}
-				}
+			return otherChallenge(moveRequest);
+			
+		}
+	}
 
-				if (count == 2) {
-					mirrorChallenge = true;
-					response = duoChallenge(moveRequest);
-				} else if (count == 3) {
-					battleTriple = true;
-					response = tripleChallenge(moveRequest);
-				} else if (count == 4) {
-					keepFourSnakeAlive = true;
-					response = keepFourSnakeAliveChallenge(moveRequest);
+	/**
+	 * Other challenge aka  not solo...
+	 * @param moveRequest
+	 * @return the battlesnake response
+	 */
+	private Map<String, String> otherChallenge(final JsonNode moveRequest) {
+		
+		if (mirrorChallenge) {
+			return duoChallenge(moveRequest);
+		} else if (battleTriple) {
+			return tripleChallenge(moveRequest);
+		} else if (fourSnakeAlive) {
+			return keepFourSnakeAliveChallenge(moveRequest);
+		} else {
+			int count = 0;
+			for (int j = 0; j < moveRequest.get(BOARD).get(SNAKES).size(); j++) {
+				if (moveRequest.get(BOARD).get(SNAKES).get(j).get(NAME).asText()
+						.equals(moveRequest.get(YOU).get(NAME).asText())) {
+					count++;
 				}
 			}
-		}
 
-		return response;
+			if (count == 2) {
+				mirrorChallenge = true;
+				return duoChallenge(moveRequest);
+			} else if (count == 3) {
+				battleTriple = true;
+				return tripleChallenge(moveRequest);
+			} else {
+				fourSnakeAlive = true;
+				return keepFourSnakeAliveChallenge(moveRequest);
+			}
+		}
+		
 	}
 
 	/**
@@ -233,7 +232,7 @@ public final class Challenger extends AbstractSnakeAI {
 	 */
 	private Map<String, String> keepFourSnakeAliveChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
-		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+		height = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 
 		int snakeId = 0;
 
@@ -264,7 +263,7 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 
 		final int target = pos + 1;
-		response.put("shout", "TARGET " + target + " sid: " + moveRequest.get(YOU).get("id").asText());
+		
 		if (snakex != 0 && FOURALIVE[snakex - 1][snakey % 4] == target) {
 			response.put(MOVESTR, LEFT);
 		} else if (snakey % 4 != 0 && FOURALIVE[snakex][snakey % 4 - 1] == target) {
@@ -286,20 +285,20 @@ public final class Challenger extends AbstractSnakeAI {
 	 */
 	private Map<String, String> fourCornerChallenge(final JsonNode moveRequest) {
 		width = moveRequest.get(BOARD).get(BODY).asInt();
-		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
-		int[][] board = new int[width][heigth];
-		space = new int[width][heigth];
+		height = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+		int[][] board = new int[width][height];
+		space = new int[width][height];
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
-		response.put("shout", moveRequest.get(YOU).get("id").asText());
+		
 		possiblemove.put(UPWARD, 0);
 		possiblemove.put(DOWN, 0);
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
 
-		for (int x = 0; x < moveRequest.get(BOARD).get(BODY).asInt(); x++) {
-			for (int y = 0; y < moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt(); y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				board[x][y] = 0;
 				space[x][y] = 0;
 
@@ -318,9 +317,6 @@ public final class Challenger extends AbstractSnakeAI {
 
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
-
-		// maxd = 99;
-
 		final int health = moveRequest.get(YOU).get(HEALTH).asInt();
 		if (moveRequest.get(YOU).get("length").asInt() < 70) {
 			moveRequest.get(BOARD).withArray("food").forEach(f -> {
@@ -330,16 +326,11 @@ public final class Challenger extends AbstractSnakeAI {
 			});
 		}
 
-		moveRequest.get(BOARD).withArray("hazards").forEach(f -> {
-			board[f.get("x").asInt()][f.get("y").asInt()] -= 25;
-
-		});
-
 		flood(0, 0, health, board);
 		flood(width - 1, 0, health, board);
-		flood(0, heigth - 1, health, board);
-		flood(width - 1, heigth - 1, health, board);
-		String res = UPWARD;
+		flood(0, height - 1, health, board);
+		flood(width - 1, height - 1, health, board);
+		
 		if (board[0][0] == -99 && board[0][18] == -99 && board[18][0] == -99 && board[18][18] == -99) {
 			if (snakey == 0) {
 				response.put(MOVESTR, UPWARD);
@@ -349,64 +340,9 @@ public final class Challenger extends AbstractSnakeAI {
 				response.put(MOVESTR, LEFT);
 			} else if (snakex == 18) {
 				response.put(MOVESTR, RIGHT);
-			} else {
-				res = "continue";
 			}
-		} else {
-			res = "continue";
-		}
-
-		if ("continue".equalsIgnoreCase(res)) {
-			res = UPWARD;
-
-			if (snakey == 0) {
-				possiblemove.put(UPWARD, -90);
-
-			} else {
-				computeSpace(snakex, snakey - 1, 5000, board);
-				possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
-			}
-
-			if (snakey == heigth - 1) {
-				possiblemove.put(DOWN, -90);
-
-			} else {
-				computeSpace(snakex, snakey + 1, 5000, board);
-				possiblemove.put(DOWN, possiblemove.get(DOWN) + board[snakex][snakey + 1] + count5000());
-			}
-
-			if (snakex == 0) {
-				possiblemove.put(LEFT, -90);
-
-			} else {
-				computeSpace(snakex - 1, snakey, 5000, board);
-				possiblemove.put(LEFT, possiblemove.get(LEFT) + board[snakex - 1][snakey] + count5000());
-			}
-
-			if (snakex == width - 1) {
-				possiblemove.put(RIGHT, -90);
-
-			} else {
-				computeSpace(snakex + 1, snakey, 5000, board);
-				possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey] + count5000());
-			}
-
-			int value = possiblemove.get(UPWARD);
-
-			if (possiblemove.get(DOWN) > value) {
-				value = possiblemove.get(DOWN);
-				res = DOWN;
-			}
-
-			if (possiblemove.get(LEFT) > value) {
-				value = possiblemove.get(LEFT);
-				res = LEFT;
-			}
-			if (possiblemove.get(RIGHT) > value) {
-				res = RIGHT;
-			}
-
-			response.put(MOVESTR, res);
+		} else {		
+			response.put(MOVESTR, getResponseString(possiblemove,snakex,snakey,board));
 		}
 		return response;
 	}
@@ -421,10 +357,10 @@ public final class Challenger extends AbstractSnakeAI {
 		Map<String, String> response = new ConcurrentHashMap<>();
 		if (moveRequest.get(BOARD).get(SNAKES).get(0).get("id").asText()
 				.equals(moveRequest.get(YOU).get("id").asText())) {
-			response = moveTriplePlayer1(moveRequest);
+			response = moveTriplePlayer(moveRequest,5,5);
 		} else if (moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText()
 				.equals(moveRequest.get(YOU).get("id").asText())) {
-			response = moveTriplePlayer2(moveRequest);
+			response = moveTriplePlayer(moveRequest,6,6);
 		} else {
 			response.put(MOVESTR, UPWARD);
 		}
@@ -435,13 +371,15 @@ public final class Challenger extends AbstractSnakeAI {
 	 * Keep 3 snakes live challenge , player 2 move
 	 * 
 	 * @param moveRequest Move request
+	 * @param floodx    x position for the floodfill
+	 * @param floody    y position for the floodfill
 	 * @return map response for battlesnake
 	 */
-	private Map<String, String> moveTriplePlayer2(final JsonNode moveRequest) {
-		width = moveRequest.get(BOARD).get(BODY).asInt();
-		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
-		int[][] board = new int[width][heigth];
-		space = new int[width][heigth];
+	private Map<String, String> moveTriplePlayer(final JsonNode moveRequest , final int floodx, final int floody) {
+		width = moveRequest.get(BOARD).get(WIDTH_FIELD).asInt();
+		height = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+		int[][] board = new int[width][height];
+		space = new int[width][height];
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
@@ -451,8 +389,8 @@ public final class Challenger extends AbstractSnakeAI {
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
 
-		for (int x = 0; x < moveRequest.get(BOARD).get(BODY).asInt(); x++) {
-			for (int y = 0; y < moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt(); y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				board[x][y] = 0;
 				space[x][y] = 0;
 
@@ -491,124 +429,25 @@ public final class Challenger extends AbstractSnakeAI {
 
 		});
 
-		flood(6, 6, health / 4, board);
+		flood(floodx, floody, health / 4, board);
 
-		String res = UPWARD;
-
-		if (snakey == 0) {
-			possiblemove.put(UPWARD, -90);
-
-		} else {
-			computeSpace(snakex, snakey - 1, 5000, board);
-			possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
-		}
-
-		if (snakey == heigth - 1) {
-			possiblemove.put(DOWN, -90);
-
-		} else {
-			computeSpace(snakex, snakey + 1, 5000, board);
-			possiblemove.put(DOWN, possiblemove.get(DOWN) + board[snakex][snakey + 1] + count5000());
-		}
-
-		if (snakex == 0) {
-			possiblemove.put(LEFT, -90);
-
-		} else {
-			computeSpace(snakex - 1, snakey, 5000, board);
-			possiblemove.put(LEFT, possiblemove.get(LEFT) + board[snakex - 1][snakey] + count5000());
-		}
-
-		if (snakex == width - 1) {
-			possiblemove.put(RIGHT, -90);
-
-		} else {
-			computeSpace(snakex + 1, snakey, 5000, board);
-			possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey] + count5000());
-		}
-
-		int value = possiblemove.get(UPWARD);
-
-		if (possiblemove.get(DOWN) > value) {
-			value = possiblemove.get(DOWN);
-			res = DOWN;
-		}
-
-		if (possiblemove.get(LEFT) > value) {
-			value = possiblemove.get(LEFT);
-			res = LEFT;
-		}
-		if (possiblemove.get(RIGHT) > value) {
-			res = RIGHT;
-		}
-
-		response.put(MOVESTR, res);
+		response.put(MOVESTR, getResponseString(possiblemove,snakex,snakey,board));
 
 		return response;
 	}
 
+	
+
 	/**
-	 * Keep 3 snakes live challenge , player 1 move
-	 * 
-	 * @param moveRequest Move request
-	 * @return map response for battlesnake
-	 */
-	private Map<String, String> moveTriplePlayer1(final JsonNode moveRequest) {
-		width = moveRequest.get(BOARD).get(BODY).asInt();
-		heigth = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
-		int[][] board = new int[width][heigth];
-		space = new int[width][heigth];
-
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
-		response.put("shout", moveRequest.get(YOU).get("id").asText());
-		possiblemove.put(UPWARD, 0);
-		possiblemove.put(DOWN, 0);
-		possiblemove.put(LEFT, 0);
-		possiblemove.put(RIGHT, 0);
-
-		for (int x = 0; x < moveRequest.get(BOARD).get(BODY).asInt(); x++) {
-			for (int y = 0; y < moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt(); y++) {
-				board[x][y] = 0;
-				space[x][y] = 0;
-			}
-		}
-		final String snakeId = moveRequest.get(YOU).get("id").asText();
-		moveRequest.get(BOARD).withArray(SNAKES).forEach(s -> {
-			if (!s.get("id").asText().equals(snakeId)) {
-				floodEnemy(s.get(BODY).get(0).get("x").asInt(), s.get(BODY).get(0).get("y").asInt(), -35, board);
-			}
-			s.withArray(BODY).forEach(c -> {
-
-				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
-
-			});
-
-		});
-
-		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
-		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
-
-		// maxd = 99;
-
-		final int health = moveRequest.get(YOU).get(HEALTH).asInt();
-		moveRequest.get(BOARD).withArray("food").forEach(f -> {
-			if (health < 45) {
-				flood(f.get("x").asInt(), f.get("y").asInt(), 100, board);
-			} else {
-				floodEnemy(f.get("x").asInt(), f.get("y").asInt(), -15, board);
-
-			}
-		});
-
-		moveRequest.get(BOARD).withArray("hazards").forEach(f -> {
-			board[f.get("x").asInt()][f.get("y").asInt()] -= 25;
-
-		});
-
-		flood(5, 5, 14, board);
-
-		String res = UPWARD;
+	 * Generate the move reponse....
+	 * @param possiblemove  possible move value
+	 * @param snakex  snake head x 
+	 * @param snakey snake head y
+	 * @param board  board array
+	 * @return  move string
+ 	 */
+	private String getResponseString(final Map<String, Integer> possiblemove,final int snakex,final int snakey,final int[][] board) {
+		String res=UPWARD;
 
 		if (snakey == 0) {
 			possiblemove.put(UPWARD, -90);
@@ -618,7 +457,7 @@ public final class Challenger extends AbstractSnakeAI {
 			possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
 		}
 
-		if (snakey == heigth - 1) {
+		if (snakey == height - 1) {
 			possiblemove.put(DOWN, -90);
 
 		} else {
@@ -656,10 +495,7 @@ public final class Challenger extends AbstractSnakeAI {
 		if (possiblemove.get(RIGHT) > value) {
 			res = RIGHT;
 		}
-
-		response.put(MOVESTR, res);
-
-		return response;
+		return res;
 	}
 
 	/**
@@ -718,26 +554,20 @@ public final class Challenger extends AbstractSnakeAI {
 				} else if (snakex > 0) {
 					response.put(MOVESTR, LEFT);
 				}
-			} else if (!secondL) {
-				if (snakey < 10) {
-					response.put(MOVESTR, DOWN);
-				} else if (snakex < 10) {
-					response.put(MOVESTR, RIGHT);
-				}
-			} else {
+			} else if (secondL) {
 				if (snakey > 0) {
 					response.put(MOVESTR, UPWARD);
 				} else if (snakex > 0) {
 					response.put(MOVESTR, LEFT);
 				}
+			} else {
+				if (snakey < 10) {
+					response.put(MOVESTR, DOWN);
+				} else if (snakex < 10) {
+					response.put(MOVESTR, RIGHT);
+				}
 			}
 		} else {
-
-			final int turn = moveRequest.get(TURN).asInt();
-			if (turn > maxturn) {
-				response.put(MOVESTR, UPWARD);
-				return response;
-			}
 			int length = moveRequest.get(YOU).withArray(BODY).size();
 			if (length % 2 != 0) {
 				length++;
@@ -803,16 +633,20 @@ public final class Challenger extends AbstractSnakeAI {
 				}
 			}
 
-			if (res != null) {
-				response.put(MOVESTR, res);
-			} else if (maybe != null) {
-				response.put(MOVESTR, maybe);
-			} else {
-				if (snakey > 0) {
-					response.put(MOVESTR, UPWARD);
-				} else if (snakex > 0) {
-					response.put(MOVESTR, LEFT);
+			if (res == null) {
+				if (maybe == null){
+					if (snakey > 0) {
+						response.put(MOVESTR, UPWARD);
+					} else if (snakex > 0) {
+						response.put(MOVESTR, LEFT);
+					}
+				}else{
+					response.put(MOVESTR, maybe);
 				}
+			} else {
+
+				response.put(MOVESTR, res);
+				
 			}
 		}
 		return response;
@@ -848,27 +682,20 @@ public final class Challenger extends AbstractSnakeAI {
 				} else if (snakex < 10) {
 					response.put(MOVESTR, RIGHT);
 				}
-			} else if (!secondR) {
-				if (snakey > 0) {
-					response.put(MOVESTR, UPWARD);
-				} else if (snakex > 0) {
-					response.put(MOVESTR, LEFT);
-				}
-			} else {
+			} else if (secondR) {
 				if (snakey < 10) {
 					response.put(MOVESTR, DOWN);
 				} else if (snakex < 10) {
 					response.put(MOVESTR, RIGHT);
 				}
+			} else {
+				if (snakey > 0) {
+					response.put(MOVESTR, UPWARD);
+				} else if (snakex > 0) {
+					response.put(MOVESTR, LEFT);
+				}
 			}
 		} else {
-
-			final int turn = moveRequest.get(TURN).asInt();
-			if (turn > maxturn) {
-				response.put(MOVESTR, UPWARD);
-				return response;
-			}
-
 			int length = moveRequest.get(YOU).withArray(BODY).size();
 			if (length % 2 != 0) {
 				length++;
@@ -976,11 +803,7 @@ public final class Challenger extends AbstractSnakeAI {
 			if (pathFollow) {
 				return pathMove(moveRequest);
 			}
-			final int turn = moveRequest.get(TURN).asInt();
-			if (turn > maxturn) {
-				response.put(MOVESTR, UPWARD);
-				return response;
-			}
+			
 			int length = moveRequest.get(YOU).withArray(BODY).size();
 			if (length % 2 != 0) {
 				length++;
@@ -1045,16 +868,19 @@ public final class Challenger extends AbstractSnakeAI {
 
 			}
 
-			if (res != null) {
-				response.put(MOVESTR, res);
-			} else if (maybe != null) {
-				response.put(MOVESTR, maybe);
-			} else {
-				if (snakey > 0) {
-					response.put(MOVESTR, UPWARD);
-				} else if (snakex > 0) {
-					response.put(MOVESTR, LEFT);
+			if (res == null) {
+				if (maybe == null){
+					if (snakey > 0) {
+						response.put(MOVESTR, UPWARD);
+					} else if (snakex > 0) {
+						response.put(MOVESTR, LEFT);
+					}
+				}else{
+					response.put(MOVESTR, maybe);
 				}
+			} else {
+				response.put(MOVESTR, res);
+				
 			}
 		}
 		return response;
@@ -1142,7 +968,7 @@ public final class Challenger extends AbstractSnakeAI {
 				if (posY > 0) {
 					computeSpace(posX, posY - 1, value, board);
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					computeSpace(posX, posY + 1, value, board);
 				}
 
@@ -1172,7 +998,7 @@ public final class Challenger extends AbstractSnakeAI {
 				if (posY > 0) {
 					flood(posX, posY - 1, value - 1, board);
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					flood(posX, posY + 1, value - 1, board);
 				}
 
@@ -1192,7 +1018,7 @@ public final class Challenger extends AbstractSnakeAI {
 	private int count5000() {
 		int countNb = 0;
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < heigth; y++) {
+			for (int y = 0; y < height; y++) {
 
 				if (space[x][y] == 5000) {
 					countNb++;
@@ -1223,7 +1049,7 @@ public final class Challenger extends AbstractSnakeAI {
 				if (posY > 0) {
 					floodEnemy(posX, posY - 1, value + FLOODENEMYGAP, board);
 				}
-				if (posY < heigth - 1) {
+				if (posY < height - 1) {
 					floodEnemy(posX, posY + 1, value + FLOODENEMYGAP, board);
 				}
 
