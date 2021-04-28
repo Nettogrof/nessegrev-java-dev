@@ -80,6 +80,16 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			return list;
 		}
 
+		AbstractNode winner = getWinnerChild(node);
+				
+			
+		final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
+		list.add(node);
+		return list;
+
+	}
+
+	private AbstractNode getWinnerChild(final AbstractNode node) {
 		AbstractNode winner = null;
 		final TFloatArrayList upward = new TFloatArrayList();
 		final TFloatArrayList down = new TFloatArrayList();
@@ -97,10 +107,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			}
 
 		}
-		final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
-		list.add(node);
-		return list;
-
+		return winner;
 	}
 
 	/**
@@ -188,22 +195,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			return node;
 		}
 		node.updateScore();
-		AbstractNode winner = null;
-		final TFloatArrayList upward = new TFloatArrayList();
-		final TFloatArrayList down = new TFloatArrayList();
-		final TFloatArrayList left = new TFloatArrayList();
-		final TFloatArrayList right = new TFloatArrayList();
-		fillList(upward, down, left, right, node);
-
-		final float choiceValue = getbestChildValue(upward, down, left, right);
-
-		for (int i = 0; i < node.getChild().size() && winner == null; i++) {
-			final AbstractNode childNode = node.getChild().get(i);
-			if (childNode.getScoreRatio() == choiceValue && childNode.getSnakes().get(0).isAlive()) {
-				winner = childNode;
-			}
-
-		}
+		AbstractNode winner = getWinnerChild(node);
 		if (winner == null) {
 			node.exp = false;
 			return node;

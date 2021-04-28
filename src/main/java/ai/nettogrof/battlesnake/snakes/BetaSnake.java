@@ -69,26 +69,8 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 
 		final JsonNode betaSnake = moveRequest.get(YOU);
 		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, betaSnake) : genSnakeInfo(board, betaSnake);
-
-		if (lastRoot != null) {
-
-			for (final AbstractNode c : lastRoot.getChild()) {
-				if (food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
-					final List<SnakeInfo> csnake = c.getSnakes();
-					boolean found = true;
-					for (int i = 0; i < csnake.size() && found; i++) {
-						found = csnake.get(i).equals(snakes.get(i));
-					}
-					if (found) {
-
-						return c;
-					}
-
-				}
-			}
-		}
-
-		return genNode(snakes, food, new HazardInfo(board));
+		AbstractNode oldChild = findChildNewRoot(snakes, food);
+		return oldChild == null ? genNode(snakes, food, new HazardInfo(board)) : oldChild;
 
 	}
 

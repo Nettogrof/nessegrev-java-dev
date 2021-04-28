@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
@@ -575,6 +578,33 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			}
 		}
 
+	}
+	
+	/**
+	 * Check in the previous search if a child from root, is equals the current board situation., 
+	 * @param snakes List of snakes
+	 * @param food Food info
+	 * @return null or child node
+	 */
+	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes,final FoodInfo food) {
+		if (lastRoot != null) {
+
+			for (final AbstractNode c : lastRoot.getChild()) {
+				if (food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
+					final List<SnakeInfo> csnake = c.getSnakes();
+					boolean found = true;
+					for (int i = 0; i < csnake.size() && found; i++) {
+						found = csnake.get(i).equals(snakes.get(i));
+					}
+					if (found) {
+
+						return c;
+					}
+
+				}
+			}
+		}
+		return null;
 	}
 
 }
