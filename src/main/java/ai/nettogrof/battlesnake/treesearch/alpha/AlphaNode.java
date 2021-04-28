@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.google.common.flogger.FluentLogger;
 
-import ai.nettogrof.battlesnake.info.*;
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
