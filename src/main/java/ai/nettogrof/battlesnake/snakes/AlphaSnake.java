@@ -22,7 +22,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * 
  * @author carl.lajeunesse
  * @version Fall 2020
- * @deprecated AlphaSnake won't be improve anymore,  so buggy.
+ * @deprecated AlphaSnake won't be improve anymore, so buggy.
  */
 @Deprecated
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
@@ -236,6 +236,11 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	@Override
 	protected AbstractNode genRoot(JsonNode moveRequest) {
 		return null;
+	}
+
+	@Override
+	protected String getFileConfig() {
+		return fileConfig;
 	}
 
 }

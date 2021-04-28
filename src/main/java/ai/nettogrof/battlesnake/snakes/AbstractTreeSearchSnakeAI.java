@@ -128,36 +128,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request
-	 * 
-	 * @return map of info for Battlesnake
-	 */
-	public static Map<String, String> getInfo() {
-
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-			response.put("author", "nettogrof");
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
-	}
-
-	/**
 	 * This method will be call on each move request receive by BattleSnake
 	 * 
 	 * @param moveRequest Json call received
@@ -280,19 +250,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	@Override
 	public Map<String, String> end(final JsonNode endRequest) {
-		final Map<String, String> response = new ConcurrentHashMap<>();
-
-		if (endRequest.get(BOARD).get(SNAKES).size() > 0) {
-			log.atInfo().log("Winner is : %s", endRequest.get(BOARD).get(SNAKES).get(0).get(NAME).asText());
-
-		} else {
-			log.atInfo().log("DRAW");
-
-		}
-
 		log.atInfo().log("Average node/s : " + (nodeTotalCount / timeTotal * 1000));
-
-		return response;
+		return super.end(endRequest);
 	}
 
 	/**

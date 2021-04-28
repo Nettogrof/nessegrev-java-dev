@@ -429,41 +429,17 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Function used to retrieve snake info ( api version, color, snake head, etc)
-	 * 
-	 * @return Map of properties
-	 */
-	public static Map<String, String> getInfo() {
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get("FloodFill.properties"))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-			response.put("author", "nettogrof");
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
-	}
-
-	/**
 	 * Not used
 	 */
 	@Override
 	protected void setFileConfig() {
 		fileConfig = "FloodFill.properties";
 
+	}
+
+	@Override
+	protected String getFileConfig() {
+		return fileConfig;
 	}
 
 }

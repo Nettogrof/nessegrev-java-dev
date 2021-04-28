@@ -203,19 +203,19 @@ public final class Snake {
 		public Map<String, String> root() {
 			switch (snakeType) {
 			case "FloodFill":
-				return FloodFillSnake.getInfo();
+				return new FloodFillSnake().getInfo();
 			case "Alpha":
-				return AlphaSnake.getInfo();
+				return new AlphaSnake().getInfo();
 			case "Beta":
-				return BetaSnake.getInfo();
+				return new BetaSnake().getInfo();
 			case "Gamma":
-				return GammaSnake.getInfo();
+				return new GammaSnake().getInfo();
 			case "Basic":
-				return BasicSnake.getInfo();
+				return new BasicSnake().getInfo();
 			case "Challenger":
-				return Challenger.getInfo();
+				return new Challenger().getInfo();
 			default:
-				return BasicSnake.getInfo();
+				return new BasicSnake().getInfo();
 			}
 
 		}

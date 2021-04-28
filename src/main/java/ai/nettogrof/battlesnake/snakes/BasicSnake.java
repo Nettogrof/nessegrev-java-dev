@@ -1,11 +1,6 @@
 package ai.nettogrof.battlesnake.snakes;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -165,43 +160,16 @@ public class BasicSnake extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request
-	 * 
-	 * @return map of info for battlesnake
-	 */
-	public static Map<String, String> getInfo() {
-
-		fileConfig = "Basic.properties";
-		final Map<String, String> response = new ConcurrentHashMap<>();
-
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-			response.put("author", "nettogrof");
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
-	}
-
-	/**
 	 *
 	 */
 	@Override
 	protected void setFileConfig() {
 		fileConfig = "Basic.properties";
+	}
+
+	@Override
+	protected String getFileConfig() {
+		return fileConfig;
 	}
 
 }

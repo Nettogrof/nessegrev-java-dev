@@ -1,14 +1,8 @@
 package ai.nettogrof.battlesnake.snakes;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
@@ -158,22 +152,17 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			}
 		}
 
-		try {
-			searchType = genSearchType();
-		} catch (ReflectiveOperationException e) {
-			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
-		}
-
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		response.put("color", "#216121");
-		response.put("headType", "shac-gamer");
-		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
 		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 
 		timeout = startRequest.get("game").get("timeout").asInt();
 
-		return response;
+		try {
+			searchType = genSearchType();
+		} catch (ReflectiveOperationException e) {
+			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
+		}
+		return getInfo();
 	}
 
 	/**
@@ -214,41 +203,16 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request
-	 * 
-	 * @return map of info for Battlesnake
-	 */
-	public static Map<String, String> getInfo() {
-
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-			response.put("author", "nettogrof");
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
-	}
-
-	/**
 	 * Method use to set the fileConfig string
 	 */
 	@Override
 	protected void setFileConfig() {
 		fileConfig = "Beta.properties";
+	}
+
+	@Override
+	protected String getFileConfig() {
+		return fileConfig;
 	}
 
 	/**

@@ -176,7 +176,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		// Trying to figure which challenge it is and choose the right method
 		if (moveRequest.get(BOARD).get(SNAKES).size() == 1) {
-			
+
 			if (moveRequest.get(BOARD).get(BODY).asInt() == 7) {
 				return soloChallenge(moveRequest);
 			} else {
@@ -184,17 +184,18 @@ public final class Challenger extends AbstractSnakeAI {
 			}
 		} else {
 			return otherChallenge(moveRequest);
-			
+
 		}
 	}
 
 	/**
-	 * Other challenge aka  not solo...
+	 * Other challenge aka not solo...
+	 * 
 	 * @param moveRequest
 	 * @return the battlesnake response
 	 */
 	private Map<String, String> otherChallenge(final JsonNode moveRequest) {
-		
+
 		if (mirrorChallenge) {
 			return duoChallenge(moveRequest);
 		} else if (battleTriple) {
@@ -221,7 +222,7 @@ public final class Challenger extends AbstractSnakeAI {
 				return keepFourSnakeAliveChallenge(moveRequest);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -263,7 +264,7 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 
 		final int target = pos + 1;
-		
+
 		if (snakex != 0 && FOURALIVE[snakex - 1][snakey % 4] == target) {
 			response.put(MOVESTR, LEFT);
 		} else if (snakey % 4 != 0 && FOURALIVE[snakex][snakey % 4 - 1] == target) {
@@ -291,7 +292,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
-		
+
 		possiblemove.put(UPWARD, 0);
 		possiblemove.put(DOWN, 0);
 		possiblemove.put(LEFT, 0);
@@ -330,7 +331,7 @@ public final class Challenger extends AbstractSnakeAI {
 		flood(width - 1, 0, health, board);
 		flood(0, height - 1, health, board);
 		flood(width - 1, height - 1, health, board);
-		
+
 		if (board[0][0] == -99 && board[0][18] == -99 && board[18][0] == -99 && board[18][18] == -99) {
 			if (snakey == 0) {
 				response.put(MOVESTR, UPWARD);
@@ -341,8 +342,8 @@ public final class Challenger extends AbstractSnakeAI {
 			} else if (snakex == 18) {
 				response.put(MOVESTR, RIGHT);
 			}
-		} else {		
-			response.put(MOVESTR, getResponseString(possiblemove,snakex,snakey,board));
+		} else {
+			response.put(MOVESTR, getResponseString(possiblemove, snakex, snakey, board));
 		}
 		return response;
 	}
@@ -357,10 +358,10 @@ public final class Challenger extends AbstractSnakeAI {
 		Map<String, String> response = new ConcurrentHashMap<>();
 		if (moveRequest.get(BOARD).get(SNAKES).get(0).get("id").asText()
 				.equals(moveRequest.get(YOU).get("id").asText())) {
-			response = moveTriplePlayer(moveRequest,5,5);
+			response = moveTriplePlayer(moveRequest, 5, 5);
 		} else if (moveRequest.get(BOARD).get(SNAKES).get(1).get("id").asText()
 				.equals(moveRequest.get(YOU).get("id").asText())) {
-			response = moveTriplePlayer(moveRequest,6,6);
+			response = moveTriplePlayer(moveRequest, 6, 6);
 		} else {
 			response.put(MOVESTR, UPWARD);
 		}
@@ -371,11 +372,11 @@ public final class Challenger extends AbstractSnakeAI {
 	 * Keep 3 snakes live challenge , player 2 move
 	 * 
 	 * @param moveRequest Move request
-	 * @param floodx    x position for the floodfill
-	 * @param floody    y position for the floodfill
+	 * @param floodx      x position for the floodfill
+	 * @param floody      y position for the floodfill
 	 * @return map response for battlesnake
 	 */
-	private Map<String, String> moveTriplePlayer(final JsonNode moveRequest , final int floodx, final int floody) {
+	private Map<String, String> moveTriplePlayer(final JsonNode moveRequest, final int floodx, final int floody) {
 		width = moveRequest.get(BOARD).get(WIDTH_FIELD).asInt();
 		height = moveRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
 		int[][] board = new int[width][height];
@@ -431,23 +432,23 @@ public final class Challenger extends AbstractSnakeAI {
 
 		flood(floodx, floody, health / 4, board);
 
-		response.put(MOVESTR, getResponseString(possiblemove,snakex,snakey,board));
+		response.put(MOVESTR, getResponseString(possiblemove, snakex, snakey, board));
 
 		return response;
 	}
 
-	
-
 	/**
 	 * Generate the move reponse....
-	 * @param possiblemove  possible move value
-	 * @param snakex  snake head x 
-	 * @param snakey snake head y
-	 * @param board  board array
-	 * @return  move string
- 	 */
-	private String getResponseString(final Map<String, Integer> possiblemove,final int snakex,final int snakey,final int[][] board) {
-		String res=UPWARD;
+	 * 
+	 * @param possiblemove possible move value
+	 * @param snakex       snake head x
+	 * @param snakey       snake head y
+	 * @param board        board array
+	 * @return move string
+	 */
+	private String getResponseString(final Map<String, Integer> possiblemove, final int snakex, final int snakey,
+			final int[][] board) {
+		String res = UPWARD;
 
 		if (snakey == 0) {
 			possiblemove.put(UPWARD, -90);
@@ -634,19 +635,19 @@ public final class Challenger extends AbstractSnakeAI {
 			}
 
 			if (res == null) {
-				if (maybe == null){
+				if (maybe == null) {
 					if (snakey > 0) {
 						response.put(MOVESTR, UPWARD);
 					} else if (snakex > 0) {
 						response.put(MOVESTR, LEFT);
 					}
-				}else{
+				} else {
 					response.put(MOVESTR, maybe);
 				}
 			} else {
 
 				response.put(MOVESTR, res);
-				
+
 			}
 		}
 		return response;
@@ -803,7 +804,7 @@ public final class Challenger extends AbstractSnakeAI {
 			if (pathFollow) {
 				return pathMove(moveRequest);
 			}
-			
+
 			int length = moveRequest.get(YOU).withArray(BODY).size();
 			if (length % 2 != 0) {
 				length++;
@@ -869,18 +870,18 @@ public final class Challenger extends AbstractSnakeAI {
 			}
 
 			if (res == null) {
-				if (maybe == null){
+				if (maybe == null) {
 					if (snakey > 0) {
 						response.put(MOVESTR, UPWARD);
 					} else if (snakex > 0) {
 						response.put(MOVESTR, LEFT);
 					}
-				}else{
+				} else {
 					response.put(MOVESTR, maybe);
 				}
 			} else {
 				response.put(MOVESTR, res);
-				
+
 			}
 		}
 		return response;
@@ -1060,32 +1061,9 @@ public final class Challenger extends AbstractSnakeAI {
 		}
 	}
 
-	/**
-	 * Returns snake info neede by battlesnake
-	 * 
-	 * @return map of info
-	 */
-	public static Map<String, String> getInfo() {
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-
-			response.put("apiversion", prop.getProperty("apiversion"));
-			response.put("head", prop.getProperty("headType"));
-			response.put("tail", prop.getProperty("tailType"));
-			response.put("color", prop.getProperty("color"));
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-
-		return response;
+	@Override
+	protected String getFileConfig() {
+		return fileConfig;
 	}
 
 	// If you read everything until this point, I strongly suggest to get
