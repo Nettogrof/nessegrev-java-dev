@@ -358,10 +358,10 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if ("continue".equalsIgnoreCase(res)) {
 			res = UPWARD;
-			double result[] = { 0.5, 0.5, 0.5, 0.5 };
+		
 			if (snakey == 0) {
 				possiblemove.put(UPWARD, -90);
-				result[0] = 0.0;
+				
 			} else {
 				computeSpace(snakex, snakey - 1, 5000, board);
 				possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
@@ -369,7 +369,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 			if (snakey == heigth - 1) {
 				possiblemove.put(DOWN, -90);
-				result[1] = 0.0;
+				
 			} else {
 				computeSpace(snakex, snakey + 1, 5000, board);
 				possiblemove.put(DOWN, possiblemove.get(DOWN) + board[snakex][snakey + 1] + count5000());
@@ -377,7 +377,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 			if (snakex == 0) {
 				possiblemove.put(LEFT, -90);
-				result[2] = 0.0;
+				
 			} else {
 				computeSpace(snakex - 1, snakey, 5000, board);
 				possiblemove.put(LEFT, possiblemove.get(LEFT) + board[snakex - 1][snakey] + count5000());
@@ -385,7 +385,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 			if (snakex == width - 1) {
 				possiblemove.put(RIGHT, -90);
-				result[3] = 0.0;
+				
 			} else {
 				computeSpace(snakex + 1, snakey, 5000, board);
 				possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey] + count5000());
@@ -495,10 +495,10 @@ public final class Challenger extends AbstractSnakeAI {
 
 		String res = UPWARD;
 
-		double result[] = { 0.5, 0.5, 0.5, 0.5 };
+		
 		if (snakey == 0) {
 			possiblemove.put(UPWARD, -90);
-			result[0] = 0.0;
+			
 		} else {
 			computeSpace(snakex, snakey - 1, 5000, board);
 			possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
@@ -506,7 +506,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakey == heigth - 1) {
 			possiblemove.put(DOWN, -90);
-			result[1] = 0.0;
+			
 		} else {
 			computeSpace(snakex, snakey + 1, 5000, board);
 			possiblemove.put(DOWN, possiblemove.get(DOWN) + board[snakex][snakey + 1] + count5000());
@@ -514,7 +514,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakex == 0) {
 			possiblemove.put(LEFT, -90);
-			result[2] = 0.0;
+			
 		} else {
 			computeSpace(snakex - 1, snakey, 5000, board);
 			possiblemove.put(LEFT, possiblemove.get(LEFT) + board[snakex - 1][snakey] + count5000());
@@ -522,7 +522,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakex == width - 1) {
 			possiblemove.put(RIGHT, -90);
-			result[3] = 0.0;
+			
 		} else {
 			computeSpace(snakex + 1, snakey, 5000, board);
 			possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey] + count5000());
@@ -610,10 +610,10 @@ public final class Challenger extends AbstractSnakeAI {
 		flood(5, 5, 14, board);
 
 		String res = UPWARD;
-		double result[] = { 0.5, 0.5, 0.5, 0.5 };
+		
 		if (snakey == 0) {
 			possiblemove.put(UPWARD, -90);
-			result[0] = 0.0;
+			
 		} else {
 			computeSpace(snakex, snakey - 1, 5000, board);
 			possiblemove.put(UPWARD, possiblemove.get(UPWARD) + board[snakex][snakey - 1] + count5000());
@@ -621,7 +621,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakey == heigth - 1) {
 			possiblemove.put(DOWN, -90);
-			result[1] = 0.0;
+			
 		} else {
 			computeSpace(snakex, snakey + 1, 5000, board);
 			possiblemove.put(DOWN, possiblemove.get(DOWN) + board[snakex][snakey + 1] + count5000());
@@ -629,7 +629,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakex == 0) {
 			possiblemove.put(LEFT, -90);
-			result[2] = 0.0;
+			
 		} else {
 			computeSpace(snakex - 1, snakey, 5000, board);
 			possiblemove.put(LEFT, possiblemove.get(LEFT) + board[snakex - 1][snakey] + count5000());
@@ -637,7 +637,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 		if (snakex == width - 1) {
 			possiblemove.put(RIGHT, -90);
-			result[3] = 0.0;
+			
 		} else {
 			computeSpace(snakex + 1, snakey, 5000, board);
 			possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey] + count5000());
