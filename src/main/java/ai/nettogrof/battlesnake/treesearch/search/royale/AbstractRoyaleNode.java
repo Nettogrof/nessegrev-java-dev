@@ -6,7 +6,7 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
-import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -17,12 +17,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  * @author carl.lajeunesse
  * @version Spring 2021
  */
-public abstract class AbstractRoyaleNode extends AbstractNode {
-
-	/**
-	 * default openhashmap value
-	 */
-	private final static int defaultv = new Int2IntOpenHashMap().defaultReturnValue();
+public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 
 	/**
 	 * Hazards info
@@ -76,58 +71,6 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	protected void adjustHazardScore(final int head) {
 		if (hazard != null && hazard.isHazard(head / 1000, head % 1000)) {
 			score[0] -= 3.0f;
-		}
-
-	}
-
-	/**
-	 * Adjust our snake score if our snake is on the border of the board
-	 * 
-	 * @param head Square of the snake head
-	 */
-	protected void adjustBorderScore(final int head) {
-		final int headX = head / 1000;
-		final int headY = head % 1000;
-		if (headX == 0 || headX == width - 1) {
-			score[0] -= BattleSnakeConstants.BORDER_SCORE;
-		}
-
-		if (headY == 0 || headY == height - 1) {
-			score[0] -= BattleSnakeConstants.BORDER_SCORE;
-		}
-
-	}
-
-	/**
-	 * Adjust our snake score for the distance between head and the nearest food
-	 * 
-	 * @param head Square of the snake head
-	 */
-	protected void addScoreDistance(final int head) {
-		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
-	}
-
-	/**
-	 * Adding basic length to score and health score = length + health /50
-	 */
-	protected void addBasicLengthScore() {
-		for (int i = 0; i < snakes.size(); i++) {
-			score[i] = snakes.get(i).isAlive() ? snakes.get(i).getSnakeBody().size() + snakes.get(i).getHealth() / 50
-					: 0;
-		}
-	}
-
-	/**
-	 * Add or remove score to our snake if it longer or shorter than the other
-	 * snakes
-	 */
-	protected void addSizeCompareScore() {
-		for (int i = 1; i < snakes.size(); i++) {
-			if (snakes.get(i).getSnakeBody().size() > snakes.get(0).getSnakeBody().size()) {
-				score[0] -= 0.4f;
-			} else if (snakes.get(i).getSnakeBody().size() < snakes.get(0).getSnakeBody().size()) {
-				score[0] += 0.4f;
-			}
 		}
 
 	}
@@ -238,68 +181,6 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 			}
 		}
 		return board;
-	}
-
-	/**
-	 * Apply the new Hash map value to the board.
-	 * 
-	 * @param newHash The new hash map of position/value
-	 * @param board   Board array
-	 */
-	protected void applyNewHash(final Int2IntOpenHashMap newHash, int[][] board) {
-		newHash.forEach((xy, v) -> {
-			board[xy / 1000][xy % 1000] = v;
-		});
-
-	}
-
-	/**
-	 * Generate new position to be added to hash
-	 * 
-	 * @param old     Previous hash
-	 * @param newHash New hash
-	 * @param board   Board array
-	 */
-	protected void generateHash(final Int2IntOpenHashMap old, final Int2IntOpenHashMap newHash, final int[][] board) {
-
-		old.forEach((position, valeur) -> {
-
-			final int posX = position / 1000;
-			final int posY = position % 1000;
-
-			if (posX + 1 < width && board[posX + 1][posY] == 0) {
-				addToHash(newHash, position + 1000, valeur);
-
-			}
-			if (posX - 1 >= 0 && board[posX - 1][posY] == 0) {
-				addToHash(newHash, position - 1000, valeur);
-
-			}
-
-			if (posY + 1 < height && board[posX][posY + 1] == 0) {
-				addToHash(newHash, position + 1, valeur);
-			}
-			if (posY - 1 >= 0 && board[posX][posY - 1] == 0) {
-				addToHash(newHash, position - 1, valeur);
-			}
-
-		});
-
-	}
-
-	/**
-	 * Add the position and value to the hash map
-	 * 
-	 * @param newHash  hash map of position / value
-	 * @param position the current position
-	 * @param value    the value
-	 */
-	protected void addToHash(final Int2IntOpenHashMap newHash, final int position, final int value) {
-		final int prev = newHash.putIfAbsent(position, value);
-		if (prev != defaultv && prev != value) {
-			newHash.put(position, BattleSnakeConstants.SPLIT_AREA);
-		}
-
 	}
 
 }

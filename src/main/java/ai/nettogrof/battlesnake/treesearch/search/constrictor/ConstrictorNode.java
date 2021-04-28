@@ -8,8 +8,8 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
 
 /**
  * This Constrictor node class must be use only in constrictor mode.
@@ -17,7 +17,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class ConstrictorNode extends AbstractStandardNode {
+public class ConstrictorNode extends AbstractEvaluationNode {
 
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
