@@ -65,7 +65,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 */
 	@Override
 	protected void kill(final SnakeInfo death, final List<SnakeInfo> all) {
-		kill((SnakeInfoSquad) death, all);
+		killSquad((SnakeInfoSquad) death, all);
 	}
 
 	/**
@@ -74,10 +74,10 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 * @param death SnakeInfo of the snake to kill
 	 * @param all   List of all snakeinfo
 	 */
-	protected void kill(final SnakeInfoSquad death, final List<SnakeInfoSquad> all) {
+	protected void killSquad(final SnakeInfoSquad death, final List<SnakeInfo> all) {
 		death.die();
-		for (final SnakeInfoSquad s : all) {
-			if (s.getSquad().equals(death.getSquad())) {
+		for (final SnakeInfo s : all) {
+			if (((SnakeInfoSquad)s).getSquad().equals(death.getSquad())) {
 				s.die();
 			}
 		}
@@ -91,7 +91,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 
 	@Override
 	protected boolean freeSpace(final int square, final List<SnakeInfo> snakes, final SnakeInfo currentSnake) {
-		return freeSpace(square, snakes, (SnakeInfoSquad) currentSnake);
+		return freeSpaceSquad(square, snakes, (SnakeInfoSquad) currentSnake);
 
 	}
 
@@ -103,12 +103,12 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 * @param currentSnake current Snake
 	 * @return boolean free to move on that square
 	 */
-	protected boolean freeSpace(final int square, final List<SnakeInfoSquad> snakes,
+	protected boolean freeSpaceSquad(final int square, final List<SnakeInfo> snakes,
 			final SnakeInfoSquad currentSnake) {
 		boolean free = true;
 		for (int i = 0; i < snakes.size() && free; i++) {
 			free = snakes.get(i).equals(currentSnake) ? !snakes.get(i).isSnake(square)
-					: !snakes.get(i).isSnake(square, currentSnake.getSquad());
+					: !((SnakeInfoSquad)snakes.get(i)).isSnake(square, currentSnake.getSquad());
 		}
 		return free;
 	}

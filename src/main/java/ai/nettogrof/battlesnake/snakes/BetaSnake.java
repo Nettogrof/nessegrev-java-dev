@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
@@ -19,6 +18,7 @@ import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;
+import ai.nettogrof.battlesnake.treesearch.search.squad.SquadNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.DuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
@@ -204,7 +204,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			node = new DuelNode(snakes, food);
 			break;
 		case "squad": 
-			node = new DuelNode(snakes, food); // TODO Create Squad node
+			node = new SquadNode(snakes, food); 
 			break;
 		default:
 			if (snakes.size() > 4) {
