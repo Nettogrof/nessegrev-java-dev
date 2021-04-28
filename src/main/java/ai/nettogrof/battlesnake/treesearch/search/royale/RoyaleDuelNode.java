@@ -46,29 +46,11 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-
-		listAreaControl();
-
-		for (int i = 0; i < snakes.size(); i++) {
-			score[i] += snakes.get(i).getHealth() / 250f;
-			if (hazard.isHazard(snakes.get(i).getHead())) {
-				score[i] *= 0.9f;
-			}
-		}
-
-		if (snakes.size() > 1) {
-			int nbAlive = 0;
-			for (final SnakeInfo s : snakes) {
-				if (s.isAlive()) {
-					nbAlive++;
-				}
-			}
-			if (nbAlive < 2) {
-				exp = false;
-			}
-
-		} else if (snakes.size() == 1) {
-			score[0] += 1000;
+		if (countSnakeAlive() < 2) {
+			setWinnerMaxScore();
+		} else {
+			listAreaControl();
+			adjustHazardScore();
 		}
 		updateScoreRatio();
 

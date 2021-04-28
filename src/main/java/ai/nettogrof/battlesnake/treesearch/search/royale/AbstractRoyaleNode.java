@@ -66,13 +66,14 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	/**
 	 * Adjust our snake score according if our head is in hazard
 	 * 
-	 * @param head Square of the head
 	 */
-	protected void adjustHazardScore(final int head) {
-		if (hazard != null && hazard.isHazard(head / 1000, head % 1000)) {
-			score[0] -= 3.0f;
+	protected void adjustHazardScore() {
+		for (int i = 0; i < snakes.size(); i++) {
+			score[i] += snakes.get(i).getHealth() / 250f;
+			if (hazard.isHazard(snakes.get(i).getHead())) {
+				score[i] *= 0.9f;
+			}
 		}
-
 	}
 
 	/**
@@ -182,5 +183,9 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 		}
 		return board;
 	}
+	/*
+	protected void adjust
+	
+	}*/
 
 }

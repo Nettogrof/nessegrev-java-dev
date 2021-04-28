@@ -51,9 +51,9 @@ public final class Snake {
 	private static Map<String, AbstractSnakeAI> bots = new ConcurrentHashMap<>();
 
 	/**
-	 * SnakeType define by program parameter Default: Floofill
+	 * SnakeType define by program parameter Default: undefined
 	 */
-	private static String snakeType = "FloodFill";
+	private static String snakeType = "undefined";
 
 	/**
 	 * Port number define by config file or program parameter. Default: 8081
@@ -248,6 +248,7 @@ public final class Snake {
 				bots.put(gameId, new Challenger(gameId));
 				break;
 			default:
+				LOG.atWarning().log("No snake type defined,  using Beta as default!");
 				bots.put(gameId, new BetaSnake(gameId));
 				break;
 			}

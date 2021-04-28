@@ -4,7 +4,6 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -32,14 +31,7 @@ public class DuelNode extends AbstractStandardNode {
 	 */
 	private void setScore() {
 		if (countSnakeAlive() < 2) {
-			// Only one snake alive no need to explore this node anymore and set max score
-			// to surviving snake
-			exp = false;
-			for (int i = 0; i < score.length; i++) {
-				if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {
-					score[i] = BattleSnakeConstants.MAX_SCORE;
-				}
-			}
+			setWinnerMaxScore();
 		} else {
 			listAreaControl();
 			for (int i = 0; i < snakes.size(); i++) {
@@ -55,6 +47,8 @@ public class DuelNode extends AbstractStandardNode {
 	}
 
 	
+	
+
 	/**
 	 * Uses to create duel node
 	 */

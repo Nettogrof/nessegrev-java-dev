@@ -33,28 +33,13 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		addBasicLengthScore();
-		listAreaControl();
+		if (countSnakeAlive() < 2) {
+			setWinnerMaxScore();
+		} else {
+			addBasicLengthScore();
+			listAreaControl();
+			adjustHazardScore();
 
-		for (int i = 0; i < snakes.size(); i++) {
-
-			if (hazard.isHazard(snakes.get(i).getHead())) {
-				score[i] *= 0.9f;
-			}
-		}
-		if (snakes.size() > 1) {
-			int nbAlive = 0;
-			for (final SnakeInfo s : snakes) {
-				if (s.isAlive()) {
-					nbAlive++;
-				}
-			}
-			if (nbAlive < 2) {
-				exp = false;
-			}
-
-		} else if (snakes.size() == 1) {
-			score[0] += 1000;
 		}
 
 		updateScoreRatio();

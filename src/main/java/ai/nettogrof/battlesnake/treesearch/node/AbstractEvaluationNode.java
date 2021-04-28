@@ -258,18 +258,27 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected int countSnakeAlive() {
 
 		int nbAlive = 0;
-		if (snakes.size() > 1) {
+		
 			for (final SnakeInfo s : snakes) {
 				if (s.isAlive()) {
 					nbAlive++;
 				}
 			}
 
-		} else if (snakes.size() == 1) {
-			score[0] += BattleSnakeConstants.MAX_SCORE;
-			nbAlive = 1;
-		}
 		return nbAlive;
+		
+	}
+	
+	/**
+	 * Set Max score to winner snakes.
+	 */
+	protected void setWinnerMaxScore() {
+		exp = false;
+		for (int i = 0; i < score.length; i++) {
+			if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {
+				score[i] = BattleSnakeConstants.MAX_SCORE;
+			}
+		}		
 	}
 
 
