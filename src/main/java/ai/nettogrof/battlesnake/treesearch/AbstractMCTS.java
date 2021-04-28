@@ -100,4 +100,23 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 
 	}
 
+	/**
+	 * Execute the MCTS search
+	 */
+	protected void executeMCTS() {
+		long currentTime = System.currentTimeMillis() - startTime;
+		List<AbstractNode> retNode = new ArrayList<>();
+		retNode.add(root);
+		while (cont && currentTime < timeout && root.exp) {
+			final List<AbstractNode> bestChild = getMCTSBestPath(retNode.get(0));
+
+			generateChild(bestChild.get(0));
+			mergeList(bestChild, retNode);
+			retNode = updateListNode(bestChild);
+			Thread.yield();
+			currentTime = System.currentTimeMillis() - startTime;
+		}
+		updateFullListNode(retNode);
+	}
+
 }

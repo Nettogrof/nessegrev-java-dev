@@ -3,9 +3,6 @@
  */
 package ai.nettogrof.battlesnake.treesearch.search.standard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -66,19 +63,8 @@ public class MctsSearch extends AbstractStandardSearch {
 		for (int i = 0; i < 509; i++) {
 			generateChild(getSmallestChild(root));
 		}
-		long currentTime = System.currentTimeMillis() - startTime;
-		List<AbstractNode> retNode = new ArrayList<>();
-		retNode.add(root);
-		while (cont && currentTime < timeout && root.exp) {
-			final List<AbstractNode> bestChild = getMCTSBestPath(retNode.get(0));
-
-			generateChild(bestChild.get(0));
-			mergeList(bestChild, retNode);
-			retNode = updateListNode(bestChild);
-			Thread.yield();
-			currentTime = System.currentTimeMillis() - startTime;
-		}
-		updateFullListNode(retNode);
-
+		executeMCTS();
 	}
+
+	
 }
