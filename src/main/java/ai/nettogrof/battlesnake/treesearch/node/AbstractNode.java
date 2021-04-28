@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
@@ -156,13 +156,13 @@ public abstract class AbstractNode {
 	 * Update the score ratio
 	 */
 	public void updateScoreRatio() {
-		float totalOther = BattleSnakeConstant.BASIC_SCORE;
+		float totalOther = BattleSnakeConstants.BASIC_SCORE;
 		for (int i = 1; i < score.length; i++) {
 			totalOther += score[i];
 		}
 
 		scoreRatio = (float) (score[0] / (float) totalOther);
-		if (scoreRatio == 0.0 || scoreRatio > BattleSnakeConstant.STOP_EXPAND_LIMIT) {
+		if (scoreRatio == 0.0 || scoreRatio > BattleSnakeConstants.STOP_EXPAND_LIMIT) {
 			exp = false;
 		}
 	}
@@ -221,7 +221,7 @@ public abstract class AbstractNode {
 		for (int i = 0; i < scores.size(); i++) {
 			float other = 0;
 			for (int j = 1; j < scores.get(i).length; j++) {
-				if (scores.get(i)[j] != BattleSnakeConstant.INVALID_SCORE) {
+				if (scores.get(i)[j] != BattleSnakeConstants.INVALID_SCORE) {
 					other += scores.get(i)[j];
 				}
 			}
@@ -254,23 +254,23 @@ public abstract class AbstractNode {
 
 				if (score.length > c.score.length) {
 					for (int i = c.score.length; i < score.length; i++) {
-						currentS[i] = BattleSnakeConstant.BASIC_SCORE;
+						currentS[i] = BattleSnakeConstants.BASIC_SCORE;
 					}
 				}
 			} else {
 				head.add(currentHead);
-				float[] beta = { BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
-						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
-						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
-						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
-						BattleSnakeConstant.INVALID_SCORE };
+				float[] beta = { BattleSnakeConstants.INVALID_SCORE, BattleSnakeConstants.INVALID_SCORE,
+						BattleSnakeConstants.INVALID_SCORE, BattleSnakeConstants.INVALID_SCORE,
+						BattleSnakeConstants.INVALID_SCORE, BattleSnakeConstants.INVALID_SCORE,
+						BattleSnakeConstants.INVALID_SCORE, BattleSnakeConstants.INVALID_SCORE,
+						BattleSnakeConstants.INVALID_SCORE };
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
 				/*
 				 * for (int i = 0; i < c.score.length; i++) { beta[i] = c.score[i]; }
 				 */
 
 				for (int i = c.score.length; i < score.length; i++) {
-					beta[i] = BattleSnakeConstant.BASIC_SCORE;
+					beta[i] = BattleSnakeConstants.BASIC_SCORE;
 				}
 
 				scores.add(beta);
@@ -298,7 +298,7 @@ public abstract class AbstractNode {
 		for (int i = 1; i < score.length; i++) {
 			score[i] = 0;
 		}
-		score[0] = BattleSnakeConstant.MAX_SCORE;
+		score[0] = BattleSnakeConstants.MAX_SCORE;
 		for (final AbstractNode current : child) {
 			score[0] = current.score[0] < score[0] ? current.score[0] : score[0];
 			for (int i = 1; i < current.score.length; i++) {

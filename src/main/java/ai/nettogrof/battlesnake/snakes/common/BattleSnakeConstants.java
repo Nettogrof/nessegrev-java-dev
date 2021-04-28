@@ -5,7 +5,7 @@ package ai.nettogrof.battlesnake.snakes.common;
  * 
  * @version Spring 2021
  */
-public final class BattleSnakeConstant {
+public final class BattleSnakeConstants {
 
 	/**
 	 * Health lose when a snake is in hazard zone

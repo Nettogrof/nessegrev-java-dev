@@ -8,7 +8,7 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -72,7 +72,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 
 		// If a single snake assign max score
 		if (snakes.size() < 2) {
-			score[0] = BattleSnakeConstant.MAX_SCORE;
+			score[0] = BattleSnakeConstants.MAX_SCORE;
 			return;
 		}
 		final int[][] board = initBoard();
@@ -112,7 +112,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 			for (int j = 0; j < height; j++) {
 				if (board[i][j] > 0) {
 					count[board[i][j] - 1]++;
-				} else if (board[i][j] == BattleSnakeConstant.SPLIT_AREA) {
+				} else if (board[i][j] == BattleSnakeConstants.SPLIT_AREA) {
 
 					count[biggestSnake]++;
 				}
@@ -125,7 +125,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += BattleSnakeConstant.TAIL_VALUE_AREA;
+				count[boardValue - 1] += BattleSnakeConstants.TAIL_VALUE_AREA;
 			}
 			total += count[i];
 		}
@@ -151,7 +151,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 			for (int i = 0; i < body.size() - 1; i++) {
 				final int square = body.getQuick(i);
 
-				board[square / 1000][square % 1000] = BattleSnakeConstant.SNAKE_BODY;
+				board[square / 1000][square % 1000] = BattleSnakeConstants.SNAKE_BODY;
 
 			}
 		}
@@ -215,7 +215,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 	protected void addToHash(final Int2IntOpenHashMap newHash, final int position, final int value) {
 		final int prev = newHash.putIfAbsent(position, value);
 		if (prev != defaultv && prev != value) {
-			newHash.put(position, BattleSnakeConstant.SPLIT_AREA);
+			newHash.put(position, BattleSnakeConstants.SPLIT_AREA);
 		}
 
 	}

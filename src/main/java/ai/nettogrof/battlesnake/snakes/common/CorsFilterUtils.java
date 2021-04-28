@@ -14,7 +14,7 @@ import spark.Spark;
  * in a spark application;
  * 
  */
-public final class CorsFilter /* implements Apply */ {
+public final class CorsFilterUtils {
 
 	/**
 	 * CORS maps info
@@ -24,7 +24,7 @@ public final class CorsFilter /* implements Apply */ {
 	/**
 	 * Basic filter to accept incoming https/web request
 	 */
-	private CorsFilter() {
+	private CorsFilterUtils() {
 		corsHeaders.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
 		corsHeaders.put("Access-Control-Allow-Origin", "*");
 		corsHeaders.put("Access-Control-Allow-Headers",

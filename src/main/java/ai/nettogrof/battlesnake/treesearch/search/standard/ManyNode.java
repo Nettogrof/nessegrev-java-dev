@@ -7,7 +7,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -53,7 +53,7 @@ public class ManyNode extends AbstractStandardNode {
 				exp = false;
 			}
 		} else if (snakes.size() == 1) {
-			score[0] += BattleSnakeConstant.MAX_SCORE;
+			score[0] += BattleSnakeConstants.MAX_SCORE;
 		}
 	}
 

@@ -3,7 +3,7 @@ package ai.nettogrof.battlesnake.snakes;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.nettogrof.battlesnake.snakes.common.CorsFilter;
+import ai.nettogrof.battlesnake.snakes.common.CorsFilterUtils;
 
 import com.google.common.flogger.FluentLogger;
 import spark.Request;
@@ -92,7 +92,7 @@ public final class Snake {
 			LOG.atInfo().log("Using system provide port: " + port);
 		}
 		port(Integer.parseInt(port));
-		CorsFilter.apply();
+		CorsFilterUtils.apply();
 
 		get("/", HANDLER::process, JSON_MAPPER::writeValueAsString);
 		post("/start", HANDLER::process, JSON_MAPPER::writeValueAsString);

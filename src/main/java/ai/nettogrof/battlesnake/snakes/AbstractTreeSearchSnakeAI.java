@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.constrictor.ConstrictorSearch;
@@ -119,8 +119,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
 
 			final Random rand = new Random();
-			losing = BattleSnakeConstant.LOSE_SHOUT[rand.nextInt(BattleSnakeConstant.LOSE_SHOUT.length)];
-			winning = BattleSnakeConstant.WIN_SHOUT[rand.nextInt(BattleSnakeConstant.WIN_SHOUT.length)];
+			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
+			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
 
 		} catch (IOException ex) {
 			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());

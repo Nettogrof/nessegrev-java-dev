@@ -6,7 +6,7 @@ package ai.nettogrof.battlesnake.treesearch;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import gnu.trove.list.array.TFloatArrayList;
 
@@ -64,7 +64,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 	 * @return float of the score.
 	 */
 	private float mctsScore(final AbstractNode parentNode, final AbstractNode childNode) {
-		return (float) (childNode.getScoreRatio() + BattleSnakeConstant.MCTS_BIAS
+		return (float) (childNode.getScoreRatio() + BattleSnakeConstants.MCTS_BIAS
 				* Math.sqrt(Math.log(parentNode.getChildCount()) / childNode.getChildCount()));
 	}
 
