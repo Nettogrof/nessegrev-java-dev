@@ -35,7 +35,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	/**
 	 * The config filename
 	 */
-	protected static String fileConfig = "Gamma.properties";
+	private static String fileConfig = "Gamma.properties";
 
 	
 	/**

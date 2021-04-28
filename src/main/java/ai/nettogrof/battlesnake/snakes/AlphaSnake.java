@@ -30,7 +30,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	/**
 	 * The config filename
 	 */
-	protected static String fileConfig = "Alpha.properties";
+	private static String fileConfig = "Alpha.properties";
 
 	/**
 	 * Basic / unused constructor

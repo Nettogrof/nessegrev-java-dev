@@ -40,7 +40,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	/**
 	 * The config filename
 	 */
-	protected static String fileConfig = "Beta.properties";
+	private static String fileConfig = "Beta.properties";
 
 	/**
 	 * Boolean if a squad game

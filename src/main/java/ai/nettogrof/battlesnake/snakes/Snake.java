@@ -53,7 +53,7 @@ public final class Snake {
 	/**
 	 * SnakeType define by program parameter Default: Floofill
 	 */
-	public static String snakeType = "FloodFill";
+	private static String snakeType = "FloodFill";
 
 	/**
 	 * Port number define by config file or program parameter. Default: 8081
