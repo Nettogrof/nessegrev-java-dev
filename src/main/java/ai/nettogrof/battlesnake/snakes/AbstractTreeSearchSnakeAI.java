@@ -41,12 +41,11 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Boolean if multithread is use by the snake value define by the config file
 	 */
 	protected transient boolean multiThread;
-	
+
 	/**
 	 * Number of cpu / thread permit
 	 */
 	protected transient int cpu_limit = 2;
-
 
 	/**
 	 * String that gonna be shout by the snake if snake is in a losing position.
@@ -79,12 +78,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * the previous "tree"
 	 */
 	protected transient AbstractNode lastRoot;
-	
+
 	/**
 	 * Ruleset that this game is played.
 	 */
 	protected transient String ruleset = "standard";
-	
+
 	/**
 	 * What kind of search that gonne be use
 	 */
@@ -100,12 +99,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	/**
 	 * Constructor with the gameid,
 	 * 
-	 * @param gameId String of the gameid field receive in the start request.
-	 * @param fileConfig  String to the config file
+	 * @param gameId     String of the gameid field receive in the start request.
+	 * @param fileConfig String to the config file
 	 */
 	public AbstractTreeSearchSnakeAI(final String gameId, String fileConfig) {
 		super(gameId);
-	
+
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
 			final Properties prop = new Properties();
@@ -118,7 +117,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
 			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
 			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
-			
+
 			final Random rand = new Random();
 			losing = BattleSnakeConstant.LOSE_SHOUT[rand.nextInt(BattleSnakeConstant.LOSE_SHOUT.length)];
 			winning = BattleSnakeConstant.WIN_SHOUT[rand.nextInt(BattleSnakeConstant.WIN_SHOUT.length)];
@@ -128,13 +127,13 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 	}
 
-
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request 
+	 * Return the infos need by Battlesnake when receive a (root GET /) request
+	 * 
 	 * @return map of info for Battlesnake
 	 */
 	public static Map<String, String> getInfo() {
-		
+
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
 
@@ -157,7 +156,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 		return response;
 	}
-	
+
 	/**
 	 * This method will be call on each move request receive by BattleSnake
 	 * 
@@ -196,16 +195,15 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
 	}
 
-
 	/**
 	 * Execute the tree search
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
-	 * @throws ReflectiveOperationException  In case of invalid search type
+	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void treeSearch(final AbstractNode root, final Long startTime) throws ReflectiveOperationException {
-	
+
 		if (multiThread && root.getSnakes().size() < 5) {
 			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
 			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
@@ -218,7 +216,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer));
 
 			}
-			
+
 			for (final AbstractSearch s : listSearchThread) {
 				startThread(s);
 			}
@@ -246,7 +244,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			log.atInfo().log("Nb Thread: " + nodelist.size());
 		} else {
 			// Single thread
-			
+
 			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
 			main.run();
 
@@ -256,6 +254,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 	/**
 	 * Start the thread search
+	 * 
 	 * @param search the search to be executed
 	 */
 	private void startThread(final AbstractSearch search) {
@@ -263,6 +262,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		subThread.setPriority(3);
 		subThread.start();
 	}
+
 	/**
 	 * Generate the root node based on the /move request
 	 * 
@@ -339,7 +339,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return the best AbstractNode
 	 */
 	protected AbstractNode lastChance(final AbstractNode root) {
-		//TODO In losing posisition snake should choose the path with a the best chance, not the longest child
+		// TODO In losing posisition snake should choose the path with a the best
+		// chance, not the longest child
 		AbstractNode ret = null;
 		float score = 0;
 		for (final AbstractNode c : root.getChild()) {
@@ -405,7 +406,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			move = head + 1000;
 
 		}
-		
 
 		for (final AbstractNode child : root.getChild()) {
 			if (child.getScoreRatio() == choiceValue && child.getSnakes().get(0).isAlive()
@@ -419,7 +419,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		return null;
 	}
 
-	
 	/**
 	 * This method return the scoreRatio of the best choice based on payoff Matrix
 	 * 
@@ -427,7 +426,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param down   float array list
 	 * @param left   float array list
 	 * @param right  float array list
-	 * @return  score float
+	 * @return score float
 	 */
 	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
 			final TFloatArrayList left, final TFloatArrayList right) {
@@ -476,25 +475,27 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
-			//if (node.getChild().get(i).exp) {
-				final int move = node.getChild().get(i).getSnakes().get(0).getHead();
+			// if (node.getChild().get(i).exp) {
+			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
-				if (move / 1000 < head / 1000) {
-					left.add(node.getChild().get(i).getScoreRatio());
-				} else if (move / 1000 > head / 1000) {
-					right.add(node.getChild().get(i).getScoreRatio());
-				} else if (move % 1000 < head % 1000) {
-					down.add(node.getChild().get(i).getScoreRatio());
-				} else {
-					upward.add(node.getChild().get(i).getScoreRatio());
-				}
-			//}
+			if (move / 1000 < head / 1000) {
+				left.add(node.getChild().get(i).getScoreRatio());
+			} else if (move / 1000 > head / 1000) {
+				right.add(node.getChild().get(i).getScoreRatio());
+			} else if (move % 1000 < head % 1000) {
+				down.add(node.getChild().get(i).getScoreRatio());
+			} else {
+				upward.add(node.getChild().get(i).getScoreRatio());
+			}
+			// }
 		}
-		
+
 	}
-	
+
 	/**
-	 * Log value for each possible move, that help to debug/understand why the snake choose which move.
+	 * Log value for each possible move, that help to debug/understand why the snake
+	 * choose which move.
+	 * 
 	 * @param upward float array list
 	 * @param down   float array list
 	 * @param left   float array list
@@ -524,7 +525,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param winner the best node
 	 * @param root   the current root node
 	 * @param head   current snake head from the json
-	 * @return  response for Battlesnake
+	 * @return response for Battlesnake
 	 */
 	protected Map<String, String> generateResponse(final AbstractNode winner, final AbstractNode root,
 			final JsonNode head) {
@@ -561,31 +562,31 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		response.put(MOVESTR, res);
 		return response;
 	}
-	
+
 	/**
 	 * This method generate the search type
 	 * 
 	 * @return Abstract Search
-	 * @throws ReflectiveOperationException  In case of invalid search type
+	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
-	protected Constructor<? extends AbstractSearch> genSearchType()
-			throws ReflectiveOperationException {
-		
+	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
+
 		switch (ruleset) {
 		case "standard":
-			return MctsSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		case "constrictor":
-			return ConstrictorSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);		
+			return ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+					int.class);
 		case "royale":
-			return RoyaleSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		case "squad":
-			return SquadSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		default:
-			return RoyaleSearch.class.getConstructor(AbstractNode.class,int.class, int.class, long.class, int.class);
+			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		}
 
 	}
-	
+
 	/**
 	 * Expand the base list of node until reaching cpu limit
 	 * 
@@ -593,7 +594,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param expandedlist List of node to be updated after search
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
-	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist) throws ReflectiveOperationException {
+	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist)
+			throws ReflectiveOperationException {
 		boolean cont = true;
 		while (cont) {
 			if (nodelist.isEmpty()) {

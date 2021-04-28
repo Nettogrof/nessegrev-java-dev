@@ -11,25 +11,24 @@ import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
- * This abstract royale node class is the based of all node class, provide
- * basic method use in any node for royale rules.
+ * This abstract royale node class is the based of all node class, provide basic
+ * method use in any node for royale rules.
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
  */
 public abstract class AbstractRoyaleNode extends AbstractNode {
-	
+
 	/**
 	 * default openhashmap value
 	 */
 	private final static int defaultv = new Int2IntOpenHashMap().defaultReturnValue();
-	
-	
+
 	/**
 	 * Hazards info
 	 */
 	protected transient HazardInfo hazard;
-	
+
 	/**
 	 * Basic constructor
 	 */
@@ -43,11 +42,11 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	 * @param snakes List of snakes
 	 * @param food   Food information
 	 */
-	public AbstractRoyaleNode(final List<SnakeInfo> snakes,final FoodInfo food) {
-		super(snakes,food);
-		
+	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+		super(snakes, food);
+
 	}
-	
+
 	/**
 	 * Constructor with snakes and food information
 	 * 
@@ -55,33 +54,32 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	 * @param food   Food information
 	 * @param hazard Hazard Info
 	 */
-	public AbstractRoyaleNode(final List<SnakeInfo> snakes,final  FoodInfo food,final  HazardInfo hazard) {
-		super(snakes,food);
+	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
+		super(snakes, food);
 		this.hazard = hazard;
 	}
-	
 
-	
 	/**
 	 * Gets hazard information from this node
+	 * 
 	 * @return Hazard info
 	 */
 	public HazardInfo getHazard() {
 		return hazard;
 	}
 
-		
 	/**
 	 * Adjust our snake score according if our head is in hazard
-	 * @param head  Square of the head
+	 * 
+	 * @param head Square of the head
 	 */
 	protected void adjustHazardScore(final int head) {
-		if (hazard != null && hazard.isHazard(head/1000,head % 1000)) {
+		if (hazard != null && hazard.isHazard(head / 1000, head % 1000)) {
 			score[0] -= 3.0f;
 		}
 
 	}
-	
+
 	/**
 	 * Adjust our snake score if our snake is on the border of the board
 	 * 
@@ -108,7 +106,6 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	protected void addScoreDistance(final int head) {
 		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 	}
-	
 
 	/**
 	 * Adding basic length to score and health score = length + health /50
@@ -119,7 +116,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 					: 0;
 		}
 	}
-	
+
 	/**
 	 * Add or remove score to our snake if it longer or shorter than the other
 	 * snakes
@@ -134,6 +131,7 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 		}
 
 	}
+
 	/**
 	 * Generate score based on the area control by the snake. Using a kind of
 	 * voronoi algo.
@@ -156,14 +154,13 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 
 		while (newHash.size() != 0) {
 			old.clear();
-			applyNewHash(newHash, board);		
+			applyNewHash(newHash, board);
 			generateHash(newHash, old, board);
 			newHash.clear();
 			if (old.size() != 0) {
-				applyNewHash(old, board);				
+				applyNewHash(old, board);
 				generateHash(old, newHash, board);
 			}
-			
 
 		}
 		removeHazardZone(board);
@@ -172,15 +169,17 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 	}
 
 	/**
-	 * Remove hazard from the control Area because there's no value to control hazard area
+	 * Remove hazard from the control Area because there's no value to control
+	 * hazard area
+	 * 
 	 * @param board Board array
 	 */
 	private void removeHazardZone(final int[][] board) {
 		final TIntArrayList listHazard = hazard.getListHazard();
-		for( int i =0 ; i <listHazard.size(); i++) {
-			board[listHazard.get(i)/1000][listHazard.get(i)%1000] = -1;
+		for (int i = 0; i < listHazard.size(); i++) {
+			board[listHazard.get(i) / 1000][listHazard.get(i) % 1000] = -1;
 		}
-		
+
 	}
 
 	/**
@@ -302,7 +301,5 @@ public abstract class AbstractRoyaleNode extends AbstractNode {
 		}
 
 	}
-	
-	
 
 }

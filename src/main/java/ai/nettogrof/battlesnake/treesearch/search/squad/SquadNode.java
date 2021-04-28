@@ -22,22 +22,23 @@ public class SquadNode extends AbstractSquadNode {
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes   List of snakes
-	 * @param food Food information
+	 * @param snakes List of snakes
+	 * @param food   Food information
 	 */
-	public SquadNode(final List<? extends SnakeInfo> snakes,final FoodInfo food) {
+	public SquadNode(final List<? extends SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
 
 		score = new float[snakes.size()];
 		setScore();
 	}
-	
+
 	/**
 	 * Sets the node score
 	 */
 	private void setScore() {
 		if (countSnakeAlive() < 2) {
-			//Only one snake alive no need to explore this node anymore and set max score to surviving snake
+			// Only one snake alive no need to explore this node anymore and set max score
+			// to surviving snake
 			exp = false;
 			for (int i = 0; i < score.length; i++) {
 				if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {
@@ -82,7 +83,7 @@ public class SquadNode extends AbstractSquadNode {
 	}
 
 	@Override
-	public AbstractNode createNode(final List<SnakeInfo> snakes,final AbstractNode currentNode) {
+	public AbstractNode createNode(final List<SnakeInfo> snakes, final AbstractNode currentNode) {
 		return new SquadNode(snakes, currentNode.getFood());
 	}
 

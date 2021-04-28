@@ -16,9 +16,9 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 /**
  * Alpha snake. This class is the "Nessegrev-Alpha" snake on Battlesnake.This
  * snake participated in the Communitech tournament in the Rookie division.
- * Still has some search bugs. It uses the minimax algorithm. This snake work 
- * only API v1. All the move calculation are based on API v0,
- * and then the snake switch UP and DOWN response.
+ * Still has some search bugs. It uses the minimax algorithm. This snake work
+ * only API v1. All the move calculation are based on API v0, and then the snake
+ * switch UP and DOWN response.
  * 
  * @author carl.lajeunesse
  * @version Fall 2020
@@ -45,7 +45,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public AlphaSnake(final String gameId) {
-		super(gameId,fileConfig);
+		super(gameId, fileConfig);
 
 	}
 
@@ -99,7 +99,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 			for (final AbstractNode child : lastRoot.getChild()) {
 				if (food.equals(child.getFood()) && Arrays.deepEquals(child.getSnakes().toArray(), snakes)) {
 
-					root = (AlphaNode) child;					
+					root = (AlphaNode) child;
 					break;
 
 				}
@@ -216,15 +216,14 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		response.put("tailType", "shac-coffee");
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
 		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
-	
+
 		timeout = startRequest.get("game").get("timeout").asInt();
-		
 
 		// timeout = timeout-200;
 
 		return response;
 	}
-	
+
 	/**
 	 * Method use to set the fileConfig string
 	 */
@@ -238,7 +237,5 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	protected AbstractNode genRoot(JsonNode moveRequest) {
 		return null;
 	}
-
-
 
 }

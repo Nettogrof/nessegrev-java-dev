@@ -77,7 +77,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	protected void killSquad(final SnakeInfoSquad death, final List<SnakeInfo> all) {
 		death.die();
 		for (final SnakeInfo s : all) {
-			if (((SnakeInfoSquad)s).getSquad().equals(death.getSquad())) {
+			if (((SnakeInfoSquad) s).getSquad().equals(death.getSquad())) {
 				s.die();
 			}
 		}
@@ -86,7 +86,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
-		return new SnakeInfoSquad((SnakeInfoSquad)snake, newHead, currentNode.getFood().isFood(newHead));
+		return new SnakeInfoSquad((SnakeInfoSquad) snake, newHead, currentNode.getFood().isFood(newHead));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 * Check if the snake can move on the square for squad mode
 	 * 
 	 * @param square       the int square
-	 * @param snakes    List of all snakes
+	 * @param snakes       List of all snakes
 	 * @param currentSnake current Snake
 	 * @return boolean free to move on that square
 	 */
@@ -108,7 +108,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 		boolean free = true;
 		for (int i = 0; i < snakes.size() && free; i++) {
 			free = snakes.get(i).equals(currentSnake) ? !snakes.get(i).isSnake(square)
-					: !((SnakeInfoSquad)snakes.get(i)).isSnake(square, currentSnake.getSquad());
+					: !((SnakeInfoSquad) snakes.get(i)).isSnake(square, currentSnake.getSquad());
 		}
 		return free;
 	}

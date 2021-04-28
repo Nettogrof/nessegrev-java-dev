@@ -22,12 +22,12 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 
 /**
- * Snake server that deals with requests from the snake engine. 
- * This class route the incoming transaction to the right object/method.
+ * Snake server that deals with requests from the snake engine. This class route
+ * the incoming transaction to the right object/method.
  * 
  * Based on the starter-snake-java of Battlesnake
  * 
- * @version  Spring 2021 
+ * @version Spring 2021
  */
 public final class Snake {
 	/**
@@ -105,7 +105,7 @@ public final class Snake {
 	/**
 	 * Load Snake properties to get port number
 	 * 
-	 * @param snakeType  Which type of snake
+	 * @param snakeType Which type of snake
 	 */
 	private static void loadProperties(final String snakeType) {
 		try (InputStream input = Files.newInputStream(Paths.get(snakeType + ".properties"))) {
@@ -133,8 +133,8 @@ public final class Snake {
 		/**
 		 * Generic processor that prints out the request and response from the methods.
 		 *
-		 * @param req  Request received
-		 * @param res  Response object
+		 * @param req Request received
+		 * @param res Response object
 		 * @return map of field,value
 		 */
 		public Map<String, String> process(final Request req, final Response res) {
@@ -176,7 +176,7 @@ public final class Snake {
 
 		/**
 		 * /ping is called by the play application during the tournament or on
-		 * play.battlesnake.io to make sure your snake is still alive. API v0 
+		 * play.battlesnake.io to make sure your snake is still alive. API v0
 		 *
 		 * @return an empty response.
 		 */
@@ -191,8 +191,9 @@ public final class Snake {
 		 * / is called by the play application during the tournament or on
 		 * play.battlesnake.io to make sure your snake is still alive.
 		 *
-		 * RootRequest a map containing the JSON sent to this snake. See the spec
-		 *                    for details of what this contains.
+		 * RootRequest a map containing the JSON sent to this snake. See the spec for
+		 * details of what this contains.
+		 * 
 		 * @return apiversion:string - Battlesnake API Version implemented by this
 		 *         Battlesnake author:string - Optional username of the Battlesnake’s
 		 *         author head:string - Optional custom head for this Battlesnake

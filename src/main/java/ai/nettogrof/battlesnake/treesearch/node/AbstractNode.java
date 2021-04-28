@@ -9,65 +9,66 @@ import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstant;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
- * This abstract node class is the based of all node class, provide basic method use in any node.
+ * This abstract node class is the based of all node class, provide basic method
+ * use in any node.
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
  */
 public abstract class AbstractNode {
-	
+
 	/**
 	 * Board width useful for some evaluation method
 	 */
 	public static int width;
-	
+
 	/**
 	 * Board height useful for some evaluation method
 	 */
 	public static int height;
-	
+
 	/**
 	 * List of child node
 	 */
 	protected transient List<AbstractNode> child = new ArrayList<>();
-	
+
 	/**
-	 * List of snakes 
+	 * List of snakes
 	 */
 	protected transient List<SnakeInfo> snakes;
-	
+
 	/**
-	 *  Food information 
+	 * Food information
 	 */
 	protected transient FoodInfo food;
-	
+
 	/**
-	 *  Current scoreRatio  
+	 * Current scoreRatio
 	 */
 	protected transient float scoreRatio;
-	
+
 	/**
-	 *  Array of score of each snake 
+	 * Array of score of each snake
 	 */
 	public transient float score[];
-	
+
 	/**
-	 *  Number of possible move of our snake
+	 * Number of possible move of our snake
 	 */
 	public transient int possibleMove;
-	
+
 	/**
-	 *  Counts of all node of that branch 
+	 * Counts of all node of that branch
 	 */
 	public transient int allChildsCount = 1;
-	
+
 	/**
-	 *  Does that node can be explore 
+	 * Does that node can be explore
 	 */
 	public transient boolean exp = true;
 
 	/**
-	 * Basic  constructor
+	 * Basic constructor
 	 */
 	public AbstractNode() {
 		// Empty top level
@@ -75,16 +76,18 @@ public abstract class AbstractNode {
 
 	/**
 	 * Constructor with the minimal info needed
-	 * @param snakes  List of snakes
-	 * @param food Food information
+	 * 
+	 * @param snakes List of snakes
+	 * @param food   Food information
 	 */
-	public AbstractNode(final List<SnakeInfo> snakes,final FoodInfo food) {
-		this.snakes =  snakes;
+	public AbstractNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+		this.snakes = snakes;
 		this.food = food;
 	}
 
 	/**
-	 * Gets food information, 
+	 * Gets food information,
+	 * 
 	 * @return return the food information
 	 */
 	public FoodInfo getFood() {
@@ -93,16 +96,17 @@ public abstract class AbstractNode {
 
 	/**
 	 * Gets list of snakes from this node
-	 * @return  Lost of snakeInfo
+	 * 
+	 * @return Lost of snakeInfo
 	 */
-	public List< SnakeInfo> getSnakes() {
+	public List<SnakeInfo> getSnakes() {
 		return snakes;
 	}
 
 	/**
-	 * Return counts of all node of that branch 
+	 * Return counts of all node of that branch
 	 *
-	 * @return  All Childs count
+	 * @return All Childs count
 	 */
 	public int getChildCount() {
 
@@ -110,8 +114,9 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * Gets the score ratio,  the score ratio is compute has follow
-	 * Our snake score  / (all others snakes score added)
+	 * Gets the score ratio, the score ratio is compute has follow Our snake score /
+	 * (all others snakes score added)
+	 * 
 	 * @return float score ratio
 	 */
 	public float getScoreRatio() {
@@ -120,7 +125,8 @@ public abstract class AbstractNode {
 
 	/**
 	 * Add a child to this node
-	 * @param newChild  Node to be added
+	 * 
+	 * @param newChild Node to be added
 	 */
 	public void addChild(final AbstractNode newChild) {
 		child.add(newChild);
@@ -140,14 +146,14 @@ public abstract class AbstractNode {
 				updateScoreMultiplePossibleMove();
 			}
 		}
-	
+
 		updateScoreRatio();
 		updateChildCount();
 
 	}
-	
+
 	/**
-	 *  Update the score ratio
+	 * Update the score ratio
 	 */
 	public void updateScoreRatio() {
 		float totalOther = BattleSnakeConstant.BASIC_SCORE;
@@ -155,9 +161,9 @@ public abstract class AbstractNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio= (float) (score[0] / (float) totalOther);
+		scoreRatio = (float) (score[0] / (float) totalOther);
 		if (scoreRatio == 0.0 || scoreRatio > BattleSnakeConstant.STOP_EXPAND_LIMIT) {
-			exp =false;
+			exp = false;
 		}
 	}
 
@@ -169,15 +175,16 @@ public abstract class AbstractNode {
 
 		initPayoffMatrix(scores);
 		computePayoffMatrix(scores);
-		
+
 	}
 
 	/**
 	 * Compute the payoff Matric
+	 * 
 	 * @param scores List of score array
 	 */
 	private void computePayoffMatrix(final List<float[]> scores) {
-		final int ind = findBestIndex(scores);		
+		final int ind = findBestIndex(scores);
 		if (ind > -1) {
 			for (int i = 0; i < scores.get(ind).length && scores.get(ind)[i] != -500; i++) {
 				score[i] = scores.get(ind)[i];
@@ -192,20 +199,21 @@ public abstract class AbstractNode {
 			for (int i = 0; i < score.length; i++) {
 				score[i] = 0;
 			}
-			for(final AbstractNode current: child) {
+			for (final AbstractNode current : child) {
 				for (int j = 0; j < current.score.length; j++) {
 					score[j] += current.score[j];
 				}
 			}
 
 		}
-		
+
 	}
 
 	/**
-	 * Find the best index in the payoff matrix 
+	 * Find the best index in the payoff matrix
+	 * 
 	 * @param scores List of score array
-	 * @return int the index 
+	 * @return int the index
 	 */
 	private int findBestIndex(final List<float[]> scores) {
 		int ind = -1;
@@ -227,8 +235,9 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * Initiate the payoff matrix 
-	 * @param scores List of score array 
+	 * Initiate the payoff matrix
+	 * 
+	 * @param scores List of score array
 	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
@@ -250,7 +259,11 @@ public abstract class AbstractNode {
 				}
 			} else {
 				head.add(currentHead);
-				float[] beta = { BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE,BattleSnakeConstant.INVALID_SCORE};
+				float[] beta = { BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
+						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
+						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
+						BattleSnakeConstant.INVALID_SCORE, BattleSnakeConstant.INVALID_SCORE,
+						BattleSnakeConstant.INVALID_SCORE };
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
 				/*
 				 * for (int i = 0; i < c.score.length; i++) { beta[i] = c.score[i]; }
@@ -264,11 +277,11 @@ public abstract class AbstractNode {
 			}
 
 		}
-		
+
 	}
 
 	/**
-	 * Update the child count 
+	 * Update the child count
 	 */
 	private void updateChildCount() {
 		allChildsCount = 1;
@@ -297,17 +310,19 @@ public abstract class AbstractNode {
 	}
 
 	/**
-	 * Gets list of  child from this node
-	 * @return list of  child
+	 * Gets list of child from this node
+	 * 
+	 * @return list of child
 	 */
 	public List<AbstractNode> getChild() {
-		return  child;
+		return child;
 	}
 
 	/**
 	 * Create a node from the same type
-	 * @param snakes List of snake Info
-	 * @param currentNode Current node 
+	 * 
+	 * @param snakes      List of snake Info
+	 * @param currentNode Current node
 	 * @return new node from this type
 	 */
 	public abstract AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode);

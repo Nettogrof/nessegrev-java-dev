@@ -6,31 +6,34 @@ import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
- * FoodInfo is the class that contain all the informations and related methods to foods
+ * FoodInfo is the class that contain all the informations and related methods
+ * to foods
+ * 
  * @author carl.lajeunesse
- * @version  Spring 2021 
+ * @version Spring 2021
  */
 public class FoodInfo {
-	
-	/**
-	 * Arraylist (int) of all food position  (based on square formula)
-	 */
-	private transient  final TIntArrayList position = new TIntArrayList();
 
-	
+	/**
+	 * Arraylist (int) of all food position (based on square formula)
+	 */
+	private transient final TIntArrayList position = new TIntArrayList();
+
 	/**
 	 * Single constructor need the jsonNode board
-	 * @param board  JsonNode board element
+	 * 
+	 * @param board JsonNode board element
 	 */
 	public FoodInfo(final JsonNode board) {
 		setFoodInfo(board.get("food"));
 	}
 
-
 	/**
-	 * Get the shortest distance from the position provided to a food.  Doesn't check Snake bodies/hazard/etc 
-	 * @param headX  The position X
-	 * @param headY  The position Y
+	 * Get the shortest distance from the position provided to a food. Doesn't check
+	 * Snake bodies/hazard/etc
+	 * 
+	 * @param headX The position X
+	 * @param headY The position Y
 	 * @return int the number of square between the pos, and the nearest food
 	 */
 	public int getShortestDistance(final int headX, final int headY) {
@@ -50,22 +53,24 @@ public class FoodInfo {
 		return shortDis;
 
 	}
-	
+
 	/**
-	 * Get the shortest distance from the position provided to a food.  Doesn't check Snake bodies/hazard/etc
+	 * Get the shortest distance from the position provided to a food. Doesn't check
+	 * Snake bodies/hazard/etc
+	 * 
 	 * @param headPos The square position (based on square formula)
 	 * @return int the number of square between the pos, and the nearest food
 	 */
 	public int getShortestDistance(final int headPos) {
-		return getShortestDistance(headPos / 1000,  headPos % 1000);
-		
+		return getShortestDistance(headPos / 1000, headPos % 1000);
+
 	}
 
-	
 	/**
 	 * Check if there's a food on a particular square
-	 * @param squareX  Square position X
-	 * @param squareY  Square position Y
+	 * 
+	 * @param squareX Square position X
+	 * @param squareY Square position Y
 	 * @return boolean if there's a food
 	 */
 	public boolean isFood(final int squareX, final int squareY) {
@@ -73,21 +78,21 @@ public class FoodInfo {
 		return position.contains(squareX * 1000 + squareY);
 
 	}
-	
+
 	/**
 	 * Check if there's a food on a particular square (based on square formula)
+	 * 
 	 * @param pos square position
 	 * @return boolean if there's a food
 	 */
 	public boolean isFood(final int pos) {
 		return position.contains(pos);
 	}
-	
 
 	/**
 	 * Take the json field food and convert it into the arraylist position
 	 * 
-	 * @param foodArray  JsonNode field food
+	 * @param foodArray JsonNode field food
 	 */
 	private void setFoodInfo(final JsonNode foodArray) {
 		for (final JsonNode foodPos : foodArray) {
@@ -96,7 +101,6 @@ public class FoodInfo {
 		}
 
 	}
-		
 
 	/**
 	 *

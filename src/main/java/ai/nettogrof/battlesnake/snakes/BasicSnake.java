@@ -11,9 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
- * Basic snake. This class is the "Nessegrev" snake on Battlesnake. a basic snake that avoid wall,
- * and other snakes' bodies. And try to go the the nearest food, by going directly to it,
- * doesn't check if their a snake between him and the food.
+ * Basic snake. This class is the "Nessegrev" snake on Battlesnake. a basic
+ * snake that avoid wall, and other snakes' bodies. And try to go the the
+ * nearest food, by going directly to it, doesn't check if their a snake between
+ * him and the food.
  * 
  * This snake should work only with API v1.
  * 
@@ -39,24 +40,24 @@ public class BasicSnake extends AbstractSnakeAI {
 
 	}
 
-	
 	/**
 	 * This method will be call on each move request receive by BattleSnake
+	 * 
 	 * @param moveRequest Json call received
-	 * @return map of field to be return to battlesnake,  example   "move" , "up"
+	 * @return map of field to be return to battlesnake, example "move" , "up"
 	 */
 	@Override
 	public Map<String, String> move(final JsonNode moveRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		final Map<String, Integer> possiblemove = new ConcurrentHashMap<>();
-		
-		//Put a value of 0 in each possible move
+
+		// Put a value of 0 in each possible move
 		possiblemove.put(UPWARD, 0);
 		possiblemove.put(DOWN, 0);
 		possiblemove.put(LEFT, 0);
 		possiblemove.put(RIGHT, 0);
-		
-		//Create a board[][] filled with value 0 
+
+		// Create a board[][] filled with value 0
 		final JsonNode boardJsonNode = moveRequest.get(BOARD);
 		width = boardJsonNode.get(WIDTH_FIELD).asInt();
 		height = boardJsonNode.get(HEIGHT_FIELD).asInt();
@@ -66,8 +67,8 @@ public class BasicSnake extends AbstractSnakeAI {
 				board[x][y] = 0;
 			}
 		}
-		
-		//Put value -99 for each snake body part
+
+		// Put value -99 for each snake body part
 		boardJsonNode.withArray(SNAKES).forEach(s -> {
 			s.withArray(BODY).forEach(c -> {
 				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
@@ -78,13 +79,12 @@ public class BasicSnake extends AbstractSnakeAI {
 
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
-		
-		
+
 		int maxd[] = { 99 }; // Max distance between snake head and food
 
 		int[] foodxy = new int[2];
-		
-		//Determine the location (foodxy) of the nearest food
+
+		// Determine the location (foodxy) of the nearest food
 		boardJsonNode.withArray("food").forEach(f -> {
 			if (Math.abs(f.get("x").asInt() - snakex) + Math.abs(f.get("y").asInt() - snakey) < maxd[0]) {
 				maxd[0] = Math.abs(f.get("x").asInt() - snakex) + Math.abs(f.get("y").asInt() - snakey);
@@ -95,8 +95,8 @@ public class BasicSnake extends AbstractSnakeAI {
 		});
 		final int foodx = foodxy[0];
 		final int foody = foodxy[1];
-		
-		//Put value to each move based on nearest food
+
+		// Put value to each move based on nearest food
 		possiblemove.put(DOWN, snakey - foody);
 		possiblemove.put(UPWARD, foody - snakey);
 		possiblemove.put(LEFT, snakex - foodx);
@@ -107,17 +107,20 @@ public class BasicSnake extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Choose the best move 
-	 * @param snakex snake head X
-	 * @param snakey snake head Y 
+	 * Choose the best move
+	 * 
+	 * @param snakex       snake head X
+	 * @param snakey       snake head Y
 	 * @param possiblemove map of possible move
-	 * @param board the board[][] 
+	 * @param board        the board[][]
 	 * @return String of the best move (up , down , left or right)
 	 */
 	private String bestMove(final int snakex, final int snakey, final Map<String, Integer> possiblemove,
 			final int[][] board) {
-		
-		//For each direction , put value -90 if it's outside of the board, else  put the current value (based on food location)  + the board value (based on same body value  0 or - 99)
+
+		// For each direction , put value -90 if it's outside of the board, else put the
+		// current value (based on food location) + the board value (based on same body
+		// value 0 or - 99)
 		if (snakey == height - 1) {
 			possiblemove.put(UPWARD, -90);
 		} else {
@@ -142,7 +145,7 @@ public class BasicSnake extends AbstractSnakeAI {
 			possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey]);
 		}
 
-		//Choose the direction with the max value.
+		// Choose the direction with the max value.
 		String res = UPWARD;
 		int value = possiblemove.get(UPWARD);
 
@@ -161,9 +164,9 @@ public class BasicSnake extends AbstractSnakeAI {
 		return res;
 	}
 
-	
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request 
+	 * Return the infos need by Battlesnake when receive a (root GET /) request
+	 * 
 	 * @return map of info for battlesnake
 	 */
 	public static Map<String, String> getInfo() {

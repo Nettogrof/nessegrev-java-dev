@@ -37,7 +37,6 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	private static String fileConfig = "Gamma.properties";
 
-	
 	/**
 	 * Basic / unused constructor
 	 */
@@ -53,11 +52,8 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	public GammaSnake(final String gameId) {
 		super(gameId, fileConfig);
 
-
 	}
 
-		
-	
 	/**
 	 * Generate the root node based on the /move request
 	 * 
@@ -71,7 +67,6 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		final List<SnakeInfo> snakes = new ArrayList<>();
 		final JsonNode gammaSnake = moveRequest.get(YOU);
 
-		
 		snakes.add(new SnakeInfo(gammaSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
@@ -79,7 +74,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 				snakes.add(new SnakeInfo(currentSnake));
 			}
 		}
-		
+
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
@@ -141,7 +136,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			apiversion = 1;
 			timeout = startRequest.get("game").get("timeout").asInt();
 		}
-		ruleset = "standard"; //Gamma Snake, play only standard game.
+		ruleset = "standard"; // Gamma Snake, play only standard game.
 		try {
 			searchType = genSearchType();
 		} catch (ReflectiveOperationException e) {
@@ -157,13 +152,14 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 
 		return response;
 	}
-	
+
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request 
+	 * Return the infos need by Battlesnake when receive a (root GET /) request
+	 * 
 	 * @return map of info for Battlesnake
 	 */
 	public static Map<String, String> getInfo() {
-		
+
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
@@ -187,7 +183,6 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		return response;
 	}
 
-
 	/**
 	 * Method use to set the fileConfig string
 	 */
@@ -196,11 +191,9 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		fileConfig = "Gamma.properties";
 	}
 
-	
 	/*
-	  public static void main(String args[]) { 
-		  MctsSearch.class.getConstructor(parameterTypes)
-	  }
+	 * public static void main(String args[]) {
+	 * MctsSearch.class.getConstructor(parameterTypes) }
 	 */
 
 }

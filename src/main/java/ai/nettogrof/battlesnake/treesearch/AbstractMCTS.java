@@ -19,7 +19,6 @@ import gnu.trove.list.array.TFloatArrayList;
  */
 public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 
-	
 	/**
 	 * This method is use to find the next leaf node to explore using MCTS algo
 	 * 

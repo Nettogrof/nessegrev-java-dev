@@ -7,18 +7,19 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
- * This abstract search class is the based of all search class, provide basic method use in any search.
+ * This abstract search class is the based of all search class, provide basic
+ * method use in any search.
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
  */
 public abstract class AbstractSearch implements Runnable {
-	
+
 	/**
-	 *  Control variable to continue the search or not 
+	 * Control variable to continue the search or not
 	 */
 	protected transient boolean cont = true;
-	
+
 	/**
 	 * Root node for the search
 	 */
@@ -28,56 +29,56 @@ public abstract class AbstractSearch implements Runnable {
 	 * Board height
 	 */
 	protected transient int height;
-	
+
 	/**
-	 * Board width 
+	 * Board width
 	 */
 	protected transient int width;
-	
+
 	/**
 	 * Time allowed for the search
 	 */
 	protected transient int timeout = 250;
-	
-	
+
 	/**
 	 * Starting time for the search in millisecond
 	 */
 	protected transient long startTime;
-	
-	
-	
+
 	/**
-	 *  The execution of the search 
+	 * The execution of the search
 	 */
 	@Override
 	public abstract void run();
 
-	/** 
-	 * This method is used to stop the search 
+	/**
+	 * This method is used to stop the search
 	 */
 	public void stopSearching() {
 		cont = false;
 	}
 
 	/**
-	 * This abstract method will be use to "kill" a snake  
-	 * @param death  SnakeInfo of the snake to kill
-	 * @param all  List of all snakeinfo
+	 * This abstract method will be use to "kill" a snake
+	 * 
+	 * @param death SnakeInfo of the snake to kill
+	 * @param all   List of all snakeinfo
 	 */
 	protected abstract void kill(SnakeInfo death, List<SnakeInfo> all);
 
 	/**
-	 * This method is used to generate child node from the root. Mostly used for multithreading
+	 * This method is used to generate child node from the root. Mostly used for
+	 * multithreading
 	 */
 	public void generateChild() {
 		generateChild(root);
 	}
 
 	/**
-	 * This method check if there's a head-to-head collision.
-	 * Shorter snake die,  and if both snakes are the same length both dies
-	 * @param moves  List of all possible move 
+	 * This method check if there's a head-to-head collision. Shorter snake die, and
+	 * if both snakes are the same length both dies
+	 * 
+	 * @param moves List of all possible move
 	 */
 	protected void checkHeadToHead(final List<ArrayList<SnakeInfo>> moves) {
 		for (final ArrayList<SnakeInfo> move : moves) {
@@ -88,7 +89,7 @@ public abstract class AbstractSearch implements Runnable {
 					if (move.get(i).getHead() == move.get(j).getHead()) {
 						final int firstLength = move.get(i).getSnakeBody().size();
 						final int secondLength = move.get(j).getSnakeBody().size();
-												
+
 						if (firstLength > secondLength) {
 							kill(move.get(j), move);
 
@@ -106,12 +107,12 @@ public abstract class AbstractSearch implements Runnable {
 
 	/**
 	 * This method merge previous snake move (list) , with new snake move
-	 * @param list  Previous list 
-	 * @param snakes New move list 
+	 * 
+	 * @param list   Previous list
+	 * @param snakes New move list
 	 * @return List of List of move
 	 */
-	protected List<ArrayList<SnakeInfo>> merge(final List<ArrayList<SnakeInfo>> list,
-			final List<SnakeInfo> snakes) {
+	protected List<ArrayList<SnakeInfo>> merge(final List<ArrayList<SnakeInfo>> list, final List<SnakeInfo> snakes) {
 		List<ArrayList<SnakeInfo>> ret;
 		if (snakes.isEmpty()) {
 			ret = list;
@@ -143,67 +144,72 @@ public abstract class AbstractSearch implements Runnable {
 		return ret;
 	}
 
-
 	/**
-	 *  Create new SnakeInfo based on the current node and the new head square
+	 * Create new SnakeInfo based on the current node and the new head square
+	 * 
 	 * @param snakeInfo previous snakeInfo
-	 * @param newHead  New head square
-	 * @param node Previous node
-	 * @return  new SnakeInfo
+	 * @param newHead   New head square
+	 * @param node      Previous node
+	 * @return new SnakeInfo
 	 */
 	protected abstract SnakeInfo createSnakeInfo(SnakeInfo snakeInfo, int newHead, AbstractNode node);
 
 	/**
 	 * Generate all moves possible for a snake given.
-	 * @param snakeInfo  Information about the snake
-	 * @param node Parent node
+	 * 
+	 * @param snakeInfo Information about the snake
+	 * @param node      Parent node
 	 * @param allSnakes List of all snakes
 	 * @return list of snakeinfo
 	 */
-	protected List<SnakeInfo> generateSnakeInfoDestination(final SnakeInfo snakeInfo, final AbstractNode node, final List<SnakeInfo> allSnakes) {
+	protected List<SnakeInfo> generateSnakeInfoDestination(final SnakeInfo snakeInfo, final AbstractNode node,
+			final List<SnakeInfo> allSnakes) {
 		final ArrayList<SnakeInfo> listNewSnakeInfo = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {
 			final int head = snakeInfo.getHead();
-			
+
 			if (head / 1000 > 0) {
-				addMove(head - 1000,allSnakes,snakeInfo,node, listNewSnakeInfo);
+				addMove(head - 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 
 			if (head / 1000 < width - 1) {
-				addMove(head + 1000,allSnakes,snakeInfo,node, listNewSnakeInfo);
+				addMove(head + 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 
 			if (head % 1000 > 0) {
-				addMove(head - 1,allSnakes,snakeInfo,node, listNewSnakeInfo);
+				addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 			if (head % 1000 < height - 1) {
-				addMove(head + 1,allSnakes,snakeInfo,node, listNewSnakeInfo);
+				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 		}
 		return listNewSnakeInfo;
 	}
 
 	/**
-	 * This method add move to the list if the snake can move in the new head position.
-	 * @param newhead  New head
-	 * @param allSnakes List of all snakes
-	 * @param snakeInfo Information about the snake
-	 * @param node Parent node
-	 * @param listNewSnakeInfo  Current list of snakeinfo
+	 * This method add move to the list if the snake can move in the new head
+	 * position.
+	 * 
+	 * @param newhead          New head
+	 * @param allSnakes        List of all snakes
+	 * @param snakeInfo        Information about the snake
+	 * @param node             Parent node
+	 * @param listNewSnakeInfo Current list of snakeinfo
 	 */
-	private void addMove(final int newhead, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo, final AbstractNode node,
-			final List<SnakeInfo> listNewSnakeInfo) {
+	private void addMove(final int newhead, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo,
+			final AbstractNode node, final List<SnakeInfo> listNewSnakeInfo) {
 		if (freeSpace(newhead, allSnakes, snakeInfo)) {
 			listNewSnakeInfo.add(createSnakeInfo(snakeInfo, newhead, node));
 		}
-		
+
 	}
 
 	/**
 	 * Check if the snake can move on the square
-	 * @param square  the int sqaure
-	 * @param allSnakes List of all snakes
+	 * 
+	 * @param square       the int sqaure
+	 * @param allSnakes    List of all snakes
 	 * @param currentSnake current Snake
 	 * @return boolean free to move on that square
 	 */
@@ -211,6 +217,7 @@ public abstract class AbstractSearch implements Runnable {
 
 	/**
 	 * Expand / Generate child from a node
+	 * 
 	 * @param node the Abstractnode to be expand
 	 */
 	protected void generateChild(final AbstractNode node) {
@@ -258,14 +265,15 @@ public abstract class AbstractSearch implements Runnable {
 					node.updateScoreRatio();
 				}
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Get the leaf from the smallest branch
-	 * @param node  Root node
-	 * @return leaf node 
+	 * 
+	 * @param node Root node
+	 * @return leaf node
 	 */
 	protected AbstractNode getSmallestChild(final AbstractNode node) {
 		if (node.getChild().isEmpty()) {
@@ -285,7 +293,7 @@ public abstract class AbstractSearch implements Runnable {
 
 				}
 
-			} else  {
+			} else {
 
 				int countChild = Integer.MAX_VALUE;
 				for (final AbstractNode childNode : node.getChild()) {
@@ -304,10 +312,5 @@ public abstract class AbstractSearch implements Runnable {
 			return getSmallestChild(smallChild);
 		}
 	}
-	
-	
-	
-	
-
 
 }

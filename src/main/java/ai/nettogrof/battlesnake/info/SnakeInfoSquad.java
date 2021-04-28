@@ -87,7 +87,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	public void setSquad(final String squad) {
 		this.squad = squad;
 	}
-	
+
 	/**
 	 * Equals method
 	 * 
@@ -108,7 +108,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 		if (getHead() != other.getHead()) {
 			return false;
 		}
-		
+
 		if (getSquad().equals(other.getSquad())) {
 			return false;
 		}

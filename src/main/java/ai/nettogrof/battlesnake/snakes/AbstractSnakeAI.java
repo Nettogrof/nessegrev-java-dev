@@ -6,118 +6,120 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.flogger.FluentLogger;
 
-
 /**
- * Any snake should extend this abstract class it contains basic constant fields, related to the field name in json call from BattleSnake.
- * Also some method that any snake must implements. 
+ * Any snake should extend this abstract class it contains basic constant
+ * fields, related to the field name in json call from BattleSnake. Also some
+ * method that any snake must implements.
+ * 
  * @author carl.lajeunesse
- * @version  Spring 2021 
+ * @version Spring 2021
  */
 public abstract class AbstractSnakeAI {
 
-	
 	/**
 	 * Constant Field name
 	 */
 	protected static final String UPWARD = "up";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String DOWN = "down";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String LEFT = "left";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String RIGHT = "right";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String MOVESTR = "move";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String BODY = "body";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String BOARD = "board";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String NAME = "name";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String SQUAD = "squad";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String HEALTH = "HEALTH";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String SNAKES = "snakes";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String YOU = "you";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String TURN = "turn";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String HEAD = "head";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String WIDTH_FIELD = "width";
-	
+
 	/**
 	 * Constant Field name
 	 */
 	protected static final String HEIGHT_FIELD = "height";
-	
+
 	/**
-	 * Board width 
+	 * Board width
 	 */
 	protected int width;
-	
+
 	/**
 	 * Board height
 	 */
 	protected int height;
-	
+
 	/**
 	 * API version use, some snakes are able to play both version v0 and v1.
 	 */
-	protected transient int apiversion ;
-	
+	protected transient int apiversion;
+
 	/**
-	 * Any snake must use a fileConfig  (a properties files), and the name of the file must store in the string
+	 * Any snake must use a fileConfig (a properties files), and the name of the
+	 * file must store in the string
 	 */
 	public static String fileConfig;
 
 	/**
-	 * Snakes can play games in parallel, so the game id field is use to distinguish different game
+	 * Snakes can play games in parallel, so the game id field is use to distinguish
+	 * different game
 	 */
 	protected transient String gameId;
 
@@ -125,8 +127,7 @@ public abstract class AbstractSnakeAI {
 	 * Basic logger object
 	 */
 	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
-	
-	
+
 	/**
 	 * Basic constructor not used
 	 */
@@ -135,34 +136,42 @@ public abstract class AbstractSnakeAI {
 	}
 
 	/**
-	 * Constructor with the gameid, 
+	 * Constructor with the gameid,
+	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public AbstractSnakeAI(final String gameId) {
 		this.gameId = gameId;
 
 	}
-	
+
 	/**
-	 * This method was used in API v0 to retrieve snake info, but in API v1  the method is call but Battlesnake doesn't need a response. This can be use to initialize your snake
+	 * This method was used in API v0 to retrieve snake info, but in API v1 the
+	 * method is call but Battlesnake doesn't need a response. This can be use to
+	 * initialize your snake
+	 * 
 	 * @param startRequest Json call received
 	 * @return map that can be empty because it will be ignore by BattleSnake server
 	 */
-	public Map<String, String> start(final JsonNode startRequest){
+	public Map<String, String> start(final JsonNode startRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
-		response.put("ok","ok");
+		response.put("ok", "ok");
 		return response;
 	}
 
 	/**
-	 * This method will be call on each move request receive by BattleSnake, so all snakes must implement it, and add game logic in it
+	 * This method will be call on each move request receive by BattleSnake, so all
+	 * snakes must implement it, and add game logic in it
+	 * 
 	 * @param moveRequest Json call received
-	 * @return map of field to be return to battlesnake,  example   "move" , "up"
+	 * @return map of field to be return to battlesnake, example "move" , "up"
 	 */
 	public abstract Map<String, String> move(final JsonNode moveRequest);
-	
+
 	/**
-	 * This method will be call at the end of the game, can be override if you want to clean-up some game info.
+	 * This method will be call at the end of the game, can be override if you want
+	 * to clean-up some game info.
+	 * 
 	 * @param endRequest Json call received
 	 * @return map that can be empty because it will be ignore by BattleSnake server
 	 */
@@ -178,19 +187,20 @@ public abstract class AbstractSnakeAI {
 		}
 		return response;
 	}
-	
+
 	/**
-	 * Method that was use in API v0 to check if the bots was up. in API v1 is not used anymore
+	 * Method that was use in API v0 to check if the bots was up. in API v1 is not
+	 * used anymore
 	 */
 	public void ping() {
 		log.atInfo().log("Got Pinged");
 	};
-	
+
 	/**
 	 * Method use to set the fileConfig string
 	 */
 	protected abstract void setFileConfig();
-	
+
 	/**
 	 * Gets the config file to set properties correctly
 	 * 
@@ -199,6 +209,5 @@ public abstract class AbstractSnakeAI {
 	protected static String getFileConfig() {
 		return fileConfig;
 	}
-
 
 }

@@ -14,19 +14,19 @@ import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
- * This abstract squad node class is the based of all node class, provide
- * basic method use in any node for squad rules.
+ * This abstract squad node class is the based of all node class, provide basic
+ * method use in any node for squad rules.
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
  */
 public abstract class AbstractSquadNode extends AbstractNode {
-	
+
 	/**
 	 * default openhashmap value
 	 */
 	private final static int defaultv = new Int2IntOpenHashMap().defaultReturnValue();
-	
+
 	/**
 	 * Constructor with snakes and food information
 	 * 
@@ -34,38 +34,36 @@ public abstract class AbstractSquadNode extends AbstractNode {
 	 * @param food   Food information
 	 */
 	@SuppressWarnings("unchecked")
-	public AbstractSquadNode(final List<? extends SnakeInfo> snakes,final FoodInfo food) {
-		super((List<SnakeInfo>) snakes,food);
-		
+	public AbstractSquadNode(final List<? extends SnakeInfo> snakes, final FoodInfo food) {
+		super((List<SnakeInfo>) snakes, food);
+
 	}
-	
-	
+
 	@Override
 	public float getScoreRatio() {
-		if ("".equals(((SnakeInfoSquad)snakes.get(0)).getSquad())) {
+		if ("".equals(((SnakeInfoSquad) snakes.get(0)).getSquad())) {
 			float totalOther = 1;
-		for (int i = 1; i < score.length; i++) {
-			totalOther += score[i];
-		}
-		
-		
-		return score[0] / (float) totalOther;
-		
-		}else {
-			
+			for (int i = 1; i < score.length; i++) {
+				totalOther += score[i];
+			}
+
+			return score[0] / (float) totalOther;
+
+		} else {
+
 			float totalOther = 0.01f;
 			for (int i = 1; i < score.length; i++) {
-				if (!((SnakeInfoSquad)snakes.get(0)).getSquad().equals(((SnakeInfoSquad)snakes.get(0)).getSquad())) {
+				if (!((SnakeInfoSquad) snakes.get(0)).getSquad().equals(((SnakeInfoSquad) snakes.get(0)).getSquad())) {
 					totalOther += score[i];
 				}
 			}
-			
+
 			return score[0] / (float) totalOther;
-			
+
 		}
 
 	}
-	
+
 	/**
 	 * Generate score based on the area control by the snake. Using a kind of
 	 * voronoi algo.
@@ -145,7 +143,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 	 * @return board array
 	 */
 	protected int[][] initBoard() {
-		//TODO Change area control in Squad to "by-pass" teammate body
+		// TODO Change area control in Squad to "by-pass" teammate body
 		int[][] board = new int[width][height];
 
 		for (final SnakeInfo snake : snakes) {
@@ -231,7 +229,5 @@ public abstract class AbstractSquadNode extends AbstractNode {
 					: 0;
 		}
 	}
-	
-	
 
 }

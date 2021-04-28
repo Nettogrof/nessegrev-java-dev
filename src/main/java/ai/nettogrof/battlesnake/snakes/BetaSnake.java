@@ -46,8 +46,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * Boolean if a squad game
 	 */
 	public transient boolean squad;
-	
-	
+
 	/**
 	 * Basic / unused constructor
 	 */
@@ -63,11 +62,6 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	public BetaSnake(final String gameId) {
 		super(gameId, fileConfig);
 	}
-
-	
-	
-
-	
 
 	/**
 	 * Generate the root node based on the /move request
@@ -163,7 +157,6 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 				squad = true;
 			}
 		}
-		
 
 		try {
 			searchType = genSearchType();
@@ -203,30 +196,30 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		case "constrictor":
 			node = new DuelNode(snakes, food);
 			break;
-		case "squad": 
-			node = new SquadNode(snakes, food); 
+		case "squad":
+			node = new SquadNode(snakes, food);
 			break;
 		default:
 			if (snakes.size() > 4) {
 				node = new ManyNode(snakes, food);
 			} else if (snakes.size() > 2) {
 				node = new FourNode(snakes, food);
-			}else {
+			} else {
 				node = new DuelNode(snakes, food);
 			}
 			break;
 		}
 
-		
 		return node;
 	}
 
 	/**
-	 * Return the infos need by Battlesnake when receive a (root GET /) request 
+	 * Return the infos need by Battlesnake when receive a (root GET /) request
+	 * 
 	 * @return map of info for Battlesnake
 	 */
 	public static Map<String, String> getInfo() {
-		
+
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
@@ -250,8 +243,6 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		return response;
 	}
 
-	
-
 	/**
 	 * Method use to set the fileConfig string
 	 */
@@ -264,42 +255,35 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param args
 	 */
 	/*
-	  public static void main(String args[]) { 
-		  ObjectMapper json = new ObjectMapper();
-		  String pretest = "{\"game\":{\"id\":\"c9084ed7-4615-44e1-9464-8668b373d9c6\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":170,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_GSHFxtdQb8cqPxBRTdMp8k6V\",\"name\":\"Nessegrev-beta\",\"latency\":\"253\",\"health\":97,\"body\":[{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":5,\"y\":9},{\"x\":5,\"y\":10},{\"x\":4,\"y\":10},{\"x\":4,\"y\":9},{\"x\":3,\"y\":9},{\"x\":2,\"y\":9},{\"x\":2,\"y\":8},{\"x\":2,\"y\":7},{\"x\":1,\"y\":7},{\"x\":1,\"y\":6},{\"x\":0,\"y\":6},{\"x\":0,\"y\":7}],\"head\":{\"x\":6,\"y\":10},\"length\":14,\"shout\":\"\"},{\"id\":\"gs_QjrmXK8RxgwXrB9y6xhr9tgG\",\"name\":\"Awesome Snakes Done Quick von Haval\",\"latency\":\"276\",\"health\":96,\"body\":[{\"x\":7,\"y\":5},{\"x\":7,\"y\":4},{\"x\":6,\"y\":4},{\"x\":5,\"y\":4},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":4,\"y\":6},{\"x\":4,\"y\":7},{\"x\":5,\"y\":7}],\"head\":{\"x\":7,\"y\":5},\"length\":9,\"shout\":\"\"},{\"id\":\"gs_CkRCKgcKQYrM9CgxSG77WBPQ\",\"name\":\"Queueueue\",\"latency\":\"183\",\"health\":64,\"body\":[{\"x\":7,\"y\":3},{\"x\":6,\"y\":3},{\"x\":5,\"y\":3},{\"x\":5,\"y\":2},{\"x\":4,\"y\":2},{\"x\":3,\"y\":2},{\"x\":2,\"y\":2},{\"x\":1,\"y\":2},{\"x\":1,\"y\":1},{\"x\":0,\"y\":1},{\"x\":0,\"y\":2}],\"head\":{\"x\":7,\"y\":3},\"length\":11,\"shout\":\"\"}],\"food\":[{\"x\":10,\"y\":10},{\"x\":3,\"y\":1},{\"x\":8,\"y\":10}],\"hazards\":[]},\"you\":{\"id\":\"gs_GSHFxtdQb8cqPxBRTdMp8k6V\",\"name\":\"Nessegrev-beta\",\"latency\":\"253\",\"health\":97,\"body\":[{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":5,\"y\":9},{\"x\":5,\"y\":10},{\"x\":4,\"y\":10},{\"x\":4,\"y\":9},{\"x\":3,\"y\":9},{\"x\":2,\"y\":9},{\"x\":2,\"y\":8},{\"x\":2,\"y\":7},{\"x\":1,\"y\":7},{\"x\":1,\"y\":6},{\"x\":0,\"y\":6},{\"x\":0,\"y\":7}],\"head\":{\"x\":6,\"y\":10},\"length\":14,\"shout\":\"\"}}"; 
-		 // String test = "{\"game\":{\"id\":\"2d3598c8-e029-4898-9ae9-624e62c5f7f7\",\"timeout\":500,\"ruleset\":{\"name\":\"royale\",\"version\":\"v1\"}},\"turn\":211,\"board\":{\"height\":11,\"width\":11,\"food\":[{\"x\":8,\"y\":1},{\"x\":0,\"y\":1},{\"x\":1,\"y\":2},{\"x\":6,\"y\":2}],\"hazards\":[{\"x\":0,\"y\":0},{\"x\":0,\"y\":1},{\"x\":0,\"y\":2},{\"x\":0,\"y\":3},{\"x\":0,\"y\":4},{\"x\":0,\"y\":5},{\"x\":0,\"y\":6},{\"x\":0,\"y\":10},{\"x\":1,\"y\":0},{\"x\":1,\"y\":1},{\"x\":1,\"y\":2},{\"x\":1,\"y\":3},{\"x\":1,\"y\":4},{\"x\":1,\"y\":5},{\"x\":1,\"y\":6},{\"x\":1,\"y\":10},{\"x\":2,\"y\":0},{\"x\":2,\"y\":1},{\"x\":2,\"y\":2},{\"x\":2,\"y\":3},{\"x\":2,\"y\":4},{\"x\":2,\"y\":5},{\"x\":2,\"y\":6},{\"x\":2,\"y\":10},{\"x\":3,\"y\":0},{\"x\":3,\"y\":1},{\"x\":3,\"y\":2},{\"x\":3,\"y\":3},{\"x\":3,\"y\":4},{\"x\":3,\"y\":5},{\"x\":3,\"y\":6},{\"x\":3,\"y\":10},{\"x\":4,\"y\":0},{\"x\":4,\"y\":1},{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":4,\"y\":6},{\"x\":4,\"y\":10},{\"x\":5,\"y\":0},{\"x\":5,\"y\":1},{\"x\":5,\"y\":2},{\"x\":5,\"y\":3},{\"x\":5,\"y\":4},{\"x\":5,\"y\":5},{\"x\":5,\"y\":6},{\"x\":5,\"y\":10},{\"x\":6,\"y\":0},{\"x\":6,\"y\":1},{\"x\":6,\"y\":2},{\"x\":6,\"y\":3},{\"x\":6,\"y\":4},{\"x\":6,\"y\":5},{\"x\":6,\"y\":6},{\"x\":6,\"y\":10},{\"x\":7,\"y\":0},{\"x\":7,\"y\":1},{\"x\":7,\"y\":2},{\"x\":7,\"y\":3},{\"x\":7,\"y\":4},{\"x\":7,\"y\":5},{\"x\":7,\"y\":6},{\"x\":7,\"y\":10},{\"x\":8,\"y\":0},{\"x\":8,\"y\":1},{\"x\":8,\"y\":2},{\"x\":8,\"y\":3},{\"x\":8,\"y\":4},{\"x\":8,\"y\":5},{\"x\":8,\"y\":6},{\"x\":8,\"y\":10},{\"x\":9,\"y\":0},{\"x\":9,\"y\":1},{\"x\":9,\"y\":2},{\"x\":9,\"y\":3},{\"x\":9,\"y\":4},{\"x\":9,\"y\":5},{\"x\":9,\"y\":6},{\"x\":9,\"y\":7},{\"x\":9,\"y\":8},{\"x\":9,\"y\":9},{\"x\":9,\"y\":10},{\"x\":10,\"y\":0},{\"x\":10,\"y\":1},{\"x\":10,\"y\":2},{\"x\":10,\"y\":3},{\"x\":10,\"y\":4},{\"x\":10,\"y\":5},{\"x\":10,\"y\":6},{\"x\":10,\"y\":7},{\"x\":10,\"y\":8},{\"x\":10,\"y\":9},{\"x\":10,\"y\":10}],\"snakes\":[{\"id\":\"e9cc3085-1f37-4335-b76d-a958bbb3a554\",\"name\":\"Beta\",\"health\":65,\"body\":[{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":2,\"y\":10},{\"x\":3,\"y\":10},{\"x\":4,\"y\":10},{\"x\":5,\"y\":10},{\"x\":5,\"y\":9},{\"x\":4,\"y\":9},{\"x\":4,\"y\":8},{\"x\":4,\"y\":7},{\"x\":4,\"y\":6},{\"x\":3,\"y\":6},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":1,\"y\":5},{\"x\":1,\"y\":4},{\"x\":2,\"y\":4}],\"latency\":0,\"head\":{\"x\":2,\"y\":8},\"length\":17,\"shout\":\"\",\"squad\":\"\"},{\"id\":\"af0b6e80-51c4-49ec-bb76-a1c6421bfa85\",\"name\":\"Old\",\"health\":32,\"body\":[{\"x\":9,\"y\":7},{\"x\":9,\"y\":8},{\"x\":9,\"y\":9},{\"x\":9,\"y\":10},{\"x\":8,\"y\":10},{\"x\":7,\"y\":10},{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":7,\"y\":9},{\"x\":8,\"y\":9},{\"x\":8,\"y\":8}],\"latency\":0,\"head\":{\"x\":9,\"y\":7},\"length\":11,\"shout\":\"\",\"squad\":\"\"}]},\"you\":{\"id\":\"e9cc3085-1f37-4335-b76d-a958bbb3a554\",\"name\":\"Beta\",\"health\":65,\"body\":[{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":2,\"y\":10},{\"x\":3,\"y\":10},{\"x\":4,\"y\":10},{\"x\":5,\"y\":10},{\"x\":5,\"y\":9},{\"x\":4,\"y\":9},{\"x\":4,\"y\":8},{\"x\":4,\"y\":7},{\"x\":4,\"y\":6},{\"x\":3,\"y\":6},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":1,\"y\":5},{\"x\":1,\"y\":4},{\"x\":2,\"y\":4}],\"latency\":0,\"head\":{\"x\":2,\"y\":8},\"length\":17,\"shout\":\"\",\"squad\":\"\"}} " ;
-	  
-		  try { 
-			  JsonNode parsedRequest = json.readTree(pretest); 
-			  int size =  parsedRequest.get(BOARD).get("height").asInt();
-			  BetaSnake t = new BetaSnake("test");
-			  t.ruleset = "constrictor";
-			  t.height = size; t.width = size; t.timeout = 500; t.multiThread = true;
-			  t.cpu_limit=4;
-			  
-			  try {
-				t.searchType=t.genSearchType();
-			} catch (ReflectiveOperationException e1) {
-			
-				e1.printStackTrace();
-			}
-			  try { Thread.sleep(100); 
-			  } catch (InterruptedException e) {
-	  
-				  e.printStackTrace(); 
-				  }
-	  
-			  System.out.println(t.move(parsedRequest));
-			 // parsedRequest = json.readTree(test);
-			  //System.out.println(t.move(parsedRequest));
-			  try {
-	  Thread.sleep(510); } catch (InterruptedException e) {
-	  
-	  e.printStackTrace(); }
-	  
-	  } catch (IOException e) {
-	  
-	  e.printStackTrace(); } }
+	 * public static void main(String args[]) { ObjectMapper json = new
+	 * ObjectMapper(); String pretest =
+	 * "{\"game\":{\"id\":\"c9084ed7-4615-44e1-9464-8668b373d9c6\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v1.0.17\"},\"timeout\":500},\"turn\":170,\"board\":{\"height\":11,\"width\":11,\"snakes\":[{\"id\":\"gs_GSHFxtdQb8cqPxBRTdMp8k6V\",\"name\":\"Nessegrev-beta\",\"latency\":\"253\",\"health\":97,\"body\":[{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":5,\"y\":9},{\"x\":5,\"y\":10},{\"x\":4,\"y\":10},{\"x\":4,\"y\":9},{\"x\":3,\"y\":9},{\"x\":2,\"y\":9},{\"x\":2,\"y\":8},{\"x\":2,\"y\":7},{\"x\":1,\"y\":7},{\"x\":1,\"y\":6},{\"x\":0,\"y\":6},{\"x\":0,\"y\":7}],\"head\":{\"x\":6,\"y\":10},\"length\":14,\"shout\":\"\"},{\"id\":\"gs_QjrmXK8RxgwXrB9y6xhr9tgG\",\"name\":\"Awesome Snakes Done Quick von Haval\",\"latency\":\"276\",\"health\":96,\"body\":[{\"x\":7,\"y\":5},{\"x\":7,\"y\":4},{\"x\":6,\"y\":4},{\"x\":5,\"y\":4},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":4,\"y\":6},{\"x\":4,\"y\":7},{\"x\":5,\"y\":7}],\"head\":{\"x\":7,\"y\":5},\"length\":9,\"shout\":\"\"},{\"id\":\"gs_CkRCKgcKQYrM9CgxSG77WBPQ\",\"name\":\"Queueueue\",\"latency\":\"183\",\"health\":64,\"body\":[{\"x\":7,\"y\":3},{\"x\":6,\"y\":3},{\"x\":5,\"y\":3},{\"x\":5,\"y\":2},{\"x\":4,\"y\":2},{\"x\":3,\"y\":2},{\"x\":2,\"y\":2},{\"x\":1,\"y\":2},{\"x\":1,\"y\":1},{\"x\":0,\"y\":1},{\"x\":0,\"y\":2}],\"head\":{\"x\":7,\"y\":3},\"length\":11,\"shout\":\"\"}],\"food\":[{\"x\":10,\"y\":10},{\"x\":3,\"y\":1},{\"x\":8,\"y\":10}],\"hazards\":[]},\"you\":{\"id\":\"gs_GSHFxtdQb8cqPxBRTdMp8k6V\",\"name\":\"Nessegrev-beta\",\"latency\":\"253\",\"health\":97,\"body\":[{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":5,\"y\":9},{\"x\":5,\"y\":10},{\"x\":4,\"y\":10},{\"x\":4,\"y\":9},{\"x\":3,\"y\":9},{\"x\":2,\"y\":9},{\"x\":2,\"y\":8},{\"x\":2,\"y\":7},{\"x\":1,\"y\":7},{\"x\":1,\"y\":6},{\"x\":0,\"y\":6},{\"x\":0,\"y\":7}],\"head\":{\"x\":6,\"y\":10},\"length\":14,\"shout\":\"\"}}"
+	 * ; // String test =
+	 * "{\"game\":{\"id\":\"2d3598c8-e029-4898-9ae9-624e62c5f7f7\",\"timeout\":500,\"ruleset\":{\"name\":\"royale\",\"version\":\"v1\"}},\"turn\":211,\"board\":{\"height\":11,\"width\":11,\"food\":[{\"x\":8,\"y\":1},{\"x\":0,\"y\":1},{\"x\":1,\"y\":2},{\"x\":6,\"y\":2}],\"hazards\":[{\"x\":0,\"y\":0},{\"x\":0,\"y\":1},{\"x\":0,\"y\":2},{\"x\":0,\"y\":3},{\"x\":0,\"y\":4},{\"x\":0,\"y\":5},{\"x\":0,\"y\":6},{\"x\":0,\"y\":10},{\"x\":1,\"y\":0},{\"x\":1,\"y\":1},{\"x\":1,\"y\":2},{\"x\":1,\"y\":3},{\"x\":1,\"y\":4},{\"x\":1,\"y\":5},{\"x\":1,\"y\":6},{\"x\":1,\"y\":10},{\"x\":2,\"y\":0},{\"x\":2,\"y\":1},{\"x\":2,\"y\":2},{\"x\":2,\"y\":3},{\"x\":2,\"y\":4},{\"x\":2,\"y\":5},{\"x\":2,\"y\":6},{\"x\":2,\"y\":10},{\"x\":3,\"y\":0},{\"x\":3,\"y\":1},{\"x\":3,\"y\":2},{\"x\":3,\"y\":3},{\"x\":3,\"y\":4},{\"x\":3,\"y\":5},{\"x\":3,\"y\":6},{\"x\":3,\"y\":10},{\"x\":4,\"y\":0},{\"x\":4,\"y\":1},{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":4,\"y\":5},{\"x\":4,\"y\":6},{\"x\":4,\"y\":10},{\"x\":5,\"y\":0},{\"x\":5,\"y\":1},{\"x\":5,\"y\":2},{\"x\":5,\"y\":3},{\"x\":5,\"y\":4},{\"x\":5,\"y\":5},{\"x\":5,\"y\":6},{\"x\":5,\"y\":10},{\"x\":6,\"y\":0},{\"x\":6,\"y\":1},{\"x\":6,\"y\":2},{\"x\":6,\"y\":3},{\"x\":6,\"y\":4},{\"x\":6,\"y\":5},{\"x\":6,\"y\":6},{\"x\":6,\"y\":10},{\"x\":7,\"y\":0},{\"x\":7,\"y\":1},{\"x\":7,\"y\":2},{\"x\":7,\"y\":3},{\"x\":7,\"y\":4},{\"x\":7,\"y\":5},{\"x\":7,\"y\":6},{\"x\":7,\"y\":10},{\"x\":8,\"y\":0},{\"x\":8,\"y\":1},{\"x\":8,\"y\":2},{\"x\":8,\"y\":3},{\"x\":8,\"y\":4},{\"x\":8,\"y\":5},{\"x\":8,\"y\":6},{\"x\":8,\"y\":10},{\"x\":9,\"y\":0},{\"x\":9,\"y\":1},{\"x\":9,\"y\":2},{\"x\":9,\"y\":3},{\"x\":9,\"y\":4},{\"x\":9,\"y\":5},{\"x\":9,\"y\":6},{\"x\":9,\"y\":7},{\"x\":9,\"y\":8},{\"x\":9,\"y\":9},{\"x\":9,\"y\":10},{\"x\":10,\"y\":0},{\"x\":10,\"y\":1},{\"x\":10,\"y\":2},{\"x\":10,\"y\":3},{\"x\":10,\"y\":4},{\"x\":10,\"y\":5},{\"x\":10,\"y\":6},{\"x\":10,\"y\":7},{\"x\":10,\"y\":8},{\"x\":10,\"y\":9},{\"x\":10,\"y\":10}],\"snakes\":[{\"id\":\"e9cc3085-1f37-4335-b76d-a958bbb3a554\",\"name\":\"Beta\",\"health\":65,\"body\":[{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":2,\"y\":10},{\"x\":3,\"y\":10},{\"x\":4,\"y\":10},{\"x\":5,\"y\":10},{\"x\":5,\"y\":9},{\"x\":4,\"y\":9},{\"x\":4,\"y\":8},{\"x\":4,\"y\":7},{\"x\":4,\"y\":6},{\"x\":3,\"y\":6},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":1,\"y\":5},{\"x\":1,\"y\":4},{\"x\":2,\"y\":4}],\"latency\":0,\"head\":{\"x\":2,\"y\":8},\"length\":17,\"shout\":\"\",\"squad\":\"\"},{\"id\":\"af0b6e80-51c4-49ec-bb76-a1c6421bfa85\",\"name\":\"Old\",\"health\":32,\"body\":[{\"x\":9,\"y\":7},{\"x\":9,\"y\":8},{\"x\":9,\"y\":9},{\"x\":9,\"y\":10},{\"x\":8,\"y\":10},{\"x\":7,\"y\":10},{\"x\":6,\"y\":10},{\"x\":6,\"y\":9},{\"x\":7,\"y\":9},{\"x\":8,\"y\":9},{\"x\":8,\"y\":8}],\"latency\":0,\"head\":{\"x\":9,\"y\":7},\"length\":11,\"shout\":\"\",\"squad\":\"\"}]},\"you\":{\"id\":\"e9cc3085-1f37-4335-b76d-a958bbb3a554\",\"name\":\"Beta\",\"health\":65,\"body\":[{\"x\":2,\"y\":8},{\"x\":2,\"y\":9},{\"x\":2,\"y\":10},{\"x\":3,\"y\":10},{\"x\":4,\"y\":10},{\"x\":5,\"y\":10},{\"x\":5,\"y\":9},{\"x\":4,\"y\":9},{\"x\":4,\"y\":8},{\"x\":4,\"y\":7},{\"x\":4,\"y\":6},{\"x\":3,\"y\":6},{\"x\":3,\"y\":5},{\"x\":2,\"y\":5},{\"x\":1,\"y\":5},{\"x\":1,\"y\":4},{\"x\":2,\"y\":4}],\"latency\":0,\"head\":{\"x\":2,\"y\":8},\"length\":17,\"shout\":\"\",\"squad\":\"\"}} "
+	 * ;
+	 * 
+	 * try { JsonNode parsedRequest = json.readTree(pretest); int size =
+	 * parsedRequest.get(BOARD).get("height").asInt(); BetaSnake t = new
+	 * BetaSnake("test"); t.ruleset = "constrictor"; t.height = size; t.width =
+	 * size; t.timeout = 500; t.multiThread = true; t.cpu_limit=4;
+	 * 
+	 * try { t.searchType=t.genSearchType(); } catch (ReflectiveOperationException
+	 * e1) {
+	 * 
+	 * e1.printStackTrace(); } try { Thread.sleep(100); } catch
+	 * (InterruptedException e) {
+	 * 
+	 * e.printStackTrace(); }
+	 * 
+	 * System.out.println(t.move(parsedRequest)); // parsedRequest =
+	 * json.readTree(test); //System.out.println(t.move(parsedRequest)); try {
+	 * Thread.sleep(510); } catch (InterruptedException e) {
+	 * 
+	 * e.printStackTrace(); }
+	 * 
+	 * } catch (IOException e) {
+	 * 
+	 * e.printStackTrace(); } }
 	 */
 
 }

@@ -35,7 +35,8 @@ public class DuelNode extends AbstractStandardNode {
 	 */
 	private void setScore() {
 		if (countSnakeAlive() < 2) {
-			//Only one snake alive no need to explore this node anymore and set max score to surviving snake
+			// Only one snake alive no need to explore this node anymore and set max score
+			// to surviving snake
 			exp = false;
 			for (int i = 0; i < score.length; i++) {
 				if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {

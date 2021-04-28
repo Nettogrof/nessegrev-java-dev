@@ -65,7 +65,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		rootList.add(root);
 		return rootList;
 	}
-	
+
 	/**
 	 * This method is use to find the next leaf node to explore using MCTS algo
 	 * 
@@ -74,36 +74,35 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	 */
 	protected List<AbstractNode> getBestPath(final AbstractNode node) {
 
-			if (node.getChild().isEmpty()) {
-				final List<AbstractNode> list = new ArrayList<>();
-				list.add(node);
-				return list;
-			}
-		
-			AbstractNode winner = null;
-			final TFloatArrayList upward = new TFloatArrayList();
-			final TFloatArrayList down = new TFloatArrayList();
-			final TFloatArrayList left = new TFloatArrayList();
-			final TFloatArrayList right = new TFloatArrayList();
-
-			fillList(upward, down, left, right, node);
-			
-
-			final float choiceValue = getbestChildValue(upward, down, left, right);
-
-			for (int i = 0; i < node.getChild().size() && winner == null; i++) {
-				final AbstractNode childNode = node.getChild().get(i);
-				if (childNode.getScoreRatio() == choiceValue && childNode.exp) {
-					winner = childNode;
-				}
-
-			}
-			final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
+		if (node.getChild().isEmpty()) {
+			final List<AbstractNode> list = new ArrayList<>();
 			list.add(node);
 			return list;
-		
+		}
+
+		AbstractNode winner = null;
+		final TFloatArrayList upward = new TFloatArrayList();
+		final TFloatArrayList down = new TFloatArrayList();
+		final TFloatArrayList left = new TFloatArrayList();
+		final TFloatArrayList right = new TFloatArrayList();
+
+		fillList(upward, down, left, right, node);
+
+		final float choiceValue = getbestChildValue(upward, down, left, right);
+
+		for (int i = 0; i < node.getChild().size() && winner == null; i++) {
+			final AbstractNode childNode = node.getChild().get(i);
+			if (childNode.getScoreRatio() == choiceValue && childNode.exp) {
+				winner = childNode;
+			}
+
+		}
+		final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
+		list.add(node);
+		return list;
+
 	}
-	
+
 	/**
 	 * This method fill 4 list (one for each direction ) with the score of each node
 	 * based on the move direction
@@ -114,7 +113,8 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	 * @param right  float array list
 	 * @param node   parent node
 	 */
-	private void fillList(final TFloatArrayList upward,final TFloatArrayList down,final TFloatArrayList left,final TFloatArrayList right,final AbstractNode node) {
+	private void fillList(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
+			final TFloatArrayList right, final AbstractNode node) {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (final AbstractNode child : node.getChild()) {
@@ -132,9 +132,9 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * This method return the scoreRatio of the best choice based on payoff Matrix
 	 * 
@@ -142,7 +142,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	 * @param down   float array list
 	 * @param left   float array list
 	 * @param right  float array list
-	 * @return  score float
+	 * @return score float
 	 */
 	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
 			final TFloatArrayList left, final TFloatArrayList right) {
@@ -175,11 +175,12 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		}
 		return choiceValue;
 	}
-	
+
 	/**
 	 * This method find and return the best leaf node
-	 * @param node  Parent node
-	 * @return  AbstractNode best leaf node
+	 * 
+	 * @param node Parent node
+	 * @return AbstractNode best leaf node
 	 */
 	public AbstractNode getBestChild(final AbstractNode node) {
 		// double score =-200;
@@ -206,7 +207,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		if (winner == null) {
 			node.exp = false;
 			return node;
-			
+
 		}
 
 		return getBestChild(winner);
