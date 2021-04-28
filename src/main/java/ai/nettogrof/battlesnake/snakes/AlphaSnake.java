@@ -22,7 +22,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * 
  * @author carl.lajeunesse
  * @version Fall 2020
- * @deprecated
+ * @deprecated AlphaSnake won't be improve anymore,  so buggy.
  */
 @Deprecated
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
