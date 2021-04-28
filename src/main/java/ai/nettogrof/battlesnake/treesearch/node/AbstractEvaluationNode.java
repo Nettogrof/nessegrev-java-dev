@@ -40,6 +40,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	 */
 	public AbstractEvaluationNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
+		score = new float[snakes.size()];
 	}
 
 	/**
@@ -248,6 +249,29 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		adjustScodeBasedonBoardControl(board);
 
 	}
+	
+	/**
+	 * Count the number of snake still alive
+	 * 
+	 * @return Number of snake alive
+	 */
+	protected int countSnakeAlive() {
+
+		int nbAlive = 0;
+		if (snakes.size() > 1) {
+			for (final SnakeInfo s : snakes) {
+				if (s.isAlive()) {
+					nbAlive++;
+				}
+			}
+
+		} else if (snakes.size() == 1) {
+			score[0] += BattleSnakeConstants.MAX_SCORE;
+			nbAlive = 1;
+		}
+		return nbAlive;
+	}
+
 
 	
 

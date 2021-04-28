@@ -25,7 +25,6 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 	 */
 	public RoyaleFourNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo, final HazardInfo hazard) {
 		super(snakes, foodInfo, hazard);
-		score = new float[snakes.size()];
 		setScore();
 
 	}

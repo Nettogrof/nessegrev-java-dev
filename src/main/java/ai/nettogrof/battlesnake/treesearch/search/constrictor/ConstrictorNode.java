@@ -27,7 +27,6 @@ public class ConstrictorNode extends AbstractEvaluationNode {
 	 */
 	public ConstrictorNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
-		score = new float[snakes.size()];
 		setScore();
 	}
 
@@ -57,28 +56,7 @@ public class ConstrictorNode extends AbstractEvaluationNode {
 
 	}
 
-	/**
-	 * Count the number of snake still alive
-	 * 
-	 * @return Number of snake alive
-	 */
-	private int countSnakeAlive() {
-
-		int nbAlive = 0;
-		if (snakes.size() > 1) {
-			for (final SnakeInfo s : snakes) {
-				if (s.isAlive()) {
-					nbAlive++;
-				}
-			}
-
-		} else if (snakes.size() == 1) {
-			score[0] += BattleSnakeConstants.MAX_SCORE;
-			nbAlive = 1;
-		}
-		return nbAlive;
-	}
-
+	
 	/**
 	 * Uses to create constrictor node
 	 */

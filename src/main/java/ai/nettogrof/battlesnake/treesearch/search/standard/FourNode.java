@@ -26,8 +26,7 @@ public class FourNode extends AbstractStandardNode {
 	 * @param foodInfo Food information
 	 */
 	public FourNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo) {
-		super(snakes, foodInfo);
-		score = new float[snakes.size()];
+		super(snakes, foodInfo);		
 		setScore();
 	}
 

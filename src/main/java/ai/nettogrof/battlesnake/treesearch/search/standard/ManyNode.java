@@ -27,7 +27,6 @@ public class ManyNode extends AbstractStandardNode {
 	 */
 	public ManyNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo) {
 		super(snakes, foodInfo);
-		score = new float[snakes.size()];
 		setScore();
 	}
 

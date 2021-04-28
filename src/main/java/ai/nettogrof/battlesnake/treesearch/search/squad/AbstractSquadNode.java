@@ -9,7 +9,7 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
-import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -20,7 +20,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  * @author carl.lajeunesse
  * @version Spring 2021
  */
-public abstract class AbstractSquadNode extends AbstractNode {
+public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 
 	/**
 	 * default openhashmap value
@@ -99,43 +99,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 
 	}
 
-	/**
-	 * Adjust the score based on number of square controls by snakes The board array
-	 * contain the snake number from 1 to X snakes
-	 * 
-	 * @param board Board array
-	 */
-	protected void adjustScodeBasedonBoardControl(final int[][] board) {
-		final int biggestSnake = snakes.get(0).getSnakeBody().size() > snakes.get(1).getSnakeBody().size() ? 0 : 1;
-		int[] count = new int[snakes.size()];
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (board[i][j] > 0) {
-					count[board[i][j] - 1]++;
-				} else if (board[i][j] == BattleSnakeConstants.SPLIT_AREA) {
-
-					count[biggestSnake]++;
-				}
-			}
-		}
-
-		// Adding value if a tail is in the controlled area
-		int total = 0;
-		for (int i = 0; i < snakes.size(); i++) {
-			final int posTail = snakes.get(i).getTail();
-			final int boardValue = board[posTail / 1000][posTail % 1000];
-			if (boardValue > 0) {
-				count[boardValue - 1] += BattleSnakeConstants.TAIL_VALUE_AREA;
-			}
-			total += count[i];
-		}
-
-		// Assign the score
-		for (int i = 0; i < snakes.size(); i++) {
-			score[i] += ((float) count[i]) / total;
-		}
-
-	}
+	
 
 	/**
 	 * Initiate the board array
@@ -158,18 +122,7 @@ public abstract class AbstractSquadNode extends AbstractNode {
 		return board;
 	}
 
-	/**
-	 * Apply the new Hash map value to the board.
-	 * 
-	 * @param newHash The new hash map of position/value
-	 * @param board   Board array
-	 */
-	protected void applyNewHash(final Int2IntOpenHashMap newHash, int[][] board) {
-		newHash.forEach((xy, v) -> {
-			board[xy / 1000][xy % 1000] = v;
-		});
-
-	}
+	
 
 	/**
 	 * Generate new position to be added to hash
@@ -220,14 +173,6 @@ public abstract class AbstractSquadNode extends AbstractNode {
 
 	}
 
-	/**
-	 * Adding basic length to score and health score = length + health /50
-	 */
-	protected void addBasicLengthScore() {
-		for (int i = 0; i < snakes.size(); i++) {
-			score[i] = snakes.get(i).isAlive() ? snakes.get(i).getSnakeBody().size() + snakes.get(i).getHealth() / 50
-					: 0;
-		}
-	}
+	
 
 }

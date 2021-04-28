@@ -24,10 +24,7 @@ public class DuelNode extends AbstractStandardNode {
 	 */
 	public DuelNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo) {
 		super(snakes, foodInfo);
-
-		score = new float[snakes.size()];
 		setScore();
-
 	}
 
 	/**
@@ -57,29 +54,7 @@ public class DuelNode extends AbstractStandardNode {
 
 	}
 
-	/**
-	 * Count the number of snake still alive
-	 * 
-	 * @return Number of snake alive
-	 */
-	private int countSnakeAlive() {
-
-		int nbAlive = 0;
-		if (snakes.size() > 1) {
-
-			for (final SnakeInfo s : snakes) {
-				if (s.isAlive()) {
-					nbAlive++;
-				}
-			}
-
-		} else if (snakes.size() == 1) {
-			score[0] += BattleSnakeConstants.MAX_SCORE;
-			nbAlive = 1;
-		}
-		return nbAlive;
-	}
-
+	
 	/**
 	 * Uses to create duel node
 	 */

@@ -27,7 +27,6 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 */
 	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
-		score = new float[snakes.size()];
 		setScore();
 	}
 
@@ -40,7 +39,6 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 */
 	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
 		super(snakes, food, hazard);
-		score = new float[snakes.size()];
 		setScore();
 	}
 
