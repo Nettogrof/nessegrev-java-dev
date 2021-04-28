@@ -87,6 +87,34 @@ public class SnakeInfoSquad extends SnakeInfo {
 	public void setSquad(final String squad) {
 		this.squad = squad;
 	}
+	
+	/**
+	 * Equals method
+	 * 
+	 * @param other other SnakeinfoSquad
+	 * @return true if equals
+	 */
+	public boolean equals(final SnakeInfoSquad other) {
+		if (!name.equals(other.name)) {
+			return false;
+		}
+		if (health != other.getHealth()) {
+			return false;
+		}
+
+		if (snakeBody.size() != other.getSnakeBody().size()) {
+			return false;
+		}
+		if (getHead() != other.getHead()) {
+			return false;
+		}
+		
+		if (getSquad().equals(other.getSquad())) {
+			return false;
+		}
+
+		return getTail() == other.getTail();
+	}
 
 	/**
 	 *
