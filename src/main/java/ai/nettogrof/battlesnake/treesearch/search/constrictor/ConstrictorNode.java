@@ -22,7 +22,7 @@ public class ConstrictorNode extends AbstractEvaluationNode {
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
 	 * @param snakes   List of snakes
-	 * @param foodInfo Food information not use
+	 * @param food Food information not use
 	 */
 	public ConstrictorNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);

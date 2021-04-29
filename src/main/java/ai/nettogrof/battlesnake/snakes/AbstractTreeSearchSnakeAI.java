@@ -108,6 +108,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		super(gameId);
 	}
 	
+	/**
+	 * Set the properties to the snake object 
+	 */
 	protected void setProperties() {
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 

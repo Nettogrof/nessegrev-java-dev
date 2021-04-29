@@ -89,6 +89,11 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 
 	}
 
+	/**
+	 * Get the best child/winner  from a node
+	 * @param node the parent node
+	 * @return the winner/best child
+	 */
 	private AbstractNode getWinnerChild(final AbstractNode node) {
 		AbstractNode winner = null;
 		final TFloatArrayList upward = new TFloatArrayList();

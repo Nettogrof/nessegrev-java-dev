@@ -191,7 +191,7 @@ public final class Challenger extends AbstractSnakeAI {
 	/**
 	 * Other challenge aka not solo...
 	 * 
-	 * @param moveRequest
+	 * @param moveRequest  the move request
 	 * @return the battlesnake response
 	 */
 	private Map<String, String> otherChallenge(final JsonNode moveRequest) {
