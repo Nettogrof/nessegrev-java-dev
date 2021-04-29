@@ -45,7 +45,8 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public AlphaSnake(final String gameId) {
-		super(gameId, fileConfig);
+		super(gameId);
+		setProperties();
 
 	}
 

@@ -103,11 +103,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Constructor with the gameid,
 	 * 
 	 * @param gameId     String of the gameid field receive in the start request.
-	 * @param fileConfig String to the config file
 	 */
-	public AbstractTreeSearchSnakeAI(final String gameId, String fileConfig) {
+	public AbstractTreeSearchSnakeAI(final String gameId) {
 		super(gameId);
-
+	}
+	
+	protected void setProperties() {
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
 
 			final Properties prop = new Properties();

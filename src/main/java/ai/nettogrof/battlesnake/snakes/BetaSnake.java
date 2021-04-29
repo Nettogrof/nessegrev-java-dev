@@ -32,11 +32,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 public class BetaSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
-	 * The config filename
-	 */
-	private static String fileConfig = "Beta.properties";
-
-	/**
 	 * Boolean if a squad game
 	 */
 	public transient boolean squad;
@@ -54,7 +49,9 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public BetaSnake(final String gameId) {
-		super(gameId, fileConfig);
+		super(gameId);
+		fileConfig = "Beta.properties";
+		setProperties();
 	}
 
 	/**

@@ -28,11 +28,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 public class GammaSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
-	 * The config filename
-	 */
-	private static String fileConfig = "Gamma.properties";
-
-	/**
 	 * Basic / unused constructor
 	 */
 	public GammaSnake() {
@@ -45,7 +40,9 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public GammaSnake(final String gameId) {
-		super(gameId, fileConfig);
+		super(gameId);
+		fileConfig = "Gamma.properties";
+		setProperties();
 
 	}
 
@@ -83,17 +80,13 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 * @return Abstract node
 	 */
 	private AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+		AbstractNode.width = width;
+		AbstractNode.height = height;
 		if (snakes.size() > 4) {
-			ManyNode.width = width;
-			ManyNode.height = height;
 			return new ManyNode(snakes, food);
 		} else if (snakes.size() > 2) {
-			FourNode.width = width;
-			FourNode.height = height;
 			return new FourNode(snakes, food);
 		}
-		DuelNode.width = width;
-		DuelNode.height = height;
 		return new DuelNode(snakes, food);
 	}
 

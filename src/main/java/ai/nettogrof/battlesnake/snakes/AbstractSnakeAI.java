@@ -120,7 +120,7 @@ public abstract class AbstractSnakeAI {
 	 * Any snake must use a fileConfig (a properties files), and the name of the
 	 * file must store in the string
 	 */
-	public String fileConfig;
+	protected String fileConfig;
 
 	/**
 	 * Snakes can play games in parallel, so the game id field is use to distinguish
