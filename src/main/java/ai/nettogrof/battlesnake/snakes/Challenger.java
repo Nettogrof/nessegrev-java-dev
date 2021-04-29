@@ -946,7 +946,7 @@ public final class Challenger extends AbstractSnakeAI {
 
 	@Override
 	protected void setFileConfig() {
-		fileConfig = "Challenger.properties";
+		fileConfig = "Challenger.properties";//?
 
 	}
 

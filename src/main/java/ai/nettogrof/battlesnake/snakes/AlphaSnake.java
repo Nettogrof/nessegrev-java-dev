@@ -27,11 +27,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 @Deprecated
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
-	/**
-	 * The config filename
-	 */
-	private static String fileConfig = "Alpha.properties";
-
+	
 	/**
 	 * Basic / unused constructor
 	 */
@@ -46,6 +42,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	public AlphaSnake(final String gameId) {
 		super(gameId);
+		fileConfig = "Alpha.properties";
 		setProperties();
 
 	}

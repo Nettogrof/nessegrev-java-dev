@@ -41,6 +41,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	public BetaSnake() {
 		super();
+		fileConfig = "Beta.properties";
 	}
 
 	/**

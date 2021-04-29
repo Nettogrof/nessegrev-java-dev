@@ -433,7 +433,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	 */
 	@Override
 	protected void setFileConfig() {
-		fileConfig = "FloodFill.properties";
+		fileConfig = "FloodFill.properties"; // ?
 
 	}
 
