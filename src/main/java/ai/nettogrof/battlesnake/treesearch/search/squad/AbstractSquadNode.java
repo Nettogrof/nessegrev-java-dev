@@ -83,6 +83,11 @@ public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 		return board;
 	}
 
+	/**
+	 * Gets the index , for the teammate
+	 * @param snake Current snake
+	 * @return int for the index of the teammate
+	 */
 	private int getPartnerIndex(final SnakeInfoSquad snake) {
 		for (int i = 0; i < snakes.size(); i++) {
 			if (snake.getSquad().equals(((SnakeInfoSquad) snakes.get(i)).getSquad())
