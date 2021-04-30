@@ -60,6 +60,11 @@ public final class BattleSnakeConstants {
 	 * Value for square controlled by two snakes
 	 */
 	public final static int SPLIT_AREA = -50;
+	
+	/**
+	 * Value for square uncontrolled 
+	 */
+	public final static int EMPTY_AREA = -150;
 
 	/**
 	 * Value if a tail is found in the controlled AREA

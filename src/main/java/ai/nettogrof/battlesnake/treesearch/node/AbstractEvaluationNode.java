@@ -3,6 +3,7 @@
  */
 package ai.nettogrof.battlesnake.treesearch.node;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
@@ -10,6 +11,9 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BORDER_SCORE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
 
 /**
  * This abstract evaluation node class is the based of all node class methods
@@ -38,7 +42,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	 * @param snakes List of snakes
 	 * @param food   Food information
 	 */
-	public AbstractEvaluationNode(final List<SnakeInfo> snakes,final FoodInfo food) {
+	public AbstractEvaluationNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
 		score = new float[snakes.size()];
 	}
@@ -52,11 +56,11 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		final int headX = head / 1000;
 		final int headY = head % 1000;
 		if (headX == 0 || headX == width - 1) {
-			score[0] -= BattleSnakeConstants.BORDER_SCORE;
+			score[0] -= BORDER_SCORE;
 		}
 
 		if (headY == 0 || headY == height - 1) {
-			score[0] -= BattleSnakeConstants.BORDER_SCORE;
+			score[0] -= BORDER_SCORE;
 		}
 
 	}
@@ -97,19 +101,19 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			final int posX = position / 1000;
 			final int posY = position % 1000;
 
-			if (posX + 1 < width && board[posX + 1][posY] == 0) {
+			if (posX + 1 < width && board[posX + 1][posY] == EMPTY_AREA) {
 				addToHash(newHash, position + 1000, valeur);
 
 			}
-			if (posX - 1 >= 0 && board[posX - 1][posY] == 0) {
+			if (posX - 1 >= 0 && board[posX - 1][posY] == EMPTY_AREA) {
 				addToHash(newHash, position - 1000, valeur);
 
 			}
 
-			if (posY + 1 < height && board[posX][posY + 1] == 0) {
+			if (posY + 1 < height && board[posX][posY + 1] == EMPTY_AREA) {
 				addToHash(newHash, position + 1, valeur);
 			}
-			if (posY - 1 >= 0 && board[posX][posY - 1] == 0) {
+			if (posY - 1 >= 0 && board[posX][posY - 1] == EMPTY_AREA) {
 				addToHash(newHash, position - 1, valeur);
 			}
 
@@ -156,7 +160,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		}
 
 	}
-	
+
 	/**
 	 * Adjust the score based on number of square controls by snakes The board array
 	 * contain the snake number from 1 to X snakes
@@ -164,15 +168,12 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	 * @param board Board array
 	 */
 	protected void adjustScodeBasedonBoardControl(final int[][] board) {
-		final int biggestSnake = snakes.get(0).getSnakeBody().size() > snakes.get(1).getSnakeBody().size() ? 0 : 1;
+
 		int[] count = new int[snakes.size()];
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (board[i][j] > 0) {
-					count[board[i][j] - 1]++;
-				} else if (board[i][j] == BattleSnakeConstants.SPLIT_AREA) {
-
-					count[biggestSnake]++;
+				if (board[i][j] >= 0) {
+					count[board[i][j]]++;
 				}
 			}
 		}
@@ -182,8 +183,8 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		for (int i = 0; i < snakes.size(); i++) {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
-			if (boardValue > 0) {
-				count[boardValue - 1] += BattleSnakeConstants.TAIL_VALUE_AREA;
+			if (boardValue >= 0) {
+				count[boardValue] += BattleSnakeConstants.TAIL_VALUE_AREA;
 			}
 			total += count[i];
 		}
@@ -202,7 +203,9 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	 */
 	protected int[][] initBoard() {
 		int[][] board = new int[width][height];
-
+		for (int i = 0; i < width; i++) {
+			Arrays.fill(board[i], EMPTY_AREA);
+		}
 		for (final SnakeInfo snake : snakes) {
 			final TIntArrayList body = snake.getSnakeBody();
 			for (int i = 0; i < body.size() - 1; i++) {
@@ -214,7 +217,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		}
 		return board;
 	}
-	
+
 	/**
 	 * Generate score based on the area control by the snake. Using a kind of
 	 * voronoi algo.
@@ -232,7 +235,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		final Int2IntOpenHashMap newHash = new Int2IntOpenHashMap();
 
 		for (int i = 0; i < snakes.size(); i++) {
-			newHash.put(snakes.get(i).getSnakeBody().get(0), i + 1);
+			newHash.put(snakes.get(i).getSnakeBody().get(0), i);
 		}
 
 		// while still new square assign to a snake control
@@ -249,7 +252,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		adjustScodeBasedonBoardControl(board);
 
 	}
-	
+
 	/**
 	 * Count the number of snake still alive
 	 * 
@@ -258,17 +261,17 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected int countSnakeAlive() {
 
 		int nbAlive = 0;
-		
-			for (final SnakeInfo s : snakes) {
-				if (s.isAlive()) {
-					nbAlive++;
-				}
+
+		for (final SnakeInfo s : snakes) {
+			if (s.isAlive()) {
+				nbAlive++;
 			}
+		}
 
 		return nbAlive;
-		
+
 	}
-	
+
 	/**
 	 * Set Max score to winner snakes.
 	 */
@@ -278,10 +281,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {
 				score[i] = BattleSnakeConstants.MAX_SCORE;
 			}
-		}		
+		}
 	}
-
-
-	
 
 }
