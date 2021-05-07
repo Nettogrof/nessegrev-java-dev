@@ -66,6 +66,7 @@ public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 	 * 
 	 * @return board array
 	 */
+	@Override
 	protected int[][] initBoard() {
 
 		int[][] board = new int[width][height];
@@ -85,6 +86,7 @@ public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 
 	/**
 	 * Gets the index , for the teammate
+	 * 
 	 * @param snake Current snake
 	 * @return int for the index of the teammate
 	 */
@@ -105,6 +107,7 @@ public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 	 * @param newHash New hash
 	 * @param board   Board array
 	 */
+	@Override
 	protected void generateHash(final Int2IntOpenHashMap old, final Int2IntOpenHashMap newHash, final int[][] board) {
 
 		old.forEach((position, value) -> {
@@ -112,24 +115,37 @@ public abstract class AbstractSquadNode extends AbstractEvaluationNode {
 			final int posX = position / 1000;
 			final int posY = position % 1000;
 
-			if (posX + 1 < width && (board[posX + 1][posY] == EMPTY_AREA || board[posX + 1][posY] == -value)) {
+			if (posX + 1 < width && checkBoardHash(posX + 1, posY, board, value)) {
 				addToHash(newHash, position + 1000, value);
 
 			}
-			if (posX - 1 >= 0 && (board[posX - 1][posY] == EMPTY_AREA || board[posX - 1][posY] == -value)) {
+			if (posX - 1 >= 0 && checkBoardHash(posX - 1, posY, board, value)) {
 				addToHash(newHash, position - 1000, value);
 
 			}
 
-			if (posY + 1 < height && (board[posX][posY + 1] == EMPTY_AREA || board[posX][posY + 1] == -value)) {
+			if (posY + 1 < height && checkBoardHash(posX, posY + 1, board, value)) {
 				addToHash(newHash, position + 1, value);
 			}
-			if (posY - 1 >= 0 && (board[posX][posY - 1] == EMPTY_AREA || board[posX][posY - 1] == -value)) {
+			if (posY - 1 >= 0 && checkBoardHash(posX, posY - 1, board, value)) {
 				addToHash(newHash, position - 1, value);
 			}
 
 		});
 
+	}
+
+	/**
+	 * Check the board array if the hash value can expand
+	 * 
+	 * @param newPosX Position X
+	 * @param newPosY Position Y
+	 * @param board   Board array
+	 * @param value   the hash value
+	 * @return if possible to expand
+	 */
+	protected boolean checkBoardHash(final int newPosX, final int newPosY, final int[][] board, final int value) {
+		return board[newPosX][newPosY] == EMPTY_AREA || board[newPosX][newPosY] == -value;
 	}
 
 }

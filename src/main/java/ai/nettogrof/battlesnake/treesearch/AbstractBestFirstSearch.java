@@ -80,7 +80,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			return list;
 		}
 
-		AbstractNode winner = getWinnerChild(node);
+		final AbstractNode winner = getWinnerChild(node);
 				
 			
 		final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
@@ -200,7 +200,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			return node;
 		}
 		node.updateScore();
-		AbstractNode winner = getWinnerChild(node);
+		final AbstractNode winner = getWinnerChild(node);
 		if (winner == null) {
 			node.exp = false;
 			return node;
