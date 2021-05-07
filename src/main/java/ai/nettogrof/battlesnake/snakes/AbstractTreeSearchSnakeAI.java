@@ -223,7 +223,11 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			// Single thread
 
 			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
-			main.run();
+			if (main == null) {
+				log.atSevere().log("Unable to find Search Type ");
+			} else {
+				main.run();
+			}
 
 		}
 
