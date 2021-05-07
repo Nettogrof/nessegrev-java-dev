@@ -52,6 +52,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param moveRequest Json request
 	 * @return AbstractNode the root
 	 */
+	@Override
 	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
@@ -67,7 +68,7 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 			}
 		}
 
-		AbstractNode oldChild = findChildNewRoot(snakes, food);
+		final AbstractNode oldChild = findChildNewRoot(snakes, food);
 		return oldChild == null ? genNode(snakes, food) : oldChild;
 
 	}

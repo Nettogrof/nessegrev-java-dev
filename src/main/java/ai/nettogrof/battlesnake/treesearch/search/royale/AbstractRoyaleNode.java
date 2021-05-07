@@ -80,6 +80,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * Generate score based on the area control by the snake. Using a kind of
 	 * voronoi algo.
 	 */
+	@Override
 	protected void listAreaControl() {
 
 		// If a single snake assign max score
@@ -132,6 +133,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * 
 	 * @param board Board array
 	 */
+	@Override
 	protected void adjustScodeBasedonBoardControl(final int[][] board) {
 		final int biggestSnake = snakes.get(0).getSnakeBody().size() > snakes.get(1).getSnakeBody().size() ? 0 : 1;
 		int[] count = new int[snakes.size()];
@@ -169,6 +171,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * 
 	 * @return board array
 	 */
+	@Override
 	protected int[][] initBoard() {
 		int[][] board = new int[width][height];
 

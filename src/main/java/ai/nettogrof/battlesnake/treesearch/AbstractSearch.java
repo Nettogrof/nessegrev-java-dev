@@ -197,7 +197,7 @@ public abstract class AbstractSearch implements Runnable {
 	 * @param node             Parent node
 	 * @param listNewSnakeInfo Current list of snakeinfo
 	 */
-	private void addMove(final int newhead, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo,
+	protected void addMove(final int newhead, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo,
 			final AbstractNode node, final List<SnakeInfo> listNewSnakeInfo) {
 		if (freeSpace(newhead, allSnakes, snakeInfo)) {
 			listNewSnakeInfo.add(createSnakeInfo(snakeInfo, newhead, node));
