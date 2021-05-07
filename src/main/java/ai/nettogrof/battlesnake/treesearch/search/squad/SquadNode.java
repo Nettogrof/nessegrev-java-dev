@@ -17,6 +17,9 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * @version Summer 2021
  */
 public class SquadNode extends AbstractSquadNode {
+	/**
+	 * Minimun number of snake for Squad Mode.  If number of snake smaller than this value, the game end
+	 */
 	protected final static int MINIMUN_SNAKE = 4;
 	/**
 	 * Constructor, set the information and evaluate/ set score directly

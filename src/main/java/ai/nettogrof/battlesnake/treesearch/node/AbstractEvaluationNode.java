@@ -225,7 +225,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected void listAreaControl() {
 
 		// If a single snake assign max score
-		if (snakes.size() < 2) {
+		if (snakes.size() <  BattleSnakeConstants.MINIMUN_SNAKE) {
 			score[0] = BattleSnakeConstants.MAX_SCORE;
 			return;
 		}

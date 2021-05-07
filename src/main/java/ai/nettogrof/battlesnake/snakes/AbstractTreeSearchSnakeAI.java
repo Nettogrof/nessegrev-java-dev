@@ -24,6 +24,9 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
 import ai.nettogrof.battlesnake.treesearch.search.squad.SquadSearch;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1;
+
 /**
  * Any snake using a tree-search could extend this abstract class it contains
  * basic constant fields, related to the field name in json call from
@@ -144,7 +147,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	public Map<String, String> move(final JsonNode moveRequest) {
 
 		if (moveRequest.get(YOU).has("head")) {
-			apiversion = 1;
+			apiversion = API_V1;
 		}
 
 		final Long startTime = System.currentTimeMillis();
@@ -506,7 +509,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			res = DOWN;
 		} else {
 			AbstractNode choosenNode = winner;
-			if (winner.getScoreRatio() < 0.001) {
+			if (winner.getScoreRatio() < BASIC_SCORE) {
 				response.put("shout", losing);
 				choosenNode = lastChance(root);
 			} else if (winner.getScoreRatio() > 100) {

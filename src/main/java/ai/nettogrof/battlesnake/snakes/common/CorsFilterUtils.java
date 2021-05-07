@@ -19,17 +19,17 @@ public final class CorsFilterUtils {
 	/**
 	 * CORS maps info
 	 */
-	private final static Map<String, String> corsHeaders = new ConcurrentHashMap<>();
+	private final static Map<String, String> CORS_HEADERS = new ConcurrentHashMap<>();
 
 	/**
 	 * Basic filter to accept incoming https/web request
 	 */
 	private CorsFilterUtils() {
-		corsHeaders.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-		corsHeaders.put("Access-Control-Allow-Origin", "*");
-		corsHeaders.put("Access-Control-Allow-Headers",
+		CORS_HEADERS.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+		CORS_HEADERS.put("Access-Control-Allow-Origin", "*");
+		CORS_HEADERS.put("Access-Control-Allow-Headers",
 				"Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
-		corsHeaders.put("Access-Control-Allow-Credentials", "true");
+		CORS_HEADERS.put("Access-Control-Allow-Credentials", "true");
 	}
 
 	/**
@@ -39,7 +39,7 @@ public final class CorsFilterUtils {
 		final Filter filter = new Filter() {
 			@Override
 			public void handle(final Request request, final Response response) throws Exception {
-				corsHeaders.forEach((key, value) -> {
+				CORS_HEADERS.forEach((key, value) -> {
 					response.header(key, value);
 				});
 			}

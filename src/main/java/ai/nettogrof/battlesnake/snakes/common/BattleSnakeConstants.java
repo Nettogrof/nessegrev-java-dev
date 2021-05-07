@@ -80,4 +80,9 @@ public final class BattleSnakeConstants {
 	 * Minimun number of snake.  If number of snake smaller than this value, the game end
 	 */
 	public final static int MINIMUN_SNAKE = 2;
+	
+	/**
+	 * Minimun number of snake.  If number of snake smaller than this value, the game end
+	 */
+	public final static int API_V1 = 1;
 }

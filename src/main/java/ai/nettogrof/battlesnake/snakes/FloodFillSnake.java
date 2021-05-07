@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1;
+
 /**
  * FloodFill snake. This class is the "Nessegrev-flood" snake on Battlesnake. My
  * first snake that I entered in a tournament (Stay Home and Code / Rookie
@@ -106,7 +108,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 		// To determine if the game is under api version 1 or 0 ( default 0)
 		if (you.has("head")) {
-			apiversion = 1;
+			apiversion = API_V1;
 		}
 
 		for (int x = 0; x < width; x++) {
@@ -281,7 +283,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		if (possiblemove.get(RIGHT) > value) {
 			res = RIGHT;
 		}
-		if (apiversion == 1) {
+		if (apiversion == API_V1) {
 			if (res.equals(UPWARD)) {
 				res = DOWN;
 			} else if (res.equals(DOWN)) {
