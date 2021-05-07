@@ -10,6 +10,8 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+
 /**
  * This ManyNode class must be use when more than 4 snakes left, and in standard
  * mode.
@@ -41,14 +43,14 @@ public class ManyNode extends AbstractStandardNode {
 		addScoreDistance(head);
 		adjustBorderScore(head);
 
-		if (snakes.size() > 1) {
+		if (snakes.size() >= MINIMUN_SNAKE) {
 			int nbAlive = 0;
 			for (final SnakeInfo s : snakes) {
 				if (s.isAlive()) {
 					nbAlive++;
 				}
 			}
-			if (nbAlive < 2) {
+			if (nbAlive < MINIMUN_SNAKE) {
 				exp = false;
 			}
 		} else if (snakes.size() == 1) {

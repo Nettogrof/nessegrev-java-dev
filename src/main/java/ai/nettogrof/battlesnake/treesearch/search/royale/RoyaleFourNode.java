@@ -7,6 +7,8 @@ import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+
 /**
  * This Royale FourNode class must be use when only 3 or 4 snakes left, and in
  * royale mode.
@@ -33,7 +35,7 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < 2) {
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			setWinnerMaxScore();
 		} else {
 			addBasicLengthScore();

@@ -10,6 +10,8 @@ import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+
 /**
  * This Royale Duel node class must be use when only 2 snakes left, and in
  * royale mode. Used by Nessegrev-Beta in the Spring 2021 league
@@ -46,7 +48,7 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < 2) {
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			setWinnerMaxScore();
 		} else {
 			listAreaControl();

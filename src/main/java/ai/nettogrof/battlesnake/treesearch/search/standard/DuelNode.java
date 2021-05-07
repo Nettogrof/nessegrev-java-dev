@@ -6,6 +6,8 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+
 /**
  * This Duel node class must be use when only 2 snakes left, and in standard
  * mode. Used by Nessegrev-Gamma in the Spring 2021 league
@@ -30,7 +32,7 @@ public class DuelNode extends AbstractStandardNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < 2) {
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			setWinnerMaxScore();
 		} else {
 			listAreaControl();
@@ -45,9 +47,6 @@ public class DuelNode extends AbstractStandardNode {
 		updateScoreRatio();
 
 	}
-
-	
-	
 
 	/**
 	 * Uses to create duel node

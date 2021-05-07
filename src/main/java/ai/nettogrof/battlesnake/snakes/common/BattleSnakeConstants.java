@@ -75,4 +75,9 @@ public final class BattleSnakeConstants {
 	 * Value of a snake body
 	 */
 	public final static int SNAKE_BODY = -99;
+	
+	/**
+	 * Minimun number of snake.  If number of snake smaller than this value, the game end
+	 */
+	public final static int MINIMUN_SNAKE = 2;
 }

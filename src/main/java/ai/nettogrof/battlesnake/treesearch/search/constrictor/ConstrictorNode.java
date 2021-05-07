@@ -10,6 +10,8 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+
 /**
  * This Constrictor node class must be use only in constrictor mode.
  * 
@@ -33,7 +35,7 @@ public class ConstrictorNode extends AbstractEvaluationNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < 2) {
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			// Only one snake alive no need to explore this node anymore and set max score
 			// to surviving snake
 			setWinnerMaxScore();

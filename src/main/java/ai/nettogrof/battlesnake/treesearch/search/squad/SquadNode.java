@@ -17,7 +17,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * @version Summer 2021
  */
 public class SquadNode extends AbstractSquadNode {
-
+	protected final static int MINIMUN_SNAKE = 4;
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
@@ -33,7 +33,7 @@ public class SquadNode extends AbstractSquadNode {
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < 4) {
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			// Only one team alive no need to explore this node anymore and set max score
 			// to surviving team
 			setWinnerMaxScore();
