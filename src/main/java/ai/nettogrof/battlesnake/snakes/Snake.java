@@ -212,6 +212,12 @@ public final class Snake {
 				return new GammaSnake().getInfo();
 			case "Basic":
 				return new BasicSnake().getInfo();
+			case "Right":
+				return new RightSnake().getInfo();
+			case "Left":
+				return new LeftSnake().getInfo();
+			case "JustTurn":
+				return new JustTurnSnake().getInfo();
 			case "Challenger":
 				return new Challenger().getInfo();
 			default:
@@ -243,6 +249,15 @@ public final class Snake {
 				break;
 			case "Gamma":
 				bots.put(gameId, new GammaSnake(gameId));
+				break;
+			case "Right":
+				bots.put(gameId, new RightSnake(gameId));
+				break;
+			case "Left":
+				bots.put(gameId, new LeftSnake(gameId));
+				break;
+			case "JustTurn":
+				bots.put(gameId, new JustTurnSnake(gameId));
 				break;
 			case "Challenger":
 				bots.put(gameId, new Challenger(gameId));
