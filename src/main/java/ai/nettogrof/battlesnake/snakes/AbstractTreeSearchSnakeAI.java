@@ -48,7 +48,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	/**
 	 * Number of cpu / thread permit
 	 */
-	protected transient int cpu_limit = 2;
+	protected transient int cpuLimit = 2;
 
 	/**
 	 * String that gonna be shout by the snake if snake is in a losing position.
@@ -123,7 +123,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
 			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
-			cpu_limit = Integer.parseInt(prop.getProperty("cpu"));
+			cpuLimit = Integer.parseInt(prop.getProperty("cpu"));
 
 			final Random rand = new Random();
 			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
@@ -568,7 +568,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 				cont = false;
 			} else {
 				searchType.newInstance(nodelist.get(0), width, height, 0, 0).generateChild();
-				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpu_limit) {
+				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpuLimit) {
 					final AbstractNode oldroot = nodelist.remove(0);
 					expandedlist.add(oldroot);
 

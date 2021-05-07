@@ -27,7 +27,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	/**
 	 * default openhashmap value
 	 */
-	private final static int defaultv = new Int2IntOpenHashMap().defaultReturnValue();
+	private final static int DEFAULTRV = new Int2IntOpenHashMap().defaultReturnValue();
 
 	/**
 	 * Basic constructor
@@ -130,7 +130,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	 */
 	protected void addToHash(final Int2IntOpenHashMap newHash, final int position, final int value) {
 		final int prev = newHash.putIfAbsent(position, value);
-		if (prev != defaultv && prev != value) {
+		if (prev != DEFAULTRV && prev != value) {
 			newHash.put(position, BattleSnakeConstants.SPLIT_AREA);
 		}
 

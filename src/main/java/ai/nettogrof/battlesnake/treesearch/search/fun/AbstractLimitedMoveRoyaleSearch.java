@@ -22,19 +22,19 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	/**
 	 * Prevent left move if  head - neck  equals that amount
 	 */
-	protected transient int left_neck = 5;
+	protected transient int leftNeck = 5;
 	/**
 	 * Prevent right move if  head - neck  equals that amount
 	 */
-	protected transient int right_neck = 5;
+	protected transient int rightNeck = 5;
 	/**
 	 * Prevent down move if  head - neck  equals that amount
 	 */
-	protected transient int down_neck = 5;
+	protected transient int downNeck = 5;
 	/**
 	 * Prevent up move if  head - neck  equals that amount
 	 */
-	protected transient int up_neck = 5;
+	protected transient int upNeck = 5;
 
 	/**
 	 * Basic constructor
@@ -118,18 +118,18 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	 */
 	protected void selfDestination(final int head, final List<SnakeInfo> allSnakes, final SnakeInfo snakeInfo,
 			final AbstractNode node, final List<SnakeInfo> listNewSnakeInfo) {
-		if (head / 1000 > 0 && head - snakeInfo.getSnakeBody().get(1) != left_neck) {
+		if (head / 1000 > 0 && head - snakeInfo.getSnakeBody().get(1) != leftNeck) {
 			addMove(head - 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
 
-		if (head / 1000 < width - 1 && head - snakeInfo.getSnakeBody().get(1) != right_neck) {
+		if (head / 1000 < width - 1 && head - snakeInfo.getSnakeBody().get(1) != rightNeck) {
 			addMove(head + 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
 
-		if (head % 1000 > 0 && head - snakeInfo.getSnakeBody().get(1) != down_neck) {
+		if (head % 1000 > 0 && head - snakeInfo.getSnakeBody().get(1) != downNeck) {
 			addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
-		if (head % 1000 < height - 1 && head - snakeInfo.getSnakeBody().get(1) != up_neck) {
+		if (head % 1000 < height - 1 && head - snakeInfo.getSnakeBody().get(1) != upNeck) {
 			addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
 

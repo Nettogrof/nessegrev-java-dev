@@ -61,13 +61,14 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param moveRequest Json request
 	 * @return AbstractNode the root
 	 */
+	@Override
 	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
 
 		final JsonNode betaSnake = moveRequest.get(YOU);
 		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, betaSnake) : genSnakeInfo(board, betaSnake);
-		AbstractNode oldChild = findChildNewRoot(snakes, food);
+		final AbstractNode oldChild = findChildNewRoot(snakes, food);
 		return oldChild == null ? genNode(snakes, food, new HazardInfo(board)) : oldChild;
 
 	}

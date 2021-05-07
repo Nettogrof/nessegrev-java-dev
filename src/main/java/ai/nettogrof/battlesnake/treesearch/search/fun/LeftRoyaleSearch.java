@@ -26,10 +26,10 @@ public class LeftRoyaleSearch extends AbstractLimitedMoveRoyaleSearch {
 	 */
 	public LeftRoyaleSearch(final AbstractNode root, final int width, final int height) {
 		super(root, width, height);
-		left_neck = -1;
-		right_neck = 1;
-		down_neck = 1000;
-		up_neck = -1000;
+		leftNeck = -1;
+		rightNeck = 1;
+		downNeck = 1000;
+		upNeck = -1000;
 	}
 
 	/**
@@ -44,10 +44,10 @@ public class LeftRoyaleSearch extends AbstractLimitedMoveRoyaleSearch {
 	public LeftRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout) {
 		super(root, width, height, starttime, timeout);
-		left_neck = -1;
-		right_neck = 1;
-		down_neck = 1000;
-		up_neck = -1000;
+		leftNeck = -1;
+		rightNeck = 1;
+		downNeck = 1000;
+		upNeck = -1000;
 
 	}
 

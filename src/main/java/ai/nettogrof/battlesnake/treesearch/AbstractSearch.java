@@ -44,7 +44,14 @@ public abstract class AbstractSearch implements Runnable {
 	 * Starting time for the search in millisecond
 	 */
 	protected transient long startTime;
-
+	
+	/**
+	 * Basic Constructor
+	 */
+	public AbstractSearch() {
+		//empty constructor
+	}
+	
 	/**
 	 * The execution of the search
 	 */

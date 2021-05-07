@@ -30,10 +30,10 @@ public class JustTurnSearch extends AbstractLimitedMoveSearch {
 	 */
 	public JustTurnSearch(final AbstractNode root,final  int width,final  int height) {
 		super(root, width, height);
-		left_neck = -1000;
-		right_neck = 1000;
-		down_neck = -1;
-		up_neck = 1;
+		leftNeck = -1000;
+		rightNeck = 1000;
+		downNeck = -1;
+		upNeck = 1;
 	}
 
 	/**
@@ -47,10 +47,10 @@ public class JustTurnSearch extends AbstractLimitedMoveSearch {
 	 */
 	public JustTurnSearch(final AbstractNode root, final int width, final int height, final long starttime, final int timeout) {
 		super(root, width, height, starttime, timeout);
-		left_neck = -1000;
-		right_neck = 1000;
-		down_neck = -1;
-		up_neck = 1;
+		leftNeck = -1000;
+		rightNeck = 1000;
+		downNeck = -1;
+		upNeck = 1;
 	}
 
 }
