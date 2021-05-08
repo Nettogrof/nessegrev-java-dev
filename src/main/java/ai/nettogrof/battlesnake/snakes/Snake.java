@@ -126,7 +126,7 @@ public final class Snake {
 	public static class Handler {
 
 		/**
-		 * 
+		 * Empty response 
 		 */
 		private static final Map<String, String> EMPTY = new ConcurrentHashMap<>();
 

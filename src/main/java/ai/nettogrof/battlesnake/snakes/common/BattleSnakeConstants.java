@@ -11,6 +11,11 @@ public final class BattleSnakeConstants {
 	 * Health lose when a snake is in hazard zone
 	 */
 	public final static int HEALTH_LOST_HAZARD = -15;
+	
+	/**
+	 * Max Health 
+	 */
+	public final static int MAX_HEALTH = 100;
 
 	/**
 	 * Max score for a node

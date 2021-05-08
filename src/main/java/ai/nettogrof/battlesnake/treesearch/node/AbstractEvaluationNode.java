@@ -8,16 +8,20 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BORDER_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SPLIT_AREA;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.TAIL_VALUE_AREA;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
 
 /**
  * This abstract evaluation node class is the based of all node class methods
- * evaluation, provide eval method use in any node.
+ * evaluation, provide evaluation method use in any node.
  * 
  * @author carl.lajeunesse
  * @version Summer 2021
@@ -131,7 +135,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected void addToHash(final Int2IntOpenHashMap newHash, final int position, final int value) {
 		final int prev = newHash.putIfAbsent(position, value);
 		if (prev != DEFAULTRV && prev != value) {
-			newHash.put(position, BattleSnakeConstants.SPLIT_AREA);
+			newHash.put(position, SPLIT_AREA);
 		}
 
 	}
@@ -184,7 +188,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue >= 0) {
-				count[boardValue] += BattleSnakeConstants.TAIL_VALUE_AREA;
+				count[boardValue] += TAIL_VALUE_AREA;
 			}
 			total += count[i];
 		}
@@ -211,7 +215,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			for (int i = 0; i < body.size() - 1; i++) {
 				final int square = body.getQuick(i);
 
-				board[square / 1000][square % 1000] = BattleSnakeConstants.SNAKE_BODY;
+				board[square / 1000][square % 1000] = SNAKE_BODY;
 
 			}
 		}
@@ -225,8 +229,8 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected void listAreaControl() {
 
 		// If a single snake assign max score
-		if (snakes.size() <  BattleSnakeConstants.MINIMUN_SNAKE) {
-			score[0] = BattleSnakeConstants.MAX_SCORE;
+		if (snakes.size() <  MINIMUN_SNAKE) {
+			score[0] = MAX_SCORE;
 			return;
 		}
 		final int[][] board = initBoard();
@@ -279,7 +283,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		exp = false;
 		for (int i = 0; i < score.length; i++) {
 			if (snakes.get(i).getHealth() > 0 && snakes.get(i).isAlive()) {
-				score[i] = BattleSnakeConstants.MAX_SCORE;
+				score[i] = MAX_SCORE;
 			}
 		}
 	}
