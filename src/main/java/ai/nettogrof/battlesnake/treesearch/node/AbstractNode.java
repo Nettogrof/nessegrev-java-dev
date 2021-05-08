@@ -31,6 +31,9 @@ public abstract class AbstractNode {
 	 */
 	public static int height;
 
+	/**
+	 * Single posssible move
+	 */
 	public final static int ONE = 1;
 
 	/**
