@@ -39,7 +39,7 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public SoloSnake(String gameId) {
+	public SoloSnake(final String gameId) {
 		super(gameId);
 		fileConfig = "Solo.properties";
 		setProperties();
@@ -79,7 +79,7 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	@Override
-	protected AbstractNode genRoot(JsonNode moveRequest) {
+	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
 
@@ -100,7 +100,7 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 
 	
 	
-	private AbstractNode genNode(List<SnakeInfo> snakes, FoodInfo food) {
+	private AbstractNode genNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		AbstractNode.width = width;
 		AbstractNode.height = height;
 		return new SoloNode(snakes, food);

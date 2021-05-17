@@ -61,7 +61,7 @@ public class FourNode extends AbstractStandardNode {
 			if (nbAlive < MINIMUN_SNAKE) {
 				exp = false;
 			}
-		} else if (snakes.size() == 1) {
+		} else if (isSingleSnake()) {
 			score[0] += BattleSnakeConstants.MAX_SCORE;
 		}
 	}

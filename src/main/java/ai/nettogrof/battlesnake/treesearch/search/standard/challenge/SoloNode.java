@@ -32,15 +32,16 @@ public class SoloNode extends AbstractStandardNode {
 	 * @param snakes   List of snakes
 	 * @param food Food information
 	 */
-	public SoloNode(List<SnakeInfo> snakes, FoodInfo food) {
+	public SoloNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		super(snakes, food);
 		switch(challengeType) {
-		case 0 : addBasicLengthScore(); break; //Training challenge
+		
 		case 1 : soloSurvival(); break;
 		case 2 : longSnake(); break; 
 		case 3 : friendly(); break; 
 		case 4 : fourCorner(); break; 
 		case 5 : fullBoard(); break; 
+		default: addBasicLengthScore(); break;//Training challenge
 		}
 	
 		
@@ -68,18 +69,19 @@ public class SoloNode extends AbstractStandardNode {
 	}
 
 	private void soloSurvival() {
-		score[0] = (200 - snakes.get(0).getSnakeBody().size()*2) ;
+		score[0] = 200 - snakes.get(0).getSnakeBody().size()*2 ;
 		
 	}
 
 	@Override
-	public AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode) {
+	public AbstractNode createNode(final List<SnakeInfo> snakes,final AbstractNode currentNode) {
 		return new SoloNode(snakes, currentNode.getFood());
 	}
 	
 	/**
 	 * Update the score ratio
 	 */
+	@Override
 	public void updateScoreRatio() {
 		if (snakes.size() >1) {
 			float totalOther = BASIC_SCORE;

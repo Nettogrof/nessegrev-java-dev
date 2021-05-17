@@ -329,5 +329,13 @@ public abstract class AbstractNode {
 	 * @return new node from this type
 	 */
 	public abstract AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode);
+	
+	/**
+	 * Return true if there's just one snake
+	 * @return if there's just one snake
+	 */
+	public boolean isSingleSnake() {
+		return snakes.size() == 1;
+	}
 
 }

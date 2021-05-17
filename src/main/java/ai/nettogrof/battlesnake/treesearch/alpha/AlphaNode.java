@@ -167,7 +167,7 @@ public class AlphaNode extends AbstractNode {
 		}
 
 		AbstractNode bestChild = null;
-		if (snakes.size() == 1) {
+		if (isSingleSnake()) {
 
 			double maxR = -1000;
 
@@ -179,7 +179,7 @@ public class AlphaNode extends AbstractNode {
 
 			}
 
-		} else if (snakes.size() > 1) {
+		} else {
 
 			if (shortest) {
 				int countChild = Integer.MAX_VALUE;
