@@ -11,7 +11,7 @@ import ai.nettogrof.battlesnake.treesearch.search.fun.LeftRoyaleSearch;
 import ai.nettogrof.battlesnake.treesearch.search.fun.LeftStandardSearch;
 
 /**
- * Right snake. This class is the "Nessegrev-Left" snake on Battlesnake. This
+ * Left snake. This class is the "Nessegrev-Left" snake on Battlesnake. This
  * snake was made just for fun during  a Weekly Meet-up. This snake can turn left
  * or go straight.
  * 
