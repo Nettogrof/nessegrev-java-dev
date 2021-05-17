@@ -99,7 +99,13 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	
-	
+	/**
+	 * This method generate the root node type
+	 * 
+	 * @param snakes List of snakes
+	 * @param food   Food Information
+	 * @return Abstract node
+	 */
 	private AbstractNode genNode(final List<SnakeInfo> snakes,final FoodInfo food) {
 		AbstractNode.width = width;
 		AbstractNode.height = height;

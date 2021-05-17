@@ -48,26 +48,41 @@ public class SoloNode extends AbstractStandardNode {
 		updateScoreRatio();
 	}
 
+	/**
+	 * Evaluation for full board challenge
+	 */
 	private void fullBoard() {
 		// TODO Create Evaluation for full board challenge
 		
 	}
 
+	/**
+	 * Evaluation for four corner challenge
+	 */
 	private void fourCorner() {
 		// TODO Create Evaluation for four corner challenge
 		
 	}
 
+	/**
+	 * Evaluation for friendly challenge
+	 */
 	private void friendly() {
 		// TODO Create Evaluation for "friendly" challenge
 		
 	}
 
+	/**
+	 * Evaluation for long snake challenge
+	 */
 	private void longSnake() {
 		// TODO  Create Evaluation for long snake challenge
 		
 	}
 
+	/**
+	 * Evaluation for soloSurvival challenge
+	 */
 	private void soloSurvival() {
 		score[0] = 200 - snakes.get(0).getSnakeBody().size()*2 ;
 		
