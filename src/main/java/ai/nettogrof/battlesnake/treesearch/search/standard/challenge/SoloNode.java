@@ -1,0 +1,99 @@
+/**
+ * 
+ */
+package ai.nettogrof.battlesnake.treesearch.search.standard.challenge;
+
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
+
+import java.util.List;
+
+import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
+
+/**
+ * This Solo node class must be use for challenge only 
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2021
+ */
+public class SoloNode extends AbstractStandardNode {
+	/**
+	 * Index challenge
+	 */
+	public static int challengeType = 1;
+	
+
+	/**
+	 * Constructor, set the information and evaluate/ set score directly
+	 * 
+	 * @param snakes   List of snakes
+	 * @param food Food information
+	 */
+	public SoloNode(List<SnakeInfo> snakes, FoodInfo food) {
+		super(snakes, food);
+		switch(challengeType) {
+		case 0 : addBasicLengthScore(); break; //Training challenge
+		case 1 : soloSurvival(); break;
+		case 2 : longSnake(); break; 
+		case 3 : friendly(); break; 
+		case 4 : fourCorner(); break; 
+		case 5 : fullBoard(); break; 
+		}
+	
+		
+		updateScoreRatio();
+	}
+
+	private void fullBoard() {
+		// TODO Create Evaluation for full board challenge
+		
+	}
+
+	private void fourCorner() {
+		// TODO Create Evaluation for four corner challenge
+		
+	}
+
+	private void friendly() {
+		// TODO Create Evaluation for "friendly" challenge
+		
+	}
+
+	private void longSnake() {
+		// TODO  Create Evaluation for long snake challenge
+		
+	}
+
+	private void soloSurvival() {
+		score[0] = (200 - snakes.get(0).getSnakeBody().size()*2) ;
+		
+	}
+
+	@Override
+	public AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode) {
+		return new SoloNode(snakes, currentNode.getFood());
+	}
+	
+	/**
+	 * Update the score ratio
+	 */
+	public void updateScoreRatio() {
+		if (snakes.size() >1) {
+			float totalOther = BASIC_SCORE;
+			for (int i = 1; i < score.length; i++) {
+				totalOther += score[i];
+			}
+	
+			scoreRatio = (float) (score[0] / (float) totalOther);
+			if (scoreRatio == 0.0 || scoreRatio > STOP_EXPAND_LIMIT) {
+				exp = false;
+			}
+		}else {
+			scoreRatio = score[0];
+		}
+	}
+
+}

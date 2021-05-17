@@ -220,6 +220,8 @@ public final class Snake {
 				return new JustTurnSnake().getInfo();
 			case "Challenger":
 				return new Challenger().getInfo();
+			case "Solo":
+				return new SoloSnake().getInfo();
 			default:
 				return new BasicSnake().getInfo();
 			}
@@ -261,6 +263,9 @@ public final class Snake {
 				break;
 			case "Challenger":
 				bots.put(gameId, new Challenger(gameId));
+				break;
+			case "Solo":
+				bots.put(gameId, new SoloSnake(gameId));
 				break;
 			default:
 				LOG.atWarning().log("No snake type defined,  using Beta as default!");

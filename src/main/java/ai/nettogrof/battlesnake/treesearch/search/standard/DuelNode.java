@@ -25,26 +25,26 @@ public class DuelNode extends AbstractStandardNode {
 	 */
 	public DuelNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo) {
 		super(snakes, foodInfo);
-		setScore();
+		if (countSnakeAlive() < MINIMUN_SNAKE) {
+			setWinnerMaxScore();
+		} else {
+			setScore();
+		}
+		updateScoreRatio();
 	}
 
 	/**
 	 * Sets the node score
 	 */
 	private void setScore() {
-		if (countSnakeAlive() < MINIMUN_SNAKE) {
-			setWinnerMaxScore();
-		} else {
-			listAreaControl();
-			for (int i = 0; i < snakes.size(); i++) {
-				score[i] += snakes.get(i).getHealth() / 250f;
-				if (snakes.get(i).getHealth() <= 0 || !snakes.get(i).isAlive()) {
-					score[i] = 0f;
-				}
+		
+		listAreaControl();
+		for (int i = 0; i < snakes.size(); i++) {
+			score[i] += snakes.get(i).getHealth() / 250f;
+			if (snakes.get(i).getHealth() <= 0 || !snakes.get(i).isAlive()) {
+				score[i] = 0f;
 			}
 		}
-
-		updateScoreRatio();
 
 	}
 

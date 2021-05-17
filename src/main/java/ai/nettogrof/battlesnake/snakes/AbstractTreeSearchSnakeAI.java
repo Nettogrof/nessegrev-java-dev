@@ -26,6 +26,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
 
 /**
  * Any snake using a tree-search could extend this abstract class it contains
@@ -224,8 +225,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			log.atInfo().log("Nb Thread: " + nodelist.size());
 		} else {
 			// Single thread
-
 			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
+			
 			if (main == null) {
 				log.atSevere().log("Unable to find Search Type ");
 			} else {
@@ -512,7 +513,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			if (winner.getScoreRatio() < BASIC_SCORE) {
 				response.put("shout", losing);
 				choosenNode = lastChance(root);
-			} else if (winner.getScoreRatio() > 100) {
+			} else if (winner.getScoreRatio() > STOP_EXPAND_LIMIT) {
 				response.put("shout", winning);
 				choosenNode = finishHim(root, winner);
 			}
@@ -555,7 +556,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		case "squad":
 			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		default:
-			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		}
 
 	}
