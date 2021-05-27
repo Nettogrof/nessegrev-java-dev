@@ -14,7 +14,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
 
 /**
- * This Solo node class must be use for challenge only 
+ * This Solo node class must be use for challenge only
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
@@ -24,27 +24,37 @@ public class SoloNode extends AbstractStandardNode {
 	 * Index challenge
 	 */
 	public static int challengeType = 1;
-	
 
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes   List of snakes
-	 * @param food Food information
+	 * @param snakes List of snakes
+	 * @param food   Food information
 	 */
-	public SoloNode(final List<SnakeInfo> snakes,final FoodInfo food) {
+	public SoloNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
-		switch(challengeType) {
-		
-		case 1 : soloSurvival(); break;
-		case 2 : longSnake(); break; 
-		case 3 : friendly(); break; 
-		case 4 : fourCorner(); break; 
-		case 5 : fullBoard(); break; 
-		default: addBasicLengthScore(); break;//Training challenge
+		switch (challengeType) {
+
+		case 1:
+			soloSurvival();
+			break;
+		case 2:
+			longSnake();
+			break;
+		case 3:
+			friendly();
+			break;
+		case 4:
+			fourCorner();
+			break;
+		case 5:
+			fullBoard();
+			break;
+		default:
+			addBasicLengthScore();
+			break;// Training challenge
 		}
-	
-		
+
 		updateScoreRatio();
 	}
 
@@ -53,7 +63,7 @@ public class SoloNode extends AbstractStandardNode {
 	 */
 	private void fullBoard() {
 		// TODO Create Evaluation for full board challenge
-		
+
 	}
 
 	/**
@@ -61,7 +71,7 @@ public class SoloNode extends AbstractStandardNode {
 	 */
 	private void fourCorner() {
 		// TODO Create Evaluation for four corner challenge
-		
+
 	}
 
 	/**
@@ -69,46 +79,46 @@ public class SoloNode extends AbstractStandardNode {
 	 */
 	private void friendly() {
 		// TODO Create Evaluation for "friendly" challenge
-		
+
 	}
 
 	/**
 	 * Evaluation for long snake challenge
 	 */
 	private void longSnake() {
-		// TODO  Create Evaluation for long snake challenge
-		
+		// TODO Create Evaluation for long snake challenge
+
 	}
 
 	/**
 	 * Evaluation for soloSurvival challenge
 	 */
 	private void soloSurvival() {
-		score[0] = 200 - snakes.get(0).getSnakeBody().size()*2 ;
-		
+		score[0] = 200 - snakes.get(0).getSnakeBody().size() * 2;
+
 	}
 
 	@Override
-	public AbstractNode createNode(final List<SnakeInfo> snakes,final AbstractNode currentNode) {
+	public AbstractNode createNode(final List<SnakeInfo> snakes, final AbstractNode currentNode) {
 		return new SoloNode(snakes, currentNode.getFood());
 	}
-	
+
 	/**
 	 * Update the score ratio
 	 */
 	@Override
 	public void updateScoreRatio() {
-		if (snakes.size() >1) {
+		if (snakes.size() > 1) {
 			float totalOther = BASIC_SCORE;
 			for (int i = 1; i < score.length; i++) {
 				totalOther += score[i];
 			}
-	
+
 			scoreRatio = (float) (score[0] / (float) totalOther);
 			if (scoreRatio == 0.0 || scoreRatio > STOP_EXPAND_LIMIT) {
 				exp = false;
 			}
-		}else {
+		} else {
 			scoreRatio = score[0];
 		}
 	}

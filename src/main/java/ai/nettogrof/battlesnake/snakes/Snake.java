@@ -218,6 +218,8 @@ public final class Snake {
 				return new LeftSnake().getInfo();
 			case "JustTurn":
 				return new JustTurnSnake().getInfo();
+			case "42B":
+				return new ForTwoBeSnake().getInfo();
 			case "Challenger":
 				return new Challenger().getInfo();
 			case "Solo":
@@ -260,6 +262,9 @@ public final class Snake {
 				break;
 			case "JustTurn":
 				bots.put(gameId, new JustTurnSnake(gameId));
+				break;
+			case "42B":
+				bots.put(gameId, new ForTwoBeSnake(gameId));
 				break;
 			case "Challenger":
 				bots.put(gameId, new Challenger(gameId));

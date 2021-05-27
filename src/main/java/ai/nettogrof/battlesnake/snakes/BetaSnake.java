@@ -154,7 +154,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param hazard Hazard Information
 	 * @return Abstract node
 	 */
-	private AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
+	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
 		AbstractNode node;
 		AbstractNode.width = width;
 		AbstractNode.height = height;

@@ -106,14 +106,14 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	/**
 	 * Constructor with the gameid,
 	 * 
-	 * @param gameId     String of the gameid field receive in the start request.
+	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	public AbstractTreeSearchSnakeAI(final String gameId) {
 		super(gameId);
 	}
-	
+
 	/**
-	 * Set the properties to the snake object 
+	 * Set the properties to the snake object
 	 */
 	protected void setProperties() {
 		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
@@ -226,7 +226,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		} else {
 			// Single thread
 			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
-			
+
 			if (main == null) {
 				log.atSevere().log("Unable to find Search Type ");
 			} else {
@@ -591,14 +591,16 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 
 	}
-	
+
 	/**
-	 * Check in the previous search if a child from root, is equals the current board situation., 
+	 * Check in the previous search if a child from root, is equals the current
+	 * board situation.,
+	 * 
 	 * @param snakes List of snakes
-	 * @param food Food info
+	 * @param food   Food info
 	 * @return null or child node
 	 */
-	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes,final FoodInfo food) {
+	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food) {
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
