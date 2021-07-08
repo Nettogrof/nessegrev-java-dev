@@ -30,7 +30,7 @@ public final class BattleSnakeConstants {
 	/**
 	 * Stop expand a node when the score ratio is higher than that value
 	 */
-	public final static float STOP_EXPAND_LIMIT = 42;  //42 is the answer of life.
+	public final static float STOP_EXPAND_LIMIT = 42;  // 42 is the answer of life.
 
 	/**
 	 * When a snake is in losing position, the snake gonna shout one of those line

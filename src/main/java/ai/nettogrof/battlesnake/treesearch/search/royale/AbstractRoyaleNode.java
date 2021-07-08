@@ -1,5 +1,6 @@
 package ai.nettogrof.battlesnake.treesearch.search.royale;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
@@ -9,6 +10,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
@@ -179,7 +181,9 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	@Override
 	protected int[][] initBoard() {
 		int[][] board = new int[width][height];
-
+		for (int i = 0; i < width; i++) {
+			Arrays.fill(board[i], EMPTY_AREA);
+		}
 		for (final SnakeInfo snake : snakes) {
 			final TIntArrayList body = snake.getSnakeBody();
 			for (int i = 0; i < body.size() - 1; i++) {
