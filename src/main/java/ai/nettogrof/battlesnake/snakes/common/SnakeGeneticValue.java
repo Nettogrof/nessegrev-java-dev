@@ -7,7 +7,7 @@ package ai.nettogrof.battlesnake.snakes.common;
  * @author carl.lajeunesse
  *
  */
-public class SnakeGeneticValue {
+public final class SnakeGeneticValue {
 
 	/**
 	 * Value if a FOOD is found in the controlled AREA
@@ -32,28 +32,28 @@ public class SnakeGeneticValue {
 	/**
 	 * @param foodValue the fOOD_VALUE_AREA to set
 	 */
-	public static void setFOOD_VALUE_AREA(int foodValue) {
+	public static void setFoodValue(int foodValue) {
 		FOOD_VALUE_AREA = foodValue;
 	}
 
 	/**
 	 * @param tailValue the tAIL_VALUE_AREA to set
 	 */
-	public static void setTAIL_VALUE_AREA(int tailValue) {
+	public static void setTailValue(int tailValue) {
 		TAIL_VALUE_AREA = tailValue;
 	}
 
 	/**
 	 * @param borderScore the bORDER_SCORE to set
 	 */
-	public static void setBORDER_SCORE(float borderScore) {
+	public static void setBorderScore(float borderScore) {
 		BORDER_SCORE = borderScore;
 	}
 
 	/**
 	 * @param mctsBias the mCTS_BIAS to set
 	 */
-	public static void setMCTS_BIAS(float mctsBias) {
+	public static void setMCTS(float mctsBias) {
 		MCTS_BIAS = mctsBias;
 	}
 
