@@ -8,13 +8,12 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticValue;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BORDER_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SPLIT_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.TAIL_VALUE_AREA;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
@@ -60,11 +59,11 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		final int headX = head / 1000;
 		final int headY = head % 1000;
 		if (headX == 0 || headX == width - 1) {
-			score[0] -= BORDER_SCORE;
+			score[0] -= SnakeGeneticValue.BORDER_SCORE;
 		}
 
 		if (headY == 0 || headY == height - 1) {
-			score[0] -= BORDER_SCORE;
+			score[0] -= SnakeGeneticValue.BORDER_SCORE;
 		}
 
 	}
@@ -188,7 +187,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue >= 0) {
-				count[boardValue] += TAIL_VALUE_AREA;
+				count[boardValue] += SnakeGeneticValue.TAIL_VALUE_AREA;
 			}
 			total += count[i];
 		}

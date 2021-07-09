@@ -94,7 +94,7 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 			}
 		}
 
-		final AbstractNode oldChild = findChildNewRoot(snakes, food);
+		final AbstractNode oldChild = findChildNewRoot(snakes, food, null);
 		return oldChild == null ? genNode(snakes, food) : oldChild;
 	}
 

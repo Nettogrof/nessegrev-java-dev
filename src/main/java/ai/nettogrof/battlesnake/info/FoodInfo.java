@@ -19,6 +19,7 @@ public class FoodInfo {
 	 */
 	private transient final TIntArrayList position = new TIntArrayList();
 
+	
 	/**
 	 * Single constructor need the jsonNode board
 	 * 
@@ -101,6 +102,14 @@ public class FoodInfo {
 		}
 
 	}
+	
+	/**
+	 * @return the position
+	 */
+	public TIntArrayList getPosition() {
+		return position;
+	}
+
 
 	/**
 	 *

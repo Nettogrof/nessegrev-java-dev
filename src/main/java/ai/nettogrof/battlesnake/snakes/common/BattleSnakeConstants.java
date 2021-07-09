@@ -10,7 +10,7 @@ public final class BattleSnakeConstants {
 	/**
 	 * Health lose when a snake is in hazard zone
 	 */
-	public final static int HEALTH_LOST_HAZARD = -15;
+	public final static int LOST_HAZARD = -15;
 	
 	/**
 	 * Max Health 
@@ -47,19 +47,9 @@ public final class BattleSnakeConstants {
 			"42 is the answer of life", "Astalavista baby!" };
 
 	/**
-	 * The Bias value for the Monte-Carlo Tree Search
-	 */
-	public final static float MCTS_BIAS = 0.7f;
-
-	/**
 	 * Basic score assign to all snakes to avoid division by 0
 	 */
 	public final static float BASIC_SCORE = 0.0001f;
-
-	/**
-	 * Border score to subtract if head on the border of the board
-	 */
-	public final static float BORDER_SCORE = 0.4f;
 
 	/**
 	 * Value for square controlled by two snakes
@@ -70,11 +60,6 @@ public final class BattleSnakeConstants {
 	 * Value for square uncontrolled 
 	 */
 	public final static int EMPTY_AREA = -150;
-
-	/**
-	 * Value if a tail is found in the controlled AREA
-	 */
-	public final static int TAIL_VALUE_AREA = 5;
 
 	/**
 	 * Value of a snake body

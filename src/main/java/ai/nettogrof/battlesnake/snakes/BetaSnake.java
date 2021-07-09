@@ -1,11 +1,9 @@
 package ai.nettogrof.battlesnake.snakes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
@@ -67,10 +65,10 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
-
+		final HazardInfo hazard = new HazardInfo(board);
 		final JsonNode betaSnake = moveRequest.get(YOU);
 		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, betaSnake) : genSnakeInfo(board, betaSnake);
-		final AbstractNode oldChild = findChildNewRoot(snakes, food);
+		final AbstractNode oldChild = findChildNewRoot(snakes, food,hazard);
 		return oldChild == null ? genNode(snakes, food, new HazardInfo(board)) : oldChild;
 
 	}
@@ -198,10 +196,8 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		return fileConfig;
 	}
 
-	/**
-	 * @param args
-	 */
-
+	
+/*
 	public static void main(String args[]) {
 		System.out.println("test");
 		ObjectMapper json = new ObjectMapper();
@@ -269,5 +265,5 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			e.printStackTrace();
 		}
 	}
-
+*/
 }

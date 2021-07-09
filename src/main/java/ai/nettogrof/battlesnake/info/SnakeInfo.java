@@ -8,7 +8,7 @@ import com.google.common.flogger.FluentLogger;
 import gnu.trove.list.array.TIntArrayList;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_HEALTH;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.HEALTH_LOST_HAZARD;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.LOST_HAZARD;
 
 /**
  * Data related to a Snake in non-squad modes
@@ -94,7 +94,7 @@ public class SnakeInfo implements Cloneable {
 		}
 
 		if (hazard) {
-			health += HEALTH_LOST_HAZARD;
+			health += LOST_HAZARD;
 		}
 		if (health <= 0) {
 			alive = false;

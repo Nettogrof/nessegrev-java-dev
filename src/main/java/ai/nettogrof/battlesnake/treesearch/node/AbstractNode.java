@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import gnu.trove.list.array.TIntArrayList;
 
@@ -50,6 +51,11 @@ public abstract class AbstractNode {
 	 * Food information
 	 */
 	protected transient FoodInfo food;
+	
+	/**
+	 * Hazard information
+	 */
+	protected transient HazardInfo hazard;
 
 	/**
 	 * Current scoreRatio
@@ -336,6 +342,13 @@ public abstract class AbstractNode {
 	 */
 	public boolean isSingleSnake() {
 		return snakes.size() == 1;
+	}
+
+	/**
+	 * @return the hazard
+	 */
+	public HazardInfo getHazard() {
+		return hazard;
 	}
 
 }

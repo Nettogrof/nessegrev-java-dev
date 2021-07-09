@@ -6,6 +6,7 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticValue;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -15,7 +16,6 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SC
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SPLIT_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.TAIL_VALUE_AREA;
 
 /**
  * This abstract royale node class is the based of all node class, provide basic
@@ -66,6 +66,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * 
 	 * @return Hazard info
 	 */
+	@Override
 	public HazardInfo getHazard() {
 		return hazard;
 	}
@@ -155,13 +156,15 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			}
 		}
 
+		addFoodValue(board, count);
+
 		// Adding value if a tail is in the controlled area
 		int total = 0;
 		for (int i = 0; i < snakes.size(); i++) {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += TAIL_VALUE_AREA;
+				count[boardValue - 1] += SnakeGeneticValue.TAIL_VALUE_AREA;
 			}
 			total += count[i];
 		}
@@ -171,6 +174,22 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			score[i] += ((float) count[i]) / total;
 		}
 
+	}
+
+	/**
+	 * Adding value if a food is in the controlled area
+	 * 
+	 * @param board
+	 * @param count
+	 */
+	private void addFoodValue(final int[][] board, int[] count) {
+		for (int i = 0; i < food.getPosition().size(); i++) {
+			final int posFood = food.getPosition().get(i);
+			final int boardValue = board[posFood / 1000][posFood % 1000];
+			if (boardValue > 0) {
+				count[boardValue - 1] += SnakeGeneticValue.FOOD_VALUE_AREA;
+			}
+		}
 	}
 
 	/**
@@ -196,8 +215,9 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 		return board;
 	}
 	/*
-	protected void adjust
-	
-	}*/
+	 * protected void adjust
+	 * 
+	 * }
+	 */
 
 }

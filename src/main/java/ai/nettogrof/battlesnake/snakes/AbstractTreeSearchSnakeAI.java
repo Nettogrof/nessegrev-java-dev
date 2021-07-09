@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
@@ -598,20 +599,20 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param snakes List of snakes
 	 * @param food   Food info
+	 * @param hazard Hazard Info
 	 * @return null or child node
 	 */
-	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
-				if (food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
+				if (hazard.equals(c.getHazard()) &&  food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
 					final List<SnakeInfo> csnake = c.getSnakes();
 					boolean found = true;
 					for (int i = 0; i < csnake.size() && found; i++) {
 						found = csnake.get(i).equals(snakes.get(i));
 					}
 					if (found) {
-
 						return c;
 					}
 
