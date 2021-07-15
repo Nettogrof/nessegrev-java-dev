@@ -83,9 +83,9 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	private AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		AbstractNode.width = width;
 		AbstractNode.height = height;
-		if (snakes.size() > 4) {
+		if (snakes.size() > FOUR_SNAKE) {
 			return new ManyNode(snakes, food);
-		} else if (snakes.size() > 2) {
+		} else if (snakes.size() > TWO_SNAKE) {
 			return new FourNode(snakes, food);
 		}
 		return new DuelNode(snakes, food);

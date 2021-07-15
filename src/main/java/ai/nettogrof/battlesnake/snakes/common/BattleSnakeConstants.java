@@ -28,11 +28,6 @@ public final class BattleSnakeConstants {
 	public final static float INVALID_SCORE = -500f;
 
 	/**
-	 * Stop expand a node when the score ratio is higher than that value
-	 */
-	public final static float STOP_EXPAND_LIMIT = 42;  // 42 is the answer of life.
-
-	/**
 	 * When a snake is in losing position, the snake gonna shout one of those line
 	 * randomly.
 	 */
@@ -72,7 +67,7 @@ public final class BattleSnakeConstants {
 	public final static int MINIMUN_SNAKE = 2;
 	
 	/**
-	 * Minimun number of snake.  If number of snake smaller than this value, the game end
+	 * Current API version used by snakes
 	 */
 	public final static int API_V1 = 1;
 }

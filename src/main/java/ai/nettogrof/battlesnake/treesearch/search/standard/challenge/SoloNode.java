@@ -4,12 +4,12 @@
 package ai.nettogrof.battlesnake.treesearch.search.standard.challenge;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
 
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
 
@@ -115,7 +115,7 @@ public class SoloNode extends AbstractStandardNode {
 			}
 
 			scoreRatio = (float) (score[0] / (float) totalOther);
-			if (scoreRatio == 0.0 || scoreRatio > STOP_EXPAND_LIMIT) {
+			if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 				exp = false;
 			}
 		} else {

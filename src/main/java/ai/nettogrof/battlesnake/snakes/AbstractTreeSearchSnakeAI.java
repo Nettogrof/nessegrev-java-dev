@@ -18,6 +18,7 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.constrictor.ConstrictorSearch;
@@ -27,7 +28,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
 
 /**
  * Any snake using a tree-search could extend this abstract class it contains
@@ -514,7 +514,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			if (winner.getScoreRatio() < BASIC_SCORE) {
 				response.put("shout", losing);
 				choosenNode = lastChance(root);
-			} else if (winner.getScoreRatio() > STOP_EXPAND_LIMIT) {
+			} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
 				response.put("shout", winning);
 				choosenNode = finishHim(root, winner);
 			}
@@ -602,11 +602,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param hazard Hazard Info
 	 * @return null or child node
 	 */
-	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
+	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food,
+			final HazardInfo hazard) {
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
-				if (hazard.equals(c.getHazard()) &&  food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
+				if (hazard.equals(c.getHazard()) && food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
 					final List<SnakeInfo> csnake = c.getSnakes();
 					boolean found = true;
 					for (int i = 0; i < csnake.size() && found; i++) {

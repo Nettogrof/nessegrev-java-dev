@@ -6,7 +6,7 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticValue;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -164,7 +164,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += SnakeGeneticValue.TAIL_VALUE_AREA;
+				count[boardValue - 1] += SnakeGeneticConstants.tailValueArea;
 			}
 			total += count[i];
 		}
@@ -187,7 +187,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			final int posFood = food.getPosition().get(i);
 			final int boardValue = board[posFood / 1000][posFood % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += SnakeGeneticValue.FOOD_VALUE_AREA;
+				count[boardValue - 1] += SnakeGeneticConstants.foodValueArea;
 			}
 		}
 	}

@@ -6,10 +6,10 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import gnu.trove.list.array.TIntArrayList;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.INVALID_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
 
@@ -51,7 +51,7 @@ public abstract class AbstractNode {
 	 * Food information
 	 */
 	protected transient FoodInfo food;
-	
+
 	/**
 	 * Hazard information
 	 */
@@ -177,7 +177,7 @@ public abstract class AbstractNode {
 		}
 
 		scoreRatio = (float) (score[0] / (float) totalOther);
-		if (scoreRatio == 0.0 || scoreRatio > STOP_EXPAND_LIMIT) {
+		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}
 	}
@@ -277,7 +277,7 @@ public abstract class AbstractNode {
 				float[] beta = { INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE,
 						INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE };
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
-				
+
 				for (int i = c.score.length; i < score.length; i++) {
 					beta[i] = BASIC_SCORE;
 				}
@@ -335,9 +335,10 @@ public abstract class AbstractNode {
 	 * @return new node from this type
 	 */
 	public abstract AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode);
-	
+
 	/**
 	 * Return true if there's just one snake
+	 * 
 	 * @return if there's just one snake
 	 */
 	public boolean isSingleSnake() {

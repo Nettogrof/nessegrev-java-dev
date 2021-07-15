@@ -8,7 +8,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticValue;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -59,11 +59,11 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 		final int headX = head / 1000;
 		final int headY = head % 1000;
 		if (headX == 0 || headX == width - 1) {
-			score[0] -= SnakeGeneticValue.BORDER_SCORE;
+			score[0] -= SnakeGeneticConstants.borderScore;
 		}
 
 		if (headY == 0 || headY == height - 1) {
-			score[0] -= SnakeGeneticValue.BORDER_SCORE;
+			score[0] -= SnakeGeneticConstants.borderScore;
 		}
 
 	}
@@ -187,7 +187,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue >= 0) {
-				count[boardValue] += SnakeGeneticValue.TAIL_VALUE_AREA;
+				count[boardValue] += SnakeGeneticConstants.tailValueArea;
 			}
 			total += count[i];
 		}
@@ -228,7 +228,7 @@ public abstract class AbstractEvaluationNode extends AbstractNode {
 	protected void listAreaControl() {
 
 		// If a single snake assign max score
-		if (snakes.size() <  MINIMUN_SNAKE) {
+		if (snakes.size() < MINIMUN_SNAKE) {
 			score[0] = MAX_SCORE;
 			return;
 		}

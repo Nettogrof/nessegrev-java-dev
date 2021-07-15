@@ -102,6 +102,21 @@ public abstract class AbstractSnakeAI {
 	protected static final String HEIGHT_FIELD = "height";
 
 	/**
+	 * Constant Field name
+	 */
+	protected static final int FOUR_SNAKE = 4;
+
+	/**
+	 * Constant Field name
+	 */
+	protected static final int TWO_SNAKE = 2;
+
+	/**
+	 * Constant Field name
+	 */
+	protected static final int SINGLE_SNAKE = 1;
+
+	/**
 	 * Board width
 	 */
 	protected int width;

@@ -9,13 +9,13 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.search.standard.DuelNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.STOP_EXPAND_LIMIT;
 
 /**
  * This abstract squad node class is the based of all node class, provide basic
@@ -149,17 +149,17 @@ public abstract class AbstractSquadNode extends DuelNode {
 	protected boolean checkBoardHash(final int newPosX, final int newPosY, final int[][] board, final int value) {
 		return board[newPosX][newPosY] == EMPTY_AREA || board[newPosX][newPosY] == -value;
 	}
-	
+
 	/**
 	 * Update the score ratio
 	 */
 	@Override
 	public void updateScoreRatio() {
 		float totalOwnSquad = score[0];
-		
+
 		float totalOther = BASIC_SCORE;
 		for (int i = 1; i < snakes.size(); i++) {
-			if (((SnakeInfoSquad)snakes.get(i)).getSquad().equals(((SnakeInfoSquad)snakes.get(0)).getSquad())){
+			if (((SnakeInfoSquad) snakes.get(i)).getSquad().equals(((SnakeInfoSquad) snakes.get(0)).getSquad())) {
 				totalOwnSquad += score[i];
 			} else {
 				totalOther += score[i];
@@ -169,8 +169,8 @@ public abstract class AbstractSquadNode extends DuelNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio = (float) (totalOwnSquad/ (float) totalOther);
-		if (scoreRatio == 0.0 || scoreRatio > STOP_EXPAND_LIMIT) {
+		scoreRatio = (float) (totalOwnSquad / (float) totalOther);
+		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}
 	}
