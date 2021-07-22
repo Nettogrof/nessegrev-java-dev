@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.snakes.common.CorsFilterUtils;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 
 import com.google.common.flogger.FluentLogger;
 import spark.Request;
@@ -74,23 +75,15 @@ public final class Snake {
 	 */
 	public static void main(final String[] args) {
 
-		if (args.length == 2) {
-			snakeType = args[0];
-			port = args[1];
-
-		} else if (args.length == 1) {
+		if (args.length == 1) {
 			snakeType = args[0];
 			loadProperties(snakeType);
 		} else {
 			LOG.atInfo().log("Must provide java args  SnakeType");
 		}
 
-		if (port == null) {
-			port = "8081";
-			LOG.atInfo().log("Using default port: " + port);
-		} else {
-			LOG.atInfo().log("Using system provide port: " + port);
-		}
+		LOG.atInfo().log("Using  port: " + port);
+
 		port(Integer.parseInt(port));
 		CorsFilterUtils.apply();
 
@@ -100,6 +93,7 @@ public final class Snake {
 		post("/move", HANDLER::process, JSON_MAPPER::writeValueAsString);
 		post("/end", HANDLER::process, JSON_MAPPER::writeValueAsString);
 
+		loadEvaluationValue();
 	}
 
 	/**
@@ -117,6 +111,29 @@ public final class Snake {
 			port = prop.getProperty("port");
 		} catch (IOException ex) {
 			LOG.atWarning().log(ex.getMessage());
+		}
+	}
+
+	/**
+	 * Load Snake properties to get port number
+	 * 
+	 * @param snakeType Which type of snake
+	 */
+	private static void loadEvaluationValue() {
+		try (InputStream input = Files.newInputStream(Paths.get("evaluation.properties"))) {
+
+			final Properties prop = new Properties();
+
+			prop.load(input);
+
+			SnakeGeneticConstants.setStopExpandLimit(Float.parseFloat(prop.getProperty("stopExpandLimit")));
+			SnakeGeneticConstants.setBorderScore(Float.parseFloat(prop.getProperty("borderScore")));
+			SnakeGeneticConstants.setMCTS(Float.parseFloat(prop.getProperty("mctsBias")));
+			SnakeGeneticConstants.setFoodValue(Integer.parseInt(prop.getProperty("foodValue")));
+			SnakeGeneticConstants.setTailValue(Integer.parseInt(prop.getProperty("tailValue")));
+			LOG.atInfo().log("Evalution Value loaded successfully");
+		} catch (IOException ex) {
+			LOG.atWarning().log("Issue with the evaluation.properties file");
 		}
 	}
 
@@ -204,8 +221,9 @@ public final class Snake {
 			switch (snakeType) {
 			case "FloodFill":
 				return new FloodFillSnake().getInfo();
-			case "Alpha":
-				return new AlphaSnake().getInfo();
+			/*
+			 * case "Alpha": return new AlphaSnake().getInfo();
+			 */
 			case "Beta":
 				return new BetaSnake().getInfo();
 			case "Gamma":
@@ -218,8 +236,9 @@ public final class Snake {
 				return new LeftSnake().getInfo();
 			case "JustTurn":
 				return new JustTurnSnake().getInfo();
-			case "Challenger":
-				return new Challenger().getInfo();
+			/*
+			 * case "Challenger": return new Challenger().getInfo();
+			 */
 			case "Solo":
 				return new SoloSnake().getInfo();
 			default:
@@ -243,9 +262,9 @@ public final class Snake {
 			case "Basic":
 				bots.put(gameId, new BasicSnake(gameId));
 				break;
-			case "Alpha":
-				bots.put(gameId, new AlphaSnake(gameId));
-				break;
+			/*
+			 * case "Alpha": bots.put(gameId, new AlphaSnake(gameId)); break;
+			 */
 			case "Beta":
 				bots.put(gameId, new BetaSnake(gameId));
 				break;
@@ -261,9 +280,9 @@ public final class Snake {
 			case "JustTurn":
 				bots.put(gameId, new JustTurnSnake(gameId));
 				break;
-			case "Challenger":
-				bots.put(gameId, new Challenger(gameId));
-				break;
+			/*
+			 * case "Challenger": bots.put(gameId, new Challenger(gameId)); break;
+			 */
 			case "Solo":
 				bots.put(gameId, new SoloSnake(gameId));
 				break;

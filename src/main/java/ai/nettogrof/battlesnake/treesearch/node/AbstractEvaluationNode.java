@@ -12,11 +12,7 @@ import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SPLIT_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.*;
 
 /**
  * This abstract evaluation node class is the based of all node class methods
