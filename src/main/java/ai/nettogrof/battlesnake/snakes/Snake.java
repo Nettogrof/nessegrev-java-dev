@@ -12,6 +12,7 @@ import spark.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -218,31 +219,24 @@ public final class Snake {
 		 *         - Optional custom color for this Battlesnake .
 		 */
 		public Map<String, String> root() {
-			switch (snakeType) {
-			case "FloodFill":
-				return new FloodFillSnake().getInfo();
-			/*
-			 * case "Alpha": return new AlphaSnake().getInfo();
-			 */
-			case "Beta":
-				return new BetaSnake().getInfo();
-			case "Gamma":
-				return new GammaSnake().getInfo();
-			case "Basic":
-				return new BasicSnake().getInfo();
-			case "Right":
-				return new RightSnake().getInfo();
-			case "Left":
-				return new LeftSnake().getInfo();
-			case "JustTurn":
-				return new JustTurnSnake().getInfo();
-			/*
-			 * case "Challenger": return new Challenger().getInfo();
-			 */
-			case "Solo":
-				return new SoloSnake().getInfo();
-			default:
-				return new BasicSnake().getInfo();
+
+			try {
+				final Class<? extends AbstractSnakeAI> snakeClass = Class
+						.forName("ai.nettogrof.battlesnake.snakes." + snakeType + "Snake")
+						.asSubclass(AbstractSnakeAI.class);
+				return snakeClass.newInstance().getInfo();
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
+					| SecurityException e) {
+
+				LOG.atWarning().log(e.toString());
+
+				final Map<String, String> response = new ConcurrentHashMap<>();
+				response.put("apiversion", "1");
+				response.put("head", "default");
+				response.put("tail", "default");
+				response.put("color", "000000");
+				response.put("author", "nettogrof");
+				return response;
 			}
 
 		}
@@ -255,43 +249,16 @@ public final class Snake {
 		 */
 		public Map<String, String> start(final JsonNode startRequest) {
 			final String gameId = startRequest.get("game").get("id").asText();
-			switch (snakeType) {
-			case "FloodFill":
-				bots.put(gameId, new FloodFillSnake(gameId));
-				break;
-			case "Basic":
-				bots.put(gameId, new BasicSnake(gameId));
-				break;
-			/*
-			 * case "Alpha": bots.put(gameId, new AlphaSnake(gameId)); break;
-			 */
-			case "Beta":
-				bots.put(gameId, new BetaSnake(gameId));
-				break;
-			case "Gamma":
-				bots.put(gameId, new GammaSnake(gameId));
-				break;
-			case "Right":
-				bots.put(gameId, new RightSnake(gameId));
-				break;
-			case "Left":
-				bots.put(gameId, new LeftSnake(gameId));
-				break;
-			case "JustTurn":
-				bots.put(gameId, new JustTurnSnake(gameId));
-				break;
-			/*
-			 * case "Challenger": bots.put(gameId, new Challenger(gameId)); break;
-			 */
-			case "Solo":
-				bots.put(gameId, new SoloSnake(gameId));
-				break;
-			default:
-				LOG.atWarning().log("No snake type defined,  using Beta as default!");
-				bots.put(gameId, new BetaSnake(gameId));
-				break;
-			}
+			try {
+				final Class<? extends AbstractSnakeAI> snakeClass = Class
+						.forName("ai.nettogrof.battlesnake.snakes." + snakeType + "Snake")
+						.asSubclass(AbstractSnakeAI.class);
+				bots.put(gameId, snakeClass.getConstructor(String.class).newInstance(gameId));
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 
+				LOG.atWarning().log(e.toString());
+			}
 			return bots.get(gameId).start(startRequest);
 		}
 
