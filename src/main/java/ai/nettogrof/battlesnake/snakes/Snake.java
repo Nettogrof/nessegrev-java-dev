@@ -116,9 +116,7 @@ public final class Snake {
 	}
 
 	/**
-	 * Load Snake properties to get port number
-	 * 
-	 * @param snakeType Which type of snake
+	 * Load evaluation properties to get genetic value
 	 */
 	private static void loadEvaluationValue() {
 		try (InputStream input = Files.newInputStream(Paths.get("evaluation.properties"))) {
