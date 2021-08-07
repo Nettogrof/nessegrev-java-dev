@@ -29,7 +29,7 @@ public final class SnakeGeneticConstants {
 	 * Border score to subtract if head on the border of the board
 	 */
 	public static float borderScore = 0.4f;
-	
+
 	/**
 	 * Hazard score to subtract if head on the border of the board
 	 */
@@ -39,6 +39,12 @@ public final class SnakeGeneticConstants {
 	 * The Bias value for the Monte-Carlo Tree Search
 	 */
 	public static float mctsBias = 0.7f;
+
+	/**
+	 * Private constructor because this is a utility class
+	 */
+	private SnakeGeneticConstants() {
+	}
 
 	/**
 	 * @param foodValue the fOOD_VALUE_AREA to set
@@ -60,7 +66,7 @@ public final class SnakeGeneticConstants {
 	public static void setBorderScore(final float border) {
 		borderScore = border;
 	}
-	
+
 	/**
 	 * @param hazard the hazardScore to set
 	 */
@@ -81,10 +87,5 @@ public final class SnakeGeneticConstants {
 	public static void setStopExpandLimit(final float sel) {
 		stopExpandLimit = sel;
 	}
-	
-	/**
-	 * Private constructor because this is a utility class
-	 */
-	private SnakeGeneticConstants() {}
 
 }

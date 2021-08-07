@@ -28,13 +28,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 public class GammaSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
-	 * Basic / unused constructor
-	 */
-	public GammaSnake() {
-		super();
-	}
-
-	/**
 	 * Constructor with the gameid,
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
@@ -136,10 +129,5 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	protected String getFileConfig() {
 		return fileConfig;
 	}
-
-	/*
-	 * public static void main(String args[]) {
-	 * MctsSearch.class.getConstructor(parameterTypes) }
-	 */
 
 }
