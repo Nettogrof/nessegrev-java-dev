@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -44,14 +45,14 @@ public abstract class AbstractSearch implements Runnable {
 	 * Starting time for the search in millisecond
 	 */
 	protected transient long startTime;
-	
+
 	/**
 	 * Basic Constructor
 	 */
 	public AbstractSearch() {
-		//empty constructor
+		// empty constructor
 	}
-	
+
 	/**
 	 * The execution of the search
 	 */
@@ -288,7 +289,7 @@ public abstract class AbstractSearch implements Runnable {
 		} else {
 			node.updateScore();
 			AbstractNode smallChild = null;
-			if (node.getSnakes().size() == 1) {
+			if (node.getSnakes().size() < BattleSnakeConstants.MINIMUN_SNAKE) {
 
 				float maxR = -1000;
 
