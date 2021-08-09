@@ -21,13 +21,6 @@ import ai.nettogrof.battlesnake.treesearch.search.fun.LeftStandardSearch;
 public class LeftSnake extends BetaSnake {
 
 	/**
-	 * Basic / unused constructor
-	 */
-	public LeftSnake() {
-		super();
-	}
-
-	/**
 	 * Constructor with the gameid,
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.

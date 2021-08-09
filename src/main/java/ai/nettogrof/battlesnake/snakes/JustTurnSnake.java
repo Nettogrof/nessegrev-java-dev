@@ -5,24 +5,17 @@ import java.lang.reflect.Constructor;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.fun.JustTurnSearch;
-import ai.nettogrof.battlesnake.treesearch.search.fun.LeftRoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.fun.JustTurnRoyaleSearch;
 
 /**
- * JustTurn snake. This class is the JustTurn snake on Battlesnake. This snake was
- * made just for fun during a Weekly Meet-up. This snake can just turn, never
- * straight
+ * JustTurn snake. This class is the JustTurn snake on Battlesnake. This snake
+ * was made just for fun during a Weekly Meet-up. This snake can just turn,
+ * never straight
  * 
  * @author carl.lajeunesse
  * @version Summer 2021
  */
 public class JustTurnSnake extends BetaSnake {
-
-	/**
-	 * Basic / unused constructor
-	 */
-	public JustTurnSnake() {
-		super();
-	}
 
 	/**
 	 * Constructor with the gameid,
@@ -55,12 +48,12 @@ public class JustTurnSnake extends BetaSnake {
 	@Override
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
 
-		if ("standard".equals(ruleset)) {		
-			return JustTurnSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-					int.class);
+		if ("standard".equals(ruleset)) {
+			return JustTurnSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
 		}
-		return LeftRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
-		
+		return JustTurnRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+				int.class);
+
 	}
 
 }
