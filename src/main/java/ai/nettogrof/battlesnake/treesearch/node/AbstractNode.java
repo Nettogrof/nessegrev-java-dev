@@ -7,10 +7,9 @@ import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
-import ai.nettogrof.battlesnake.treesearch.decision.AbstractDecisionUtils;
-import ai.nettogrof.battlesnake.treesearch.decision.ParanoidUtils;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
+
 /**
  * This abstract node class is the based of all node class, provide basic method
  * use in any node.
@@ -34,11 +33,6 @@ public abstract class AbstractNode {
 	 * Single posssible move
 	 */
 	public final static int ONE = 1;
-	
-	/**
-	 * 
-	 */
-	public static AbstractDecisionUtils decision = new ParanoidUtils();
 
 	/**
 	 * List of child node
@@ -154,14 +148,7 @@ public abstract class AbstractNode {
 	/**
 	 * Update this node score
 	 */
-	public void updateScore() {
-
-		decision.updateScore(this);
-
-		updateScoreRatio();
-		updateChildCount();
-
-	}
+	public abstract void updateScore();
 
 	/**
 	 * Update the score ratio
@@ -178,20 +165,16 @@ public abstract class AbstractNode {
 		}
 	}
 
-	
-
 	/**
 	 * Update the child count
 	 */
-	private void updateChildCount() {
+	protected void updateChildCount() {
 		allChildsCount = 1;
 		for (final AbstractNode c : child) {
 			allChildsCount += c.getChildCount();
 		}
 
 	}
-
-	
 
 	/**
 	 * Gets list of child from this node

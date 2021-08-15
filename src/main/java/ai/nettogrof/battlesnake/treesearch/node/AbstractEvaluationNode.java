@@ -21,7 +21,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.*;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public abstract class AbstractEvaluationNode extends AbstractNode {
+public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 
 	/**
 	 * default openhashmap value
