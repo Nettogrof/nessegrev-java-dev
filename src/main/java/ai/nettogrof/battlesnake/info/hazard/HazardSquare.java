@@ -1,6 +1,7 @@
 package ai.nettogrof.battlesnake.info.hazard;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import gnu.trove.list.array.TIntArrayList;
 
 /**
@@ -10,20 +11,20 @@ import gnu.trove.list.array.TIntArrayList;
  * @author carl.lajeunesse
  * @version Spring 2021
  */
-public class HazardInfo {
+public class HazardSquare extends AbstractHazard {
 
 	/**
 	 * Arraylist (int) of all hazard position (based on square formula)
 	 */
-	private transient final TIntArrayList hazard = new TIntArrayList();
+	protected transient final TIntArrayList hazard = new TIntArrayList();
 
 	/**
 	 * Single constructor need the jsonNode board
 	 * 
 	 * @param board JsonNode board element
 	 */
-	public HazardInfo(final JsonNode board) {
-		setInfo(board.get("hazards"));
+	public HazardSquare(final JsonNode board) {
+		super(board);
 	}
 
 	/**
@@ -31,7 +32,7 @@ public class HazardInfo {
 	 * 
 	 * @param hazardsInfo JsonNode field hazard
 	 */
-	private void setInfo(final JsonNode hazardsInfo) {
+	protected void setInfo(final JsonNode hazardsInfo) {
 		if (hazardsInfo != null) {
 			for (final JsonNode hazardPos : hazardsInfo) {
 				hazard.add(hazardPos.get("x").asInt() * 1000 + hazardPos.get("y").asInt());

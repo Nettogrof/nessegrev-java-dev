@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
@@ -52,7 +52,7 @@ public abstract class AbstractNode {
 	/**
 	 * Hazard information
 	 */
-	protected transient HazardInfo hazard;
+	protected transient HazardSquare hazard;
 
 	/**
 	 * Current scoreRatio
@@ -206,7 +206,7 @@ public abstract class AbstractNode {
 	/**
 	 * @return the hazard
 	 */
-	public HazardInfo getHazard() {
+	public HazardSquare getHazard() {
 		return hazard;
 	}
 

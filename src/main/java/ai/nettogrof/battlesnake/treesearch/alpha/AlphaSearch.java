@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardSearch;
 
@@ -128,7 +128,7 @@ public class AlphaSearch extends AbstractStandardSearch {
 	 * @return List of snake info
 	 */
 	protected List<SnakeInfo> multi(final SnakeInfo snakeInfo, final FoodInfo foodInfo, final ArrayList<SnakeInfo> all,
-			final HazardInfo hazard) {
+			final HazardSquare hazard) {
 		final ArrayList<SnakeInfo> ret = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
-import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;
@@ -57,11 +57,11 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
-		final HazardInfo hazard = new HazardInfo(board);
+		final HazardSquare hazard = new HazardSquare(board);
 		final JsonNode betaSnake = moveRequest.get(YOU);
 		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, betaSnake) : genSnakeInfo(board, betaSnake);
 		final AbstractNode oldChild = findChildNewRoot(snakes, food, hazard);
-		return oldChild == null ? genNode(snakes, food, new HazardInfo(board)) : oldChild;
+		return oldChild == null ? genNode(snakes, food, new HazardSquare(board)) : oldChild;
 
 	}
 
@@ -146,7 +146,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * @param hazard Hazard Information
 	 * @return Abstract node
 	 */
-	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
+	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard) {
 		AbstractNode node;
 		AbstractNode.width = width;
 		AbstractNode.height = height;

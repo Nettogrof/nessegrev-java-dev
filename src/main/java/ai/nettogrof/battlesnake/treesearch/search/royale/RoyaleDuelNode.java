@@ -7,7 +7,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
@@ -39,7 +39,7 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 * @param food   Food information
 	 * @param hazard Hazard Information
 	 */
-	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardInfo hazard) {
+	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard) {
 		super(snakes, food, hazard);
 		setScore();
 	}

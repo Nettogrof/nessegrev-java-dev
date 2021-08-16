@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
@@ -603,7 +603,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return null or child node
 	 */
 	protected AbstractNode findChildNewRoot(final List<SnakeInfo> snakes, final FoodInfo food,
-			final HazardInfo hazard) {
+			final HazardSquare hazard) {
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
