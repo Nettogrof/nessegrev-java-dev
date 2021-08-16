@@ -229,6 +229,7 @@ public class AlphaSearch extends AbstractStandardSearch {
 	 * @return List of List of move
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	protected List<ArrayList<SnakeInfo>> merge(final List<ArrayList<SnakeInfo>> list, final List<SnakeInfo> snakeInfo) {
 		if (snakeInfo.isEmpty()) {
 			return list;
