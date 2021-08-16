@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
- * HazardInfo is the class that contain all the informations and related methods
- * to hazards
+ * HazardSquad is the class that contain all the informations and related
+ * methods to hazards, using square to search
  * 
  * @author carl.lajeunesse
  * @version Spring 2021

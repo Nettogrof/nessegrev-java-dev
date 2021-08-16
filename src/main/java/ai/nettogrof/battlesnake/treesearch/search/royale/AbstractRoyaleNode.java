@@ -174,8 +174,8 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	/**
 	 * Adding value if a food is in the controlled area
 	 * 
-	 * @param board
-	 * @param count
+	 * @param board  Board array
+	 * @param count Count array 
 	 */
 	private void addFoodValue(final int[][] board, int[] count) {
 		for (int i = 0; i < food.getPosition().size(); i++) {

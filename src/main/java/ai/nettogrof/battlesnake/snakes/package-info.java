@@ -1,5 +1,5 @@
 /**
- * This package contains all "Snakes" classes"
+ * This package contains all "Snakes" classes
  * 
  * @author carl.lajeunesse
  *

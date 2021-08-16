@@ -15,8 +15,8 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import gnu.trove.list.array.TIntArrayList;
 
 /**
- * This abstract node class is the based of all node class, provide basic update Score
- * Currently using Paranoid only, I hope to add MaxN soon
+ * This abstract node class is the based of all node class, provide basic update
+ * Score Currently using Paranoid only, I hope to add MaxN soon
  * 
  * @author carl.lajeunesse
  * @version Fall 2021
@@ -132,7 +132,6 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	 * Initiate the payoff matrix
 	 * 
 	 * @param scores List of score array
-	 * @param node   Node to evaluate
 	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
@@ -172,7 +171,6 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	/**
 	 * Update score if just one possible move.
 	 * 
-	 * @param node Node to evaluate
 	 */
 	private void updateScoreSinglePossibleMove() {
 		for (int i = 1; i < score.length; i++) {

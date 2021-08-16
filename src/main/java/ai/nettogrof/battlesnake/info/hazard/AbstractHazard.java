@@ -52,7 +52,7 @@ public abstract class AbstractHazard {
 	 * @param hazardsInfo JsonNode field hazard
 	 */
 	protected abstract void setInfo(final JsonNode hazardsInfo);
-	
+
 	/**
 	 * Provide the arraylist of hazards.
 	 * 
