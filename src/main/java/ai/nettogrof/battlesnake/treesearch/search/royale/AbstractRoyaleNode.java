@@ -6,16 +6,11 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
+import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_AREA;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SNAKE_BODY;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SPLIT_AREA;
 
 /**
  * This abstract royale node class is the based of all node class, provide basic
@@ -92,8 +87,8 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	protected void listAreaControl() {
 
 		// If a single snake assign max score
-		if (snakes.size() < MINIMUN_SNAKE) {
-			score[0] = MAX_SCORE;
+		if (snakes.size() < BattleSnakeConstants.MINIMUN_SNAKE) {
+			score[0] = BattleSnakeConstants.MAX_SCORE;
 			return;
 		}
 		final int[][] board = initBoard();
@@ -149,7 +144,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			for (int j = 0; j < height; j++) {
 				if (board[i][j] > 0) {
 					count[board[i][j] - 1]++;
-				} else if (board[i][j] == SPLIT_AREA) {
+				} else if (board[i][j] == BattleSnakeConstants.SPLIT_AREA) {
 
 					count[biggestSnake]++;
 				}
@@ -201,23 +196,18 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	protected int[][] initBoard() {
 		int[][] board = new int[width][height];
 		for (int i = 0; i < width; i++) {
-			Arrays.fill(board[i], EMPTY_AREA);
+			Arrays.fill(board[i], BattleSnakeConstants.EMPTY_AREA);
 		}
 		for (final SnakeInfo snake : snakes) {
 			final TIntArrayList body = snake.getSnakeBody();
 			for (int i = 0; i < body.size() - 1; i++) {
 				final int square = body.getQuick(i);
 
-				board[square / 1000][square % 1000] = SNAKE_BODY;
+				board[square / 1000][square % 1000] = BattleSnakeConstants.SNAKE_BODY;
 
 			}
 		}
 		return board;
 	}
-	/*
-	 * protected void adjust
-	 * 
-	 * }
-	 */
 
 }
