@@ -7,6 +7,7 @@ import com.google.common.flogger.FluentLogger;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractDecisionNode;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -19,7 +20,7 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
  * @version Spring 2021
  */
 @Deprecated
-public class AlphaNode extends AbstractNode {
+public class AlphaNode extends AbstractDecisionNode {
 	/**
 	 * Logger
 	 */
@@ -98,43 +99,7 @@ public class AlphaNode extends AbstractNode {
 		}
 	}
 
-	/**
-	 * Update score of this node
-	 */
-	@Override
-	public void updateScore() {
-
-		if (child.isEmpty()) {
-
-			for (int i = 0; i < score.length; i++) {
-				score[i] = snakes.get(i).isAlive() ? snakes.get(i).getSnakeBody().size() : 0;
-			}
-
-		} else {
-
-			for (int i = 0; i < score.length; i++) {
-				score[i] = 0;
-			}
-			try {
-				for (final AbstractNode node : child) {
-
-					for (int j = 0; j < node.score.length; j++) {
-						score[j] += node.score[j];
-					}
-
-				}
-			} catch (Exception e) {
-				log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
-			}
-		}
-
-		int subtotal = 1;
-		for (final AbstractNode node : child) {
-			subtotal += node.getChildCount();
-		}
-		allChildsCount = subtotal;
-
-	}
+	
 
 	/**
 	 * Returns all snakes score added
