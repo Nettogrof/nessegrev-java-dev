@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
+import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
@@ -24,7 +24,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	/**
 	 * Hazards info
 	 */
-	protected transient HazardSquare hazard;
+	protected transient AbstractHazard hazard;
 
 	/**
 	 * Basic constructor
@@ -47,13 +47,13 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	/**
 	 * Constructor with snakes and food information
 	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
-	 * @param hazard Hazard Info
+	 * @param snakes  List of snakes
+	 * @param food    Food information
+	 * @param hazard2 Hazard Info
 	 */
-	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard) {
+	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard2) {
 		super(snakes, food);
-		this.hazard = hazard;
+		this.hazard = hazard2;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * @return Hazard info
 	 */
 	@Override
-	public HazardSquare getHazard() {
+	public AbstractHazard getHazard() {
 		return hazard;
 	}
 

@@ -2,6 +2,8 @@ package ai.nettogrof.battlesnake.info.hazard;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import gnu.trove.list.array.TIntArrayList;
+
 /**
  * Abstract hazard class
  * 
@@ -50,4 +52,11 @@ public abstract class AbstractHazard {
 	 * @param hazardsInfo JsonNode field hazard
 	 */
 	protected abstract void setInfo(final JsonNode hazardsInfo);
+	
+	/**
+	 * Provide the arraylist of hazards.
+	 * 
+	 * @return Arraylist int of hazards
+	 */
+	public abstract TIntArrayList getListHazard();
 }
