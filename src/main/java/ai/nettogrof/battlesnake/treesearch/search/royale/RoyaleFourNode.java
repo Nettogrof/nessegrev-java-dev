@@ -3,8 +3,8 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
-import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMUN_SNAKE;

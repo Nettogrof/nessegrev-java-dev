@@ -1,4 +1,4 @@
-package ai.nettogrof.battlesnake.info;
+package ai.nettogrof.battlesnake.info.hazard;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.list.array.TIntArrayList;

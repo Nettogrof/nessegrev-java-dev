@@ -6,9 +6,9 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
-import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
+import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;

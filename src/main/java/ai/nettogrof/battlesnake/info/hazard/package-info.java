@@ -1,0 +1,1 @@
+package ai.nettogrof.battlesnake.info.hazard;

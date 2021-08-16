@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
-import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;

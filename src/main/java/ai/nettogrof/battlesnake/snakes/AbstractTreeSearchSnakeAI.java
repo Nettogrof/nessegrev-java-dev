@@ -15,8 +15,8 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
-import ai.nettogrof.battlesnake.info.HazardInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
