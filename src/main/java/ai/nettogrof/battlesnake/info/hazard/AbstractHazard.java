@@ -12,6 +12,10 @@ import gnu.trove.list.array.TIntArrayList;
  *
  */
 public abstract class AbstractHazard {
+	/**
+	 * Arraylist (int) of all hazard position (based on square formula)
+	 */
+	protected transient final TIntArrayList hazard = new TIntArrayList();
 
 	/**
 	 * Basic constructor

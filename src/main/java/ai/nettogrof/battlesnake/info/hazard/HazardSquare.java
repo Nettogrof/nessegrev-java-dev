@@ -13,10 +13,7 @@ import gnu.trove.list.array.TIntArrayList;
  */
 public class HazardSquare extends AbstractHazard {
 
-	/**
-	 * Arraylist (int) of all hazard position (based on square formula)
-	 */
-	protected transient final TIntArrayList hazard = new TIntArrayList();
+	
 
 	/**
 	 * Single constructor need the jsonNode board

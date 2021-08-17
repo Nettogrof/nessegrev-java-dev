@@ -258,4 +258,25 @@ public abstract class AbstractSnakeAI {
 		return response;
 	}
 
+	/**
+	 * @param width the width to set
+	 */
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	/**
+	 * @param height the height to set
+	 */
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	/**
+	 * @param fileConfig the fileConfig to set
+	 */
+	public void setFileConfig(String fileConfig) {
+		this.fileConfig = fileConfig;
+	}
+
 }
