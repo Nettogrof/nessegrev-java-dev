@@ -158,7 +158,7 @@ public final class Challenger extends AbstractSnakeAI {
 	 */
 	public Challenger(final String gameId) {
 		super(gameId);
-		setFileConfig();
+		fileConfig = "Challenger.properties";
 		try (InputStream input = Files.newInputStream(Paths.get(getFileConfig()))) {
 
 			final Properties prop = new Properties();
@@ -942,12 +942,6 @@ public final class Challenger extends AbstractSnakeAI {
 		response.put("headType", "shac-gamer");
 		response.put("tailType", "shac-coffee");
 		return response;
-	}
-
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "Challenger.properties";//?
-
 	}
 
 	/**

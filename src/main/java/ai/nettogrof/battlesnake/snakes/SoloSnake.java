@@ -113,12 +113,6 @@ public class SoloSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	@Override
-	protected void setFileConfig() {
-		fileConfig = "Solo.properties";
-
-	}
-
-	@Override
 	protected String getFileConfig() {
 		
 		return fileConfig;

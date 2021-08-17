@@ -175,14 +175,6 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		return node;
 	}
 
-	/**
-	 * Method use to set the fileConfig string
-	 */
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "Beta.properties";
-	}
-
 	@Override
 	protected String getFileConfig() {
 		return fileConfig;

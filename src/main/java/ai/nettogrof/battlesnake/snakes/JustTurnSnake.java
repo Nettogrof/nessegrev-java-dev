@@ -29,12 +29,6 @@ public class JustTurnSnake extends BetaSnake {
 	}
 
 	@Override
-	protected void setFileConfig() {
-		fileConfig = "JustTurn.properties";
-
-	}
-
-	@Override
 	protected String getFileConfig() {
 		return "JustTurn.properties";
 	}

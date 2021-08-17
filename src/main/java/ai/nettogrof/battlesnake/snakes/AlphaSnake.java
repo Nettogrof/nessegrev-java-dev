@@ -27,7 +27,6 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 @Deprecated
 public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 
-	
 	/**
 	 * Basic / unused constructor
 	 */
@@ -220,15 +219,6 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		// timeout = timeout-200;
 
 		return response;
-	}
-
-	/**
-	 * Method use to set the fileConfig string
-	 */
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "Alpha.properties";
-
 	}
 
 	@Override

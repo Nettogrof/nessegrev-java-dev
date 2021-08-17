@@ -117,14 +117,6 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		return response;
 	}
 
-	/**
-	 * Method use to set the fileConfig string
-	 */
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "Gamma.properties";
-	}
-
 	@Override
 	protected String getFileConfig() {
 		return fileConfig;

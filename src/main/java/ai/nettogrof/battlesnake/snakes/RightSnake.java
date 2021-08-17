@@ -32,12 +32,6 @@ public class RightSnake extends BetaSnake {
 	}
 
 	@Override
-	protected void setFileConfig() {
-		fileConfig = "Right.properties";
-
-	}
-
-	@Override
 	protected String getFileConfig() {
 		return "Right.properties";
 	}

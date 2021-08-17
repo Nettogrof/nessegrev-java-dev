@@ -159,14 +159,6 @@ public class BasicSnake extends AbstractSnakeAI {
 		return res;
 	}
 
-	/**
-	 *
-	 */
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "Basic.properties"; //?
-	}
-
 	@Override
 	protected String getFileConfig() {
 		return fileConfig;

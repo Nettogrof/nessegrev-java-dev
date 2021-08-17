@@ -430,15 +430,6 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		return countEmpty;
 	}
 
-	/**
-	 * Not used
-	 */
-	@Override
-	protected void setFileConfig() {
-		fileConfig = "FloodFill.properties"; // ?
-
-	}
-
 	@Override
 	protected String getFileConfig() {
 		return fileConfig;
