@@ -626,78 +626,24 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	/**
 	 * @param timeout the timeout to set
 	 */
-	public void setTimeout(int timeout) {
+	public void setTimeout(final int timeout) {
 		this.timeout = timeout;
 	}
 
 	/**
 	 * @param multiThread the multiThread to set
 	 */
-	public void setMultiThread(boolean multiThread) {
+	public void setMultiThread(final boolean multiThread) {
 		this.multiThread = multiThread;
 	}
 
 	/**
 	 * @param cpuLimit the cpuLimit to set
 	 */
-	public void setCpuLimit(int cpuLimit) {
+	public void setCpuLimit(final int cpuLimit) {
 		this.cpuLimit = cpuLimit;
 	}
 
-	/**
-	 * @param losing the losing to set
-	 */
-	public void setLosing(String losing) {
-		this.losing = losing;
-	}
-
-	/**
-	 * @param winning the winning to set
-	 */
-	public void setWinning(String winning) {
-		this.winning = winning;
-	}
-
-	/**
-	 * @param minusbuffer the minusbuffer to set
-	 */
-	public void setMinusbuffer(int minusbuffer) {
-		this.minusbuffer = minusbuffer;
-	}
-
-	/**
-	 * @param nodeTotalCount the nodeTotalCount to set
-	 */
-	public void setNodeTotalCount(long nodeTotalCount) {
-		this.nodeTotalCount = nodeTotalCount;
-	}
-
-	/**
-	 * @param timeTotal the timeTotal to set
-	 */
-	public void setTimeTotal(long timeTotal) {
-		this.timeTotal = timeTotal;
-	}
-
-	/**
-	 * @param lastRoot the lastRoot to set
-	 */
-	public void setLastRoot(AbstractNode lastRoot) {
-		this.lastRoot = lastRoot;
-	}
-
-	/**
-	 * @param ruleset the ruleset to set
-	 */
-	public void setRuleset(String ruleset) {
-		this.ruleset = ruleset;
-	}
-
-	/**
-	 * @param searchType the searchType to set
-	 */
-	public void setSearchType(Constructor<? extends AbstractSearch> searchType) {
-		this.searchType = searchType;
-	}
+	
 
 }

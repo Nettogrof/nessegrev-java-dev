@@ -119,12 +119,12 @@ public abstract class AbstractSnakeAI {
 	/**
 	 * Board width
 	 */
-	protected int width;
+	protected transient int width;
 
 	/**
 	 * Board height
 	 */
-	protected int height;
+	protected transient int height;
 
 	/**
 	 * API version use, some snakes are able to play both version v0 and v1.
@@ -256,21 +256,21 @@ public abstract class AbstractSnakeAI {
 	/**
 	 * @param width the width to set
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
 	/**
 	 * @param height the height to set
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
 	/**
 	 * @param fileConfig the fileConfig to set
 	 */
-	public void setFileConfig(String fileConfig) {
+	public void setFileConfig(final String fileConfig) {
 		this.fileConfig = fileConfig;
 	}
 
