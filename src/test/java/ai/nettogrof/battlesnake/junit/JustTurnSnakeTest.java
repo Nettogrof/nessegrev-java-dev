@@ -9,14 +9,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.nettogrof.battlesnake.snakes.BetaSnake;
+import ai.nettogrof.battlesnake.snakes.JustTurnSnake;
+
 
 /**
  * @author carl.lajeunesse
  *
  */
-public class BetaSnakeTest {
-
+public class JustTurnSnakeTest {
 	/**
 	 * 
 	 */
@@ -33,11 +33,11 @@ public class BetaSnakeTest {
 	 * @throws InterruptedException ex
 	 */
 	@Test
-	public void startBeta() throws JsonMappingException, JsonProcessingException, InterruptedException {
+	public void startJustTurn() throws JsonMappingException, JsonProcessingException, InterruptedException {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final JustTurnSnake snakeAi = new JustTurnSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -53,7 +53,7 @@ public class BetaSnakeTest {
 	 * 
 	 */
 	@Test
-	public void royaleBetaTest()
+	public void royaleJustTurnTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -64,7 +64,7 @@ public class BetaSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final JustTurnSnake snakeAi = new JustTurnSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -80,7 +80,7 @@ public class BetaSnakeTest {
 		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
 
 	}
-
+	
 	/**
 	 * @throws JsonProcessingException ex
 	 * @throws JsonMappingException ex
@@ -89,7 +89,7 @@ public class BetaSnakeTest {
 	 * 
 	 */
 	@Test
-	public void standardBetaTest()
+	public void standardJustTurnTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -102,15 +102,15 @@ public class BetaSnakeTest {
 				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":2},\"body\":[{\"x\":3,\"y\":2},{\"x\":3,\"y\":1},{\"x\":3,\"y\":0}]},\"board\":{\"food\":[],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":2},\"body\":[{\"x\":3,\"y\":2},{\"x\":3,\"y\":1},{\"x\":3,\"y\":0}]},{\"health\":100,\"id\":\"#FFddd2\",\"name\":\"#FFddd2\",\"head\":{\"x\":3,\"y\":4},\"body\":[{\"x\":3,\"y\":4},{\"x\":3,\"y\":5},{\"x\":3,\"y\":6}]}]}}",
 				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":2},\"body\":[{\"x\":3,\"y\":2},{\"x\":3,\"y\":1},{\"x\":3,\"y\":0}]},\"board\":{\"food\":[{\"x\":3,\"y\":3}],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":2},\"body\":[{\"x\":3,\"y\":2},{\"x\":3,\"y\":1},{\"x\":3,\"y\":0}]},{\"health\":100,\"id\":\"#FFddd2\",\"name\":\"#FFddd2\",\"head\":{\"x\":3,\"y\":4},\"body\":[{\"x\":3,\"y\":4},{\"x\":3,\"y\":5},{\"x\":3,\"y\":6},{\"x\":2,\"y\":6}]},{\"health\":100,\"id\":\"#FF1703\",\"name\":\"#FF1703\",\"head\":{\"x\":4,\"y\":3},\"body\":[{\"x\":4,\"y\":3},{\"x\":5,\"y\":3},{\"x\":6,\"y\":3},{\"x\":6,\"y\":2}]}]}}",
 				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":2,\"y\":3},{\"x\":2,\"y\":2},{\"x\":3,\"y\":2},{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":3,\"y\":4},{\"x\":2,\"y\":4}]},\"board\":{\"food\":[],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":2,\"y\":3},{\"x\":2,\"y\":2},{\"x\":3,\"y\":2},{\"x\":4,\"y\":2},{\"x\":4,\"y\":3},{\"x\":4,\"y\":4},{\"x\":3,\"y\":4},{\"x\":2,\"y\":4}]}]}}",
-				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":3,\"y\":3},{\"x\":3,\"y\":3}]},\"board\":{\"food\":[{\"x\":1,\"y\":1}],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":3,\"y\":3},{\"x\":3,\"y\":3}]}]}}",
-				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3}]},\"board\":{\"food\":[],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3}]}]}}"
+				"{\"game\":{\"id\":\"12345\",\"ruleset\":{\"name\":\"standard\",\"version\":\"v.1.2.3\"},\"timeout\":500},\"turn\":200,\"you\":{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":3,\"y\":3},{\"x\":3,\"y\":3}]},\"board\":{\"food\":[{\"x\":1,\"y\":1}],\"height\":7,\"width\":7,\"snakes\":[{\"health\":100,\"id\":\"you\",\"name\":\"#22aa34\",\"head\":{\"x\":3,\"y\":3},\"body\":[{\"x\":3,\"y\":3},{\"x\":3,\"y\":3},{\"x\":3,\"y\":3}]}]}}"
+				
 				
 
 		};
 
 		JsonNode parsedRequest = json.readTree(test[0]);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final JustTurnSnake snakeAi = new JustTurnSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -128,5 +128,6 @@ public class BetaSnakeTest {
 		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
 
 	}
-	
+
+
 }
