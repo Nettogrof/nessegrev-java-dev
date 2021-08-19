@@ -3,7 +3,6 @@ package ai.nettogrof.battlesnake.snakes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -94,27 +93,25 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	@Override
 	public Map<String, String> start(final JsonNode startRequest) {
-		if (startRequest.get("ruleset") == null) {
-			timeout = 500;
-		} else {
-			apiversion = 1;
-			timeout = startRequest.get("game").get("timeout").asInt();
-		}
+		
 		ruleset = "standard"; // Gamma Snake, play only standard game.
+		if (startRequest.get("game").get("ruleset") != null) {
+			
+			apiversion = 1;
+			
+		}
+
+		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
+		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
+
+		timeout = startRequest.get("game").get("timeout").asInt();
+
 		try {
 			searchType = genSearchType();
 		} catch (ReflectiveOperationException e) {
 			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
 		}
-
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		response.put("color", "#216121");
-		response.put("headType", "shac-gamer");
-		response.put("tailType", "shac-coffee");
-		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();
-		height = startRequest.get(BOARD).get(HEIGHT_FIELD).asInt();
-
-		return response;
+		return getInfo();
 	}
 
 	@Override

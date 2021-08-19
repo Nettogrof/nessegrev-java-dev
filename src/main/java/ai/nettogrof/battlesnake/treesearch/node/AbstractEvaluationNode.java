@@ -29,13 +29,6 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	private final static int DEFAULTRV = new Int2IntOpenHashMap().defaultReturnValue();
 
 	/**
-	 * Basic constructor
-	 */
-	public AbstractEvaluationNode() {
-		super();
-	}
-
-	/**
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes List of snakes

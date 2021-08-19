@@ -16,28 +16,6 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 
 	/**
-	 * Basic contructor
-	 */
-	public AbstractRoyaleSearch() {
-		super();
-	}
-
-	/**
-	 * Constructor used to expand the tree once.
-	 * 
-	 * @param root   Root node
-	 * @param width  Board width
-	 * @param height Board height
-	 */
-	public AbstractRoyaleSearch(final AbstractNode root, final int width, final int height) {
-		super();
-		this.root = root;
-		this.width = width;
-		this.height = height;
-
-	}
-
-	/**
 	 * Constructor used to expand to do the tree search.
 	 * 
 	 * @param root      Root node

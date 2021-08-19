@@ -43,7 +43,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
 	 */
-	public transient int timeout = 300;
+	protected transient int timeout = 300;
 
 	/**
 	 * Boolean if multithread is use by the snake value define by the config file
@@ -607,7 +607,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		if (lastRoot != null) {
 
 			for (final AbstractNode c : lastRoot.getChild()) {
-				if (hazard.equals(c.getHazard()) && food.equals(c.getFood()) && c.getSnakes().size() == snakes.size()) {
+				if ((hazard == null || hazard.equals(c.getHazard())) && food.equals(c.getFood())
+						&& c.getSnakes().size() == snakes.size()) {
 					final List<SnakeInfo> csnake = c.getSnakes();
 					boolean found = true;
 					for (int i = 0; i < csnake.size() && found; i++) {
@@ -643,7 +644,5 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	public void setCpuLimit(final int cpuLimit) {
 		this.cpuLimit = cpuLimit;
 	}
-
-	
 
 }

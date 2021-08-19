@@ -3,9 +3,7 @@ package ai.nettogrof.battlesnake.treesearch.alpha;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardSearch;
 
@@ -72,107 +70,7 @@ public class AlphaSearch extends AbstractStandardSearch {
 		generateChild(root);
 	}
 
-	/**
-	 * Expand / Generate child from a node
-	 * 
-	 * @param node the alphatnode to be expand
-	 */
-	protected void generateChild(final AlphaNode node) {
-
-		final List<SnakeInfo> current = node.getSnakes();
-		final int nbSnake = current.size();
-		final List<SnakeInfo> alphaMove = generateSnakeInfoDestination(current.get(0), node, current);
-
-		// SnakeInfo[][] poss = new SnakeInfo[nbSnake][3];
-		List<ArrayList<SnakeInfo>> moves = new ArrayList<>();
-		if (alphaMove.isEmpty()) {
-			node.getSnakes().get(0).die();
-			node.exp = false;
-			node.score[0] = 0;
-
-		} else {
-			moves = merge(moves, alphaMove);
-			for (int i = 1; i < nbSnake; i++) {
-				moves = merge(moves, generateSnakeInfoDestination(current.get(i), node, current));
-			}
-
-			checkHeadToHead(moves);
-			boolean stillAlive = false;
-			for (final ArrayList<SnakeInfo> move : moves) {
-				if (move.get(0).isAlive()) {
-					node.addChild(new AlphaNode(move, node.getFood()));
-					stillAlive = true;
-				} else {
-
-					final AlphaNode lostMove = new AlphaNode(move, node.getFood());
-					lostMove.score[0] = 0;
-
-					node.addChild(lostMove);
-				}
-			}
-			if (!stillAlive) {
-				node.getSnakes().get(0).die();
-				node.exp = false;
-				node.score[0] = 0;
-			}
-		}
-	}
-
-	/**
-	 * Generate all moves possible for a snake given.
-	 * 
-	 * @param snakeInfo snake info
-	 * @param foodInfo  Food Information
-	 * @param all       List os all snakes
-	 * @param hazard    Hazard Info
-	 * @return List of snake info
-	 */
-	protected List<SnakeInfo> multi(final SnakeInfo snakeInfo, final FoodInfo foodInfo, final ArrayList<SnakeInfo> all,
-			final HazardSquare hazard) {
-		final ArrayList<SnakeInfo> ret = new ArrayList<>();
-
-		if (snakeInfo.isAlive()) {
-			final int head = snakeInfo.getHead();
-			int newhead = head;
-			if (head / 1000 > 0) {
-
-				newhead -= 1000;
-				if (freeSpace(newhead, all)) {
-					ret.add(new SnakeInfo(snakeInfo, newhead, foodInfo.isFood(newhead), hazard.isHazard(newhead)));
-				}
-				newhead += 1000;
-			}
-
-			if (head / 1000 < width - 1) {
-
-				newhead += 1000;
-				if (freeSpace(newhead, all)) {
-					ret.add(new SnakeInfo(snakeInfo, newhead, foodInfo.isFood(newhead), hazard.isHazard(newhead)));
-				}
-				newhead -= 1000;
-			}
-
-			if (head % 1000 > 0) {
-
-				newhead -= 1;
-				if (freeSpace(newhead, all)) {
-					ret.add(new SnakeInfo(snakeInfo, newhead, foodInfo.isFood(newhead), hazard.isHazard(newhead)));
-				}
-				newhead += 1;
-			}
-
-			if (head % 1000 < height - 1) {
-
-				newhead += 1;
-				if (freeSpace(newhead, all)) {
-					ret.add(new SnakeInfo(snakeInfo, newhead, foodInfo.isFood(newhead), hazard.isHazard(newhead)));
-				}
-			}
-		}
-
-		return ret;
-	}
-
+	
 	/**
 	 * Check if the snake can move on the square
 	 * 

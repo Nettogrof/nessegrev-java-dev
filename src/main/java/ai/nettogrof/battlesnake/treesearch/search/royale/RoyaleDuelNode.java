@@ -26,17 +26,6 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 * 
 	 * @param snakes List of snakes
 	 * @param food   Food information
-	 */
-	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food) {
-		super(snakes, food);
-		setScore();
-	}
-
-	/**
-	 * Constructor, set the information and evaluate/ set score directly
-	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
 	 * @param hazard Hazard Information
 	 */
 	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard) {

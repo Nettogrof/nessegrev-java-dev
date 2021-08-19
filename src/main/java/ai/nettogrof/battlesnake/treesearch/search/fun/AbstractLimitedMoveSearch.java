@@ -34,25 +34,6 @@ public abstract class AbstractLimitedMoveSearch extends MctsSearch {
 	protected transient int upNeck = 5;
 
 	/**
-	 * Basic constructor
-	 */
-	public AbstractLimitedMoveSearch() {
-		super();
-	}
-
-	/**
-	 * Constructor used to expand the tree once.
-	 * 
-	 * @param root   Root node
-	 * @param width  Board width
-	 * @param height Board height
-	 */
-	public AbstractLimitedMoveSearch(final AbstractNode root, final int width, final int height) {
-		super(root, width, height);
-
-	}
-
-	/**
 	 * Constructor used to expand to do the tree search.
 	 * 
 	 * @param root      Root node

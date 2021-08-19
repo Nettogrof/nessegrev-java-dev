@@ -11,48 +11,29 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
 
 /**
- * This abstract Standard search based on RoyaleSearch provide methods to prevent
- * snake to move in particular direction
- * Royale mode 
+ * This abstract Standard search based on RoyaleSearch provide methods to
+ * prevent snake to move in particular direction Royale mode
  * 
  * @author carl.lajeunesse
  * @version Summer 2021
  */
 public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	/**
-	 * Prevent left move if  head - neck  equals that amount
+	 * Prevent left move if head - neck equals that amount
 	 */
 	protected transient int leftNeck = 5;
 	/**
-	 * Prevent right move if  head - neck  equals that amount
+	 * Prevent right move if head - neck equals that amount
 	 */
 	protected transient int rightNeck = 5;
 	/**
-	 * Prevent down move if  head - neck  equals that amount
+	 * Prevent down move if head - neck equals that amount
 	 */
 	protected transient int downNeck = 5;
 	/**
-	 * Prevent up move if  head - neck  equals that amount
+	 * Prevent up move if head - neck equals that amount
 	 */
 	protected transient int upNeck = 5;
-
-	/**
-	 * Basic constructor
-	 */
-	public AbstractLimitedMoveRoyaleSearch() {
-		super();
-	}
-
-	/**
-	 * Constructor used to expand the tree once.
-	 * 
-	 * @param root   Root node
-	 * @param width  Board width
-	 * @param height Board height
-	 */
-	public AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height) {
-		super(root, width, height);		
-	}
 
 	/**
 	 * Constructor used to expand to do the tree search.
@@ -63,11 +44,11 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	 * @param starttime starting time for the search in millisecond
 	 * @param timeout   the time limit to run the search
 	 */
-	public AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime, final int timeout) {
+	public AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
+			final long starttime, final int timeout) {
 		super(root, width, height, starttime, timeout);
 	}
 
-	
 	/**
 	 * Generate all moves possible for a snake given.
 	 * 
@@ -98,13 +79,14 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 			if (head % 1000 < height - 1) {
 				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
-		}else if (snakeInfo.isAlive()){
-			
-			selfDestination(snakeInfo.getHead(),allSnakes, snakeInfo,node, listNewSnakeInfo);
-			
+		} else if (snakeInfo.isAlive()) {
+
+			selfDestination(snakeInfo.getHead(), allSnakes, snakeInfo, node, listNewSnakeInfo);
+
 		}
 		return listNewSnakeInfo;
 	}
+
 	/**
 	 * 
 	 * Generate all move possible for our snake, and check the snake direction to

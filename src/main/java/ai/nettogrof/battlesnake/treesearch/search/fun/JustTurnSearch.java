@@ -15,28 +15,6 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 public class JustTurnSearch extends AbstractLimitedMoveSearch {
 
 	/**
-	 * Basic constructor
-	 */
-	public JustTurnSearch() {
-		super();
-	}
-
-	/**
-	 * Constructor used to expand the tree once.
-	 * 
-	 * @param root   Root node
-	 * @param width  Board width
-	 * @param height Board height
-	 */
-	public JustTurnSearch(final AbstractNode root,final  int width,final  int height) {
-		super(root, width, height);
-		leftNeck = -1000;
-		rightNeck = 1000;
-		downNeck = -1;
-		upNeck = 1;
-	}
-
-	/**
 	 * Constructor used to expand to do the tree search.
 	 * 
 	 * @param root      Root node

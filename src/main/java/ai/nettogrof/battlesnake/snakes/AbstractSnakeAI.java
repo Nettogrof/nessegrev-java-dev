@@ -69,7 +69,7 @@ public abstract class AbstractSnakeAI {
 	/**
 	 * Constant Field name
 	 */
-	protected static final String HEALTH = "HEALTH";
+	protected static final String HEALTH = "health";
 
 	/**
 	 * Constant Field name

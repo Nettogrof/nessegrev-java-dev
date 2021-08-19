@@ -27,13 +27,6 @@ public class AlphaNode extends AbstractDecisionNode {
 	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
 
 	/**
-	 * Basic constructor
-	 */
-	public AlphaNode() {
-		super();
-	}
-
-	/**
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes   List of snakes
@@ -52,6 +45,8 @@ public class AlphaNode extends AbstractDecisionNode {
 		for (int i = 0; i < snakes.size(); i++) {
 			score[i] = snakes.get(i).getSnakeBody().size() + snakes.get(i).getHealth() / 100;
 		}
+		
+		updateScoreRatio();
 
 	}
 
@@ -78,6 +73,8 @@ public class AlphaNode extends AbstractDecisionNode {
 		for (int i = 0; i < snakes.length; i++) {
 			score[i] = snakes[i].getSnakeBody().size() + snakes[i].getHealth() / 100;
 		}
+		
+		updateScoreRatio();
 
 	}
 
@@ -97,6 +94,8 @@ public class AlphaNode extends AbstractDecisionNode {
 		for (int i = 0; i < score.length; i++) {
 			score[i] = snakes.getSnakeBody().size() + snakes.getHealth() / 100;
 		}
+		
+		updateScoreRatio();
 	}
 
 	
