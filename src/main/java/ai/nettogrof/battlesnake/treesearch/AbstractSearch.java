@@ -19,7 +19,7 @@ public abstract class AbstractSearch implements Runnable {
 	/**
 	 * Control variable to continue the search or not
 	 */
-	protected transient boolean cont = true;
+	protected transient boolean cont;
 
 	/**
 	 * Root node for the search
@@ -50,7 +50,7 @@ public abstract class AbstractSearch implements Runnable {
 	 * Basic Constructor
 	 */
 	public AbstractSearch() {
-		// empty constructor
+		cont = true;
 	}
 
 	/**
@@ -128,6 +128,7 @@ public abstract class AbstractSearch implements Runnable {
 		} else {
 			ret = new ArrayList<>();
 			if (list.isEmpty()) {
+				
 				for (final SnakeInfo si : snakes) {
 					final ArrayList<SnakeInfo> merged = new ArrayList<>(1);
 					merged.add(si.cloneSnake());

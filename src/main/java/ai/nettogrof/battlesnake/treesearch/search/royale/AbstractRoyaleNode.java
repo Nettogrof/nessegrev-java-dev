@@ -27,24 +27,6 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	protected transient AbstractHazard hazard;
 
 	/**
-	 * Basic constructor
-	 */
-	public AbstractRoyaleNode() {
-		super();
-	}
-
-	/**
-	 * Constructor with snakes and food information
-	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
-	 */
-	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food) {
-		super(snakes, food);
-
-	}
-
-	/**
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes  List of snakes

@@ -61,6 +61,11 @@ public final class Snake {
 	 * Port number define by config file or program parameter. Default: 8081
 	 */
 	private static String port = "8081";
+	
+	/**
+	 * Static value.
+	 */
+	private final static  int ONE = 1;
 
 	/**
 	 * Unused constrictor
@@ -76,7 +81,7 @@ public final class Snake {
 	 */
 	public static void main(final String[] args) {
 
-		if (args.length == 1) {
+		if (args.length == ONE) {
 			snakeType = args[0];
 			loadProperties(snakeType);
 		} else {

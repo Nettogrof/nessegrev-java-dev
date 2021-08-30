@@ -245,24 +245,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 
 	}
 
-	/**
-	 * Count the number of snake still alive
-	 * 
-	 * @return Number of snake alive
-	 */
-	protected int countSnakeAlive() {
-
-		int nbAlive = 0;
-
-		for (final SnakeInfo s : snakes) {
-			if (s.isAlive()) {
-				nbAlive++;
-			}
-		}
-
-		return nbAlive;
-
-	}
+	
 
 	/**
 	 * Set Max score to winner snakes.

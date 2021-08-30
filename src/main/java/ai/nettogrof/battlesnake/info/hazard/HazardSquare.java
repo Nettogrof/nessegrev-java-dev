@@ -29,6 +29,7 @@ public class HazardSquare extends AbstractHazard {
 	 * 
 	 * @param hazardsInfo JsonNode field hazard
 	 */
+	@Override
 	protected void setInfo(final JsonNode hazardsInfo) {
 		if (hazardsInfo != null) {
 			for (final JsonNode hazardPos : hazardsInfo) {
@@ -44,6 +45,7 @@ public class HazardSquare extends AbstractHazard {
 	 * @param posy Square position Y
 	 * @return boolean if square is hazard
 	 */
+	@Override
 	public boolean isHazard(final int posx, final int posy) {
 		return hazard.contains(posx * 1000 + posy);
 	}
@@ -54,6 +56,7 @@ public class HazardSquare extends AbstractHazard {
 	 * @param pos the square position
 	 * @return boolean if square is hazard
 	 */
+	@Override
 	public boolean isHazard(final int pos) {
 		return hazard.contains(pos);
 	}
@@ -63,6 +66,7 @@ public class HazardSquare extends AbstractHazard {
 	 * 
 	 * @return Arraylist int of hazards
 	 */
+	@Override
 	public TIntArrayList getListHazard() {
 		return hazard;
 	}

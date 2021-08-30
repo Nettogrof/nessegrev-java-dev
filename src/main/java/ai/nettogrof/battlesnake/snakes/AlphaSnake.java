@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.alpha.AlphaNode;
 import ai.nettogrof.battlesnake.treesearch.alpha.AlphaSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
@@ -78,10 +79,13 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 		snakes[0].setName(yourSnake.get(NAME).asText());
 		snakes[0].setSnake(yourSnake);
 
-		for (int i = 0, j = 1; i < snakes.length; i++, j++) {
+		boolean mySnakeFound = false;
+		for (int i = 0; i < snakes.length; i++) {
+
+			int j = mySnakeFound ? i : i + 1;
 			final JsonNode snake = moveRequest.get(BOARD).get(SNAKES).get(i);
 			if (snake.get(NAME).asText().equals(yourSnake.get(NAME).asText())) {
-				j--;
+				mySnakeFound = true;
 			} else {
 				snakes[j] = new SnakeInfo();
 				snakes[j].setHealth((short) snake.get("health").asInt());
@@ -116,10 +120,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 			}
 
 			for (final AlphaSearch search : listThread) {
-				final Thread searchThread = new Thread(search);
-				searchThread.setPriority(1);
-				searchThread.start();
-
+				startThread(search);
 			}
 
 			try {
@@ -165,7 +166,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 				winner = (AlphaNode) lastChance(root);
 			}
 
-			if (winner.getScoreRatio() > 100) {
+			if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
 				response.put("shout", winning);
 				winner = (AlphaNode) finishHim(root, winner);
 			}
@@ -222,7 +223,7 @@ public class AlphaSnake extends AbstractTreeSearchSnakeAI {
 	}
 
 	@Override
-	protected AbstractNode genRoot(JsonNode moveRequest) {
+	protected AbstractNode genRoot(final JsonNode moveRequest) {
 		return null;
 	}
 

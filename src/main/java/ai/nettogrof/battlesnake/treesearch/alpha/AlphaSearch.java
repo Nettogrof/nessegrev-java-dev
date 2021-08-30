@@ -65,12 +65,6 @@ public class AlphaSearch extends AbstractStandardSearch {
 
 	}
 
-	@Override
-	public void generateChild() {
-		generateChild(root);
-	}
-
-	
 	/**
 	 * Check if the snake can move on the square
 	 * 
@@ -96,7 +90,7 @@ public class AlphaSearch extends AbstractStandardSearch {
 	protected void checkHeadToHead(final List<ArrayList<SnakeInfo>> moves) {
 		for (final ArrayList<SnakeInfo> move : moves) {
 
-			if (move.size() > 1) {
+			if (!move.isEmpty()) {
 				for (int i = 0; i < move.size() - 1; i++) {
 					for (int j = i + 1; j < move.size(); j++) {
 						if (move.get(i).getHead() == move.get(j).getHead()) {
@@ -117,42 +111,6 @@ public class AlphaSearch extends AbstractStandardSearch {
 				}
 			}
 		}
-	}
-
-	/**
-	 * This method merge previous snake move (list) , with new snake move
-	 * 
-	 * @param list      Previous list
-	 * @param snakeInfo New move list
-	 * @return List of List of move
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List<ArrayList<SnakeInfo>> merge(final List<ArrayList<SnakeInfo>> list, final List<SnakeInfo> snakeInfo) {
-		if (snakeInfo.isEmpty()) {
-			return list;
-		}
-		final ArrayList<ArrayList<SnakeInfo>> ret = new ArrayList<>();
-		if (list.isEmpty()) {
-
-			for (final SnakeInfo info : snakeInfo) {
-
-				final ArrayList<SnakeInfo> move = new ArrayList<>();
-				move.add(info);
-				ret.add(move);
-			}
-
-		} else {
-			for (final SnakeInfo info : snakeInfo) {
-				for (final ArrayList<SnakeInfo> s : list) {
-					final ArrayList<SnakeInfo> newSnakeInfo = (ArrayList<SnakeInfo>) s.clone();
-
-					newSnakeInfo.add(info);
-					ret.add(newSnakeInfo);
-				}
-			}
-		}
-		return ret;
 	}
 
 }

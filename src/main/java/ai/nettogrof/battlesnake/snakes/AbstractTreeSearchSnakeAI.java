@@ -243,7 +243,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param search the search to be executed
 	 */
-	private void startThread(final AbstractSearch search) {
+	protected void startThread(final AbstractSearch search) {
 		final Thread subThread = new Thread(search);
 		subThread.setPriority(3);
 		subThread.start();

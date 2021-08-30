@@ -16,14 +16,7 @@ public abstract class AbstractHazard {
 	 * Arraylist (int) of all hazard position (based on square formula)
 	 */
 	protected transient final TIntArrayList hazard = new TIntArrayList();
-
-	/**
-	 * Basic constructor
-	 */
-	public AbstractHazard() {
-		// Basic constructor
-	}
-
+	
 	/**
 	 * Single constructor need the jsonNode board
 	 * 
