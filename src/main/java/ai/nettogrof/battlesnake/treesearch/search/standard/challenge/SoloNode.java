@@ -4,6 +4,7 @@
 package ai.nettogrof.battlesnake.treesearch.search.standard.challenge;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
+import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.SINGLE_SNAKE;
 
 import java.util.List;
 
@@ -108,7 +109,7 @@ public class SoloNode extends AbstractStandardNode {
 	 */
 	@Override
 	public void updateScoreRatio() {
-		if (snakes.size() > 1) {
+		if (snakes.size() > SINGLE_SNAKE) {
 			float totalOther = BASIC_SCORE;
 			for (int i = 1; i < score.length; i++) {
 				totalOther += score[i];

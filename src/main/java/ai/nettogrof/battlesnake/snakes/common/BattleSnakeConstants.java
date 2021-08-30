@@ -70,4 +70,9 @@ public final class BattleSnakeConstants {
 	 * Current API version used by snakes
 	 */
 	public final static int API_V1 = 1;
+	
+	/**
+	 * Current API version used by snakes
+	 */
+	public final static int SINGLE_SNAKE = 1;
 }
