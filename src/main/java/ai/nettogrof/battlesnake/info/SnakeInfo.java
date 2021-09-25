@@ -80,6 +80,10 @@ public class SnakeInfo implements Cloneable {
 	 * @param hazard        Is destination square a hazard
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard) {
+		if (hazard) {
+			health += LOST_HAZARD;
+		}
+		
 		if (eat) {
 			health = MAX_HEALTH;
 			this.eat = true;
@@ -93,9 +97,7 @@ public class SnakeInfo implements Cloneable {
 			snakeBody.removeAt(snakeBody.size() - 1);
 		}
 
-		if (hazard) {
-			health += LOST_HAZARD;
-		}
+		
 		if (health <= 0) {
 			alive = false;
 		}
