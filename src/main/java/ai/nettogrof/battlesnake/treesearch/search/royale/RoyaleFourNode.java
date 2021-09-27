@@ -17,6 +17,16 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMU
  * @version Spring 2021
  */
 public class RoyaleFourNode extends AbstractRoyaleNode {
+	
+	/**
+	 * 
+	 */
+	private final static int FOUR = 4;
+	
+	/**
+	 * 
+	 */
+	//private final static int THREE = 3;
 
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
@@ -38,9 +48,14 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			setWinnerMaxScore();
 		} else {
+			
 			addBasicLengthScore();
-			listAreaControl();
-			adjustHazardScore();
+			if (snakes.size() < FOUR) {
+				listAreaControl();
+				adjustHazardScore();
+			}else {
+				addScoreDistance(snakes.get(0).getHead());
+			}
 
 		}
 

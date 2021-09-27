@@ -13,8 +13,6 @@ import gnu.trove.list.array.TIntArrayList;
  */
 public class HazardSquare extends AbstractHazard {
 
-	
-
 	/**
 	 * Single constructor need the jsonNode board
 	 * 

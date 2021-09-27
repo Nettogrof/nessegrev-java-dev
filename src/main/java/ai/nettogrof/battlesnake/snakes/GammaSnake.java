@@ -49,19 +49,31 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
 
-		final List<SnakeInfo> snakes = new ArrayList<>();
 		final JsonNode gammaSnake = moveRequest.get(YOU);
-
-		snakes.add(new SnakeInfo(gammaSnake));
-		for (int i = 0; i < board.get(SNAKES).size(); i++) {
-			final JsonNode currentSnake = board.get(SNAKES).get(i);
-			if (!currentSnake.get("id").asText().equals(gammaSnake.get("id").asText())) {
-				snakes.add(new SnakeInfo(currentSnake));
-			}
-		}
+		final List<SnakeInfo> snakes = genSnakeInfo(board, gammaSnake);
 
 		final AbstractNode oldChild = findChildNewRoot(snakes, food, null);
 		return oldChild == null ? genNode(snakes, food) : oldChild;
+
+	}
+
+	/**
+	 * Generate all snakes info from the json board field
+	 * 
+	 * @param board     Json board field
+	 * @param betaSnake Json you field
+	 * @return list of snakes info
+	 */
+	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode betaSnake) {
+		final List<SnakeInfo> snakes = new ArrayList<>();
+		snakes.add(new SnakeInfo(betaSnake));
+		for (int i = 0; i < board.get(SNAKES).size(); i++) {
+			final JsonNode currentSnake = board.get(SNAKES).get(i);
+			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
+				snakes.add(new SnakeInfo(currentSnake));
+			}
+		}
+		return snakes;
 
 	}
 
@@ -93,12 +105,12 @@ public class GammaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	@Override
 	public Map<String, String> start(final JsonNode startRequest) {
-		
+
 		ruleset = "standard"; // Gamma Snake, play only standard game.
 		if (startRequest.get("game").get("ruleset") != null) {
-			
+
 			apiversion = 1;
-			
+
 		}
 
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();

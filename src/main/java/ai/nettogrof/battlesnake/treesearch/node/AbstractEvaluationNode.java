@@ -143,6 +143,8 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * snakes
 	 */
 	protected void addSizeCompareScore() {
+		
+		//TODO  add the 0.4 to Genetic value
 		for (int i = 1; i < snakes.size(); i++) {
 			if (snakes.get(i).getSnakeBody().size() > snakes.get(0).getSnakeBody().size()) {
 				score[0] -= 0.4f;

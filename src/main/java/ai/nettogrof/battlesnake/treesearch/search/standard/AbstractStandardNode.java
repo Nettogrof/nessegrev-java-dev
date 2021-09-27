@@ -19,13 +19,6 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 public abstract class AbstractStandardNode extends AbstractEvaluationNode {
 
 	/**
-	 * Basic constructor
-	 */
-	public AbstractStandardNode() {
-		super();
-	}
-
-	/**
 	 * Constructor with snakes and food information
 	 * 
 	 * @param snakes List of snakes
@@ -35,7 +28,5 @@ public abstract class AbstractStandardNode extends AbstractEvaluationNode {
 		super(snakes, food);
 
 	}
-
-	
 
 }
