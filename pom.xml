@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
 			<artifactId>fastutil</artifactId>
-			<version>8.5.4</version>
+			<version>8.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.flogger</groupId>
@@ -178,7 +178,7 @@
 					<executable>java</executable>
 					<arguments>
 						<argument>-classpath</argument>
-						<classpath />
+						<classpath/>
 						<argument>io.battlesnake.starter.Snake</argument>
 					</arguments>
 				</configuration>
