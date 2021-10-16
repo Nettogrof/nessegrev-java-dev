@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>com.google.flogger</groupId>
 			<artifactId>flogger</artifactId>
-			<version>0.6</version>
+			<version>0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
@@ -178,7 +178,7 @@
 					<executable>java</executable>
 					<arguments>
 						<argument>-classpath</argument>
-						<classpath />
+						<classpath/>
 						<argument>io.battlesnake.starter.Snake</argument>
 					</arguments>
 				</configuration>
