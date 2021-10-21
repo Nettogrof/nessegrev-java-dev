@@ -315,7 +315,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Recursive function to "flood" positive value. It's assign the value to the
-	 * board [ x ] [ y] then recall this function for adjacent square with value - 1
+	 * board[ x ] [ y] then recall this function for adjacent square with value - 1
 	 * 
 	 * @param posX  the X position
 	 * @param posY  the Y position
@@ -351,7 +351,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Recursive function to "flood" negative value. It's assign the value to the
-	 * board [ x ] [ y] then recall this function for adjacent square with value -
+	 * board[ x ] [ y] then recall this function for adjacent square with value -
 	 * "floodEnemyGap "
 	 * 
 	 * @param posX  the X position
@@ -382,7 +382,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 
 	/**
 	 * Recursive function to "flood" EMPTY value on positive square. It's assign the
-	 * EMPTY to the space [ x ] [ y] then recall this function for adjacent square
+	 * EMPTY to the spaceï¿½[ x ] [ y] then recall this function for adjacent square
 	 * with EMPTY
 	 * 
 	 * @param posX  the X position
