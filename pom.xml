@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.31</version>
+			<version>1.7.32</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.trove4j</groupId>
@@ -135,11 +135,11 @@
 			<version>1.18.20</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.github.chen0040</groupId>
 			<artifactId>java-data-frame</artifactId>
 			<version>1.0.11</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
