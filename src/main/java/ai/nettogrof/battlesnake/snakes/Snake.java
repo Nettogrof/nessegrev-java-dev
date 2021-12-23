@@ -216,7 +216,7 @@ public final class Snake {
 		 * details of what this contains.
 		 * 
 		 * @return apiversion:string - Battlesnake API Version implemented by this
-		 *         Battlesnake author:string - Optional username of the Battlesnake’s
+		 *         Battlesnake author:string - Optional username of the Battlesnakeï¿½s
 		 *         author head:string - Optional custom head for this Battlesnake
 		 *         tail:string - Optional custom tail for this Battlesnake color:string
 		 *         - Optional custom color for this Battlesnake .
@@ -227,17 +227,17 @@ public final class Snake {
 				final Class<? extends AbstractSnakeAI> snakeClass = Class
 						.forName("ai.nettogrof.battlesnake.snakes." + snakeType + "Snake")
 						.asSubclass(AbstractSnakeAI.class);
-				return snakeClass.newInstance().getInfo();
+				return snakeClass.getDeclaredConstructor().newInstance().getInfo();
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
-					| SecurityException e) {
+					| SecurityException | InvocationTargetException | NoSuchMethodException e) {
 
 				LOG.atWarning().log(e.toString());
 
 				final Map<String, String> response = new ConcurrentHashMap<>();
 				response.put("apiversion", "1");
-				response.put("head", "default");
-				response.put("tail", "default");
-				response.put("color", "000000");
+				response.put("head", "all-seeing");
+				response.put("tail", "rattle");
+				response.put("color", "#28398F");
 				response.put("author", "nettogrof");
 				return response;
 			}

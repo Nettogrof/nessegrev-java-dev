@@ -35,6 +35,12 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * Boolean if a squad game
 	 */
 	public transient boolean squad;
+	
+	public BetaSnake() {
+		super("0");
+		fileConfig = "Beta.properties";
+		setProperties();
+	}
 
 	/**
 	 * Constructor with the gameid,
