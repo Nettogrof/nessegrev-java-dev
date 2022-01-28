@@ -8,6 +8,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.INVALI
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_SCORE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
@@ -153,8 +154,9 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 				}
 			} else {
 				head.add(currentHead);
-				float[] beta = { INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE,
-						INVALID_SCORE, INVALID_SCORE, INVALID_SCORE, INVALID_SCORE };
+				float[] beta = new float[c.score.length];
+				Arrays.fill(beta, INVALID_SCORE);
+					
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
 
 				for (int i = c.score.length; i < score.length; i++) {
