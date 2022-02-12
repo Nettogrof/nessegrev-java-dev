@@ -1,5 +1,6 @@
 package ai.nettogrof.battlesnake.treesearch.search.royale;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -27,8 +28,8 @@ public class RoyaleSearch extends AbstractRoyaleSearch {
 	 * @param timeout   the time limit to run the search
 	 */
 	public RoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
-		super(root, width, height, starttime, timeout);
+			final int timeout, final GameRuleset rules) {
+		super(root, width, height, starttime, timeout, rules);
 	}
 
 	@Override

@@ -50,8 +50,8 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * @param hazard        boolean is destination square a hazard
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo, final int moveSquare, final boolean eat,
-			final boolean hazard) {
-		super(prevSnakeInfo, moveSquare, eat, hazard);
+			final boolean hazard, final GameRuleset rules) {
+		super(prevSnakeInfo, moveSquare, eat, hazard, rules);
 		squad = prevSnakeInfo.getSquad();
 
 	}

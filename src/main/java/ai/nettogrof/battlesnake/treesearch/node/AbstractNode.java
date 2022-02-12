@@ -78,6 +78,7 @@ public abstract class AbstractNode {
 	 * Does that node can be explore
 	 */
 	public transient boolean exp = true;
+	
 
 	/**
 	 * Basic constructor

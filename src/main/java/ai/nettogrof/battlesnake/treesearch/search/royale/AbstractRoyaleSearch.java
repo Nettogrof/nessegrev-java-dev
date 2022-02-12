@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.AbstractMCTS;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
@@ -23,15 +24,17 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	 * @param height    Board height
 	 * @param starttime starting time for the search in millisecond
 	 * @param timeout   the time limit to run the search
+	 * @param rules
 	 */
 	public AbstractRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
+			final int timeout, GameRuleset rules) {
 		super();
 		this.root = root;
 		this.width = width;
 		this.height = height;
 		this.startTime = starttime;
 		this.timeout = timeout;
+		this.rules = rules;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
 		return new SnakeInfo(snake, newHead, currentNode.getFood().isFood(newHead),
-				((AbstractRoyaleNode) currentNode).getHazard().isHazard(newHead));
+				((AbstractRoyaleNode) currentNode).getHazard().isHazard(newHead), rules);
 	}
 
 	@Override

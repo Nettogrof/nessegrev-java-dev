@@ -5,6 +5,7 @@ package ai.nettogrof.battlesnake.treesearch.search.constrictor;
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.AbstractMCTS;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
@@ -57,14 +58,14 @@ public class ConstrictorSearch extends AbstractMCTS {
 	 * @param timeout   the time limit to run the search
 	 */
 	public ConstrictorSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
+			final int timeout, final GameRuleset rules) {
 		super();
 		this.root = root;
 		this.width = width;
 		this.height = height;
 		startTime = starttime;
 		this.timeout = timeout;
-
+		this.rules = rules;
 	}
 
 	@Override

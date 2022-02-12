@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
@@ -156,8 +157,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 		final AbstractNode root = genRoot(moveRequest);
 		root.exp = true;
+		GameRuleset rules = new GameRuleset(moveRequest.get("game").get("ruleset"));
 		try {
-			treeSearch(root, startTime);
+			treeSearch(root, startTime, rules);
 		} catch (ReflectiveOperationException e) {
 			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
 		}
@@ -184,7 +186,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param startTime The start time in millisecond
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
-	protected void treeSearch(final AbstractNode root, final Long startTime) throws ReflectiveOperationException {
+	protected void treeSearch(final AbstractNode root, final Long startTime, GameRuleset rules)
+			throws ReflectiveOperationException {
 
 		if (multiThread && root.getSnakes().size() < 5) {
 			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
@@ -195,7 +198,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
 
 			for (final AbstractNode c : root.getChild()) {
-				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer));
+				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer, rules));
 
 			}
 
@@ -226,7 +229,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			log.atInfo().log("Nb Thread: " + nodelist.size());
 		} else {
 			// Single thread
-			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer);
+			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
+					rules);
 
 			if (main == null) {
 				log.atSevere().log("Unable to find Search Type ");
@@ -548,16 +552,20 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 		switch (ruleset) {
 		case "standard":
-			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+					GameRuleset.class);
 		case "constrictor":
 			return ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-					int.class);
+					int.class, GameRuleset.class);
 		case "royale":
-			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+					GameRuleset.class);
 		case "squad":
-			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+					GameRuleset.class);
 		default:
-			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+					GameRuleset.class);
 		}
 
 	}

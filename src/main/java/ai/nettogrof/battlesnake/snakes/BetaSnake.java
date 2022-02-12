@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
@@ -35,7 +36,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * Boolean if a squad game
 	 */
 	public transient boolean squad;
-	
+
 	public BetaSnake() {
 		super("0");
 		fileConfig = "Beta.properties";
@@ -185,6 +186,5 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	protected String getFileConfig() {
 		return fileConfig;
 	}
-	
 
 }

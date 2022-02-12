@@ -3,6 +3,7 @@
  */
 package ai.nettogrof.battlesnake.treesearch.search.fun;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -25,8 +26,8 @@ public class RightStandardSearch extends AbstractLimitedMoveSearch {
 	 * @param timeout   the time limit to run the search
 	 */
 	public RightStandardSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
-		super(root, width, height, starttime, timeout);
+			final int timeout, final GameRuleset rules) {
+		super(root, width, height, starttime, timeout, rules);
 		leftNeck = 1;
 		rightNeck = -1;
 		downNeck = -1000;

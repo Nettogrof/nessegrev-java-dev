@@ -8,7 +8,6 @@ import com.google.common.flogger.FluentLogger;
 import gnu.trove.list.array.TIntArrayList;
 
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_HEALTH;
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.LOST_HAZARD;
 
 /**
  * Data related to a Snake in non-squad modes
@@ -79,17 +78,18 @@ public class SnakeInfo implements Cloneable {
 	 * @param eat           Is destination square a food
 	 * @param hazard        Is destination square a hazard
 	 */
-	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard) {
-		
+	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard,
+			GameRuleset rules) {
+
 		if (eat) {
 			health = MAX_HEALTH;
 			this.eat = true;
 		} else {
 			health = prevSnakeInfo.getHealth() - 1;
 			if (hazard) {
-				health += LOST_HAZARD;
+				health -= rules.getDamagePerTurn();
 			}
-			
+
 		}
 
 		snakeBody = new TIntArrayList(prevSnakeInfo.getSnakeBody());
@@ -98,7 +98,6 @@ public class SnakeInfo implements Cloneable {
 			snakeBody.removeAt(snakeBody.size() - 1);
 		}
 
-		
 		if (health <= 0) {
 			alive = false;
 		}

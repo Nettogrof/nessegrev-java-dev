@@ -3,6 +3,7 @@ package ai.nettogrof.battlesnake.treesearch.search.fun;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
@@ -43,8 +44,8 @@ public abstract class AbstractLimitedMoveSearch extends MctsSearch {
 	 * @param timeout   the time limit to run the search
 	 */
 	public AbstractLimitedMoveSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
-		super(root, width, height, starttime, timeout);
+			final int timeout, final GameRuleset rules) {
+		super(root, width, height, starttime, timeout, rules);
 
 	}
 

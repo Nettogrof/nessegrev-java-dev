@@ -3,6 +3,7 @@ package ai.nettogrof.battlesnake.treesearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
@@ -45,6 +46,11 @@ public abstract class AbstractSearch implements Runnable {
 	 * Starting time for the search in millisecond
 	 */
 	protected transient long startTime;
+
+	/**
+	 * Object containing Game Rules
+	 */
+	public transient GameRuleset rules;
 
 	/**
 	 * Basic Constructor
@@ -128,7 +134,7 @@ public abstract class AbstractSearch implements Runnable {
 		} else {
 			ret = new ArrayList<>();
 			if (list.isEmpty()) {
-				
+
 				for (final SnakeInfo si : snakes) {
 					final ArrayList<SnakeInfo> merged = new ArrayList<>(1);
 					merged.add(si.cloneSnake());

@@ -3,6 +3,7 @@
  */
 package ai.nettogrof.battlesnake.treesearch.search.standard;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
@@ -50,10 +51,11 @@ public class MctsSearch extends AbstractStandardSearch {
 	 * @param timeout   the time limit to run the search
 	 */
 	public MctsSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout) {
+			final int timeout, final GameRuleset rules) {
 		super(root, width, height);
 		startTime = starttime;
 		this.timeout = timeout;
+		this.rules = rules;
 
 	}
 
@@ -66,5 +68,4 @@ public class MctsSearch extends AbstractStandardSearch {
 		executeMCTS();
 	}
 
-	
 }

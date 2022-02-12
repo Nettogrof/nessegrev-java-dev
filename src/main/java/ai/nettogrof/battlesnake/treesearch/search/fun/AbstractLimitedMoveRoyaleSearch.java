@@ -6,6 +6,7 @@ package ai.nettogrof.battlesnake.treesearch.search.fun;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
@@ -45,8 +46,8 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	 * @param timeout   the time limit to run the search
 	 */
 	public AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
-			final long starttime, final int timeout) {
-		super(root, width, height, starttime, timeout);
+			final long starttime, final int timeout, final GameRuleset rules) {
+		super(root, width, height, starttime, timeout, rules);
 	}
 
 	/**
