@@ -31,7 +31,7 @@ public final class SnakeGeneticConstants {
 	public static float borderScore = 0.4f;
 
 	/**
-	 * Hazard score to subtract if head on the border of the board
+	 * Hazard score to subtract if head in hazard
 	 */
 	public static float hazardScore = 0.9f;
 
