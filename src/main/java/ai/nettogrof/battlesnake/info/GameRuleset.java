@@ -20,6 +20,12 @@ public class GameRuleset {
 
 	private final int gameType;
 
+	/**
+	 * @param gameType
+	 * @param hazardDamagePerTurn
+	 * @param foodSpawnChance
+	 * @param minimumFood
+	 */
 	public GameRuleset(final int gameType, final int hazardDamagePerTurn, final int foodSpawnChance,
 			final int minimumFood) {
 		super();
@@ -29,6 +35,9 @@ public class GameRuleset {
 		this.gameType = gameType;
 	}
 
+	/**
+	 * @param node
+	 */
 	public GameRuleset(final JsonNode node) {
 		super();
 		final JsonNode setting = node.get("settings");
