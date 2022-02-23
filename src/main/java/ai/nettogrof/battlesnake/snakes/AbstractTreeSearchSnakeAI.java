@@ -24,6 +24,7 @@ import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.constrictor.ConstrictorSearch;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.royale.wrapped.WrappedRoyaleSearch;
 import ai.nettogrof.battlesnake.treesearch.search.squad.SquadSearch;
 import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
@@ -193,7 +194,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
 			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
 			nodelist.add(root);
-			expand(nodelist, expandedlist);
+			expand(nodelist, expandedlist, rules);
 
 			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
 
@@ -367,22 +368,26 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final int head = root.getSnakes().get(0).getHead();
 		if (!upward.isEmpty() && upward.min() > choiceValue) {
 			choiceValue = upward.min();
-			move = head + 1;
+			move = head % 1000  != height -1 ? head + 1 : head - height -1;
 
 		}
 		if (!down.isEmpty() && down.min() > choiceValue) {
 			choiceValue = down.min();
-			move = head - 1;
+			move = head % 1000  != 0 ? head - 1 : head + height -1;
+				
+			
 
 		}
 		if (!left.isEmpty() && left.min() > choiceValue) {
 			choiceValue = left.min();
-			move = head - 1000;
+			move = head / 1000  != 0 ? head - 1000 : head + (width -1) * 1000;
+			
 
 		}
 		if (!right.isEmpty() && right.min() > choiceValue) {
 			choiceValue = right.min();
-			move = head + 1000;
+			move = head / 1000  != width -1 ? head - 1000 : head - (width -1) * 1000;
+			
 
 		}
 
@@ -457,14 +462,28 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			// if (node.getChild().get(i).exp) {
 			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
-			if (move / 1000 < head / 1000) {
+			if ((move / 1000) + 1 == head / 1000) {
 				left.add(node.getChild().get(i).getScoreRatio());
-			} else if (move / 1000 > head / 1000) {
+			} else if ((move / 1000)  - 1 == head / 1000) {
 				right.add(node.getChild().get(i).getScoreRatio());
-			} else if (move % 1000 < head % 1000) {
+			} else if ((move % 1000  + 1) == head % 1000) {
 				down.add(node.getChild().get(i).getScoreRatio());
-			} else {
+			} else if ((move % 1000 - 1) == head % 1000) {
 				upward.add(node.getChild().get(i).getScoreRatio());
+			} else {
+				log.atInfo().log("wrapping...");
+				if (move / 1000 == 0 && head / 1000 != 0) {
+					right.add(node.getChild().get(i).getScoreRatio());
+				} else if ((move / 1000 != 0 && head / 1000 == 0)){
+					left.add(node.getChild().get(i).getScoreRatio());
+				}else if (move % 1000 == 0 && head % 1000 != 0) {
+					upward.add(node.getChild().get(i).getScoreRatio());
+				} else if ((move % 1000 != 0 && head % 1000 == 0)){
+					down.add(node.getChild().get(i).getScoreRatio());
+				} else {
+					log.atWarning().log("Undefined Move");
+					upward.add(node.getChild().get(i).getScoreRatio());
+				}
 			}
 			// }
 		}
@@ -526,12 +545,13 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			final int move = choosenNode.getSnakes().get(0).getHead();
 
 			final int snakex = head.get("x").asInt();
+			final int snakey = head.get("y").asInt();
 
-			if (move / 1000 < snakex) {
+			if (move / 1000 == snakex-1 ||  (snakex == 0 && move / 1000 > 1)) {
 				res = LEFT;
-			} else if (move / 1000 > snakex) {
+			} else if (move / 1000 == snakex+1 ||  (snakex == width -1 && move / 1000 == 0)) {
 				res = RIGHT;
-			} else if (move % 1000 < head.get("y").asInt()) {
+			} else if (move % 1000 == snakey-1 ||  (snakey == 0 && move % 1000 > 1)) {
 				res = apiversion == 1 ? DOWN : UPWARD;
 			} else {
 				res = apiversion == 1 ? UPWARD : DOWN;
@@ -563,6 +583,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		case "squad":
 			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
 					GameRuleset.class);
+		case "wrapped":
+			return WrappedRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+					GameRuleset.class);
 		default:
 			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
 					GameRuleset.class);
@@ -577,14 +600,14 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param expandedlist List of node to be updated after search
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
-	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist)
+	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist, GameRuleset rules)
 			throws ReflectiveOperationException {
 		boolean cont = true;
 		while (cont) {
 			if (nodelist.isEmpty()) {
 				cont = false;
 			} else {
-				searchType.newInstance(nodelist.get(0), width, height, 0, 0).generateChild();
+				searchType.newInstance(nodelist.get(0), width, height, 0, 0, rules).generateChild();
 				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpuLimit) {
 					final AbstractNode oldroot = nodelist.remove(0);
 					expandedlist.add(oldroot);

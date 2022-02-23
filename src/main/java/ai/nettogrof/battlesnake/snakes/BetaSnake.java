@@ -13,6 +13,7 @@ import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;
+import ai.nettogrof.battlesnake.treesearch.search.royale.wrapped.WrappedRoyaleNode;
 import ai.nettogrof.battlesnake.treesearch.search.squad.SquadNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.DuelNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
@@ -167,6 +168,10 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 			break;
 		case "squad":
 			node = new SquadNode(snakes, food);
+			break;
+			
+		case "wrapped":
+			node = new WrappedRoyaleNode(snakes, food, hazard);
 			break;
 		default:
 			if (snakes.size() > FOUR_SNAKE) {

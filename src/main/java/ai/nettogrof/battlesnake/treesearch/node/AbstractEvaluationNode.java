@@ -65,6 +65,18 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	protected void addScoreDistance(final int head) {
 		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 	}
+	
+	/**
+	 * Adjust our snake score for the distance between head and the nearest food
+	 * 
+	 * @param head Square of the snake head
+	 */
+	protected void addScoreDistanceAll() {
+		for (int i = 0; i < snakes.size(); i++) {
+			int head = snakes.get(i).getHead();
+			score[i] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
+		}
+	}
 
 	/**
 	 * Apply the new Hash map value to the board.
