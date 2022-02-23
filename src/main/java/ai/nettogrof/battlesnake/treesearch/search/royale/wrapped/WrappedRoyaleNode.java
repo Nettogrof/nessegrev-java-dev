@@ -12,26 +12,30 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
-import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleFourNode;
 
 /**
- * @author carll
- *
+ * This Royale FourNode class must be use when only 3 or 4 snakes left, and in
+ * royale mode.
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2022
  */
 public class WrappedRoyaleNode extends AbstractRoyaleNode {
 
 	/**
-	 * @param snakes
-	 * @param food
-	 * @param hazard2
+	 * Constructor, set the information and evaluate/ set score directly
+	 * 
+	 * @param snakes   List of snakes
+	 * @param foodInfo Food information
+	 * @param hazard   Hazard Info
 	 */
-	public WrappedRoyaleNode(List<SnakeInfo> snakes, FoodInfo food, AbstractHazard hazard) {
+	public WrappedRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard) {
 		super(snakes, food, hazard);
 		setScore();
 	}
 
 	@Override
-	public AbstractNode createNode(List<SnakeInfo> snakes, AbstractNode currentNode) {
+	public AbstractNode createNode(final List<SnakeInfo> snakes, final AbstractNode currentNode) {
 		return new WrappedRoyaleNode(snakes, currentNode.getFood(), ((WrappedRoyaleNode) currentNode).getHazard());
 	}
 

@@ -65,7 +65,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	protected void addScoreDistance(final int head) {
 		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 	}
-	
+
 	/**
 	 * Adjust our snake score for the distance between head and the nearest food
 	 * 
@@ -73,7 +73,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 */
 	protected void addScoreDistanceAll() {
 		for (int i = 0; i < snakes.size(); i++) {
-			int head = snakes.get(i).getHead();
+			final int head = snakes.get(i).getHead();
 			score[i] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 		}
 	}
@@ -155,8 +155,8 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * snakes
 	 */
 	protected void addSizeCompareScore() {
-		
-		//TODO  add the 0.4 to Genetic value
+
+		// TODO add the 0.4 to Genetic value
 		for (int i = 1; i < snakes.size(); i++) {
 			if (snakes.get(i).getSnakeBody().size() > snakes.get(0).getSnakeBody().size()) {
 				score[0] -= 0.4f;
@@ -258,8 +258,6 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 		adjustScodeBasedonBoardControl(board);
 
 	}
-
-	
 
 	/**
 	 * Set Max score to winner snakes.

@@ -6,7 +6,6 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
-import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
@@ -169,7 +168,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 		case "squad":
 			node = new SquadNode(snakes, food);
 			break;
-			
+
 		case "wrapped":
 			node = new WrappedRoyaleNode(snakes, food, hazard);
 			break;

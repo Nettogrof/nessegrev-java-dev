@@ -11,16 +11,17 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class GameRuleset {
 
-	private int hazardDamagePerTurn = 14;
-	private int foodSpawnChance = 15;
-	private int minimumFood = 1;
+	private final int hazardDamagePerTurn;
+	private final int foodSpawnChance;
+	private final int minimumFood;
 	/**
 	 * game type 0 = Standard 1 = constructor 2 = royale 3 = wrapped 4 = squad
 	 */
 
-	private int gameType = 0;
+	private final int gameType;
 
-	public GameRuleset(int gameType, int hazardDamagePerTurn, int foodSpawnChance, int minimumFood) {
+	public GameRuleset(final int gameType, final int hazardDamagePerTurn, final int foodSpawnChance,
+			final int minimumFood) {
 		super();
 		this.hazardDamagePerTurn = hazardDamagePerTurn;
 		this.foodSpawnChance = foodSpawnChance;
@@ -28,9 +29,9 @@ public class GameRuleset {
 		this.gameType = gameType;
 	}
 
-	public GameRuleset(JsonNode node) {
+	public GameRuleset(final JsonNode node) {
 		super();
-		JsonNode setting = node.get("settings");
+		final JsonNode setting = node.get("settings");
 
 		switch (node.get("name").asText()) {
 		case "standard":
@@ -48,6 +49,7 @@ public class GameRuleset {
 
 		default:
 			gameType = 0;
+			break;
 		}
 
 		this.hazardDamagePerTurn = setting.get("hazardDamagePerTurn").asInt();
@@ -55,6 +57,9 @@ public class GameRuleset {
 		this.minimumFood = setting.get("minimumFood").asInt();
 	}
 
+	/**
+	 * @return hazard Damage per Turn
+	 */
 	public int getDamagePerTurn() {
 		return hazardDamagePerTurn;
 	}

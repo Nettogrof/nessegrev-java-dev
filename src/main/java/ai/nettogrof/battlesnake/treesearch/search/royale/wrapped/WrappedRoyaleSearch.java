@@ -12,25 +12,34 @@ import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleSearch;
 
 /**
- * @author carll
- *
+ * This regular search was used during the Spring 2022 league Nessegrev-Beta
+ * snake for the wrapped mode  It start by search the smallest branch and expand it (12 times) then :
+ * 1. find the best branch from the previous best branch that the score doesn't
+ * change (root the first time) 2. expand the best leaf node 3. update score of
+ * the branch keep branch info if score doesn't changed
+ * 
+ * Repeat those 3 steps until no time left or the root is not more expandable.
+ * 
+ * 
+ * @author carl.lajeunesse
+ * @version Spring 2022
  */
 public class WrappedRoyaleSearch extends AbstractRoyaleSearch {
 
 	/**
-	 * @param root
-	 * @param width
-	 * @param height
-	 * @param starttime
-	 * @param timeout
-	 * @param rules
+	 * Constructor used to expand to do the tree search.
+	 * 
+	 * @param root      Root node
+	 * @param width     Board width
+	 * @param height    Board height
+	 * @param starttime starting time for the search in millisecond
+	 * @param timeout   the time limit to run the search
 	 */
-	public WrappedRoyaleSearch(AbstractNode root, int width, int height, long starttime, int timeout,
-			GameRuleset rules) {
+	public WrappedRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
+			final int timeout, final GameRuleset rules) {
 		super(root, width, height, starttime, timeout, rules);
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	protected List<SnakeInfo> generateSnakeInfoDestination(final SnakeInfo snakeInfo, final AbstractNode node,
 			final List<SnakeInfo> allSnakes) {
@@ -54,11 +63,11 @@ public class WrappedRoyaleSearch extends AbstractRoyaleSearch {
 			if (head % 1000 > 0) {
 				addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			} else {
-				addMove(head + (height - 1) , allSnakes, snakeInfo, node, listNewSnakeInfo);
+				addMove(head + (height - 1), allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 			if (head % 1000 < height - 1) {
 				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}else {
+			} else {
 				addMove(head / 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 		}

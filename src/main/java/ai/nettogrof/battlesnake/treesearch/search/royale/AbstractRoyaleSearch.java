@@ -27,7 +27,7 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	 * @param rules
 	 */
 	public AbstractRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
-			final int timeout, GameRuleset rules) {
+			final int timeout, final GameRuleset rules) {
 		super();
 		this.root = root;
 		this.width = width;

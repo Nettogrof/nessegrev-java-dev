@@ -79,7 +79,7 @@ public class SnakeInfo implements Cloneable {
 	 * @param hazard        Is destination square a hazard
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard,
-			GameRuleset rules) {
+			final GameRuleset rules) {
 
 		if (eat) {
 			health = MAX_HEALTH;
