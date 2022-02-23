@@ -37,6 +37,10 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	public transient boolean squad;
 
+	/**
+	 * Basic Constructor 
+	 * 
+	 */
 	public BetaSnake() {
 		super("0");
 		fileConfig = "Beta.properties";
