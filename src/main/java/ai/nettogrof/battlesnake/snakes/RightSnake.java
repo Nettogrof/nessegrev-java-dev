@@ -5,6 +5,7 @@ package ai.nettogrof.battlesnake.snakes;
 
 import java.lang.reflect.Constructor;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.fun.RightRoyaleSearch;
@@ -47,9 +48,9 @@ public class RightSnake extends BetaSnake {
 
 		if ("standard".equals(ruleset)) {
 			return RightStandardSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-					int.class);
+					int.class, GameRuleset.class);
 		}
-		return RightRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+		return RightRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class, GameRuleset.class);
 
 	}
 }

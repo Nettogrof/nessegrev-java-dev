@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.snakes;
 
 import java.lang.reflect.Constructor;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.fun.JustTurnSearch;
@@ -43,10 +44,10 @@ public class JustTurnSnake extends BetaSnake {
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
 
 		if ("standard".equals(ruleset)) {
-			return JustTurnSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class);
+			return JustTurnSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class, GameRuleset.class);
 		}
 		return JustTurnRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-				int.class);
+				int.class, GameRuleset.class);
 
 	}
 
