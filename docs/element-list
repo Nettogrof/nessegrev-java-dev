@@ -1,1 +1,14 @@
-ai.nettogrof.battlesnake.junit
+ai.nettogrof.battlesnake.info
+ai.nettogrof.battlesnake.info.hazard
+ai.nettogrof.battlesnake.snakes
+ai.nettogrof.battlesnake.snakes.common
+ai.nettogrof.battlesnake.treesearch
+ai.nettogrof.battlesnake.treesearch.alpha
+ai.nettogrof.battlesnake.treesearch.node
+ai.nettogrof.battlesnake.treesearch.search.constrictor
+ai.nettogrof.battlesnake.treesearch.search.fun
+ai.nettogrof.battlesnake.treesearch.search.royale
+ai.nettogrof.battlesnake.treesearch.search.royale.wrapped
+ai.nettogrof.battlesnake.treesearch.search.squad
+ai.nettogrof.battlesnake.treesearch.search.standard
+ai.nettogrof.battlesnake.treesearch.search.standard.challenge
