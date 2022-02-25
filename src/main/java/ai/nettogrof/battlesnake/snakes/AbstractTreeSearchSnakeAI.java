@@ -467,7 +467,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			} else if (move % 1000 - 1 == head % 1000) {
 				upward.add(node.getChild().get(i).getScoreRatio());
 			} else {
-				log.atInfo().log("wrapping...");
+			
 				if (move / 1000 == 0 && head / 1000 != 0) {
 					right.add(node.getChild().get(i).getScoreRatio());
 				} else if (move / 1000 != 0 && head / 1000 == 0) {
