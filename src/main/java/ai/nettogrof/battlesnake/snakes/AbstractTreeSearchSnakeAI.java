@@ -368,7 +368,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final int head = root.getSnakes().get(0).getHead();
 		if (!upward.isEmpty() && upward.min() > choiceValue) {
 			choiceValue = upward.min();
-			move = head % 1000 == height - 1 ? head - height - 1 : head + 1;
+			move = head % 1000 == height - 1 ? head / 1000 * 1000 : head + 1;
 
 		}
 		if (!down.isEmpty() && down.min() > choiceValue) {

@@ -68,7 +68,7 @@ public class WrappedRoyaleSearch extends AbstractRoyaleSearch {
 			if (head % 1000 < height - 1) {
 				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			} else {
-				addMove(head / 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
+				addMove(head / 1000 * 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
 			}
 		}
 		return listNewSnakeInfo;
