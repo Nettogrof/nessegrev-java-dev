@@ -383,7 +383,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		}
 		if (!right.isEmpty() && right.min() > choiceValue) {
 			choiceValue = right.min();
-			move = head / 1000 == width - 1 ? head - (width - 1) * 1000 : head - 1000;
+			move = head / 1000 == width - 1 ? head - (width - 1) * 1000 : head + 1000;
 
 		}
 

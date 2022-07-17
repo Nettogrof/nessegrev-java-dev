@@ -45,7 +45,7 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
 		return new SnakeInfo(snake, newHead, currentNode.getFood().isFood(newHead),
-				((AbstractRoyaleNode) currentNode).getHazard().isHazard(newHead), rules);
+				root.getHazard().isHazard(newHead), rules);
 	}
 
 	@Override

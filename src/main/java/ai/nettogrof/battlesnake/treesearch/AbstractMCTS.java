@@ -117,6 +117,20 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 			currentTime = System.currentTimeMillis() - startTime;
 		}
 		updateFullListNode(retNode);
+		//debug();
 	}
+/*
+	private void debug() {
+		for (int i = 0 ; i < root.getChild().size() ; i++) {
+			System.out.println("MCTS score of"+  i + ":" + mctsScore(root, root.getChild().get(i)) + "  score :" + root.getChild().get(i).getScoreRatio()  + " head:" +root.getChild().get(i).getSnakes().get(0).getHead() );
+		}
+		final List<AbstractNode> bestChildMCTS = getMCTSBestPath(root);
+		final List<AbstractNode> bestChilds = getBestPath(root);
+		
+		if(bestChildMCTS.equals(bestChilds)) {
+			System.out.println("oh well");
+		}
+		System.out.println("end debug");
+	}*/
 
 }

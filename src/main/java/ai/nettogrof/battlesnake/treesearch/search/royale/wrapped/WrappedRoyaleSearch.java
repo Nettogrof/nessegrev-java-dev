@@ -8,7 +8,9 @@ import java.util.List;
 
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
+import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleSearch;
 
 /**
@@ -72,6 +74,18 @@ public class WrappedRoyaleSearch extends AbstractRoyaleSearch {
 			}
 		}
 		return listNewSnakeInfo;
+	}
+	@Override
+	protected boolean freeSpace(final int square, final List<SnakeInfo> snakes, final SnakeInfo currentSnake) {
+		if (root.getHazard().isHazard(square)) {
+			return false;
+		}
+		
+		boolean free = true;
+		for (int i = 0; i < snakes.size() && free; i++) {
+			free = !snakes.get(i).isSnake(square);
+		}
+		return free;
 	}
 
 	@Override
