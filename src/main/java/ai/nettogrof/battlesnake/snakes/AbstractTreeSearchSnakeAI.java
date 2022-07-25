@@ -357,32 +357,40 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @return the best AbstractNode
 	 */
 	protected AbstractNode chooseBestMove(final AbstractNode root) {
-		final TFloatArrayList upward = new TFloatArrayList();
-		final TFloatArrayList down = new TFloatArrayList();
-		final TFloatArrayList left = new TFloatArrayList();
-		final TFloatArrayList right = new TFloatArrayList();
+		TFloatArrayList[] upward = new TFloatArrayList[2];
+		final TFloatArrayList[] down = new TFloatArrayList[2];
+		final TFloatArrayList[] left = new TFloatArrayList[2];
+		final TFloatArrayList[] right = new TFloatArrayList[2];
+		upward[0] = new TFloatArrayList();
+		upward[1] = new TFloatArrayList();
+		down[0] = new TFloatArrayList();
+		down[1] = new TFloatArrayList();
+		right[0] = new TFloatArrayList();
+		right[1] = new TFloatArrayList();
+		left[0] = new TFloatArrayList();
+		left[1] = new TFloatArrayList();
 		fillList(upward, down, left, right, root);
 		logValue(upward, down, left, right);
 		float choiceValue = -1f;
 		int move = 0;
 		final int head = root.getSnakes().get(0).getHead();
-		if (!upward.isEmpty() && upward.min() > choiceValue) {
-			choiceValue = upward.min();
+		if (!upward[0].isEmpty() && upward[0].min() > choiceValue) {
+			choiceValue = upward[0].min();
 			move = head % 1000 == height - 1 ? head / 1000 * 1000 : head + 1;
 
 		}
-		if (!down.isEmpty() && down.min() > choiceValue) {
-			choiceValue = down.min();
+		if (!down[0].isEmpty() && down[0].min() > choiceValue) {
+			choiceValue = down[0].min();
 			move = head % 1000 == 0 ? head + height - 1 : head - 1;
 
 		}
-		if (!left.isEmpty() && left.min() > choiceValue) {
-			choiceValue = left.min();
+		if (!left[0].isEmpty() && left[0].min() > choiceValue) {
+			choiceValue = left[0].min();
 			move = head / 1000 == 0 ? head + (width - 1) * 1000 : head - 1000;
 
 		}
-		if (!right.isEmpty() && right.min() > choiceValue) {
-			choiceValue = right.min();
+		if (!right[0].isEmpty() && right[0].min() > choiceValue) {
+			choiceValue = right[0].min();
 			move = head / 1000 == width - 1 ? head - (width - 1) * 1000 : head + 1000;
 
 		}
@@ -450,8 +458,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param right  float array list
 	 * @param node   parent node
 	 */
-	private void fillList(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
-			final TFloatArrayList right, final AbstractNode node) {
+	private void fillList(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
+			final TFloatArrayList right[], final AbstractNode node) {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
@@ -459,26 +467,34 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
 			if ((move / 1000) + 1 == head / 1000) {
-				left.add(node.getChild().get(i).getScoreRatio());
+				left[0].add(node.getChild().get(i).getScoreRatio());
+				left[1].add(node.getChild().get(i).getChildCount());
 			} else if ((move / 1000) - 1 == head / 1000) {
-				right.add(node.getChild().get(i).getScoreRatio());
+				right[0].add(node.getChild().get(i).getScoreRatio());
+				right[1].add(node.getChild().get(i).getChildCount());
 			} else if (move % 1000 + 1 == head % 1000) {
-				down.add(node.getChild().get(i).getScoreRatio());
+				down[0].add(node.getChild().get(i).getScoreRatio());
+				down[1].add(node.getChild().get(i).getChildCount());
 			} else if (move % 1000 - 1 == head % 1000) {
-				upward.add(node.getChild().get(i).getScoreRatio());
+				upward[0].add(node.getChild().get(i).getScoreRatio());
+				upward[1].add(node.getChild().get(i).getChildCount());
 			} else {
 			
 				if (move / 1000 == 0 && head / 1000 != 0) {
-					right.add(node.getChild().get(i).getScoreRatio());
+					right[0].add(node.getChild().get(i).getScoreRatio());
+					right[1].add(node.getChild().get(i).getChildCount());
 				} else if (move / 1000 != 0 && head / 1000 == 0) {
-					left.add(node.getChild().get(i).getScoreRatio());
+					left[0].add(node.getChild().get(i).getScoreRatio());
+					left[1].add(node.getChild().get(i).getChildCount());
 				} else if (move % 1000 == 0 && head % 1000 != 0) {
-					upward.add(node.getChild().get(i).getScoreRatio());
+					upward[0].add(node.getChild().get(i).getScoreRatio());
+					upward[1].add(node.getChild().get(i).getChildCount());
 				} else if (move % 1000 != 0 && head % 1000 == 0) {
-					down.add(node.getChild().get(i).getScoreRatio());
+					down[0].add(node.getChild().get(i).getScoreRatio());
+					down[1].add(node.getChild().get(i).getChildCount());
 				} else {
 					log.atWarning().log("Undefined Move");
-					upward.add(node.getChild().get(i).getScoreRatio());
+					upward[0].add(node.getChild().get(i).getScoreRatio());
 				}
 			}
 			// }
@@ -495,20 +511,20 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @param left   float array list
 	 * @param right  float array list
 	 */
-	private void logValue(final TFloatArrayList upward, final TFloatArrayList down, final TFloatArrayList left,
-			final TFloatArrayList right) {
+	private void logValue(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
+			final TFloatArrayList right[]) {
 		final StringBuilder logtext = new StringBuilder();
-		if (!upward.isEmpty()) {
-			logtext.append("\nup ").append(upward.min());
+		if (!upward[0].isEmpty()) {
+			logtext.append("\nup ").append(upward[0].min()).append(" node count").append(upward[1].sum());
 		}
-		if (!down.isEmpty()) {
-			logtext.append("\ndown ").append(down.min());
+		if (!down[0].isEmpty()) {
+			logtext.append("\ndown ").append(down[0].min()).append(" node count").append(down[1].sum());
 		}
-		if (!left.isEmpty()) {
-			logtext.append("\nleft ").append(left.min());
+		if (!left[0].isEmpty()) {
+			logtext.append("\nleft ").append(left[0].min()).append(" node count").append(left[1].sum());
 		}
-		if (!right.isEmpty()) {
-			logtext.append("\nright ").append(right.min());
+		if (!right[0].isEmpty()) {
+			logtext.append("\nright ").append(right[0].min()).append(" node count").append(right[1].sum());
 		}
 		log.atInfo().log(logtext.toString());
 	}

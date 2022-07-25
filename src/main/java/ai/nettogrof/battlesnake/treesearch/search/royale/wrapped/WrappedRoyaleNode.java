@@ -50,7 +50,7 @@ public class WrappedRoyaleNode extends AbstractRoyaleNode {
 			addBasicLengthScore();
 
 			//adjustHazardScore();
-			//addScoreDistanceAll();
+			addScoreDistanceAll();
 
 		}
 
