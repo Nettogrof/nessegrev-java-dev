@@ -23,6 +23,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
  * 
  * @author carl.lajeunesse
  * @version Spring 2021
+ * @deprecated 
  */
 public class GammaSnake extends AbstractTreeSearchSnakeAI {
 

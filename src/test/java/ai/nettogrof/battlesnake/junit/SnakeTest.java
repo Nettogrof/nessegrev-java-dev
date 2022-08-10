@@ -10,9 +10,7 @@ import ai.nettogrof.battlesnake.snakes.Snake;
 public class SnakeTest {
 
 	/**
-	 * @throws JsonMappingException ex
-	 * @throws JsonProcessingException ex
-	 * @throws InterruptedException ex
+	 * 
 	 */
 	@Test
 	public void testMain() {

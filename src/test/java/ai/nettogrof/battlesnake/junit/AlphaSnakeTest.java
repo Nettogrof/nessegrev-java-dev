@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.snakes.AlphaSnake;
-import ai.nettogrof.battlesnake.snakes.BetaSnake;
+import ai.nettogrof.battlesnake.snakes.ExpertSnake;
 
 /**
  * @author carl.lajeunesse

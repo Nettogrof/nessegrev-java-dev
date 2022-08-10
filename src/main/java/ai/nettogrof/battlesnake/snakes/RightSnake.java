@@ -19,7 +19,7 @@ import ai.nettogrof.battlesnake.treesearch.search.fun.RightStandardSearch;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class RightSnake extends BetaSnake {
+public class RightSnake extends ExpertSnake {
 
 	/**
 	 * Constructor with the gameid,

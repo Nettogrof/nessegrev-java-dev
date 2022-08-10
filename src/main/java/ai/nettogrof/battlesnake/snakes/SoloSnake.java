@@ -23,6 +23,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.challenge.SoloNode;
  * 
  * @author carl.lajeunesse
  * @version Summer 2021
+ * @deprecated
  */
 public class SoloSnake extends AbstractTreeSearchSnakeAI {
 

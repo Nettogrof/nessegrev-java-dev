@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.nettogrof.battlesnake.snakes.BetaSnake;
+import ai.nettogrof.battlesnake.snakes.ExpertSnake;
 
 /**
  * @author carl.lajeunesse
@@ -37,7 +37,7 @@ public class BetaSnakeTest {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -67,7 +67,7 @@ public class BetaSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -96,7 +96,7 @@ public class BetaSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake("test");
 
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(4);
@@ -134,7 +134,7 @@ public class BetaSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(test[0]);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake("test");
 
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(1);
@@ -179,7 +179,7 @@ public class BetaSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(test[0]);
 
-		final BetaSnake snakeAi = new BetaSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake("test");
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);

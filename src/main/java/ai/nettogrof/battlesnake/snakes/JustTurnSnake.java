@@ -16,7 +16,7 @@ import ai.nettogrof.battlesnake.treesearch.search.fun.JustTurnRoyaleSearch;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class JustTurnSnake extends BetaSnake {
+public class JustTurnSnake extends ExpertSnake {
 
 	/**
 	 * Constructor with the gameid,

@@ -30,7 +30,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
  * @author carl.lajeunesse
  * @version Spring 2021
  */
-public class BetaSnake extends AbstractTreeSearchSnakeAI {
+public class ExpertSnake extends AbstractTreeSearchSnakeAI {
 
 	/**
 	 * Boolean if a squad game
@@ -41,7 +41,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * Basic Constructor 
 	 * 
 	 */
-	public BetaSnake() {
+	public ExpertSnake() {
 		super("0");
 		fileConfig = "Beta.properties";
 		setProperties();
@@ -52,7 +52,7 @@ public class BetaSnake extends AbstractTreeSearchSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public BetaSnake(final String gameId) {
+	public ExpertSnake(final String gameId) {
 		super(gameId);
 		fileConfig = "Beta.properties";
 		setProperties();
