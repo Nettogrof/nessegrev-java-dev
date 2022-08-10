@@ -174,10 +174,29 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		lastRoot = root;
 
 		log.atInfo().log("Turn:" + moveRequest.get(TURN).asInt() + " nb nodes" + root.getChildCount() + "  time: "
-				+ (System.currentTimeMillis() - startTime));
+				+ (System.currentTimeMillis() - startTime) + "  Max Depth" + getMaxDepth(root));
 		nodeTotalCount += root.getChildCount();
 		timeTotal += System.currentTimeMillis() - startTime;
 		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
+	}
+
+	private int getMaxDepth(final AbstractNode root) {
+		AbstractNode node = root;
+		int depth = 0;
+		
+		while (node.getChildCount() > 1) {
+			depth++;
+			List<AbstractNode> childs =  node.getChild() ;
+			int childCount = 0;
+			for (AbstractNode child : childs) {
+				if (child.getChildCount() > childCount) {
+					node = child;
+					childCount = child.getChildCount();
+				}
+			}
+		}
+		
+		return  depth;
 	}
 
 	/**
