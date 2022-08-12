@@ -23,6 +23,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	* constructors, typically implicit.)
 	*/
 	protected AbstractBestFirstSearch() {
+		super();
 	}
 	
 	/**

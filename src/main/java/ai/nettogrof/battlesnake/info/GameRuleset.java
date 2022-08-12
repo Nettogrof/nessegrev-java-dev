@@ -14,7 +14,7 @@ public class GameRuleset {
 	/**
 	 * Hazard damage per turn
 	 */
-	private final int hazardDamagePerTurn;
+	private final int hazardDamage;
 	
 	/**
 	 * Food spawn chance (0% - 100%)
@@ -34,14 +34,14 @@ public class GameRuleset {
 	/**
 	 * Object containing all game info
 	 * @param gameType				Game type
-	 * @param hazardDamagePerTurn	Hazard damage per turn 
+	 * @param hazardDamage			Hazard damage per turn 
 	 * @param foodSpawnChance		food spawn chance	
 	 * @param minimumFood			minimum food on board
 	 */
-	public GameRuleset(final int gameType, final int hazardDamagePerTurn, final int foodSpawnChance,
+	public GameRuleset(final int gameType, final int hazardDamage, final int foodSpawnChance,
 			final int minimumFood) {
 		super();
-		this.hazardDamagePerTurn = hazardDamagePerTurn;
+		this.hazardDamage = hazardDamage;
 		this.foodSpawnChance = foodSpawnChance;
 		this.minimumFood = minimumFood;
 		this.gameType = gameType;
@@ -71,7 +71,7 @@ public class GameRuleset {
 			break;
 		}
 
-		this.hazardDamagePerTurn = setting.get("hazardDamagePerTurn").asInt();
+		this.hazardDamage = setting.get("hazardDamagePerTurn").asInt();
 		this.foodSpawnChance = setting.get("foodSpawnChance").asInt();
 		this.minimumFood = setting.get("minimumFood").asInt();
 	}
@@ -80,8 +80,8 @@ public class GameRuleset {
 	 * Get Damage per turn
 	 * @return hazard Damage per Turn
 	 */
-	public int getDamagePerTurn() {
-		return hazardDamagePerTurn;
+	public int getHazardDamage() {
+		return hazardDamage;
 	}
 
 	/**

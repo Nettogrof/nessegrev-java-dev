@@ -25,6 +25,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 	* constructors, typically implicit.)
 	*/
 	protected AbstractMCTS() {
+		super();
 	}
 	/**
 	 * This method is use to find the next leaf node to explore using MCTS algo
