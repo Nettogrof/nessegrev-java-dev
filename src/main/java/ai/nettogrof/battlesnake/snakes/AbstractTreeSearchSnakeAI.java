@@ -186,9 +186,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		
 		while (node.getChildCount() > 1) {
 			depth++;
-			List<AbstractNode> childs =  node.getChild() ;
+			final List<AbstractNode> childs =  node.getChild() ;
 			int childCount = 0;
-			for (AbstractNode child : childs) {
+			for (final AbstractNode child : childs) {
 				if (child.getChildCount() > childCount) {
 					node = child;
 					childCount = child.getChildCount();
@@ -578,11 +578,11 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			final int snakex = head.get("x").asInt();
 			final int snakey = head.get("y").asInt();
 
-			if (move / 1000 == snakex - 1 || (snakex == 0 && move / 1000 > 1)) {
+			if (move / 1000 == snakex - 1 || snakex == 0 && move / 1000 > 1) {
 				res = LEFT;
-			} else if (move / 1000 == snakex + 1 || (snakex == width - 1 && move / 1000 == 0)) {
+			} else if (move / 1000 == snakex + 1 || snakex == width - 1 && move / 1000 == 0) {
 				res = RIGHT;
-			} else if (move % 1000 == snakey - 1 || (snakey == 0 && move % 1000 > 1)) {
+			} else if (move % 1000 == snakey - 1 || snakey == 0 && move % 1000 > 1) {
 				res = apiversion == 1 ? DOWN : UPWARD;
 			} else {
 				res = apiversion == 1 ? UPWARD : DOWN;
