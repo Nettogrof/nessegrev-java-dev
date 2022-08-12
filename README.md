@@ -27,11 +27,9 @@ You won't be able to use those snakes to run on [BattleSnake](https://play.battl
 
 (In order of the stupidest snake to the slightly less stupid snakes)
 
-* Basic (aka Nessegrev): A clueless snake that tries to go to the nearest food, only able to avoid wall and snakes' bodies
-* FloodFill (aka Nessegrev-flood): My first snake that I entered in a tournament ([Stay Home and Code / Rookie division](https://play.battlesnake.com/competitions/stay-home-and-code/)) This snake use flood fill algorithm to find the best move. It tries to target food and shorter snakes, and avoids bigger snakes.
-* Alpha : This snake participated in the [Communitech tournament](https://play.battlesnake.com/competitions/communitech/) in the Rookie division. Still has some search bugs. It uses the minimax algorithm
-* Beta : This snake was in the [Summer League/Veteran Division](https://play.battlesnake.com/competitions/summer-league/). Still active on the global arena. Based on the Alpha snake, but fewer bugs and a bit quicker.  Decent snake using minimax/payoff matrix algorithm only. This snake can play standard, squad, and royale.
-* Gamma : This snake was in the Fall League and in [Winter Classic](https://play.battlesnake.com/competitions/winter-classic-2020/) in elite division. Use mostly area control as evaluation. With the new release Gamma is now more duel oriented. Doesn't take hazard sauce into account.
+* Basic : A clueless snake that tries to go to the nearest food, only able to avoid wall and snakes' bodies
+* FloodFill : This snake use flood fill algorithm to find the best move. It tries to target food and shorter snakes, and avoids bigger snakes.
+* Expert : Decent snake using minimax/payoff matrix algorithm only with a MCTS . This snake can play standard, squad, royale, and wrapped.
 
 
 ## Properties files
@@ -43,8 +41,8 @@ Please take note that sometimes (maybe cause by Java's garbage collection) my sn
 ## How-to
 
 To run a snake, you need Java installed  (any recent version).
-In the command line, type `java -Djava.util.logging.config.file=logging.properties -jar snake.jar <SnakeName>` e.g. `java -Djava.util.logging.config.file=logging.properties -jar snake.jar Beta`
+In the command line, type `java -Djava.util.logging.config.file=logging.properties -jar snake.jar <SnakeName>` e.g. `java -Djava.util.logging.config.file=logging.properties -jar snake.jar Expert`
 
-For Alpha, Beta and Gamma, you may add memory config, e.g. `java -Djava.util.logging.config.file=logging.properties -Xmx1024m -Xms1024m -jar snake.jar Beta`
+For Expert, you may add memory config, e.g. `java -Djava.util.logging.config.file=logging.properties -Xmx1024m -Xms1024m -jar snake.jar Expert`
 
 The snake will listen on the port number from the `.properties` file.

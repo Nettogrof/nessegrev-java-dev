@@ -15,7 +15,7 @@ import ai.nettogrof.battlesnake.snakes.ExpertSnake;
  * @author carl.lajeunesse
  *
  */
-public class BetaSnakeTest {
+public class ExpertSnakeTest {
 
 	/**
 	 * 

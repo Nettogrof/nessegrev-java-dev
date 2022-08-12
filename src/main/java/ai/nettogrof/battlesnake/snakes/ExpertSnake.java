@@ -19,16 +19,14 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 
 /**
- * Beta snake. This class is the "Nessegrev-Beta" snake on Battlesnake. This
- * snake was in the Summer League/Veteran Division. Still active on the global
- * arena. Based on the Alpha snake, but fewer bugs and a bit quicker. Decent
+ * Expert snake. This class is used by the "Nessegrev-Beta" snake on Battlesnake. Decent
  * snake using minimax/payoff matrix algorithm only. This snake can play
- * standard, squad, and royale. This snake should work with API v0 and API v1.
+ * standard, squad, royale, and wrapped. This snake should work with API v0 and API v1.
  * All the move calculation are based on API v0, and if it's API v1, then the
  * snake switch UP and DOWN response.
  * 
  * @author carl.lajeunesse
- * @version Spring 2021
+ * @version Summer 2022
  */
 public class ExpertSnake extends AbstractTreeSearchSnakeAI {
 
@@ -43,7 +41,7 @@ public class ExpertSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	public ExpertSnake() {
 		super("0");
-		fileConfig = "Beta.properties";
+		fileConfig = "Expert.properties";
 		setProperties();
 	}
 
@@ -54,7 +52,7 @@ public class ExpertSnake extends AbstractTreeSearchSnakeAI {
 	 */
 	public ExpertSnake(final String gameId) {
 		super(gameId);
-		fileConfig = "Beta.properties";
+		fileConfig = "Expert.properties";
 		setProperties();
 	}
 
