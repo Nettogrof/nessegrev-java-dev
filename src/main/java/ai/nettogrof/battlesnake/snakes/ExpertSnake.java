@@ -67,8 +67,8 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		final JsonNode board = moveRequest.get(BOARD);
 		final FoodInfo food = new FoodInfo(board);
 		final HazardSquare hazard = new HazardSquare(board);
-		final JsonNode betaSnake = moveRequest.get(YOU);
-		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, betaSnake) : genSnakeInfo(board, betaSnake);
+		final JsonNode expertSnake = moveRequest.get(YOU);
+		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, expertSnake) : genSnakeInfo(board, expertSnake);
 		final AbstractNode oldChild = findChildNewRoot(snakes, food, hazard);
 		return oldChild == null ? genNode(snakes, food, new HazardSquare(board)) : oldChild;
 
@@ -78,15 +78,15 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 * Generate all snakes info from the json board field
 	 * 
 	 * @param board     Json board field
-	 * @param betaSnake Json you field
+	 * @param expertSnake Json you field
 	 * @return list of snakes info
 	 */
-	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode betaSnake) {
+	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode expertSnake) {
 		final List<SnakeInfo> snakes = new ArrayList<>();
-		snakes.add(new SnakeInfo(betaSnake));
+		snakes.add(new SnakeInfo(expertSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
-			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
+			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
 				snakes.add(new SnakeInfo(currentSnake));
 			}
 		}
@@ -98,16 +98,16 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 * Generate all snakes info from the json board field for squad mode
 	 * 
 	 * @param board     Json board field
-	 * @param betaSnake Json you field
+	 * @param expertSnake Json you field
 	 * @return list of snakes info
 	 */
-	private List<SnakeInfo> genSnakeInfoSquad(final JsonNode board, final JsonNode betaSnake) {
+	private List<SnakeInfo> genSnakeInfoSquad(final JsonNode board, final JsonNode expertSnake) {
 		// TODO Refactoring this method, way too similar to the other genSnakeInfo
 		final List<SnakeInfo> snakes = new ArrayList<>();
-		snakes.add(new SnakeInfoSquad(betaSnake));
+		snakes.add(new SnakeInfoSquad(expertSnake));
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
-			if (!currentSnake.get("id").asText().equals(betaSnake.get("id").asText())) {
+			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
 				snakes.add(new SnakeInfoSquad(currentSnake));
 			}
 		}
