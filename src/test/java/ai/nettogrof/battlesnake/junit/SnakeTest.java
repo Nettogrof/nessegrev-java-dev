@@ -1,6 +1,6 @@
 package ai.nettogrof.battlesnake.junit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 import ai.nettogrof.battlesnake.snakes.Snake;
@@ -28,7 +28,7 @@ public class SnakeTest {
 	public void testMain() {
 		final String[] param = { "Beta" };
 		Snake.main(param);
-		assertTrue(true,"WTF");
+		assertNotNull(param[0],"WTF");
 	}
 
 }

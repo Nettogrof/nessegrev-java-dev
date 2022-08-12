@@ -2,32 +2,18 @@ package ai.nettogrof.battlesnake.snakes;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import gnu.trove.list.array.TFloatArrayList;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
-import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
-import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.constrictor.ConstrictorSearch;
-import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
-import ai.nettogrof.battlesnake.treesearch.search.royale.wrapped.WrappedRoyaleSearch;
-import ai.nettogrof.battlesnake.treesearch.search.squad.SquadSearch;
-import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
 
-import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.BASIC_SCORE;
 import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1;
 
 /**
@@ -38,7 +24,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1
  * @author carl.lajeunesse
  * @version Spring 2022
  */
-public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
+public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 
 	/**
 	 * Int value use to check how much time does the snake have do to tree-search,
@@ -46,21 +32,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	protected transient int timeout = 300;
 
-	/**
-	 * String that gonna be shout by the snake if snake is in a losing position.
-	 */
-	protected transient String losing = "I have a bad feeling about this";
+	
 
-	/**
-	 * String that gonna be shout by the snake if snake is in a winning position.
-	 */
-	protected transient String winning = "I'm your father";
-
-	/**
-	 * Int value that will be subtract from timeout, it's a buffer define in the
-	 * config file, to take latency/lag into account
-	 */
-	protected transient int minusbuffer = 250;
+	
 
 	/**
 	 * Number of node analyze during the whole game
@@ -78,10 +52,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	protected transient AbstractNode lastRoot;
 
-	/**
-	 * Ruleset that this game is played.
-	 */
-	protected transient String ruleset = "standard";
+	
 
 	/**
 	 * What kind of search that gonna be use
@@ -104,29 +75,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		super(gameId);
 	}
 
-	/**
-	 * Set the properties to the snake object
-	 */
-	protected void setProperties() {
-		try (InputStream input = Files.newInputStream(Paths.get(fileConfig))) {
-
-			final Properties prop = new Properties();
-
-			// load a properties file
-			prop.load(input);
-
-			// get the property value and print it out
-			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
-			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
-
-			final Random rand = new Random();
-			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
-			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
-
-		} catch (IOException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
-	}
+	
 
 	/**
 	 * This method will be call on each move request receive by BattleSnake
@@ -162,10 +111,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 		log.atInfo().log("Turn:" + moveRequest.get(TURN).asInt() + " nb nodes" + root.getChildCount() + "  time: "
 				+ (System.currentTimeMillis() - startTime) + "  Max Depth" + getMaxDepth(root));
-		nodeTotalCount += root.getChildCount();
-		timeTotal += System.currentTimeMillis() - startTime;
+		addNodeTotalCount(root.getChildCount());
+		addTimeTotal( System.currentTimeMillis() - startTime);
 		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
 	}
+
+	
 
 	private int getMaxDepth(final AbstractNode root) {
 		AbstractNode node = root;
@@ -209,18 +160,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	protected abstract AbstractNode genRoot(JsonNode moveRequest);
 
-	/**
-	 * This method will be call at the end of the game, can be override if you want
-	 * to clean-up some game info. And log some info about computing stats.
-	 * 
-	 * @param endRequest Json call received
-	 * @return map that can be empty because it will be ignore by BattleSnake server
-	 */
-	@Override
-	public Map<String, String> end(final JsonNode endRequest) {
-		log.atInfo().log("Average node/s : " + (nodeTotalCount / timeTotal * 1000));
-		return super.end(endRequest);
-	}
+	
 
 	/**
 	 * In a winning position, this method try to find the shortest way to win.
@@ -350,46 +290,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		return null;
 	}
 
-	/**
-	 * This method return the scoreRatio of the best choice based on payoff Matrix
-	 * 
-	 * @param upward float array list
-	 * @param down   float array list
-	 * @param left   float array list
-	 * @param right  float array list
-	 * @return score float
-	 */
-	protected float getbestChildValue(final TFloatArrayList upward, final TFloatArrayList down,
-			final TFloatArrayList left, final TFloatArrayList right) {
-		float temp;
-		float choiceValue = Float.MIN_VALUE;
-		if (!upward.isEmpty()) {
-			choiceValue = upward.min();
-
-		}
-
-		if (!down.isEmpty()) {
-			temp = down.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-
-		if (!left.isEmpty()) {
-			temp = left.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-
-		if (!right.isEmpty()) {
-			temp = right.min();
-			if (temp > choiceValue) {
-				choiceValue = temp;
-			}
-		}
-		return choiceValue;
-	}
 
 	/**
 	 * This method fill 4 list (one for each direction ) with the score of each node
@@ -441,102 +341,25 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	private void logValue(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
 			final TFloatArrayList right[]) {
 		final StringBuilder logtext = new StringBuilder();
-		final String NODE_COUNT = " node count";
+		final String nodeCount = " node count";
 		if (!upward[0].isEmpty()) {
-			logtext.append("\nup ").append(upward[0].min()).append(NODE_COUNT).append(upward[1].sum());
+			logtext.append("\nup ").append(upward[0].min()).append(nodeCount).append(upward[1].sum());
 		}
 		if (!down[0].isEmpty()) {
-			logtext.append("\ndown ").append(down[0].min()).append(NODE_COUNT).append(down[1].sum());
+			logtext.append("\ndown ").append(down[0].min()).append(nodeCount).append(down[1].sum());
 		}
 		if (!left[0].isEmpty()) {
-			logtext.append("\nleft ").append(left[0].min()).append(NODE_COUNT).append(left[1].sum());
+			logtext.append("\nleft ").append(left[0].min()).append(nodeCount).append(left[1].sum());
 		}
 		if (!right[0].isEmpty()) {
-			logtext.append("\nright ").append(right[0].min()).append(NODE_COUNT).append(right[1].sum());
+			logtext.append("\nright ").append(right[0].min()).append(nodeCount).append(right[1].sum());
 		}
 		log.atInfo().log(logtext.toString());
 	}
 
-	/**
-	 * Generate the response to send, adding a shout if in winning/losing position.
-	 * 
-	 * @param winner the best node
-	 * @param root   the current root node
-	 * @param head   current snake head from the json
-	 * @return response for Battlesnake
-	 */
-	protected Map<String, String> generateResponse(final AbstractNode winner, final AbstractNode root,
-			final JsonNode head) {
-		final Map<String, String> response = new ConcurrentHashMap<>();
-		String res;
-		if (winner == null) {
-			response.put("shout", losing);
-			res = DOWN;
-		} else {
-			AbstractNode choosenNode = winner;
-			if (winner.getScoreRatio() < BASIC_SCORE) {
-				response.put("shout", losing);
-				choosenNode = lastChance(root);
-			} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
-				response.put("shout", winning);
-				choosenNode = finishHim(root, winner);
-			}
+	
 
-			final int move = choosenNode.getSnakes().get(0).getHead();
-
-			final int snakex = head.get("x").asInt();
-			final int snakey = head.get("y").asInt();
-
-			if (move / 1000 == snakex - 1 || snakex == 0 && move / 1000 > 1) {
-				res = LEFT;
-			} else if (move / 1000 == snakex + 1 || snakex == width - 1 && move / 1000 == 0) {
-				res = RIGHT;
-			} else if (move % 1000 == snakey - 1 || snakey == 0 && move % 1000 > 1) {
-				res = apiversion == 1 ? DOWN : UPWARD;
-			} else {
-				res = apiversion == 1 ? UPWARD : DOWN;
-			}
-
-		}
-		response.put(MOVESTR, res);
-		return response;
-	}
-
-	/**
-	 * This method generate the search type
-	 * 
-	 * @return Abstract Search
-	 * @throws ReflectiveOperationException In case of invalid search type
-	 */
-	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
-		Constructor<? extends AbstractSearch> searchtype;
-		switch (ruleset) {
-		case "constrictor":
-			searchtype = ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-					int.class, GameRuleset.class);
-			break;
-		case "royale":
-			searchtype = RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
-					GameRuleset.class);
-
-			break;
-		case "squad":
-			searchtype = SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
-					GameRuleset.class);
-
-			break;
-		case "wrapped":
-			searchtype = WrappedRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
-					int.class, GameRuleset.class);
-
-			break;
-		default:
-			searchtype = MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
-					GameRuleset.class);
-		}
-		return searchtype;
-
-	}
+	
 
 	/**
 	 * Check in the previous search if a child from root, is equals the current

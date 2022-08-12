@@ -32,12 +32,12 @@ public class SnakeInfo implements Cloneable {
 	/**
 	 * Name of the snake
 	 */
-	protected String name;
+	protected transient String name;
 
 	/**
 	 * Current health of the snake
 	 */
-	protected int health;
+	protected transient int health;
 
 	/**
 	 * Does the snake just eat
@@ -152,17 +152,7 @@ public class SnakeInfo implements Cloneable {
 		alive = false;
 	}
 
-	/**
-	 * Set the snake bodies
-	 * 
-	 * @param snakeInfo JsonNode Snake field
-	 */
-	public void setSnake(final JsonNode snakeInfo) {
-		for (final JsonNode bodyPos : snakeInfo.get("body")) {
-			snakeBody.add(bodyPos.get("x").asInt() * 1000 + bodyPos.get("y").asInt());
-		}
-
-	}
+	
 
 	/**
 	 * Check if there will be a snake on square on next move
@@ -211,14 +201,6 @@ public class SnakeInfo implements Cloneable {
 		return name;
 	}
 
-	/**
-	 * Set the snake's name
-	 * 
-	 * @param name Snake name
-	 */
-	public void setName(final String name) {
-		this.name = name;
-	}
 
 	/**
 	 * Get the health of the snake
@@ -229,18 +211,7 @@ public class SnakeInfo implements Cloneable {
 		return health;
 	}
 
-	/**
-	 * Set the health of the snake
-	 * 
-	 * @param health health of the snake
-	 */
-	public void setHealth(final int health) {
-		if (health == MAX_HEALTH) {
-			eat = true;
-		}
-		this.health = health;
-	}
-
+	
 	/**
 	 * Clone the snake
 	 * 
@@ -278,15 +249,7 @@ public class SnakeInfo implements Cloneable {
 		return alive;
 	}
 
-	/**
-	 * Return if the snake just eat.
-	 * 
-	 * @return boolean
-	 */
-	public boolean isEat() {
-		return eat;
-	}
-
+	
 	/**
 	 * Equals method
 	 * 
