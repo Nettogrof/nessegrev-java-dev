@@ -88,7 +88,7 @@ public class SnakeInfo implements Cloneable {
 		} else {
 			health = prevSnakeInfo.getHealth() - 1;
 			if (hazard) {
-				health -= rules.getDamagePerTurn();
+				health -= rules.getHazardDamage();
 			}
 
 		}

@@ -55,7 +55,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	protected void adjustHazardScore() {
 		for (int i = 0; i < snakes.size(); i++) {
 			score[i] += snakes.get(i).getHealth() / 250f;
-			if (hazard.isHazard(snakes.get(i).getHead())) {
+			if (hazard.isHazardSquare(snakes.get(i).getHead())) {
 				score[i] *= SnakeGeneticConstants.hazardScore;
 			}
 		}

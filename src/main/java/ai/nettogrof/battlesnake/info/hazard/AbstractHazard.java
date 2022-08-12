@@ -33,7 +33,7 @@ public abstract class AbstractHazard {
 	 * @param posy Square position Y
 	 * @return boolean if square is hazard
 	 */
-	public abstract boolean isHazard(final int posx, final int posy);
+	public abstract boolean isHazardSquare(final int posx, final int posy);
 
 	/**
 	 * Check if a particular square is an hazard square (based on square formula)
@@ -41,7 +41,7 @@ public abstract class AbstractHazard {
 	 * @param pos the square position
 	 * @return boolean if square is hazard
 	 */
-	public abstract boolean isHazard(final int pos);
+	public abstract boolean isHazardSquare(final int pos);
 
 	/**
 	 * Take the json field food and convert it into the arraylist hazard

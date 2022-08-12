@@ -78,7 +78,7 @@ public class WrappedRoyaleSearch extends AbstractRoyaleSearch {
 	}
 	@Override
 	protected boolean freeSpace(final int square, final List<SnakeInfo> snakes, final SnakeInfo currentSnake) {
-		if (root.getHazard().isHazard(square)) {
+		if (root.getHazard().isHazardSquare(square)) {
 			return false;
 		}
 		

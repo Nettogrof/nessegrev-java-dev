@@ -44,7 +44,7 @@ public class HazardSquare extends AbstractHazard {
 	 * @return boolean if square is hazard
 	 */
 	@Override
-	public boolean isHazard(final int posx, final int posy) {
+	public boolean isHazardSquare(final int posx, final int posy) {
 		return hazard.contains(posx * 1000 + posy);
 	}
 
@@ -55,7 +55,7 @@ public class HazardSquare extends AbstractHazard {
 	 * @return boolean if square is hazard
 	 */
 	@Override
-	public boolean isHazard(final int pos) {
+	public boolean isHazardSquare(final int pos) {
 		return hazard.contains(pos);
 	}
 
