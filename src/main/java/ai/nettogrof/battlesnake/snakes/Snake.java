@@ -276,8 +276,8 @@ public final class Snake {
 			final String gameId = moveRequest.get("game").get("id").asText();
 			AbstractSnakeAI bot = bots.get(gameId);
 			if (bot == null) {
-				bots.put(gameId, new ExpertSnake(gameId));
-				bot = bots.get(gameId);
+				bot = new ExpertSnake(gameId);
+				bots.putIfAbsent(gameId, bot);
 			}
 			return bot.move(moveRequest);
 
@@ -294,7 +294,6 @@ public final class Snake {
 			final String gameId = endRequest.get("game").get("id").asText();
 			final Map<String, String> res = bots.get(gameId).end(endRequest);
 			bots.remove(gameId);
-			System.gc();
 			return res;
 		}
 	}
