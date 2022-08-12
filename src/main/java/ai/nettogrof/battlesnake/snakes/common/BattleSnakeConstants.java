@@ -6,9 +6,9 @@ package ai.nettogrof.battlesnake.snakes.common;
  * @version Spring 2021
  */
 public final class BattleSnakeConstants {
-	
+
 	/**
-	 * Max Health 
+	 * Max Health
 	 */
 	public final static int MAX_HEALTH = 100;
 
@@ -45,9 +45,9 @@ public final class BattleSnakeConstants {
 	 * Value for square controlled by two snakes
 	 */
 	public final static int SPLIT_AREA = -50;
-	
+
 	/**
-	 * Value for square uncontrolled 
+	 * Value for square uncontrolled
 	 */
 	public final static int EMPTY_AREA = -150;
 
@@ -55,19 +55,28 @@ public final class BattleSnakeConstants {
 	 * Value of a snake body
 	 */
 	public final static int SNAKE_BODY = -99;
-	
+
 	/**
-	 * Minimum number of snake.  If number of snake smaller than this value, the game end
+	 * Minimum number of snake. If number of snake smaller than this value, the game
+	 * end
 	 */
 	public final static int MINIMUN_SNAKE = 2;
-	
+
 	/**
 	 * Current API version used by snakes
 	 */
 	public final static int API_V1 = 1;
-	
+
 	/**
 	 * Current API version used by snakes
 	 */
 	public final static int SINGLE_SNAKE = 1;
+
+	/**
+	 * Sole constructor. (For invocation by subclass constructors, typically
+	 * implicit.)
+	 */
+	private BattleSnakeConstants() {
+	}
+
 }

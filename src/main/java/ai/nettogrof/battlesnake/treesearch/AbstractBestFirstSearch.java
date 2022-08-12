@@ -17,6 +17,14 @@ import gnu.trove.list.array.TFloatArrayList;
  */
 public abstract class AbstractBestFirstSearch extends AbstractSearch {
 
+	
+	/**
+	* Sole constructor. (For invocation by subclass 
+	* constructors, typically implicit.)
+	*/
+	protected AbstractBestFirstSearch() {
+	}
+	
 	/**
 	 * This method just merge two lists and remove the duplicate node
 	 * 

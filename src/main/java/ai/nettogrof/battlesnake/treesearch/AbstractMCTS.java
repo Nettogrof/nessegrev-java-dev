@@ -19,6 +19,13 @@ import gnu.trove.list.array.TFloatArrayList;
  */
 public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 
+	
+	/**
+	* Sole constructor. (For invocation by subclass 
+	* constructors, typically implicit.)
+	*/
+	protected AbstractMCTS() {
+	}
 	/**
 	 * This method is use to find the next leaf node to explore using MCTS algo
 	 * 
