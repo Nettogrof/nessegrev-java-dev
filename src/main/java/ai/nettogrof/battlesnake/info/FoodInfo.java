@@ -1,5 +1,7 @@
 package ai.nettogrof.battlesnake.info;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import gnu.trove.iterator.TIntIterator;
@@ -134,6 +136,14 @@ public class FoodInfo {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 *
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(position);
 	}
 
 }

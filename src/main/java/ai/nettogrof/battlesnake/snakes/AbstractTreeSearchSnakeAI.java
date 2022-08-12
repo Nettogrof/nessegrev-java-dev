@@ -183,10 +183,11 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	private int getMaxDepth(final AbstractNode root) {
 		AbstractNode node = root;
 		int depth = 0;
-		
+
 		while (node.getChildCount() > 1) {
 			depth++;
-			final List<AbstractNode> childs =  node.getChild() ;
+
+			final List<AbstractNode> childs = node.getChild();
 			int childCount = 0;
 			for (final AbstractNode child : childs) {
 				if (child.getChildCount() > childCount) {
@@ -195,8 +196,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 				}
 			}
 		}
-		
-		return  depth;
+
+		return depth;
 	}
 
 	/**
@@ -485,36 +486,22 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			// if (node.getChild().get(i).exp) {
 			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
-			if ((move / 1000) + 1 == head / 1000) {
+			if ((move / 1000) + 1 == head / 1000 || (move / 1000 != 0 && head / 1000 == 0)) {
 				left[0].add(node.getChild().get(i).getScoreRatio());
 				left[1].add(node.getChild().get(i).getChildCount());
-			} else if ((move / 1000) - 1 == head / 1000) {
+			} else if ((move / 1000) - 1 == head / 1000 || (move / 1000 == 0 && head / 1000 != 0)) {
 				right[0].add(node.getChild().get(i).getScoreRatio());
 				right[1].add(node.getChild().get(i).getChildCount());
-			} else if (move % 1000 + 1 == head % 1000) {
+			} else if (move % 1000 + 1 == head % 1000 || (move % 1000 != 0 && head % 1000 == 0)) {
 				down[0].add(node.getChild().get(i).getScoreRatio());
 				down[1].add(node.getChild().get(i).getChildCount());
-			} else if (move % 1000 - 1 == head % 1000) {
+			} else if (move % 1000 - 1 == head % 1000 || (move % 1000 == 0 && head % 1000 != 0)) {
 				upward[0].add(node.getChild().get(i).getScoreRatio());
 				upward[1].add(node.getChild().get(i).getChildCount());
 			} else {
-			
-				if (move / 1000 == 0 && head / 1000 != 0) {
-					right[0].add(node.getChild().get(i).getScoreRatio());
-					right[1].add(node.getChild().get(i).getChildCount());
-				} else if (move / 1000 != 0 && head / 1000 == 0) {
-					left[0].add(node.getChild().get(i).getScoreRatio());
-					left[1].add(node.getChild().get(i).getChildCount());
-				} else if (move % 1000 == 0 && head % 1000 != 0) {
-					upward[0].add(node.getChild().get(i).getScoreRatio());
-					upward[1].add(node.getChild().get(i).getChildCount());
-				} else if (move % 1000 != 0 && head % 1000 == 0) {
-					down[0].add(node.getChild().get(i).getScoreRatio());
-					down[1].add(node.getChild().get(i).getChildCount());
-				} else {
-					log.atWarning().log("Undefined Move");
-					upward[0].add(node.getChild().get(i).getScoreRatio());
-				}
+				log.atWarning().log("Undefined Move");
+				upward[0].add(node.getChild().get(i).getScoreRatio());
+
 			}
 			// }
 		}
@@ -602,9 +589,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
 
 		switch (ruleset) {
-		case "standard":
-			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
-					GameRuleset.class);
 		case "constrictor":
 			return ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);

@@ -292,7 +292,20 @@ public class SnakeInfo implements Cloneable {
 	 * @param other other Snakeinfo
 	 * @return true if equals
 	 */
-	public boolean equals(final SnakeInfo other) {
+	@Override
+	public boolean equals(final Object o) {
+		
+		// If the object is compared with itself then return true 
+        if (o == this) {
+            return true;
+        }
+ 
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof SnakeInfo)) {
+            return false;
+        }
+		final SnakeInfo other = (SnakeInfo) o;
 		if (!name.equals(other.name)) {
 			return false;
 		}

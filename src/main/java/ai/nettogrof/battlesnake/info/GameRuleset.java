@@ -43,9 +43,6 @@ public class GameRuleset {
 		final JsonNode setting = node.get("settings");
 
 		switch (node.get("name").asText()) {
-		case "standard":
-			gameType = 0;
-			break;
 		case "constrictor":
 			gameType = 1;
 			break;
