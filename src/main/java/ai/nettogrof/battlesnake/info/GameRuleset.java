@@ -11,8 +11,19 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class GameRuleset {
 
+	/**
+	 * Hazard damage per turn
+	 */
 	private final int hazardDamagePerTurn;
+	
+	/**
+	 * Food spawn chance (0% - 100%)
+	 */
 	private final int foodSpawnChance;
+	
+	/**
+	 * Minimum food on board
+	 */
 	private final int minimumFood;
 	/**
 	 * game type 0 = Standard 1 = constructor 2 = royale 3 = wrapped 4 = squad
