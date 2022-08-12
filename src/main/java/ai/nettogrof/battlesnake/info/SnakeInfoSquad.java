@@ -48,6 +48,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * @param moveSquare    The destination square of the snake move
 	 * @param eat           boolean is destination square a food
 	 * @param hazard        boolean is destination square a hazard
+	 * @param rules			Game ruleset
 	 */
 	public SnakeInfoSquad(final SnakeInfoSquad prevSnakeInfo, final int moveSquare, final boolean eat,
 			final boolean hazard, final GameRuleset rules) {
@@ -91,7 +92,7 @@ public class SnakeInfoSquad extends SnakeInfo {
 	/**
 	 * Equals method
 	 * 
-	 * @param other other SnakeinfoSquad
+	 * @param obj other SnakeinfoSquad
 	 * @return true if equals
 	 */
 	@Override

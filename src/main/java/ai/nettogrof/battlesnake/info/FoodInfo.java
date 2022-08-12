@@ -106,6 +106,7 @@ public class FoodInfo {
 	}
 	
 	/**
+	 * Return all food position
 	 * @return the position
 	 */
 	public TIntArrayList getPosition() {

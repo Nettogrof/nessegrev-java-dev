@@ -254,6 +254,7 @@ public abstract class AbstractSnakeAI {
 	}
 
 	/**
+	 * Set board width info
 	 * @param width the width to set
 	 */
 	public void setWidth(final int width) {
@@ -261,6 +262,7 @@ public abstract class AbstractSnakeAI {
 	}
 
 	/**
+	 * Set board height info
 	 * @param height the height to set
 	 */
 	public void setHeight(final int height) {
@@ -268,6 +270,7 @@ public abstract class AbstractSnakeAI {
 	}
 
 	/**
+	 * Set the file config filename
 	 * @param fileConfig the fileConfig to set
 	 */
 	public void setFileConfig(final String fileConfig) {

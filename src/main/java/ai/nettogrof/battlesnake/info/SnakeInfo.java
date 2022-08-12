@@ -77,6 +77,7 @@ public class SnakeInfo implements Cloneable {
 	 * @param moveSquare    The destination square of the snake move
 	 * @param eat           Is destination square a food
 	 * @param hazard        Is destination square a hazard
+	 * @param rules 		Game ruleset
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard,
 			final GameRuleset rules) {
@@ -289,7 +290,7 @@ public class SnakeInfo implements Cloneable {
 	/**
 	 * Equals method
 	 * 
-	 * @param other other Snakeinfo
+	 * @param obj other Snakeinfo
 	 * @return true if equals
 	 */
 	@Override

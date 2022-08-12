@@ -671,6 +671,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
+	 * Set the move timeout
 	 * @param timeout the timeout to set
 	 */
 	public void setTimeout(final int timeout) {
@@ -678,6 +679,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
+	 * Set Multithread flag
 	 * @param multiThread the multiThread to set
 	 */
 	public void setMultiThread(final boolean multiThread) {
@@ -685,6 +687,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
+	 * Set the cpu limit count
 	 * @param cpuLimit the cpuLimit to set
 	 */
 	public void setCpuLimit(final int cpuLimit) {

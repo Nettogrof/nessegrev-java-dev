@@ -21,10 +21,11 @@ public class GameRuleset {
 	private final int gameType;
 
 	/**
-	 * @param gameType
-	 * @param hazardDamagePerTurn
-	 * @param foodSpawnChance
-	 * @param minimumFood
+	 * Object containing all game info
+	 * @param gameType				Game type
+	 * @param hazardDamagePerTurn	Hazard damage per turn 
+	 * @param foodSpawnChance		food spawn chance	
+	 * @param minimumFood			minimum food on board
 	 */
 	public GameRuleset(final int gameType, final int hazardDamagePerTurn, final int foodSpawnChance,
 			final int minimumFood) {
@@ -36,7 +37,8 @@ public class GameRuleset {
 	}
 
 	/**
-	 * @param node
+	 * Object containing all game info
+	 * @param node	root node
 	 */
 	public GameRuleset(final JsonNode node) {
 		super();
@@ -64,6 +66,7 @@ public class GameRuleset {
 	}
 
 	/**
+	 * Get Damage per turn
 	 * @return hazard Damage per Turn
 	 */
 	public int getDamagePerTurn() {
@@ -71,6 +74,7 @@ public class GameRuleset {
 	}
 
 	/**
+	 * Get Food spawn chance
 	 * @return the foodSpawnChance
 	 */
 	public int getFoodSpawnChance() {
@@ -78,6 +82,7 @@ public class GameRuleset {
 	}
 
 	/**
+	 * Get Minimum food on board
 	 * @return the minimumFood
 	 */
 	public int getMinimumFood() {
@@ -85,6 +90,7 @@ public class GameRuleset {
 	}
 
 	/**
+	 * Return game type 
 	 * @return the gameType
 	 */
 	public int getGameType() {

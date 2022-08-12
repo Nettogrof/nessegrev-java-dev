@@ -205,6 +205,7 @@ public abstract class AbstractNode {
 	}
 
 	/**
+	 * Return the hazard object
 	 * @return the hazard
 	 */
 	public AbstractHazard getHazard() {
