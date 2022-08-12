@@ -197,14 +197,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected void treeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
 			throws ReflectiveOperationException {
 
-		final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
-				rules);
-
-		if (main == null) {
-			log.atSevere().log("Unable to find Search Type ");
-		} else {
-			main.run();
-		}
+		singleThreadTreeSearch(root, startTime, rules);
 
 	}
 
@@ -578,6 +571,25 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	public void setTimeout(final int timeout) {
 		this.timeout = timeout;
+	}
+
+	/**
+	 * Execute the single Thread tree search
+	 * 
+	 * @param root      The root node
+	 * @param startTime The start time in millisecond
+	 * @throws ReflectiveOperationException In case of invalid search type
+	 */
+	public void singleThreadTreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
+			throws ReflectiveOperationException {
+		final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
+				rules);
+
+		if (main == null) {
+			log.atSevere().log("Unable to find Search Type ");
+		} else {
+			main.run();
+		}
 	}
 
 }

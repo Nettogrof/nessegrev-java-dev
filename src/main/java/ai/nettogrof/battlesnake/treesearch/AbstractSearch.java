@@ -182,24 +182,38 @@ public abstract class AbstractSearch implements Runnable {
 		final ArrayList<SnakeInfo> listNewSnakeInfo = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {
-			final int head = snakeInfo.getHead();
-
-			if (head / 1000 > 0) {
-				addMove(head - 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-
-			if (head / 1000 < width - 1) {
-				addMove(head + 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-
-			if (head % 1000 > 0) {
-				addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-			if (head % 1000 < height - 1) {
-				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
+			moveSnake(snakeInfo, node, allSnakes,listNewSnakeInfo);
+			
 		}
 		return listNewSnakeInfo;
+	}
+
+	/**
+	 * Generate move of a snake
+	 * @param snakeInfo
+	 * @param node
+	 * @param allSnakes
+	 * @param listNewSnakeInfo
+	 */
+	protected void moveSnake(SnakeInfo snakeInfo, AbstractNode node, List<SnakeInfo> allSnakes,
+			ArrayList<SnakeInfo> listNewSnakeInfo) {
+		final int head = snakeInfo.getHead();
+
+		if (head / 1000 > 0) {
+			addMove(head - 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
+		}
+
+		if (head / 1000 < width - 1) {
+			addMove(head + 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
+		}
+
+		if (head % 1000 > 0) {
+			addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
+		}
+		if (head % 1000 < height - 1) {
+			addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
+		}
+		
 	}
 
 	/**

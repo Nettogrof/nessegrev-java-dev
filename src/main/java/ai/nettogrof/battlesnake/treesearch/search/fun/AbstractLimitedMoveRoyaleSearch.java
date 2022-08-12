@@ -65,22 +65,7 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 		final ArrayList<SnakeInfo> listNewSnakeInfo = new ArrayList<>();
 
 		if (snakeInfo.isAlive() && !snakeInfo.equals(allSnakes.get(0))) {
-			final int head = snakeInfo.getHead();
-
-			if (head / 1000 > 0) {
-				addMove(head - 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-
-			if (head / 1000 < width - 1) {
-				addMove(head + 1000, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-
-			if (head % 1000 > 0) {
-				addMove(head - 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
-			if (head % 1000 < height - 1) {
-				addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
-			}
+			moveSnake(snakeInfo, node, allSnakes,listNewSnakeInfo);
 		} else if (snakeInfo.isAlive()) {
 
 			selfDestination(snakeInfo.getHead(), allSnakes, snakeInfo, node, listNewSnakeInfo);

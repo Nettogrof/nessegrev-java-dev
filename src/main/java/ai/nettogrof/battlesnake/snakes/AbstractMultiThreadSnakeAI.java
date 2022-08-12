@@ -18,8 +18,8 @@ import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 
 /**
- * Any snake using a multithread tree-search could extend this abstract class it contains
- * basic constant fields, related to the field name in json call from
+ * Any snake using a multithread tree-search could extend this abstract class it
+ * contains basic constant fields, related to the field name in json call from
  * BattleSnake. Also some method that any snake must implements.
  * 
  * @author carl.lajeunesse
@@ -49,7 +49,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractMultiThreadSnakeAI(String gameId) {
+	public AbstractMultiThreadSnakeAI(final String gameId) {
 		super(gameId);
 	}
 
@@ -86,16 +86,15 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 				cont = false;
 			} else {
 				searchType.newInstance(nodelist.get(0), width, height, 0, 0, rules).generateChild();
-				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpuLimit) {
+				cont = nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpuLimit;
+				if (cont) {
 					final AbstractNode oldroot = nodelist.remove(0);
 					expandedlist.add(oldroot);
 
 					for (final AbstractNode c : oldroot.getChild()) {
 						nodelist.add(c);
 					}
-					cont = true;
-				} else {
-					cont = false;
+					
 				}
 			}
 		}
@@ -113,55 +112,58 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	protected void treeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
 			throws ReflectiveOperationException {
 		if (multiThread && root.getSnakes().size() < 5) {
-			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
-			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
-			nodelist.add(root);
-			expand(nodelist, expandedlist, rules);
-
-			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
-
-			for (final AbstractNode c : root.getChild()) {
-				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer, rules));
-
-			}
-
-			for (final AbstractSearch s : listSearchThread) {
-				startThread(s);
-			}
-
-			try {
-
-				Thread.sleep(timeout - minusbuffer - 50);
-			} catch (InterruptedException e) {
-
-				log.atSevere().log("Thread?!", e);
-			}
-
-			for (final AbstractSearch search : listSearchThread) {
-				search.stopSearching();
-
-			}
-
-			for (final AbstractNode c : nodelist) {
-				c.updateScore();
-			}
-
-			for (int i = expandedlist.size() - 1; i >= 0; i--) {
-				expandedlist.get(i).updateScore();
-			}
-			log.atInfo().log("Nb Thread: " + nodelist.size());
+			multiThreadtreeSearch(root, startTime, rules);
 		} else {
-			// Single thread
-			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
-					rules);
+			singleThreadTreeSearch(root, startTime, rules);
+		}
+	}
 
-			if (main == null) {
-				log.atSevere().log("Unable to find Search Type ");
-			} else {
-				main.run();
-			}
+	/**
+	 * Execute the multiThread tree search
+	 * 
+	 * @param root      The root node
+	 * @param startTime The start time in millisecond
+	 * @throws ReflectiveOperationException In case of invalid search type
+	 */
+	protected void multiThreadtreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
+			throws ReflectiveOperationException {
+		final ArrayList<AbstractNode> nodelist = new ArrayList<>();
+		final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
+		nodelist.add(root);
+		expand(nodelist, expandedlist, rules);
+
+		final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
+
+		for (final AbstractNode c : root.getChild()) {
+			listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer, rules));
 
 		}
+
+		for (final AbstractSearch s : listSearchThread) {
+			startThread(s);
+		}
+
+		try {
+
+			Thread.sleep(timeout - minusbuffer - 50);
+		} catch (InterruptedException e) {
+
+			log.atSevere().log("Thread?!", e);
+		}
+
+		for (final AbstractSearch search : listSearchThread) {
+			search.stopSearching();
+
+		}
+
+		for (final AbstractNode c : nodelist) {
+			c.updateScore();
+		}
+
+		for (int i = expandedlist.size() - 1; i >= 0; i--) {
+			expandedlist.get(i).updateScore();
+		}
+		log.atInfo().log("Nb Thread: " + nodelist.size());
 	}
 
 	/**
