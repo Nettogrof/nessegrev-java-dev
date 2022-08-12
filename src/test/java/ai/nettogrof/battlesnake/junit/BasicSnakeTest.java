@@ -13,6 +13,7 @@ import ai.nettogrof.battlesnake.snakes.BasicSnake;
 
 
 /**
+ * Junit class test for Basic Snake
  * @author carl.lajeunesse
  *
  */

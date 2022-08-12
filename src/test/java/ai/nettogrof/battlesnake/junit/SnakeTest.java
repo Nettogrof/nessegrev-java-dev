@@ -3,6 +3,7 @@ package ai.nettogrof.battlesnake.junit;
 import org.junit.jupiter.api.Test;
 import ai.nettogrof.battlesnake.snakes.Snake;
 /**
+ * Junit class test for Basic
  * @author carl.lajeunesse
  *
  */

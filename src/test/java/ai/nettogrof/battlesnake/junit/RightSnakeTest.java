@@ -13,6 +13,7 @@ import ai.nettogrof.battlesnake.snakes.RightSnake;
 
 
 /**
+ * Junit class test for Right Snake
  * @author carl.lajeunesse
  *
  */

@@ -13,6 +13,7 @@ import ai.nettogrof.battlesnake.snakes.FloodFillSnake;
 
 
 /**
+ * Junit class test for FloodFill Snake
  * @author carl.lajeunesse
  *
  */
