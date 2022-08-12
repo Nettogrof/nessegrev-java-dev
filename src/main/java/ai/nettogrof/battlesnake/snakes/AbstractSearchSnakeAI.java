@@ -37,6 +37,12 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
  * @version Summer 2022
  */
 public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
+	
+	/**
+	 * Int value use to check how much time does the snake have do to tree-search,
+	 * value define by json field
+	 */
+	protected transient int timeout = 300;
 
 	/**
 	 * Int value that will be subtract from timeout, it's a buffer define in the
@@ -116,6 +122,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 		default:
 			searchtype = MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
+			break;
 		}
 		return searchtype;
 

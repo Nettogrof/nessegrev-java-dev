@@ -26,25 +26,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1
  */
 public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 
-	/**
-	 * Int value use to check how much time does the snake have do to tree-search,
-	 * value define by json field
-	 */
-	protected transient int timeout = 300;
-
 	
-
-	
-
-	/**
-	 * Number of node analyze during the whole game
-	 */
-	protected transient long nodeTotalCount;
-
-	/**
-	 * Total of time used to compute during the whole game
-	 */
-	protected transient long timeTotal;
 
 	/**
 	 * Keep the root node from the previous move, to be able to continue search from
