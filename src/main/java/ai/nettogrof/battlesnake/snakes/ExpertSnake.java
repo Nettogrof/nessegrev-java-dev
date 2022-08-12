@@ -28,7 +28,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
  * @author carl.lajeunesse
  * @version Summer 2022
  */
-public class ExpertSnake extends AbstractTreeSearchSnakeAI {
+public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 
 	/**
 	 * Boolean if a squad game

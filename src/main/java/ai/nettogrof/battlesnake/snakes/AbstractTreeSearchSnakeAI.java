@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -48,16 +47,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected transient int timeout = 300;
 
 	/**
-	 * Boolean if multithread is use by the snake value define by the config file
-	 */
-	protected transient boolean multiThread;
-
-	/**
-	 * Number of cpu / thread permit
-	 */
-	protected transient int cpuLimit = 2;
-
-	/**
 	 * String that gonna be shout by the snake if snake is in a losing position.
 	 */
 	protected transient String losing = "I have a bad feeling about this";
@@ -95,7 +84,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected transient String ruleset = "standard";
 
 	/**
-	 * What kind of search that gonne be use
+	 * What kind of search that gonna be use
 	 */
 	protected transient Constructor<? extends AbstractSearch> searchType;
 
@@ -129,8 +118,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			// get the property value and print it out
 			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
-			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
-			cpuLimit = Integer.parseInt(prop.getProperty("cpu"));
 
 			final Random rand = new Random();
 			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
@@ -210,68 +197,15 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	protected void treeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
 			throws ReflectiveOperationException {
 
-		if (multiThread && root.getSnakes().size() < 5) {
-			final ArrayList<AbstractNode> nodelist = new ArrayList<>();
-			final ArrayList<AbstractNode> expandedlist = new ArrayList<>();
-			nodelist.add(root);
-			expand(nodelist, expandedlist, rules);
+		final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
+				rules);
 
-			final ArrayList<AbstractSearch> listSearchThread = new ArrayList<>();
-
-			for (final AbstractNode c : root.getChild()) {
-				listSearchThread.add(searchType.newInstance(c, width, height, startTime, timeout - minusbuffer, rules));
-
-			}
-
-			for (final AbstractSearch s : listSearchThread) {
-				startThread(s);
-			}
-
-			try {
-
-				Thread.sleep(timeout - minusbuffer - 50);
-			} catch (InterruptedException e) {
-
-				log.atSevere().log("Thread?!", e);
-			}
-
-			for (final AbstractSearch search : listSearchThread) {
-				search.stopSearching();
-
-			}
-
-			for (final AbstractNode c : nodelist) {
-				c.updateScore();
-			}
-
-			for (int i = expandedlist.size() - 1; i >= 0; i--) {
-				expandedlist.get(i).updateScore();
-			}
-			log.atInfo().log("Nb Thread: " + nodelist.size());
+		if (main == null) {
+			log.atSevere().log("Unable to find Search Type ");
 		} else {
-			// Single thread
-			final AbstractSearch main = searchType.newInstance(root, width, height, startTime, timeout - minusbuffer,
-					rules);
-
-			if (main == null) {
-				log.atSevere().log("Unable to find Search Type ");
-			} else {
-				main.run();
-			}
-
+			main.run();
 		}
 
-	}
-
-	/**
-	 * Start the thread search
-	 * 
-	 * @param search the search to be executed
-	 */
-	protected void startThread(final AbstractSearch search) {
-		final Thread subThread = new Thread(search);
-		subThread.setPriority(3);
-		subThread.start();
 	}
 
 	/**
@@ -483,7 +417,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
-			// if (node.getChild().get(i).exp) {
 			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
 			if ((move / 1000) + 1 == head / 1000 || move / 1000 != 0 && head / 1000 == 0) {
@@ -503,7 +436,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 				upward[0].add(node.getChild().get(i).getScoreRatio());
 
 			}
-			// }
 		}
 
 	}
@@ -609,37 +541,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Expand the base list of node until reaching cpu limit
-	 * 
-	 * @param nodelist     List of node that gonna to "rooted" in multithread search
-	 * @param expandedlist List of node to be updated after search
-	 * @throws ReflectiveOperationException In case of invalid search type
-	 */
-	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist,
-			final GameRuleset rules) throws ReflectiveOperationException {
-		boolean cont = true;
-		while (cont) {
-			if (nodelist.isEmpty()) {
-				cont = false;
-			} else {
-				searchType.newInstance(nodelist.get(0), width, height, 0, 0, rules).generateChild();
-				if (nodelist.size() - 1 + nodelist.get(0).getChild().size() < cpuLimit) {
-					final AbstractNode oldroot = nodelist.remove(0);
-					expandedlist.add(oldroot);
-
-					for (final AbstractNode c : oldroot.getChild()) {
-						nodelist.add(c);
-					}
-					cont = true;
-				} else {
-					cont = false;
-				}
-			}
-		}
-
-	}
-
-	/**
 	 * Check in the previous search if a child from root, is equals the current
 	 * board situation.,
 	 * 
@@ -672,26 +573,11 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 
 	/**
 	 * Set the move timeout
+	 * 
 	 * @param timeout the timeout to set
 	 */
 	public void setTimeout(final int timeout) {
 		this.timeout = timeout;
-	}
-
-	/**
-	 * Set Multithread flag
-	 * @param multiThread the multiThread to set
-	 */
-	public void setMultiThread(final boolean multiThread) {
-		this.multiThread = multiThread;
-	}
-
-	/**
-	 * Set the cpu limit count
-	 * @param cpuLimit the cpuLimit to set
-	 */
-	public void setCpuLimit(final int cpuLimit) {
-		this.cpuLimit = cpuLimit;
 	}
 
 }
