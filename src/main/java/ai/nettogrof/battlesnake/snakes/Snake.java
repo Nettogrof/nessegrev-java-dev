@@ -276,7 +276,7 @@ public final class Snake {
 			final String gameId = moveRequest.get("game").get("id").asText();
 			AbstractSnakeAI bot = bots.get(gameId);
 			if (bot == null) {
-				bots.put(gameId, new BetaSnake(gameId));
+				bots.put(gameId, new ExpertSnake(gameId));
 				bot = bots.get(gameId);
 			}
 			return bot.move(moveRequest);

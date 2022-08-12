@@ -6,11 +6,6 @@ package ai.nettogrof.battlesnake.snakes.common;
  * @version Spring 2021
  */
 public final class BattleSnakeConstants {
-
-	/**
-	 * Health lose when a snake is in hazard zone
-	 */
-	//public final static int LOST_HAZARD = -100;
 	
 	/**
 	 * Max Health 
@@ -62,7 +57,7 @@ public final class BattleSnakeConstants {
 	public final static int SNAKE_BODY = -99;
 	
 	/**
-	 * Minimun number of snake.  If number of snake smaller than this value, the game end
+	 * Minimum number of snake.  If number of snake smaller than this value, the game end
 	 */
 	public final static int MINIMUN_SNAKE = 2;
 	

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"ai.nettogrof.battlesnake.treesearch.search.royale.wrapped"},{"l":"All Packages","u":"allpackages-index.html"}];updateSearchResults();

@@ -26,7 +26,7 @@ public class WrappedRoyaleNode extends AbstractRoyaleNode {
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
 	 * @param snakes   List of snakes
-	 * @param foodInfo Food information
+	 * @param food Food information
 	 * @param hazard   Hazard Info
 	 */
 	public WrappedRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard) {

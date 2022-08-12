@@ -47,6 +47,7 @@ public final class SnakeGeneticConstants {
 	}
 
 	/**
+	 * Set Food Value
 	 * @param foodValue the fOOD_VALUE_AREA to set
 	 */
 	public static void setFoodValue(final int foodValue) {
@@ -54,13 +55,15 @@ public final class SnakeGeneticConstants {
 	}
 
 	/**
-	 * @param tailValue the tAIL_VALUE_AREA to set
+	 * Set tail value
+	 * @param tailValue the tail value  to set
 	 */
 	public static void setTailValue(final int tailValue) {
 		tailValueArea = tailValue;
 	}
 
 	/**
+	 * Set Border score
 	 * @param border the bORDER_SCORE to set
 	 */
 	public static void setBorderScore(final float border) {
@@ -68,6 +71,7 @@ public final class SnakeGeneticConstants {
 	}
 
 	/**
+	 * set Hazard score for evalution
 	 * @param hazard the hazardScore to set
 	 */
 	public static void setHazardScore(final float hazard) {
@@ -75,6 +79,7 @@ public final class SnakeGeneticConstants {
 	}
 
 	/**
+	 * Set mcts bias
 	 * @param newMctsBias the mCTS_BIAS to set
 	 */
 	public static void setMCTS(final float newMctsBias) {
@@ -82,6 +87,7 @@ public final class SnakeGeneticConstants {
 	}
 
 	/**
+	 * set stop expand list
 	 * @param sel Stop Expand Limit
 	 */
 	public static void setStopExpandLimit(final float sel) {

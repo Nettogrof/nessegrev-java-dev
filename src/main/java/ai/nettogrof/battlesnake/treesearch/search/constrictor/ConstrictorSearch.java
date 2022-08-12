@@ -56,6 +56,7 @@ public class ConstrictorSearch extends AbstractMCTS {
 	 * @param height    Board height
 	 * @param starttime starting time for the search in millisecond
 	 * @param timeout   the time limit to run the search
+	 * @param rules		Game ruleset
 	 */
 	public ConstrictorSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout, final GameRuleset rules) {
