@@ -486,16 +486,16 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			// if (node.getChild().get(i).exp) {
 			final int move = node.getChild().get(i).getSnakes().get(0).getHead();
 
-			if ((move / 1000) + 1 == head / 1000 || (move / 1000 != 0 && head / 1000 == 0)) {
+			if ((move / 1000) + 1 == head / 1000 || move / 1000 != 0 && head / 1000 == 0) {
 				left[0].add(node.getChild().get(i).getScoreRatio());
 				left[1].add(node.getChild().get(i).getChildCount());
-			} else if ((move / 1000) - 1 == head / 1000 || (move / 1000 == 0 && head / 1000 != 0)) {
+			} else if ((move / 1000) - 1 == head / 1000 || move / 1000 == 0 && head / 1000 != 0) {
 				right[0].add(node.getChild().get(i).getScoreRatio());
 				right[1].add(node.getChild().get(i).getChildCount());
-			} else if (move % 1000 + 1 == head % 1000 || (move % 1000 != 0 && head % 1000 == 0)) {
+			} else if (move % 1000 + 1 == head % 1000 || move % 1000 != 0 && head % 1000 == 0) {
 				down[0].add(node.getChild().get(i).getScoreRatio());
 				down[1].add(node.getChild().get(i).getChildCount());
-			} else if (move % 1000 - 1 == head % 1000 || (move % 1000 == 0 && head % 1000 != 0)) {
+			} else if (move % 1000 - 1 == head % 1000 || move % 1000 == 0 && head % 1000 != 0) {
 				upward[0].add(node.getChild().get(i).getScoreRatio());
 				upward[1].add(node.getChild().get(i).getChildCount());
 			} else {

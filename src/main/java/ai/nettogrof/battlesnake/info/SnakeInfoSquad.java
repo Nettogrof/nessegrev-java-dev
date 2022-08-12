@@ -95,18 +95,18 @@ public class SnakeInfoSquad extends SnakeInfo {
 	 * @return true if equals
 	 */
 	@Override
-	public boolean equals(final Object o) {
+	public boolean equals(final Object obj) {
 		// If the object is compared with itself then return true 
-        if (o == this) {
+        if (obj == this) {
             return true;
         }
  
         /* Check if o is an instance of Complex or not
           "null instanceof [type]" also returns false */
-        if (!(o instanceof SnakeInfoSquad)) {
+        if (!(obj instanceof SnakeInfoSquad)) {
             return false;
         }
-		final SnakeInfoSquad other = (SnakeInfoSquad) o;
+		final SnakeInfoSquad other = (SnakeInfoSquad) obj;
 		if (!name.equals(other.name)) {
 			return false;
 		}
