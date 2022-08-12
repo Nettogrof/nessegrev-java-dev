@@ -212,9 +212,6 @@ public final class Snake {
 		 * / is called by the play application during the tournament or on
 		 * play.battlesnake.io to make sure your snake is still alive.
 		 *
-		 * RootRequest a map containing the JSON sent to this snake. See the spec for
-		 * details of what this contains.
-		 * 
 		 * @return apiversion:string - Battlesnake API Version implemented by this
 		 *         Battlesnake author:string - Optional username of the Battlesnake�s
 		 *         author head:string - Optional custom head for this Battlesnake

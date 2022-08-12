@@ -33,6 +33,7 @@ public class BasicSnakeTest {
 	 * implicit.)
 	 */
 	protected BasicSnakeTest() {
+		//useless constructor
 	}
 
 	/**
@@ -47,7 +48,6 @@ public class BasicSnakeTest {
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
 		final BasicSnake snakeAi = new BasicSnake("test");
-		System.out.println(snakeAi.start(parsedRequest).toString());
 		assertTrue(snakeAi.start(parsedRequest).toString().contains("ok"), "Invalid response");
 		
 	}

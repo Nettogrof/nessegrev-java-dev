@@ -123,6 +123,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
+	 * @param rules		Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void multiThreadtreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)

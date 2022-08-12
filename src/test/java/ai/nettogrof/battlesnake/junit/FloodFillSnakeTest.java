@@ -33,6 +33,7 @@ public class FloodFillSnakeTest {
 	 * implicit.)
 	 */
 	protected FloodFillSnakeTest() {
+		//useless constructor
 	}
 
 	/**

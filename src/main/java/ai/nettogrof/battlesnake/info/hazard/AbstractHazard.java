@@ -16,7 +16,7 @@ public abstract class AbstractHazard {
 	 * Arraylist (int) of all hazard position (based on square formula)
 	 */
 	protected transient final TIntArrayList hazard = new TIntArrayList();
-	
+
 	/**
 	 * Single constructor need the jsonNode board
 	 * 
@@ -25,15 +25,6 @@ public abstract class AbstractHazard {
 	public AbstractHazard(final JsonNode board) {
 		setInfo(board.get("hazards"));
 	}
-
-	/**
-	 * Check if a particular square is an hazard square
-	 * 
-	 * @param posx Square position X
-	 * @param posy Square position Y
-	 * @return boolean if square is hazard
-	 */
-	public abstract boolean isHazardSquare(final int posx, final int posy);
 
 	/**
 	 * Check if a particular square is an hazard square (based on square formula)

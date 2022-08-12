@@ -289,11 +289,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 			}
 		}
 
-		if (ret == null) {
-			return root.getChild().get(0);
-		}
-
-		return ret;
+		return ret == null ? root.getChild().get(0) : ret;
 	}
 
 	/**
@@ -445,17 +441,18 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	private void logValue(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
 			final TFloatArrayList right[]) {
 		final StringBuilder logtext = new StringBuilder();
+		final String NODE_COUNT = " node count";
 		if (!upward[0].isEmpty()) {
-			logtext.append("\nup ").append(upward[0].min()).append(" node count").append(upward[1].sum());
+			logtext.append("\nup ").append(upward[0].min()).append(NODE_COUNT).append(upward[1].sum());
 		}
 		if (!down[0].isEmpty()) {
-			logtext.append("\ndown ").append(down[0].min()).append(" node count").append(down[1].sum());
+			logtext.append("\ndown ").append(down[0].min()).append(NODE_COUNT).append(down[1].sum());
 		}
 		if (!left[0].isEmpty()) {
-			logtext.append("\nleft ").append(left[0].min()).append(" node count").append(left[1].sum());
+			logtext.append("\nleft ").append(left[0].min()).append(NODE_COUNT).append(left[1].sum());
 		}
 		if (!right[0].isEmpty()) {
-			logtext.append("\nright ").append(right[0].min()).append(" node count").append(right[1].sum());
+			logtext.append("\nright ").append(right[0].min()).append(NODE_COUNT).append(right[1].sum());
 		}
 		log.atInfo().log(logtext.toString());
 	}
@@ -512,24 +509,32 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
-
+		Constructor<? extends AbstractSearch> searchtype;
 		switch (ruleset) {
 		case "constrictor":
-			return ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+			searchtype = ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
+			break;
 		case "royale":
-			return RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+			searchtype = RoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
 					GameRuleset.class);
+
+			break;
 		case "squad":
-			return SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+			searchtype = SquadSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
 					GameRuleset.class);
+
+			break;
 		case "wrapped":
-			return WrappedRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+			searchtype = WrappedRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
+
+			break;
 		default:
-			return MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
+			searchtype = MctsSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class,
 					GameRuleset.class);
 		}
+		return searchtype;
 
 	}
 
@@ -578,6 +583,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
+	 * @param rules		Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	public void singleThreadTreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)

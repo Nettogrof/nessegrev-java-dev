@@ -18,6 +18,15 @@ import ai.nettogrof.battlesnake.snakes.ExpertSnake;
  *
  */
 public class ExpertSnakeTest {
+	/**
+	 *  Game id for junit test 
+	 */
+	final private static String TEST = "test";
+	
+	/**
+	 *  Error End method message
+	 */
+	final private static String SHOULD_RETURN = "End methods should return a object";
 
 	/**
 	 * 
@@ -34,6 +43,7 @@ public class ExpertSnakeTest {
 	 * implicit.)
 	 */
 	protected ExpertSnakeTest() {
+		//useless constructor
 	}
 
 	/**
@@ -48,7 +58,7 @@ public class ExpertSnakeTest {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final ExpertSnake snakeAi = new ExpertSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake(TEST);
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -80,7 +90,7 @@ public class ExpertSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final ExpertSnake snakeAi = new ExpertSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake(TEST);
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -93,7 +103,7 @@ public class ExpertSnakeTest {
 			snakeAi.move(parsedRequest);
 		}
 
-		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
+		assertNotNull(snakeAi.end(parsedRequest), SHOULD_RETURN);
 
 	}
 
@@ -117,7 +127,7 @@ public class ExpertSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(PRETEST);
 
-		final ExpertSnake snakeAi = new ExpertSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake(TEST);
 
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(4);
@@ -130,7 +140,7 @@ public class ExpertSnakeTest {
 			snakeAi.move(parsedRequest);
 		}
 
-		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
+		assertNotNull(snakeAi.end(parsedRequest), SHOULD_RETURN);
 
 	}
 	// {"game":{"id":"c5675b23-a15b-4cff-bf53-d05ce578b05c","ruleset":{"name":"royale","version":"v1.0.22","settings":{"foodSpawnChance":20,"minimumFood":1,"hazardDamagePerTurn":14,"royale":{"shrinkEveryNTurns":20},"squad":{"allowBodyCollisions":false,"sharedElimination":false,"sharedHealth":false,"sharedLength":false}}},"timeout":500},"turn":170,"board":{"height":11,"width":11,"snakes":[{"id":"gs_Yxj6hRrh7SpRFVf7CRPF6CfH","name":"Demifemme
@@ -157,7 +167,7 @@ public class ExpertSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(test[0]);
 
-		final ExpertSnake snakeAi = new ExpertSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake(TEST);
 
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(1);
@@ -169,7 +179,7 @@ public class ExpertSnakeTest {
 		parsedRequest = json.readTree(test[0]);
 		snakeAi.move(parsedRequest);
 
-		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
+		assertNotNull(snakeAi.end(parsedRequest), SHOULD_RETURN);
 
 	}
 
@@ -203,7 +213,7 @@ public class ExpertSnakeTest {
 
 		JsonNode parsedRequest = json.readTree(test[0]);
 
-		final ExpertSnake snakeAi = new ExpertSnake("test");
+		final ExpertSnake snakeAi = new ExpertSnake(TEST);
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
@@ -218,7 +228,7 @@ public class ExpertSnakeTest {
 
 		}
 
-		assertNotNull(snakeAi.end(parsedRequest), "End methos should return a object");
+		assertNotNull(snakeAi.end(parsedRequest), SHOULD_RETURN);
 
 	}
 

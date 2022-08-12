@@ -37,18 +37,6 @@ public class HazardSquare extends AbstractHazard {
 	}
 
 	/**
-	 * Check if a particular square is an hazard square
-	 * 
-	 * @param posx Square position X
-	 * @param posy Square position Y
-	 * @return boolean if square is hazard
-	 */
-	@Override
-	public boolean isHazardSquare(final int posx, final int posy) {
-		return hazard.contains(posx * 1000 + posy);
-	}
-
-	/**
 	 * Check if a particular square is an hazard square (based on square formula)
 	 * 
 	 * @param pos the square position

@@ -45,12 +45,10 @@ public class RightSnake extends ExpertSnake {
 	 */
 	@Override
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
-
-		if ("standard".equals(ruleset)) {
-			return RightStandardSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+		return "standard".equals(ruleset) ? RightStandardSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+					int.class, GameRuleset.class) : RightRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
-		}
-		return RightRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class, int.class, GameRuleset.class);
+		
 
 	}
 }

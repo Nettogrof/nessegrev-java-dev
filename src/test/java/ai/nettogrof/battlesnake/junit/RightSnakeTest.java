@@ -33,6 +33,7 @@ public class RightSnakeTest {
 	 * implicit.)
 	 */
 	protected RightSnakeTest() {
+		//useless constructor
 	}
 
 	/**

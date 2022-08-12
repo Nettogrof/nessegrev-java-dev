@@ -182,21 +182,22 @@ public abstract class AbstractSearch implements Runnable {
 		final ArrayList<SnakeInfo> listNewSnakeInfo = new ArrayList<>();
 
 		if (snakeInfo.isAlive()) {
-			moveSnake(snakeInfo, node, allSnakes,listNewSnakeInfo);
-			
+			moveSnake(snakeInfo, node, allSnakes, listNewSnakeInfo);
+
 		}
 		return listNewSnakeInfo;
 	}
 
 	/**
 	 * Generate move of a snake
+	 * 
 	 * @param snakeInfo
 	 * @param node
 	 * @param allSnakes
 	 * @param listNewSnakeInfo
 	 */
-	protected void moveSnake(SnakeInfo snakeInfo, AbstractNode node, List<SnakeInfo> allSnakes,
-			ArrayList<SnakeInfo> listNewSnakeInfo) {
+	protected void moveSnake(final SnakeInfo snakeInfo, final AbstractNode node, final List<SnakeInfo> allSnakes,
+			final List<SnakeInfo> listNewSnakeInfo) {
 		final int head = snakeInfo.getHead();
 
 		if (head / 1000 > 0) {
@@ -213,7 +214,7 @@ public abstract class AbstractSearch implements Runnable {
 		if (head % 1000 < height - 1) {
 			addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
-		
+
 	}
 
 	/**
