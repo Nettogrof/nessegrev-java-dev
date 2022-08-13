@@ -75,7 +75,7 @@ public class BasicSnake extends AbstractSnakeAI {
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
 
-		int maxd[] = { 99 }; // Max distance between snake head and food
+		int[] maxd = { 99 }; // Max distance between snake head and food
 
 		int[] foodxy = new int[2];
 

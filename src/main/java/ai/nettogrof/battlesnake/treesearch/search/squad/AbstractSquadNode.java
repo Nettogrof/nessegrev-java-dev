@@ -51,7 +51,7 @@ public abstract class AbstractSquadNode extends DuelNode {
 
 			totalOther = 0.01f;
 			for (int i = 1; i < score.length; i++) {
-				if (!((SnakeInfoSquad) snakes.get(0)).getSquad().equals(((SnakeInfoSquad) snakes.get(0)).getSquad())) {
+				if (!((SnakeInfoSquad) snakes.get(0)).getSquad().equals(((SnakeInfoSquad) snakes.get(i)).getSquad())) {
 					totalOther += score[i];
 				}
 			}

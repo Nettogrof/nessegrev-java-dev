@@ -15,14 +15,14 @@ public abstract class AbstractHazard {
 	/**
 	 * Arraylist (int) of all hazard position (based on square formula)
 	 */
-	protected transient final TIntArrayList hazard = new TIntArrayList();
+	protected final TIntArrayList hazard = new TIntArrayList();
 
 	/**
 	 * Single constructor need the jsonNode board
 	 * 
 	 * @param board JsonNode board element
 	 */
-	public AbstractHazard(final JsonNode board) {
+	protected AbstractHazard(final JsonNode board) {
 		setInfo(board.get("hazards"));
 	}
 

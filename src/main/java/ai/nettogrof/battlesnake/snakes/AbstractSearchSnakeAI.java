@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -38,47 +40,53 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
  */
 public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	
+	
+	/**
+	 * Random generator
+	 */
+	protected Random rand;
+	
 	/**
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
 	 */
-	protected transient int timeout = 300;
+	protected int timeout = 300;
 
 	/**
 	 * Int value that will be subtract from timeout, it's a buffer define in the
 	 * config file, to take latency/lag into account
 	 */
-	protected transient int minusbuffer = 250;
+	protected int minusbuffer = 250;
 
 	/**
 	 * Number of node analyze during the whole game
 	 */
-	protected transient long nodeTotalCount;
+	protected long nodeTotalCount;
 
 	/**
 	 * Total of time used to compute during the whole game
 	 */
-	protected transient long timeTotal;
+	protected long timeTotal;
 
 	/**
 	 * String that gonna be shout by the snake if snake is in a losing position.
 	 */
-	protected transient String losing = "I have a bad feeling about this";
+	protected String losing = "I have a bad feeling about this";
 
 	/**
 	 * String that gonna be shout by the snake if snake is in a winning position.
 	 */
-	protected transient String winning = "I'm your father";
+	protected String winning = "I'm your father";
 
 	/**
 	 * Ruleset that this game is played.
 	 */
-	protected transient String ruleset = "standard";
+	protected String ruleset = "standard";
 
 	/**
 	 * Basic and unsed constructor
 	 */
-	public AbstractSearchSnakeAI() {
+	protected AbstractSearchSnakeAI() {
 		super();
 	}
 
@@ -87,8 +95,14 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractSearchSnakeAI(final String gameId) {
+	protected AbstractSearchSnakeAI(final String gameId) {
 		super(gameId);
+		try {
+			rand = SecureRandom.getInstanceStrong();
+		} catch (NoSuchAlgorithmException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -141,15 +155,15 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		String res;
 		if (winner == null) {
-			response.put("shout", losing);
+			response.put(SHOUT, losing);
 			res = DOWN;
 		} else {
 			AbstractNode choosenNode = winner;
 			if (winner.getScoreRatio() < BASIC_SCORE) {
-				response.put("shout", losing);
+				response.put(SHOUT, losing);
 				choosenNode = lastChance(root);
 			} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
-				response.put("shout", winning);
+				response.put(SHOUT, winning);
 				choosenNode = finishHim(root, winner);
 			}
 
@@ -240,7 +254,6 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
 
-			final Random rand = new Random();
 			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
 			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
 

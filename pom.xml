@@ -20,7 +20,7 @@
 			<artifactId>spark-core</artifactId>
 			<version>2.9.4</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -135,19 +135,12 @@
 			<version>1.18.24</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>com.github.chen0040</groupId>
-			<artifactId>java-data-frame</artifactId>
-			<version>1.0.11</version>
-		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
@@ -226,6 +219,39 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.4</version>
+            
+            <executions>
+                <!-- Exports JavaDocs to regular HTML files -->
+                <execution>
+                    <id>javadoc-html</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>javadoc</goal>
+                    </goals>
+                </execution>
+
+                <!-- Generates the JavaDoc coverage report -->
+                <execution>
+                    <id>javadoc-coverage</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>javadoc</goal>
+                    </goals>
+                    <configuration>
+                        <doclet>com.manoelcampos.javadoc.coverage.CoverageDoclet</doclet>
+                        <docletArtifact>
+                            <groupId>com.manoelcampos</groupId>
+                            <artifactId>javadoc-coverage</artifactId>
+                            <version>1.1.0</version>
+                        </docletArtifact>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
 	</build>
 	<profiles>

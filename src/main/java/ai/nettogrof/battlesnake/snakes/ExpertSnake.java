@@ -33,7 +33,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	/**
 	 * Boolean if a squad game
 	 */
-	public transient boolean squad;
+	protected boolean squad;
 
 	/**
 	 * Basic Constructor 

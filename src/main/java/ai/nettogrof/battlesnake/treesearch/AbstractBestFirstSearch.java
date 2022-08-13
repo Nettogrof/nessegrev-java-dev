@@ -204,7 +204,6 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	 * @return AbstractNode best leaf node
 	 */
 	public AbstractNode getBestChild(final AbstractNode node) {
-		// double score =-200;
 		if (node.getChild().isEmpty()) {
 			return node;
 		}

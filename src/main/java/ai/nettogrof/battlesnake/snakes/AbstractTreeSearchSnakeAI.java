@@ -32,19 +32,19 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * Keep the root node from the previous move, to be able to continue search from
 	 * the previous "tree"
 	 */
-	protected transient AbstractNode lastRoot;
+	protected AbstractNode lastRoot;
 
 	
 
 	/**
 	 * What kind of search that gonna be use
 	 */
-	protected transient Constructor<? extends AbstractSearch> searchType;
+	protected Constructor<? extends AbstractSearch> searchType;
 
 	/**
 	 * Basic and unsed constructor
 	 */
-	public AbstractTreeSearchSnakeAI() {
+	protected AbstractTreeSearchSnakeAI() {
 		super();
 	}
 
@@ -53,7 +53,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractTreeSearchSnakeAI(final String gameId) {
+	protected AbstractTreeSearchSnakeAI(final String gameId) {
 		super(gameId);
 	}
 
@@ -158,9 +158,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 		final ConcurrentHashMap<Integer, Float> scoreCount = new ConcurrentHashMap<>();
 
 		for (final AbstractNode c : root.getChild()) {
-			if (scoreCount.get(c.getSnakes().get(0).getHead()) == null) {
-				scoreCount.put(c.getSnakes().get(0).getHead(), c.getScoreRatio());
-			} else if (scoreCount.get(c.getSnakes().get(0).getHead()) > c.getScoreRatio()) {
+			if (scoreCount.get(c.getSnakes().get(0).getHead()) == null || scoreCount.get(c.getSnakes().get(0).getHead()) > c.getScoreRatio()) {
 				scoreCount.put(c.getSnakes().get(0).getHead(), c.getScoreRatio());
 			}
 
@@ -283,8 +281,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * @param right  float array list
 	 * @param node   parent node
 	 */
-	private void fillList(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
-			final TFloatArrayList right[], final AbstractNode node) {
+	private void fillList(final TFloatArrayList[] upward, final TFloatArrayList[] down, final TFloatArrayList[] left,
+			final TFloatArrayList[] right, final AbstractNode node) {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (int i = 0; i < node.getChild().size(); i++) {
@@ -320,8 +318,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * @param left   float array list
 	 * @param right  float array list
 	 */
-	private void logValue(final TFloatArrayList upward[], final TFloatArrayList down[], final TFloatArrayList left[],
-			final TFloatArrayList right[]) {
+	private void logValue(final TFloatArrayList[] upward, final TFloatArrayList[] down, final TFloatArrayList[] left,
+			final TFloatArrayList[] right) {
 		final StringBuilder logtext = new StringBuilder();
 		final String nodeCount = " node count";
 		if (!upward[0].isEmpty()) {
@@ -360,13 +358,13 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 				if ((hazard == null || hazard.equals(c.getHazard())) && food.equals(c.getFood())
 						&& c.getSnakes().size() == snakes.size()) {
 					final List<SnakeInfo> csnake = c.getSnakes();
-					boolean found = true;
-					for (int i = 0; i < csnake.size() && found; i++) {
-						found = csnake.get(i).equals(snakes.get(i));
+					
+					for (int i = 0; i < csnake.size(); i++) {
+						if (csnake.get(i).equals(snakes.get(i))){
+							return c;
+						}
 					}
-					if (found) {
-						return c;
-					}
+					
 
 				}
 			}

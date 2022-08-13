@@ -30,7 +30,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	/**
 	 * Boardd of empty space
 	 */
-	private transient int[][] space;
+	private int[][] space;
 
 	/**
 	 * Constant value
@@ -307,7 +307,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		response.put("tailType", "sharp");
 		width = startRequest.get("board").get("width").asInt();
 		height = startRequest.get("board").get("height").asInt();
-		// board = new int[width][heigth];
+		
 		space = new int[width][height];
 
 		return response;

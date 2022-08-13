@@ -45,6 +45,10 @@ public abstract class AbstractSnakeAI {
 	 * Constant Field name
 	 */
 	protected static final String MOVESTR = "move";
+	/**
+	 * Constant Field name
+	 */
+	protected static final String SHOUT = "shout";
 
 	/**
 	 * Constant Field name
@@ -119,17 +123,17 @@ public abstract class AbstractSnakeAI {
 	/**
 	 * Board width
 	 */
-	protected transient int width;
+	protected int width;
 
 	/**
 	 * Board height
 	 */
-	protected transient int height;
+	protected int height;
 
 	/**
 	 * API version use, some snakes are able to play both version v0 and v1.
 	 */
-	protected transient int apiversion;
+	protected int apiversion;
 
 	/**
 	 * Any snake must use a fileConfig (a properties files), and the name of the
@@ -141,17 +145,17 @@ public abstract class AbstractSnakeAI {
 	 * Snakes can play games in parallel, so the game id field is use to distinguish
 	 * different game
 	 */
-	protected transient String gameId;
+	protected String gameId;
 
 	/**
 	 * Basic logger object
 	 */
-	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
+	protected static FluentLogger log = FluentLogger.forEnclosingClass();
 
 	/**
 	 * Basic constructor not used
 	 */
-	public AbstractSnakeAI() {
+	protected AbstractSnakeAI() {
 		// empty
 	}
 
@@ -160,7 +164,7 @@ public abstract class AbstractSnakeAI {
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractSnakeAI(final String gameId) {
+	protected AbstractSnakeAI(final String gameId) {
 		this.gameId = gameId;
 
 	}
@@ -214,7 +218,7 @@ public abstract class AbstractSnakeAI {
 	 */
 	public void ping() {
 		log.atInfo().log("Got Pinged");
-	};
+	}
 
 	/**
 	 * Gets the config file to set properties correctly

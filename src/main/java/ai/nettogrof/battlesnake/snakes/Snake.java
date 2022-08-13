@@ -65,7 +65,7 @@ public final class Snake {
 	/**
 	 * Static value.
 	 */
-	private final static  int ONE = 1;
+	private static final int ONE = 1;
 
 	/**
 	 * Unused constrictor

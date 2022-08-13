@@ -69,7 +69,6 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	/**
 	 * Adjust our snake score for the distance between head and the nearest food
 	 * 
-	 * @param head Square of the snake head
 	 */
 	protected void addScoreDistanceAll() {
 		for (int i = 0; i < snakes.size(); i++) {
@@ -145,7 +144,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 */
 	protected void addBasicLengthScore() {
 		for (int i = 0; i < snakes.size(); i++) {
-			score[i] = snakes.get(i).isAlive() ? snakes.get(i).getSnakeBody().size() + snakes.get(i).getHealth() / 50
+			score[i] = snakes.get(i).isAlive() ? snakes.get(i).getSnakeBody().size() + snakes.get(i).getHealth() / 50f
 					: 0;
 		}
 	}

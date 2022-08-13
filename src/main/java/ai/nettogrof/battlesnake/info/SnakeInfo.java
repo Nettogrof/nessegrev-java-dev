@@ -21,7 +21,7 @@ public class SnakeInfo implements Cloneable {
 	/**
 	 * Logging object
 	 */
-	protected static transient FluentLogger log = FluentLogger.forEnclosingClass();
+	protected static FluentLogger log = FluentLogger.forEnclosingClass();
 
 	/**
 	 * Arraylist of the Snake Body. Starting at the head. This array of Integer of
@@ -32,22 +32,22 @@ public class SnakeInfo implements Cloneable {
 	/**
 	 * Name of the snake
 	 */
-	protected transient String name;
+	protected String name;
 
 	/**
 	 * Current health of the snake
 	 */
-	protected transient int health;
+	protected int health;
 
 	/**
 	 * Does the snake just eat
 	 */
-	protected transient boolean eat;
+	protected boolean eat;
 
 	/**
 	 * If the snake is still alive
 	 */
-	protected transient boolean alive = true;
+	protected boolean alive = true;
 
 	/**
 	 * Basic constructor with a empty body.
@@ -220,7 +220,7 @@ public class SnakeInfo implements Cloneable {
 	public SnakeInfo cloneSnake() {
 		SnakeInfo clonedSnake = null;
 		try {
-			clonedSnake = clone();
+			clonedSnake = (SnakeInfo) clone();
 		} catch (CloneNotSupportedException e) {
 
 			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
@@ -230,15 +230,7 @@ public class SnakeInfo implements Cloneable {
 
 	}
 
-	/**
-	 * Clone the snake
-	 * 
-	 * @return the new object clone
-	 */
-	@Override
-	public SnakeInfo clone() throws CloneNotSupportedException {
-		return (SnakeInfo) super.clone();
-	}
+	
 
 	/**
 	 * Return if the snake is alive or not

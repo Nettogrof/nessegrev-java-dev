@@ -19,7 +19,7 @@ public class FoodInfo {
 	/**
 	 * Arraylist (int) of all food position (based on square formula)
 	 */
-	private transient final TIntArrayList position = new TIntArrayList();
+	private final TIntArrayList position = new TIntArrayList();
 
 	
 	/**

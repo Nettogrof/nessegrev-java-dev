@@ -19,7 +19,7 @@ public final class CorsFilterUtils {
 	/**
 	 * CORS maps info
 	 */
-	private final static Map<String, String> CORS_HEADERS = new ConcurrentHashMap<>();
+	private static final Map<String, String> CORS_HEADERS = new ConcurrentHashMap<>();
 
 	/**
 	 * Basic filter to accept incoming https/web request

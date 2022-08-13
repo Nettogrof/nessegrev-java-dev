@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
@@ -30,17 +29,17 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	/**
 	 * Boolean if multithread is use by the snake value define by the config file
 	 */
-	protected transient boolean multiThread;
+	protected boolean multiThread;
 
 	/**
 	 * Number of CPU / thread permit
 	 */
-	protected transient int cpuLimit = 2;
+	protected int cpuLimit = 2;
 
 	/**
 	 * Basic and unused constructor
 	 */
-	public AbstractMultiThreadSnakeAI() {
+	protected AbstractMultiThreadSnakeAI() {
 		super();
 	}
 
@@ -49,7 +48,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
-	public AbstractMultiThreadSnakeAI(final String gameId) {
+	protected AbstractMultiThreadSnakeAI(final String gameId) {
 		super(gameId);
 	}
 
@@ -146,7 +145,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 
 		try {
 
-			Thread.sleep(timeout - minusbuffer - 50);
+			Thread.sleep(timeout - minusbuffer - 50L);
 		} catch (InterruptedException e) {
 
 			log.atSevere().log("Thread?!", e);
@@ -185,7 +184,6 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
 			cpuLimit = Integer.parseInt(prop.getProperty("cpu"));
 
-			final Random rand = new Random();
 			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
 			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
 
