@@ -76,7 +76,7 @@ class FloodFillSnakeTest {
 
 		final FloodFillSnake snakeAi = new FloodFillSnake("test");
 
-		Thread.sleep(100);
+		
 
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {
@@ -119,7 +119,7 @@ class FloodFillSnakeTest {
 
 		final FloodFillSnake snakeAi = new FloodFillSnake("test");
 
-		Thread.sleep(100);
+	
 
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {

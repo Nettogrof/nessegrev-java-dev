@@ -85,8 +85,6 @@ class RightSnakeTest {
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
 
-		Thread.sleep(100);
-
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {
 			parsedRequest = json.readTree(uniqueTest);
@@ -131,8 +129,6 @@ class RightSnakeTest {
 
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
-
-		Thread.sleep(100);
 
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {

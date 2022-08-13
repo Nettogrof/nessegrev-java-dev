@@ -74,7 +74,6 @@ class BasicSnakeTest {
 
 		final BasicSnake snakeAi = new BasicSnake("test");
 
-		Thread.sleep(100);
 
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {
@@ -118,7 +117,6 @@ class BasicSnakeTest {
 
 		final BasicSnake snakeAi = new BasicSnake("test");
 
-		Thread.sleep(100);
 
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {

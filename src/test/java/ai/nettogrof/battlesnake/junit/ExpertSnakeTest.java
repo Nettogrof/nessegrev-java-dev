@@ -95,8 +95,6 @@ class ExpertSnakeTest {
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
 
-		Thread.sleep(100);
-
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {
 			parsedRequest = json.readTree(uniqueTest);
@@ -131,8 +129,7 @@ class ExpertSnakeTest {
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(4);
 
-		Thread.sleep(100);
-
+	
 		snakeAi.start(json.readTree(test[0]));
 		for (final String uniqueTest : test) {
 			parsedRequest = json.readTree(uniqueTest);
@@ -170,8 +167,6 @@ class ExpertSnakeTest {
 
 		snakeAi.setMultiThread(false);
 		snakeAi.setCpuLimit(1);
-
-		Thread.sleep(100);
 
 		snakeAi.start(parsedRequest);
 
@@ -217,8 +212,7 @@ class ExpertSnakeTest {
 		snakeAi.setMultiThread(true);
 		snakeAi.setCpuLimit(4);
 
-		Thread.sleep(100);
-
+		
 		snakeAi.start(parsedRequest);
 		for (final String uniqueTest : test) {
 
