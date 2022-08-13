@@ -26,7 +26,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	/**
 	 * default openhashmap value
 	 */
-	private final static int DEFAULTRV = new Int2IntOpenHashMap().defaultReturnValue();
+	private static final int DEFAULTRV = new Int2IntOpenHashMap().defaultReturnValue();
 
 	/**
 	 * Constructor with snakes and food information
@@ -34,7 +34,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * @param snakes List of snakes
 	 * @param food   Food information
 	 */
-	public AbstractEvaluationNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractEvaluationNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
 		score = new float[snakes.size()];
 	}

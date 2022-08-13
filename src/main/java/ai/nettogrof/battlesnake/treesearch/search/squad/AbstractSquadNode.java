@@ -33,7 +33,7 @@ public abstract class AbstractSquadNode extends DuelNode {
 	 * @param food   Food information
 	 */
 	@SuppressWarnings("unchecked")
-	public AbstractSquadNode(final List<? extends SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractSquadNode(final List<? extends SnakeInfo> snakes, final FoodInfo food) {
 		super((List<SnakeInfo>) snakes, food);
 
 	}
@@ -57,7 +57,7 @@ public abstract class AbstractSquadNode extends DuelNode {
 			}
 
 		}
-		return score[0] / (float) totalOther;
+		return score[0] / totalOther;
 
 	}
 
@@ -167,7 +167,7 @@ public abstract class AbstractSquadNode extends DuelNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio = (float) (totalOwnSquad / (float) totalOther);
+		scoreRatio = totalOwnSquad / (float) totalOther;
 		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}

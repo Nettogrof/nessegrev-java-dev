@@ -20,7 +20,7 @@ public class SquadNode extends AbstractSquadNode {
 	/**
 	 * Minimun number of snake for Squad Mode.  If number of snake smaller than this value, the game end
 	 */
-	protected final static int MINIMUN_SNAKE = 4;
+	protected static final int MINIMUN_SNAKE = 4;
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 

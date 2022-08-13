@@ -21,11 +21,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  */
 public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 
-	/**
-	 * Hazards info
-	 */
-	protected transient AbstractHazard hazard;
-
+	
 	/**
 	 * Constructor with snakes and food information
 	 * 
@@ -33,7 +29,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 * @param food    Food information
 	 * @param hazard2 Hazard Info
 	 */
-	public AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard2) {
+	protected AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard2) {
 		super(snakes, food);
 		this.hazard = hazard2;
 	}

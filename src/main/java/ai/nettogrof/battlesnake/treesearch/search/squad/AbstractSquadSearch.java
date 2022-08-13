@@ -19,7 +19,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	/**
 	 * Basic constructor
 	 */
-	public AbstractSquadSearch() {
+	protected AbstractSquadSearch() {
 		super();
 	}
 
@@ -30,7 +30,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 * @param width  Board width
 	 * @param height Board height
 	 */
-	public AbstractSquadSearch(final AbstractNode root, final int width, final int height) {
+	protected AbstractSquadSearch(final AbstractNode root, final int width, final int height) {
 		super();
 		this.root = root;
 		this.width = width;
@@ -47,7 +47,7 @@ public abstract class AbstractSquadSearch extends AbstractMCTS {
 	 * @param starttime starting time for the search in millisecond
 	 * @param timeout   the time limit to run the search
 	 */
-	public AbstractSquadSearch(final AbstractNode root, final int width, final int height, final long starttime,
+	protected AbstractSquadSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout) {
 		super();
 		this.root = root;

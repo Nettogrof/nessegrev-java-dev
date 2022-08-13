@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ai.nettogrof</groupId>
 	<artifactId>starter-snake-java</artifactId>
-	<version>2021-summer</version>
+	<version>2022-summer</version>
 	<name>nessegrev-snake-java</name>
 	<description>Battlesnake snake written in Java!</description>
 

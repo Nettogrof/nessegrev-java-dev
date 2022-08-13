@@ -28,7 +28,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	/**
 	 * Basic constructor
 	 */
-	public AbstractDecisionNode() {
+	protected AbstractDecisionNode() {
 		super();
 	}
 
@@ -38,7 +38,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	 * @param snakes list of snakes, and food info
 	 * @param food   food info
 	 */
-	public AbstractDecisionNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractDecisionNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
 	}
 

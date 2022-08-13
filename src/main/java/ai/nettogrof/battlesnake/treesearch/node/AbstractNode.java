@@ -37,42 +37,42 @@ public abstract class AbstractNode {
 	/**
 	 * List of child node
 	 */
-	protected transient List<AbstractNode> child = new ArrayList<>();
+	protected List<AbstractNode> child = new ArrayList<>();
 
 	/**
 	 * List of snakes
 	 */
-	protected transient List<SnakeInfo> snakes;
+	protected List<SnakeInfo> snakes;
 
 	/**
 	 * Food information
 	 */
-	protected transient FoodInfo food;
+	protected FoodInfo food;
 
 	/**
 	 * Hazard information
 	 */
-	protected transient AbstractHazard hazard;
+	protected AbstractHazard hazard;
 
 	/**
 	 * Current scoreRatio
 	 */
-	protected transient float scoreRatio;
+	protected float scoreRatio;
 
 	/**
 	 * Array of score of each snake
 	 */
-	public transient float score[];
+	public float[] score;
 
 	/**
 	 * Number of possible move of our snake
 	 */
-	public transient int possibleMove;
+	public int possibleMove;
 
 	/**
 	 * Counts of all node of that branch
 	 */
-	public transient int allChildsCount = 1;
+	public int allChildsCount = 1;
 
 	/**
 	 * Does that node can be explore
@@ -83,7 +83,7 @@ public abstract class AbstractNode {
 	/**
 	 * Basic constructor
 	 */
-	public AbstractNode() {
+	protected AbstractNode() {
 		// Empty top level
 	}
 
@@ -93,7 +93,7 @@ public abstract class AbstractNode {
 	 * @param snakes List of snakes
 	 * @param food   Food information
 	 */
-	public AbstractNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		this.snakes = snakes;
 		this.food = food;
 	}
@@ -160,7 +160,7 @@ public abstract class AbstractNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio = (float) (score[0] / (float) totalOther);
+		scoreRatio = score[0] / (float) totalOther;
 		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}

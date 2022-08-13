@@ -20,51 +20,46 @@ public abstract class AbstractSearch implements Runnable {
 	/**
 	 * Control variable to continue the search or not
 	 */
-	protected transient boolean cont;
+	protected boolean cont;
 
 	/**
 	 * Root node for the search
 	 */
-	protected transient AbstractNode root;
+	protected AbstractNode root;
 
 	/**
 	 * Board height
 	 */
-	protected transient int height;
+	protected int height;
 
 	/**
 	 * Board width
 	 */
-	protected transient int width;
+	protected int width;
 
 	/**
 	 * Time allowed for the search
 	 */
-	protected transient int timeout = 250;
+	protected int timeout = 250;
 
 	/**
 	 * Starting time for the search in millisecond
 	 */
-	protected transient long startTime;
+	protected long startTime;
 
 	/**
 	 * Object containing Game Rules
 	 */
-	public transient GameRuleset rules;
+	protected GameRuleset rules;
 
 	/**
 	 * Basic Constructor
 	 */
-	public AbstractSearch() {
+	protected AbstractSearch() {
 		cont = true;
 	}
 
-	/**
-	 * The execution of the search
-	 */
-	@Override
-	public abstract void run();
-
+	
 	/**
 	 * This method is used to stop the search
 	 */
@@ -251,7 +246,7 @@ public abstract class AbstractSearch implements Runnable {
 	 * @param node the Abstractnode to be expand
 	 */
 	protected void generateChild(final AbstractNode node) {
-		if (node.getChild().size() > 0) {
+		if (!node.getChild().isEmpty()) {
 			node.exp = false;
 		} else {
 			final List<SnakeInfo> current = node.getSnakes();

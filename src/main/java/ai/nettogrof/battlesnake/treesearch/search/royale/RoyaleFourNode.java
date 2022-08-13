@@ -21,13 +21,8 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 	/**
 	 * 
 	 */
-	private final static int FOUR = 4;
+	private static final int FOUR = 4;
 	
-	/**
-	 * 
-	 */
-	//private final static int THREE = 3;
-
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 

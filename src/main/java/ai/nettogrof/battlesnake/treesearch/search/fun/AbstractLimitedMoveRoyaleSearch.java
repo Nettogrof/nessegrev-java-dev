@@ -22,19 +22,19 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	/**
 	 * Prevent left move if head - neck equals that amount
 	 */
-	protected transient int leftNeck = 5;
+	protected int leftNeck = 5;
 	/**
 	 * Prevent right move if head - neck equals that amount
 	 */
-	protected transient int rightNeck = 5;
+	protected int rightNeck = 5;
 	/**
 	 * Prevent down move if head - neck equals that amount
 	 */
-	protected transient int downNeck = 5;
+	protected int downNeck = 5;
 	/**
 	 * Prevent up move if head - neck equals that amount
 	 */
-	protected transient int upNeck = 5;
+	protected int upNeck = 5;
 
 	/**
 	 * Constructor used to expand to do the tree search.
@@ -46,7 +46,7 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	 * @param timeout   the time limit to run the search
 	 * @param rules		the game ruleset info
 	 */
-	public AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
+	protected AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
 			final long starttime, final int timeout, final GameRuleset rules) {
 		super(root, width, height, starttime, timeout, rules);
 	}

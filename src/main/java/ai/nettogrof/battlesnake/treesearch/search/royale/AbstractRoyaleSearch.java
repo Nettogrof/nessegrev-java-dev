@@ -26,7 +26,7 @@ public abstract class AbstractRoyaleSearch extends AbstractMCTS {
 	 * @param timeout   the time limit to run the search
 	 * @param rules		the game ruleset info
 	 */
-	public AbstractRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
+	protected AbstractRoyaleSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout, final GameRuleset rules) {
 		super();
 		this.root = root;

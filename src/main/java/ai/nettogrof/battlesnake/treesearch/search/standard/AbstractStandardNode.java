@@ -24,7 +24,7 @@ public abstract class AbstractStandardNode extends AbstractEvaluationNode {
 	 * @param snakes List of snakes
 	 * @param food   Food information
 	 */
-	public AbstractStandardNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractStandardNode(final List<SnakeInfo> snakes, final FoodInfo food) {
 		super(snakes, food);
 
 	}

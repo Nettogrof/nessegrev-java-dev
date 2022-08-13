@@ -23,7 +23,7 @@ public abstract class AbstractLimitedMoveSearch extends AbstractLimitedMoveRoyal
 	 * @param timeout   the time limit to run the search
 	 * @param rules     the game ruleset info
 	 */
-	public AbstractLimitedMoveSearch(final AbstractNode root, final int width, final int height, final long starttime,
+	protected AbstractLimitedMoveSearch(final AbstractNode root, final int width, final int height, final long starttime,
 			final int timeout, final GameRuleset rules) {
 		super(root, width, height, starttime, timeout, rules);
 

@@ -11,7 +11,7 @@ import ai.nettogrof.battlesnake.snakes.Snake;
  * @author carl.lajeunesse
  *
  */
-public class SnakeTest {
+class SnakeTest {
 
 	/**
 	 * Sole constructor. (For invocation by subclass constructors, typically
@@ -25,7 +25,7 @@ public class SnakeTest {
 	 * Single unit test
 	 */
 	@Test
-	public void testMain() {
+	void testMain() {
 		final String[] param = { "Beta" };
 		Snake.main(param);
 		assertNotNull(param[0],"WTF");
