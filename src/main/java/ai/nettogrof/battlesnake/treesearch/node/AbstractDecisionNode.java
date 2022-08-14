@@ -136,6 +136,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
+		float[] beta = new float[score.length];
 		for (final AbstractNode c : getChild()) {
 			final int currentHead = c.getSnakes().get(0).getHead();
 			if (head.contains(currentHead)) {
@@ -154,7 +155,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 				}
 			} else {
 				head.add(currentHead);
-				float[] beta = new float[score.length];
+				
 				Arrays.fill(beta, INVALID_SCORE);
 					
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);

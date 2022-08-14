@@ -91,7 +91,7 @@ public final class BattleSnakeConstants {
 	public static String getWinShout() {
 
 		try {
-			Random rand = SecureRandom.getInstanceStrong();
+			final Random rand = SecureRandom.getInstanceStrong();
 			return WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
 		} catch (NoSuchAlgorithmException ex) {
 			return WIN_SHOUT[0];
