@@ -293,29 +293,29 @@ public class FloodFillSnake extends AbstractSimpleSnakeAI {
 	 * @param board the board (array of value)
 	 */
 	private void floodPositive(final int posX, final int posY, final int value, final int[][] board) {
-		if (board[posX][posY] >= 0 && board[posX][posY] < value) { // Only on positive square value and where the
+		if (board[posX][posY] > 0 && board[posX][posY] < value) { // Only on positive square value and where the
 																	// current value is lower than the value we want to
 																	// assign
 			board[posX][posY] = value;
-			if (value > 0) { // Stop here if value is equal to 0
-				if (posX > 0) {
-					floodPositive(posX - 1, posY, value - 1, board); // spread the flood to the position X - 1, with the
-																		// value - 1
-				}
-				if (posY > 0) {
-					floodPositive(posX, posY - 1, value - 1, board); // spread the flood to the position Y - 1, with the
-																		// value - 1
-				}
-				if (posY < height - 1) {
-					floodPositive(posX, posY + 1, value - 1, board);// spread the flood to the position Y - 1, with the
-																	// value - 1
-				}
 
-				if (posX < width - 1) {
-					floodPositive(posX + 1, posY, value - 1, board); // spread the flood to the position X + 1, with the
-																		// value - 1
-				}
+			if (posX > 0) {
+				floodPositive(posX - 1, posY, value - 1, board); // spread the flood to the position X - 1, with the
+																	// value - 1
 			}
+			if (posY > 0) {
+				floodPositive(posX, posY - 1, value - 1, board); // spread the flood to the position Y - 1, with the
+																	// value - 1
+			}
+			if (posY < height - 1) {
+				floodPositive(posX, posY + 1, value - 1, board);// spread the flood to the position Y - 1, with the
+																// value - 1
+			}
+
+			if (posX < width - 1) {
+				floodPositive(posX + 1, posY, value - 1, board); // spread the flood to the position X + 1, with the
+																	// value - 1
+			}
+
 		}
 	}
 

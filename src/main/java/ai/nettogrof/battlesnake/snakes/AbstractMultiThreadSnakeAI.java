@@ -185,8 +185,8 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 			multiThread = Boolean.parseBoolean(prop.getProperty("multiThread"));
 			cpuLimit = Integer.parseInt(prop.getProperty("cpu"));
 
-			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
-			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
+			losing = BattleSnakeConstants.getLostShout();
+			winning = BattleSnakeConstants.getWinShout();
 
 		} catch (IOException ex) {
 			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());

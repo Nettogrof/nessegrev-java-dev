@@ -167,7 +167,7 @@ public abstract class AbstractSquadNode extends DuelNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio = totalOwnSquad / (float) totalOther;
+		scoreRatio = totalOwnSquad / totalOther;
 		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}

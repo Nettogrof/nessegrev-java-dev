@@ -32,7 +32,7 @@ public abstract class AbstractNode {
 	/**
 	 * Single posssible move
 	 */
-	public final static int ONE = 1;
+	public static final int ONE = 1;
 
 	/**
 	 * List of child node
@@ -67,18 +67,17 @@ public abstract class AbstractNode {
 	/**
 	 * Number of possible move of our snake
 	 */
-	public int possibleMove;
+	protected int possibleMove;
 
 	/**
 	 * Counts of all node of that branch
 	 */
-	public int allChildsCount = 1;
+	protected int allChildsCount = 1;
 
 	/**
 	 * Does that node can be explore
 	 */
-	public transient boolean exp = true;
-	
+	public boolean exp = true;
 
 	/**
 	 * Basic constructor
@@ -160,7 +159,7 @@ public abstract class AbstractNode {
 			totalOther += score[i];
 		}
 
-		scoreRatio = score[0] / (float) totalOther;
+		scoreRatio = score[0] / totalOther;
 		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
 			exp = false;
 		}
@@ -206,10 +205,20 @@ public abstract class AbstractNode {
 
 	/**
 	 * Return the hazard object
+	 * 
 	 * @return the hazard
 	 */
 	public AbstractHazard getHazard() {
 		return hazard;
+	}
+
+	/**
+	 * Set possible move
+	 * 
+	 * @param possibleMove int of number of possible move
+	 */
+	public void setPossibleMove(int possibleMove) {
+		this.possibleMove = possibleMove;
 	}
 
 }

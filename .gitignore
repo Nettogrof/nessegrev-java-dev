@@ -7,3 +7,4 @@ target/
 .vscode/
 /codemr/
 /dailyBuild.sh
+/pom.xml.versionsBackup

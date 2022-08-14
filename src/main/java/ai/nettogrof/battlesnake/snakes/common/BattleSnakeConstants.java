@@ -1,5 +1,9 @@
 package ai.nettogrof.battlesnake.snakes.common;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
+
 /**
  * This class keep some constant value
  * 
@@ -26,14 +30,14 @@ public final class BattleSnakeConstants {
 	 * When a snake is in losing position, the snake gonna shout one of those line
 	 * randomly.
 	 */
-	public static final String[] LOSE_SHOUT = { "I have a bad feeling about this", "help me obiwan you're my only hope",
-			"Nooooo!!", "Sorry master, I failed" };
+	private static final String[] LOSE_SHOUT = { "I have a bad feeling about this",
+			"help me obiwan you're my only hope", "Nooooo!!", "Sorry master, I failed" };
 
 	/**
 	 * When a snake is in winning position, the snake gonna shout one of those line
 	 * randomly
 	 */
-	public static final String[] WIN_SHOUT = { "You gonna die", "I'm your father", "All your base belong to me",
+	private static final String[] WIN_SHOUT = { "You gonna die", "I'm your father", "All your base belong to me",
 			"42 is the answer of life", "Astalavista baby!" };
 
 	/**
@@ -77,6 +81,38 @@ public final class BattleSnakeConstants {
 	 * implicit.)
 	 */
 	private BattleSnakeConstants() {
+	}
+
+	/**
+	 * Get Winning shout
+	 * 
+	 * @return winning shout
+	 */
+	public static String getWinShout() {
+
+		try {
+			Random rand = SecureRandom.getInstanceStrong();
+			return WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
+		} catch (NoSuchAlgorithmException ex) {
+			return WIN_SHOUT[0];
+		}
+
+	}
+
+	/**
+	 * Get losing shout
+	 * 
+	 * @return losing shout
+	 */
+	public static String getLostShout() {
+
+		try {
+			Random rand = SecureRandom.getInstanceStrong();
+			return LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
+		} catch (NoSuchAlgorithmException ex) {
+			return LOSE_SHOUT[0];
+		}
+
 	}
 
 }

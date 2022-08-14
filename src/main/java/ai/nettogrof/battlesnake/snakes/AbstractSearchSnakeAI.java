@@ -10,11 +10,8 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,11 +37,7 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
  */
 public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 
-	/**
-	 * Random generator
-	 */
-	protected Random rand;
-
+	
 	/**
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
@@ -95,12 +88,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	protected AbstractSearchSnakeAI(final String gameId) {
-		super(gameId);
-		try {
-			rand = SecureRandom.getInstanceStrong();
-		} catch (NoSuchAlgorithmException ex) {
-			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
-		}
+		super(gameId);		
 	}
 
 	/**
@@ -264,8 +252,8 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 			apiversion = Integer.parseInt(prop.getProperty("apiversion"));
 			minusbuffer = Integer.parseInt(prop.getProperty("minusbuffer"));
 
-			losing = BattleSnakeConstants.LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
-			winning = BattleSnakeConstants.WIN_SHOUT[rand.nextInt(BattleSnakeConstants.WIN_SHOUT.length)];
+			losing = BattleSnakeConstants.getLostShout();
+			winning = BattleSnakeConstants.getWinShout();
 
 		} catch (IOException ex) {
 			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());

@@ -191,7 +191,7 @@ public final class Snake {
 				return snakeResponse;
 			} catch (IOException e) {
 				LOG.atWarning().log("Something went wrong!", e);
-				return null;
+				return new ConcurrentHashMap<>();
 			}
 		}
 

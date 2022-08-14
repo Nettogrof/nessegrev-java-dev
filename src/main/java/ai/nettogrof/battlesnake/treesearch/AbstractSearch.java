@@ -249,7 +249,7 @@ public abstract class AbstractSearch implements Runnable {
 
 			final List<SnakeInfo> current = node.getSnakes();
 			final List<SnakeInfo> alphaMove = generateSnakeInfoDestination(current.get(0), node, current);
-			node.possibleMove = alphaMove.size();
+			node.setPossibleMove(alphaMove.size());
 
 			if (alphaMove.isEmpty()) {
 				node.getSnakes().get(0).die();
