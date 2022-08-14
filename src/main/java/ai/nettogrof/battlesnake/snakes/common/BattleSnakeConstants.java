@@ -107,7 +107,7 @@ public final class BattleSnakeConstants {
 	public static String getLostShout() {
 
 		try {
-			Random rand = SecureRandom.getInstanceStrong();
+			final Random rand = SecureRandom.getInstanceStrong();
 			return LOSE_SHOUT[rand.nextInt(BattleSnakeConstants.LOSE_SHOUT.length)];
 		} catch (NoSuchAlgorithmException ex) {
 			return LOSE_SHOUT[0];

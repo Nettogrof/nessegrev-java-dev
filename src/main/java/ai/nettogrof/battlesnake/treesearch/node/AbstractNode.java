@@ -217,7 +217,7 @@ public abstract class AbstractNode {
 	 * 
 	 * @param possibleMove int of number of possible move
 	 */
-	public void setPossibleMove(int possibleMove) {
+	public void setPossibleMove(final int possibleMove) {
 		this.possibleMove = possibleMove;
 	}
 
