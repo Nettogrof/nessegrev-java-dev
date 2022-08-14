@@ -138,11 +138,8 @@ public class FloodFillSnake extends AbstractSimpleSnakeAI {
 
 			}
 
-			s.withArray(BODY).forEach(c -> { // For each snake body part , put -99 to avoid to move into a snake body
-
-				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
-
-			});
+			// For each snake body part , put -99 to avoid to move into a snake body
+			s.withArray(BODY).forEach(c -> board[c.get("x").asInt()][c.get("y").asInt()] = -99);
 
 			if (s.get(HEALTH).asInt() < 100 && moveRequest.get(TURN).asInt() > 3) {
 				board[snakeBody.get(enemylength - 1).get("x").asInt()][snakeBody.get(enemylength - 1).get("y")
@@ -168,10 +165,7 @@ public class FloodFillSnake extends AbstractSimpleSnakeAI {
 	 * @param boardJson the field Board fron the Json request
 	 */
 	private void addHazardsValue(final int[][] board, final JsonNode boardJson) {
-		boardJson.withArray("hazards").forEach(f -> { // For BattleRoyale only remove -25 for square in hazard
-			board[f.get("x").asInt()][f.get("y").asInt()] -= HAZARD_VALUE;
-
-		});
+		boardJson.withArray("hazards").forEach(f -> board[f.get("x").asInt()][f.get("y").asInt()] -= HAZARD_VALUE);
 
 	}
 

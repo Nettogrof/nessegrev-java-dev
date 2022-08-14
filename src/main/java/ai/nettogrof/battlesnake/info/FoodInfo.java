@@ -129,14 +129,7 @@ public class FoodInfo {
 			return false;
 		}
 		final FoodInfo other = (FoodInfo) obj;
-		if (position == null) {
-			if (other.position != null) {
-				return false;
-			}
-		} else if (!position.equals(other.position)) {
-			return false;
-		}
-		return true;
+		return position.equals(other.position);
 	}
 	
 	/**

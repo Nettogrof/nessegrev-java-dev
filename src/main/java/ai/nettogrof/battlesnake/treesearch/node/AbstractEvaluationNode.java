@@ -84,9 +84,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * @param board   Board array
 	 */
 	protected void applyNewHash(final Int2IntOpenHashMap newHash, int[][] board) {
-		newHash.forEach((xy, v) -> {
-			board[xy / 1000][xy % 1000] = v;
-		});
+		newHash.forEach((xy, v) -> board[xy / 1000][xy % 1000] = v);
 
 	}
 
@@ -184,7 +182,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 		}
 
 		// Adding value if a tail is in the controlled area
-		int total = 0;
+		int total = 1;
 		for (int i = 0; i < snakes.size(); i++) {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
@@ -194,9 +192,11 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 			total += count[i];
 		}
 
-		// Assign the score
-		for (int i = 0; i < snakes.size(); i++) {
-			score[i] += ((float) count[i]) / total;
+		if (total > 0) {
+			// Assign the score
+			for (int i = 0; i < snakes.size(); i++) {
+				score[i] += ((float) count[i]) / total;
+			}
 		}
 
 	}

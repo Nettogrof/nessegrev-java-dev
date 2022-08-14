@@ -39,9 +39,7 @@ public final class CorsFilterUtils {
 		final Filter filter = new Filter() {
 			@Override
 			public void handle(final Request request, final Response response) throws Exception {
-				CORS_HEADERS.forEach((key, value) -> {
-					response.header(key, value);
-				});
+				CORS_HEADERS.forEach((key, value) -> response.header(key, value));
 			}
 		};
 		Spark.after(filter);
