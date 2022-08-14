@@ -61,7 +61,7 @@ public final class Snake {
 	 * Port number define by config file or program parameter. Default: 8081
 	 */
 	private static String port = "8081";
-	
+
 	/**
 	 * Static value.
 	 */
@@ -202,9 +202,7 @@ public final class Snake {
 		 * @return an empty response.
 		 */
 		public Map<String, String> ping() {
-			bots.forEach((s, snake) -> {
-				snake.ping();
-			});
+			bots.forEach((s, snake) -> snake.ping());
 			return EMPTY;
 		}
 

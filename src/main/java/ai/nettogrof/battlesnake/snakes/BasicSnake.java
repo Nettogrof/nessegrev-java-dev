@@ -64,13 +64,8 @@ public class BasicSnake extends AbstractSimpleSnakeAI {
 		}
 
 		// Put value -99 for each snake body part
-		boardJsonNode.withArray(SNAKES).forEach(s -> {
-			s.withArray(BODY).forEach(c -> {
-				board[c.get("x").asInt()][c.get("y").asInt()] = -99;
-
-			});
-
-		});
+		boardJsonNode.withArray(SNAKES)
+				.forEach(s -> s.withArray(BODY).forEach(c -> board[c.get("x").asInt()][c.get("y").asInt()] = -99));
 
 		final int snakex = moveRequest.get(YOU).withArray(BODY).get(0).get("x").asInt();
 		final int snakey = moveRequest.get(YOU).withArray(BODY).get(0).get("y").asInt();
