@@ -25,7 +25,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1
  * @author carl.lajeunesse
  * @version Winter 2020
  */
-public class FloodFillSnake extends AbstractSnakeAI {
+public class FloodFillSnake extends AbstractSimpleSnakeAI {
 
 	/**
 	 * Boardd of empty space
@@ -156,7 +156,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		addHazardsValue(board, boardJson);
 
 		final Map<String, String> response = new ConcurrentHashMap<>();
-		response.put("move", chooseBestMove(checkPossibleMove(you, board)));
+		response.put("move", getBestPossibleMove(checkPossibleMove(you, board)));
 
 		return response;
 	}
@@ -262,39 +262,9 @@ public class FloodFillSnake extends AbstractSnakeAI {
 	}
 
 	/**
-	 * Choose the best move
 	 * 
-	 * @param possiblemove map of possible move
-	 * @return String for the move (up ,down, left or right)
-	 */
-	private String chooseBestMove(final Map<String, Integer> possiblemove) {
-		String res = UPWARD;
-		int value = possiblemove.get(UPWARD);
-
-		if (possiblemove.get(DOWN) > value) {
-			value = possiblemove.get(DOWN);
-			res = DOWN;
-		}
-
-		if (possiblemove.get(LEFT) > value) {
-			value = possiblemove.get(LEFT);
-			res = LEFT;
-		}
-		if (possiblemove.get(RIGHT) > value) {
-			res = RIGHT;
-		}
-		if (apiversion == API_V1) {
-			if (res.equals(UPWARD)) {
-				res = DOWN;
-			} else if (res.equals(DOWN)) {
-				res = UPWARD;
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * Function when receive the start request ( API version 0 )
+	 * 
+	 * /** Function when receive the start request ( API version 0 )
 	 * 
 	 * Shouldn't be used anymore
 	 * 
@@ -307,7 +277,7 @@ public class FloodFillSnake extends AbstractSnakeAI {
 		response.put("tailType", "sharp");
 		width = startRequest.get("board").get("width").asInt();
 		height = startRequest.get("board").get("height").asInt();
-		
+
 		space = new int[width][height];
 
 		return response;

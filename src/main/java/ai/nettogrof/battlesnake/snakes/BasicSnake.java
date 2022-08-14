@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * @author carl.lajeunesse
  * @version Winter 2020
  */
-public class BasicSnake extends AbstractSnakeAI {
+public class BasicSnake extends AbstractSimpleSnakeAI {
 
 	/**
 	 * Basic / unused constructor
@@ -140,23 +140,7 @@ public class BasicSnake extends AbstractSnakeAI {
 			possiblemove.put(RIGHT, possiblemove.get(RIGHT) + board[snakex + 1][snakey]);
 		}
 
-		// Choose the direction with the max value.
-		String res = UPWARD;
-		int value = possiblemove.get(UPWARD);
-
-		if (possiblemove.get(DOWN) > value) {
-			value = possiblemove.get(DOWN);
-			res = DOWN;
-		}
-
-		if (possiblemove.get(LEFT) > value) {
-			value = possiblemove.get(LEFT);
-			res = LEFT;
-		}
-		if (possiblemove.get(RIGHT) > value) {
-			res = RIGHT;
-		}
-		return res;
+		return getBestPossibleMove(possiblemove);
 	}
 
 	@Override

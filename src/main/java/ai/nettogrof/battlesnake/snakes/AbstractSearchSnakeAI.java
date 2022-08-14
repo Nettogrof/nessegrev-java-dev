@@ -39,13 +39,12 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
  * @version Summer 2022
  */
 public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
-	
-	
+
 	/**
 	 * Random generator
 	 */
 	protected Random rand;
-	
+
 	/**
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
@@ -99,9 +98,8 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 		super(gameId);
 		try {
 			rand = SecureRandom.getInstanceStrong();
-		} catch (NoSuchAlgorithmException e) {
-			
-			e.printStackTrace();
+		} catch (NoSuchAlgorithmException ex) {
+			log.atWarning().log(ex.getMessage() + "\n" + ex.getStackTrace());
 		}
 	}
 
@@ -158,14 +156,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 			response.put(SHOUT, losing);
 			res = DOWN;
 		} else {
-			AbstractNode choosenNode = winner;
-			if (winner.getScoreRatio() < BASIC_SCORE) {
-				response.put(SHOUT, losing);
-				choosenNode = lastChance(root);
-			} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
-				response.put(SHOUT, winning);
-				choosenNode = finishHim(root, winner);
-			}
+			final AbstractNode choosenNode = checkWinLost(winner, root, response);
 
 			final int move = choosenNode.getSnakes().get(0).getHead();
 
@@ -177,14 +168,33 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 			} else if (move / 1000 == snakex + 1 || snakex == width - 1 && move / 1000 == 0) {
 				res = RIGHT;
 			} else if (move % 1000 == snakey - 1 || snakey == 0 && move % 1000 > 1) {
-				res = apiversion == 1 ? DOWN : UPWARD;
+				res = DOWN;
 			} else {
-				res = apiversion == 1 ? UPWARD : DOWN;
+				res = UPWARD;
 			}
 
 		}
 		response.put(MOVESTR, res);
 		return response;
+	}
+
+	/**
+	 * Check if it's a win or lost
+	 * 
+	 * @param winner   the best node
+	 * @param root     the root node
+	 * @param response the response that gonna be send to the server add shout
+	 * @return the best node
+	 */
+	private AbstractNode checkWinLost(final AbstractNode winner, final AbstractNode root, final Map<String, String> response) {
+		if (winner.getScoreRatio() < BASIC_SCORE) {
+			response.put(SHOUT, losing);
+			return lastChance(root);
+		} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
+			response.put(SHOUT, winning);
+			return finishHim(root, winner);
+		}
+		return winner;
 	}
 
 	/**

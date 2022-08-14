@@ -59,7 +59,6 @@ public abstract class AbstractSearch implements Runnable {
 		cont = true;
 	}
 
-	
 	/**
 	 * This method is used to stop the search
 	 */
@@ -186,10 +185,10 @@ public abstract class AbstractSearch implements Runnable {
 	/**
 	 * Generate move of a snake
 	 * 
-	 * @param snakeInfo
-	 * @param node
-	 * @param allSnakes
-	 * @param listNewSnakeInfo
+	 * @param snakeInfo        Current snake
+	 * @param node             Current node to add child node
+	 * @param allSnakes        List of all snakes to check body collision
+	 * @param listNewSnakeInfo fill that list with new snake position
 	 */
 	protected void moveSnake(final SnakeInfo snakeInfo, final AbstractNode node, final List<SnakeInfo> allSnakes,
 			final List<SnakeInfo> listNewSnakeInfo) {
@@ -246,9 +245,8 @@ public abstract class AbstractSearch implements Runnable {
 	 * @param node the Abstractnode to be expand
 	 */
 	protected void generateChild(final AbstractNode node) {
-		if (!node.getChild().isEmpty()) {
-			node.exp = false;
-		} else {
+		if (node.getChild().isEmpty()) {
+
 			final List<SnakeInfo> current = node.getSnakes();
 			final List<SnakeInfo> alphaMove = generateSnakeInfoDestination(current.get(0), node, current);
 			node.possibleMove = alphaMove.size();
@@ -290,7 +288,8 @@ public abstract class AbstractSearch implements Runnable {
 					node.updateScoreRatio();
 				}
 			}
-
+		} else {
+			node.exp = false;
 		}
 	}
 

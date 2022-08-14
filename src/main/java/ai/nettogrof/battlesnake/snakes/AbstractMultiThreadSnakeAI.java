@@ -75,6 +75,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param nodelist     List of node that gonna to "rooted" in multithread search
 	 * @param expandedlist List of node to be updated after search
+	 * @param rules		   Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist,

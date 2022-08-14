@@ -1,10 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ai.nettogrof</groupId>
 	<artifactId>starter-snake-java</artifactId>
-	<version>2022-summer</version>
+	<version>2022_Summer_1.1.0</version>
 	<name>nessegrev-snake-java</name>
 	<description>Battlesnake snake written in Java!</description>
 
@@ -20,7 +18,7 @@
 			<artifactId>spark-core</artifactId>
 			<version>2.9.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -146,6 +144,41 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>regex-property</id>
+						<goals>
+							<goal>regex-property</goal>
+						</goals>
+						<configuration>
+							<name>modified.version</name>
+							<value>${project.version}</value>
+							<regex>2022_Summer_</regex>
+							<replacement></replacement>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>parse-version</id>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+						<configuration>
+							<versionString>${modified.version}</versionString>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.8.1</version>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
@@ -172,11 +205,11 @@
 					<executable>java</executable>
 					<arguments>
 						<argument>-classpath</argument>
-						<classpath/>
+						<classpath />
 						<argument>io.battlesnake.starter.Snake</argument>
 					</arguments>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
@@ -220,46 +253,132 @@
 				</executions>
 			</plugin>
 			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.4</version>
-            
-            <executions>
-                <!-- Exports JavaDocs to regular HTML files -->
-                <execution>
-                    <id>javadoc-html</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>javadoc</goal>
-                    </goals>
-                </execution>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
 
-                <!-- Generates the JavaDoc coverage report -->
-                <execution>
-                    <id>javadoc-coverage</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>javadoc</goal>
-                    </goals>
-                    <configuration>
-                        <doclet>com.manoelcampos.javadoc.coverage.CoverageDoclet</doclet>
-                        <docletArtifact>
-                            <groupId>com.manoelcampos</groupId>
-                            <artifactId>javadoc-coverage</artifactId>
-                            <version>1.1.0</version>
-                        </docletArtifact>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+				<executions>
+					<!-- Exports JavaDocs to regular HTML files -->
+					<execution>
+						<id>javadoc-html</id>
+						<phase>package</phase>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+					</execution>
+
+					<!-- Generates the JavaDoc coverage report -->
+					<execution>
+						<id>javadoc-coverage</id>
+						<phase>package</phase>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+						<configuration>
+							<doclet>com.manoelcampos.javadoc.coverage.CoverageDoclet</doclet>
+							<docletArtifact>
+								<groupId>com.manoelcampos</groupId>
+								<artifactId>javadoc-coverage</artifactId>
+								<version>1.1.0</version>
+							</docletArtifact>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
-		    <profile>
-			            <id>native</id>
-					            <properties>
-							                <quarkus.package.type>native</quarkus.package.type>
-										        </properties>
-												    </profile>
-											    </profiles>
+		<profile>
+			<id>bump-patch</id>
+			<activation>
+				<property>
+					<name>bumpPatch</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+
+						<executions>
+							<execution>
+								<goals>
+									<goal>set</goal>
+								</goals>
+								<phase>validate</phase>
+								<configuration>
+									<newVersion>2022_Summer_${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}</newVersion>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>bump-minor</id>
+			<activation>
+				<property>
+					<name>bumpMinor</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+
+						<executions>
+							<execution>
+								<goals>
+									<goal>set</goal>
+								</goals>
+								<phase>validate</phase>
+								<configuration>
+									<newVersion>2022_Summer_${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0</newVersion>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>bump-major</id>
+			<activation>
+				<property>
+					<name>bumpMajor</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+
+						<executions>
+							<execution>
+								<goals>
+									<goal>set</goal>
+								</goals>
+								<phase>validate</phase>
+
+								<configuration>
+									<newVersion>2022_Summer_${parsedVersion.nextMajorVersion}.0.0</newVersion>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>native</id>
+			<properties>
+				<quarkus.package.type>native</quarkus.package.type>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

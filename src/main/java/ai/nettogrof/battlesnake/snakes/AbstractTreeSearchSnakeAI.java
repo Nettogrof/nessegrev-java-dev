@@ -25,16 +25,16 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1
  * @version Spring 2022
  */
 public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
-
-	
+	/**
+	 * Constant Field name
+	 */
+	protected static final String NODECOUNT = " node count";
 
 	/**
 	 * Keep the root node from the previous move, to be able to continue search from
 	 * the previous "tree"
 	 */
 	protected AbstractNode lastRoot;
-
-	
 
 	/**
 	 * What kind of search that gonna be use
@@ -56,8 +56,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	protected AbstractTreeSearchSnakeAI(final String gameId) {
 		super(gameId);
 	}
-
-	
 
 	/**
 	 * This method will be call on each move request receive by BattleSnake
@@ -94,12 +92,16 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 		log.atInfo().log("Turn:" + moveRequest.get(TURN).asInt() + " nb nodes" + root.getChildCount() + "  time: "
 				+ (System.currentTimeMillis() - startTime) + "  Max Depth" + getMaxDepth(root));
 		addNodeTotalCount(root.getChildCount());
-		addTimeTotal( System.currentTimeMillis() - startTime);
+		addTimeTotal(System.currentTimeMillis() - startTime);
 		return generateResponse(winner, root, moveRequest.get(YOU).withArray(BODY).get(0));
 	}
 
-	
-
+	/**
+	 * Check the depth of the biggest branch
+	 * 
+	 * @param root Root node
+	 * @return depth (int)
+	 */
 	private int getMaxDepth(final AbstractNode root) {
 		AbstractNode node = root;
 		int depth = 0;
@@ -125,6 +127,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
+	 * @param rules     Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void treeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
@@ -142,8 +145,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 */
 	protected abstract AbstractNode genRoot(JsonNode moveRequest);
 
-	
-
 	/**
 	 * In a winning position, this method try to find the shortest way to win.
 	 * 
@@ -151,6 +152,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * @param winner The predetermine best move
 	 * @return the best AbstractNode
 	 */
+	@Override
 	protected AbstractNode finishHim(final AbstractNode root, final AbstractNode winner) {
 
 		AbstractNode ret = null;
@@ -158,7 +160,8 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 		final ConcurrentHashMap<Integer, Float> scoreCount = new ConcurrentHashMap<>();
 
 		for (final AbstractNode c : root.getChild()) {
-			if (scoreCount.get(c.getSnakes().get(0).getHead()) == null || scoreCount.get(c.getSnakes().get(0).getHead()) > c.getScoreRatio()) {
+			if (scoreCount.get(c.getSnakes().get(0).getHead()) == null
+					|| scoreCount.get(c.getSnakes().get(0).getHead()) > c.getScoreRatio()) {
 				scoreCount.put(c.getSnakes().get(0).getHead(), c.getScoreRatio());
 			}
 
@@ -185,8 +188,9 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * @param root The current Root node
 	 * @return the best AbstractNode
 	 */
+	@Override
 	protected AbstractNode lastChance(final AbstractNode root) {
-		// TODO In losing posisition snake should choose the path with a the best
+		// TODO In losing position snake should choose the path with a the best
 		// chance, not the longest child
 		AbstractNode ret = null;
 		float score = 0;
@@ -270,7 +274,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 		return null;
 	}
 
-
 	/**
 	 * This method fill 4 list (one for each direction ) with the score of each node
 	 * based on the move direction
@@ -321,25 +324,21 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	private void logValue(final TFloatArrayList[] upward, final TFloatArrayList[] down, final TFloatArrayList[] left,
 			final TFloatArrayList[] right) {
 		final StringBuilder logtext = new StringBuilder();
-		final String nodeCount = " node count";
+
 		if (!upward[0].isEmpty()) {
-			logtext.append("\nup ").append(upward[0].min()).append(nodeCount).append(upward[1].sum());
+			logtext.append("\nup ").append(upward[0].min()).append(NODECOUNT).append(upward[1].sum());
 		}
 		if (!down[0].isEmpty()) {
-			logtext.append("\ndown ").append(down[0].min()).append(nodeCount).append(down[1].sum());
+			logtext.append("\ndown ").append(down[0].min()).append(NODECOUNT).append(down[1].sum());
 		}
 		if (!left[0].isEmpty()) {
-			logtext.append("\nleft ").append(left[0].min()).append(nodeCount).append(left[1].sum());
+			logtext.append("\nleft ").append(left[0].min()).append(NODECOUNT).append(left[1].sum());
 		}
 		if (!right[0].isEmpty()) {
-			logtext.append("\nright ").append(right[0].min()).append(nodeCount).append(right[1].sum());
+			logtext.append("\nright ").append(right[0].min()).append(NODECOUNT).append(right[1].sum());
 		}
 		log.atInfo().log(logtext.toString());
 	}
-
-	
-
-	
 
 	/**
 	 * Check in the previous search if a child from root, is equals the current
@@ -358,13 +357,12 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 				if ((hazard == null || hazard.equals(c.getHazard())) && food.equals(c.getFood())
 						&& c.getSnakes().size() == snakes.size()) {
 					final List<SnakeInfo> csnake = c.getSnakes();
-					
+
 					for (int i = 0; i < csnake.size(); i++) {
-						if (csnake.get(i).equals(snakes.get(i))){
+						if (csnake.get(i).equals(snakes.get(i))) {
 							return c;
 						}
 					}
-					
 
 				}
 			}
@@ -386,7 +384,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
-	 * @param rules		Game ruleset
+	 * @param rules     Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	public void singleThreadTreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
