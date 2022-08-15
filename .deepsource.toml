@@ -1,4 +1,12 @@
 version = 1
+exclude_patterns = [
+  "bin/**",
+  "site/**",
+  "doc/**",
+  "docs/**",
+  "target/**",
+  "reports/**"  
+]
 
 [[analyzers]]
 name = "java"
