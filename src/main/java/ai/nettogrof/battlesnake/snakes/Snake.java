@@ -134,7 +134,7 @@ public final class Snake {
 			SnakeGeneticConstants.setBorderScore(Float.parseFloat(prop.getProperty("borderScore")));
 			SnakeGeneticConstants.setMCTS(Float.parseFloat(prop.getProperty("mctsBias")));
 			SnakeGeneticConstants.setFoodValue(Integer.parseInt(prop.getProperty("foodValue")));
-			SnakeGeneticConstants.setTailValue(Integer.parseInt(prop.getProperty("tailValue")));
+			SnakeGeneticConstants.setTailValueArea(Integer.parseInt(prop.getProperty("tailValue")));
 			LOG.atInfo().log("Evalution Value loaded successfully");
 		} catch (IOException ex) {
 			LOG.atWarning().log("Issue with the evaluation.properties file");

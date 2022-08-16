@@ -32,7 +32,7 @@ public abstract class AbstractNode {
 	/**
 	 * Single posssible move
 	 */
-	public static final int ONE = 1;
+	protected static final int ONE = 1;
 
 	/**
 	 * List of child node
@@ -160,7 +160,7 @@ public abstract class AbstractNode {
 		}
 
 		scoreRatio = score[0] / totalOther;
-		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.stopExpandLimit) {
+		if (scoreRatio == 0.0 || scoreRatio > SnakeGeneticConstants.getStopExpandLimit()) {
 			exp = false;
 		}
 	}

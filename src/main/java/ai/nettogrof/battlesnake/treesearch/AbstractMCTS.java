@@ -72,7 +72,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 	 * @return float of the score.
 	 */
 	private float mctsScore(final AbstractNode parentNode, final AbstractNode childNode) {
-		return (float) (childNode.getScoreRatio() + SnakeGeneticConstants.mctsBias
+		return (float) (childNode.getScoreRatio() + SnakeGeneticConstants.getMctsBias()
 				* Math.sqrt(Math.log(parentNode.getChildCount()) / childNode.getChildCount()));
 	}
 

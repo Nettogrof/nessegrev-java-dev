@@ -48,11 +48,11 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 		final int headX = head / 1000;
 		final int headY = head % 1000;
 		if (headX == 0 || headX == width - 1) {
-			score[0] -= SnakeGeneticConstants.borderScore;
+			score[0] -= SnakeGeneticConstants.getBorderScore();
 		}
 
 		if (headY == 0 || headY == height - 1) {
-			score[0] -= SnakeGeneticConstants.borderScore;
+			score[0] -= SnakeGeneticConstants.getBorderScore();
 		}
 
 	}
@@ -187,7 +187,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue >= 0) {
-				count[boardValue] += SnakeGeneticConstants.tailValueArea;
+				count[boardValue] += SnakeGeneticConstants.getTailValueArea();
 			}
 			total += count[i];
 		}

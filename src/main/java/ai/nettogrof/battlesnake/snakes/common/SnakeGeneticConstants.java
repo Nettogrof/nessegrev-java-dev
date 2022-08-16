@@ -13,32 +13,34 @@ public final class SnakeGeneticConstants {
 	/**
 	 * Stop expand a node when the score ratio is higher than that value
 	 */
-	public static float stopExpandLimit = 42; // 42 is the answer of life.
+	protected static float stopExpandLimit = 42; // 42 is the answer of life.
 
 	/**
 	 * Value if a FOOD is found in the controlled AREA
 	 */
-	public static int foodValueArea = 2;
+	protected static int foodValueArea = 2;
 
 	/**
 	 * Value if a tail is found in the controlled AREA
 	 */
-	public static int tailValueArea = 5;
+	protected static int tailValueArea = 5;
 
 	/**
 	 * Border score to subtract if head on the border of the board
 	 */
-	public static float borderScore = 0.4f;
+	protected static float borderScore = 0.4f;
+
+	
 
 	/**
 	 * Hazard score to subtract if head in hazard
 	 */
-	public static float hazardScore = 0.9f;
+	protected static float hazardScore = 0.9f;
 
 	/**
 	 * The Bias value for the Monte-Carlo Tree Search
 	 */
-	public static float mctsBias = 0.7f;
+	protected static float mctsBias = 0.7f;
 
 	/**
 	 * Private constructor because this is a utility class
@@ -58,7 +60,7 @@ public final class SnakeGeneticConstants {
 	 * Set tail value
 	 * @param tailValue the tail value  to set
 	 */
-	public static void setTailValue(final int tailValue) {
+	public static void setTailValueArea(final int tailValue) {
 		tailValueArea = tailValue;
 	}
 
@@ -92,6 +94,48 @@ public final class SnakeGeneticConstants {
 	 */
 	public static void setStopExpandLimit(final float sel) {
 		stopExpandLimit = sel;
+	}
+	
+	/**
+	 * @return the stopExpandLimit
+	 */
+	public static float getStopExpandLimit() {
+		return stopExpandLimit;
+	}
+
+	/**
+	 * @return the foodValueArea
+	 */
+	public static int getFoodValueArea() {
+		return foodValueArea;
+	}
+
+	/**
+	 * @return the tailValueArea
+	 */
+	public static int getTailValueArea() {
+		return tailValueArea;
+	}
+
+	/**
+	 * @return the borderScore
+	 */
+	public static float getBorderScore() {
+		return borderScore;
+	}
+
+	/**
+	 * @return the hazardScore
+	 */
+	public static float getHazardScore() {
+		return hazardScore;
+	}
+
+	/**
+	 * @return the mctsBias
+	 */
+	public static float getMctsBias() {
+		return mctsBias;
 	}
 
 }

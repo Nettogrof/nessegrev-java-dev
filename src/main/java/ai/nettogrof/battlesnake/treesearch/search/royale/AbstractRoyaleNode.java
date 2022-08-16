@@ -52,7 +52,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 		for (int i = 0; i < snakes.size(); i++) {
 			score[i] += snakes.get(i).getHealth() / 250f;
 			if (hazard.isHazardSquare(snakes.get(i).getHead())) {
-				score[i] *= SnakeGeneticConstants.hazardScore;
+				score[i] *= SnakeGeneticConstants.getHazardScore();
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			final int posTail = snakes.get(i).getTail();
 			final int boardValue = board[posTail / 1000][posTail % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += SnakeGeneticConstants.tailValueArea;
+				count[boardValue - 1] += SnakeGeneticConstants.getTailValueArea();
 			}
 			total += count[i];
 		}
@@ -160,7 +160,7 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 			final int posFood = food.getPosition().get(i);
 			final int boardValue = board[posFood / 1000][posFood % 1000];
 			if (boardValue > 0) {
-				count[boardValue - 1] += SnakeGeneticConstants.foodValueArea;
+				count[boardValue - 1] += SnakeGeneticConstants.getTailValueArea();
 			}
 		}
 	}

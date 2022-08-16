@@ -178,7 +178,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 		if (winner.getScoreRatio() < BASIC_SCORE) {
 			response.put(SHOUT, losing);
 			return lastChance(root);
-		} else if (winner.getScoreRatio() > SnakeGeneticConstants.stopExpandLimit) {
+		} else if (winner.getScoreRatio() > SnakeGeneticConstants.getStopExpandLimit()) {
 			response.put(SHOUT, winning);
 			return finishHim(root, winner);
 		}
