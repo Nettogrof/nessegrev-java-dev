@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,12 +50,13 @@ class ExpertSnakeTest {
 	/**
 	 * Start Expert Snake
 	 * 
-	 * @throws JsonMappingException    ex
-	 * @throws JsonProcessingException ex
-	 * @throws InterruptedException    ex
+	 * @throws JsonMappingException    ex if test is invalid
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws InterruptedException    ex if stopped
 	 */
 	@Test
-	void startExpert() throws JsonMappingException, JsonProcessingException, InterruptedException {
+	@VisibleForTesting
+	/* default */ void startExpert() throws JsonMappingException, JsonProcessingException, InterruptedException {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
@@ -69,14 +71,15 @@ class ExpertSnakeTest {
 	/**
 	 * Royale expert tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void royaleExpertTest()
+	@VisibleForTesting
+	/* default */ void royaleExpertTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -108,14 +111,15 @@ class ExpertSnakeTest {
 	/**
 	 * wrapped expert tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void wrappedExpertTest()
+	@VisibleForTesting
+	/* default */ void wrappedExpertTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -147,13 +151,14 @@ class ExpertSnakeTest {
 	/**
 	 * single Royale Expert test
 	 * 
-	 * @throws JsonMappingException         ex
-	 * @throws JsonProcessingException      ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 */
 	@Test
-	void singleRoyaleExpertTest()
+	@VisibleForTesting
+	/* default */ void singleRoyaleExpertTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -180,14 +185,15 @@ class ExpertSnakeTest {
 	/**
 	 * Standard expert tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex  if test is invalid
+	 * @throws JsonMappingException         ex  if test is invalid
+	 * @throws ReflectiveOperationException ex  if test is invalid
+	 * @throws InterruptedException         ex  if process stopped during...
 	 * 
 	 */
 	@Test
-	void standardExpertTest()
+	@VisibleForTesting
+	/* default */ void standardExpertTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {

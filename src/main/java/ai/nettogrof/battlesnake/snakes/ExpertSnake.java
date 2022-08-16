@@ -19,24 +19,21 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.FourNode;
 import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
 
 /**
- * Expert snake. This class is used by the "Nessegrev-Beta" snake on Battlesnake. Decent
- * snake using minimax/payoff matrix algorithm only. This snake can play
- * standard, squad, royale, and wrapped. This snake should work with API v0 and API v1.
- * All the move calculation are based on API v0, and if it's API v1, then the
- * snake switch UP and DOWN response.
+ * Expert snake. This class is used by the "Nessegrev-Beta" snake on
+ * Battlesnake. Decent snake using minimax/payoff matrix algorithm only. This
+ * snake can play standard, squad, royale, and wrapped. This snake should work
+ * with API v0 and API v1. All the move calculation are based on API v0, and if
+ * it's API v1, then the snake switch UP and DOWN response.
  * 
  * @author carl.lajeunesse
  * @version Summer 2022
  */
 public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 
-	/**
-	 * Boolean if a squad game
-	 */
-	protected boolean squad;
+	
 
 	/**
-	 * Basic Constructor 
+	 * Basic Constructor
 	 * 
 	 */
 	public ExpertSnake() {
@@ -68,7 +65,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		final FoodInfo food = new FoodInfo(board);
 		final HazardSquare hazard = new HazardSquare(board);
 		final JsonNode expertSnake = moveRequest.get(YOU);
-		final List<SnakeInfo> snakes = squad ? genSnakeInfoSquad(board, expertSnake) : genSnakeInfo(board, expertSnake);
+		final List<SnakeInfo> snakes = genSnakeInfo(board, expertSnake);
 		final AbstractNode oldChild = findChildNewRoot(snakes, food, hazard);
 		return oldChild == null ? genNode(snakes, food, new HazardSquare(board)) : oldChild;
 
@@ -77,7 +74,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	/**
 	 * Generate all snakes info from the json board field
 	 * 
-	 * @param board     Json board field
+	 * @param board       Json board field
 	 * @param expertSnake Json you field
 	 * @return list of snakes info
 	 */
@@ -87,33 +84,19 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
-				snakes.add(new SnakeInfo(currentSnake));
+				if (ruleset.equals(SQUAD)) {
+					snakes.add(new SnakeInfoSquad(currentSnake));
+				} else {
+					snakes.add(new SnakeInfo(currentSnake));
+				}
+
 			}
 		}
 		return snakes;
 
 	}
 
-	/**
-	 * Generate all snakes info from the json board field for squad mode
-	 * 
-	 * @param board     Json board field
-	 * @param expertSnake Json you field
-	 * @return list of snakes info
-	 */
-	private List<SnakeInfo> genSnakeInfoSquad(final JsonNode board, final JsonNode expertSnake) {
-		// TODO Refactoring this method, way too similar to the other genSnakeInfo
-		final List<SnakeInfo> snakes = new ArrayList<>();
-		snakes.add(new SnakeInfoSquad(expertSnake));
-		for (int i = 0; i < board.get(SNAKES).size(); i++) {
-			final JsonNode currentSnake = board.get(SNAKES).get(i);
-			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
-				snakes.add(new SnakeInfoSquad(currentSnake));
-			}
-		}
-		return snakes;
-
-	}
+	
 
 	/**
 	 * This method was used in API v0 to retrieve snake info, but in API v1 the
@@ -129,9 +112,6 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		if (startRequest.get("game").get("ruleset") != null) {
 			ruleset = startRequest.get("game").get("ruleset").get(NAME).asText();
 			apiversion = 1;
-			if (ruleset.equals(SQUAD)) {
-				squad = true;
-			}
 		}
 
 		width = startRequest.get(BOARD).get(WIDTH_FIELD).asInt();

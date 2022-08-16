@@ -39,13 +39,13 @@ class BasicSnakeTest {
 
 	/**
 	 * Start the basic snake
-	 * @throws JsonMappingException ex
-	 * @throws JsonProcessingException ex
-	 * @throws InterruptedException ex
+	 * @throws JsonMappingException ex if test is invalid
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws InterruptedException ex if stopped
 	 */
 	@Test
 	@VisibleForTesting
-	void startBasic() throws JsonMappingException, JsonProcessingException, InterruptedException {
+	/* default */ void startBasic() throws JsonMappingException, JsonProcessingException, InterruptedException {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
@@ -56,15 +56,15 @@ class BasicSnakeTest {
 
 	/**
 	 * Royal basic tests
-	 * @throws JsonProcessingException ex
-	 * @throws JsonMappingException ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException ex
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws JsonMappingException ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException ex if stopped
 	 * 
 	 */
 	@Test
 	@VisibleForTesting
-	void royaleBasicTest()
+	/* default */ void royaleBasicTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 		
 		final String test[] = {
@@ -90,15 +90,15 @@ class BasicSnakeTest {
 	
 	/**
 	 * Standard Basic snake test
-	 * @throws JsonProcessingException ex
-	 * @throws JsonMappingException ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException ex
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws JsonMappingException ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid 
+	 * @throws InterruptedException ex if stopped
 	 * 
 	 */
 	@Test
 	@VisibleForTesting
-	void standardBasicTest()
+	/* default */ void standardBasicTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {

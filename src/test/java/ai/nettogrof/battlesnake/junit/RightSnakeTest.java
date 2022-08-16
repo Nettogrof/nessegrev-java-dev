@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,12 +40,13 @@ class RightSnakeTest {
 	/**
 	 * Start Right snake test
 	 * 
-	 * @throws JsonMappingException    ex
-	 * @throws JsonProcessingException ex
-	 * @throws InterruptedException    ex
+	 * @throws JsonMappingException    ex if test is invalid
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws InterruptedException    ex if stopped
 	 */
 	@Test
-	void startRight() throws JsonMappingException, JsonProcessingException, InterruptedException {
+	@VisibleForTesting
+	/* default */ void startRight() throws JsonMappingException, JsonProcessingException, InterruptedException {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
@@ -59,14 +61,15 @@ class RightSnakeTest {
 	/**
 	 * Royale Right tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void royaleRightTest()
+	@VisibleForTesting
+	/* default */ void royaleRightTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -98,14 +101,15 @@ class RightSnakeTest {
 	/**
 	 * Standard Right tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void standardRightTest()
+	@VisibleForTesting
+	/* default */ void standardRightTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {

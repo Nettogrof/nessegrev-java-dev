@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.junit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import ai.nettogrof.battlesnake.snakes.Snake;
 
@@ -25,7 +26,8 @@ class SnakeTest {
 	 * Single unit test
 	 */
 	@Test
-	void testMain() {
+	@VisibleForTesting
+	/* default */ void testMain() {
 		final String[] param = { "Beta" };
 		Snake.main(param);
 		assertNotNull(param[0],"WTF");

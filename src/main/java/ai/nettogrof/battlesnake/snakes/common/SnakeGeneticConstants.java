@@ -3,44 +3,57 @@
  */
 package ai.nettogrof.battlesnake.snakes.common;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
+
+import com.google.common.flogger.FluentLogger;
+
 /**
  * This class keep some Evaluation constant value
  * 
  * @version Summer 2021
  */
 public final class SnakeGeneticConstants {
+	
+	/**
+	 * Logger
+	 */
+	private static final FluentLogger LOG = FluentLogger.forEnclosingClass();
 
 	/**
 	 * Stop expand a node when the score ratio is higher than that value
 	 */
-	protected static float stopExpandLimit = 42; // 42 is the answer of life.
+	private static float stopExpandLimit = 42; // 42 is the answer of life.
 
 	/**
 	 * Value if a FOOD is found in the controlled AREA
 	 */
-	protected static int foodValueArea = 2;
+	private static int foodValueArea = 2;
 
 	/**
 	 * Value if a tail is found in the controlled AREA
 	 */
-	protected static int tailValueArea = 5;
+	private static int tailValueArea = 5;
 
 	/**
 	 * Border score to subtract if head on the border of the board
 	 */
-	protected static float borderScore = 0.4f;
+	private static float borderScore = 0.4f;
 
 	
 
 	/**
 	 * Hazard score to subtract if head in hazard
 	 */
-	protected static float hazardScore = 0.9f;
+	private static float hazardScore = 0.9f;
 
 	/**
 	 * The Bias value for the Monte-Carlo Tree Search
 	 */
-	protected static float mctsBias = 0.7f;
+	private static float mctsBias = 0.7f;
 
 	/**
 	 * Private constructor because this is a utility class
@@ -136,6 +149,27 @@ public final class SnakeGeneticConstants {
 	 */
 	public static float getMctsBias() {
 		return mctsBias;
+	}
+	
+	/**
+	 * Load evaluation properties to get genetic value
+	 */
+	public static void loadEvaluationValue() {
+		try (InputStream input = Files.newInputStream(Paths.get("evaluation.properties"))) {
+
+			final Properties prop = new Properties();
+
+			prop.load(input);
+
+			setStopExpandLimit(Float.parseFloat(prop.getProperty("stopExpandLimit")));
+			setBorderScore(Float.parseFloat(prop.getProperty("borderScore")));
+			setMCTS(Float.parseFloat(prop.getProperty("mctsBias")));
+			setFoodValue(Integer.parseInt(prop.getProperty("foodValue")));
+			setTailValueArea(Integer.parseInt(prop.getProperty("tailValue")));
+			LOG.atInfo().log("Evalution Value loaded successfully");
+		} catch (IOException ex) {
+			LOG.atWarning().log("Issue with the evaluation.properties file");
+		}
 	}
 
 }

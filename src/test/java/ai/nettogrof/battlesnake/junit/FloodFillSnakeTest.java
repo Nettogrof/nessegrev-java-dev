@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,12 +40,13 @@ class FloodFillSnakeTest {
 	/**
 	 * Start floodfill snake test
 	 * 
-	 * @throws JsonMappingException    ex
-	 * @throws JsonProcessingException ex
-	 * @throws InterruptedException    ex
+	 * @throws JsonMappingException    ex if test is invalid
+	 * @throws JsonProcessingException ex if test is invalid
+	 * @throws InterruptedException    ex if stopped
 	 */
 	@Test
-	void startFloodFill() throws JsonMappingException, JsonProcessingException, InterruptedException {
+	@VisibleForTesting
+	/* default */ void startFloodFill() throws JsonMappingException, JsonProcessingException, InterruptedException {
 
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
@@ -56,14 +58,15 @@ class FloodFillSnakeTest {
 	/**
 	 * royale floodfill tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void royaleFloodFillTest()
+	@VisibleForTesting
+	/* default */ void royaleFloodFillTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {
@@ -91,14 +94,15 @@ class FloodFillSnakeTest {
 	/**
 	 * standard floodfill tests
 	 * 
-	 * @throws JsonProcessingException      ex
-	 * @throws JsonMappingException         ex
-	 * @throws ReflectiveOperationException ex
-	 * @throws InterruptedException         ex
+	 * @throws JsonProcessingException      ex if test is invalid
+	 * @throws JsonMappingException         ex if test is invalid
+	 * @throws ReflectiveOperationException ex if test is invalid
+	 * @throws InterruptedException         ex if stopped
 	 * 
 	 */
 	@Test
-	void standardFloodFillTest()
+	@VisibleForTesting
+	/* default */ void standardFloodFillTest()
 			throws JsonMappingException, JsonProcessingException, ReflectiveOperationException, InterruptedException {
 
 		final String test[] = {

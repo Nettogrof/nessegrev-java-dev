@@ -124,21 +124,7 @@ public final class Snake {
 	 * Load evaluation properties to get genetic value
 	 */
 	private static void loadEvaluationValue() {
-		try (InputStream input = Files.newInputStream(Paths.get("evaluation.properties"))) {
-
-			final Properties prop = new Properties();
-
-			prop.load(input);
-
-			SnakeGeneticConstants.setStopExpandLimit(Float.parseFloat(prop.getProperty("stopExpandLimit")));
-			SnakeGeneticConstants.setBorderScore(Float.parseFloat(prop.getProperty("borderScore")));
-			SnakeGeneticConstants.setMCTS(Float.parseFloat(prop.getProperty("mctsBias")));
-			SnakeGeneticConstants.setFoodValue(Integer.parseInt(prop.getProperty("foodValue")));
-			SnakeGeneticConstants.setTailValueArea(Integer.parseInt(prop.getProperty("tailValue")));
-			LOG.atInfo().log("Evalution Value loaded successfully");
-		} catch (IOException ex) {
-			LOG.atWarning().log("Issue with the evaluation.properties file");
-		}
+			SnakeGeneticConstants.loadEvaluationValue();
 	}
 
 	/**

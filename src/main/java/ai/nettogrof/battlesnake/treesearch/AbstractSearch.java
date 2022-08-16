@@ -7,6 +7,7 @@ import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
+import ai.nettogrof.battlesnake.treesearch.node.NodeUtil;
 
 /**
  * This abstract search class is the based of all search class, provide basic
@@ -304,28 +305,13 @@ public abstract class AbstractSearch implements Runnable {
 			return node;
 		} else {
 			node.updateScore();
-			AbstractNode smallChild = null;
+			AbstractNode smallChild;
 			if (node.getSnakes().size() < BattleSnakeConstants.MINIMUN_SNAKE) {
 
-				float maxR = -1000;
-
-				for (final AbstractNode childNode : node.getChild()) {
-					if (childNode.getScoreRatio() > maxR) {
-						maxR = childNode.getScoreRatio();
-						smallChild = childNode;
-					}
-
-				}
+				smallChild = NodeUtil.getBestNode(node);
 
 			} else {
-
-				int countChild = Integer.MAX_VALUE;
-				for (final AbstractNode childNode : node.getChild()) {
-					if (childNode.getChildCount() < countChild && childNode.exp) {
-						countChild = childNode.getChildCount();
-						smallChild = childNode;
-					}
-				}
+				smallChild = NodeUtil.getSmallestNode(node);
 
 			}
 			if (smallChild == null) {
