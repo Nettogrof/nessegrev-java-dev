@@ -25,10 +25,10 @@ public class GameRuleset {
 	 * Minimum food on board
 	 */
 	private final int minimumFood;
+	
 	/**
 	 * game type 0 = Standard 1 = constructor 2 = royale 3 = wrapped 4 = squad
 	 */
-
 	private final int gameType;
 
 	/**
@@ -106,6 +106,16 @@ public class GameRuleset {
 	 */
 	public int getGameType() {
 		return gameType;
+	}
+	
+	/**
+	 * Return game type 
+	 * @return the gameType
+	 */
+	public String getRuleset() {
+		final String[] ruleset = {"standard","constructor","royale","wrapped","squad"};
+		return ruleset[gameType];
+		
 	}
 
 }

@@ -11,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.flogger.FluentLogger;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
+
 /**
  * Any snake should extend this abstract class it contains basic constant
  * fields, related to the field name in json call from BattleSnake. Also some
@@ -151,6 +153,11 @@ public abstract class AbstractSnakeAI {
 	 * Basic logger object
 	 */
 	protected static FluentLogger log = FluentLogger.forEnclosingClass();
+	
+	/**
+	 * Game rulesset
+	 */
+	protected GameRuleset rules;
 
 	/**
 	 * Basic constructor not used
@@ -180,6 +187,7 @@ public abstract class AbstractSnakeAI {
 	public Map<String, String> start(final JsonNode startRequest) {
 		final Map<String, String> response = new ConcurrentHashMap<>();
 		response.put("ok", "ok");
+		rules = new GameRuleset(startRequest.get("game").get("ruleset"));
 		return response;
 	}
 

@@ -305,15 +305,8 @@ public abstract class AbstractSearch implements Runnable {
 			return node;
 		} else {
 			node.updateScore();
-			AbstractNode smallChild;
-			if (node.getSnakes().size() < BattleSnakeConstants.MINIMUN_SNAKE) {
-
-				smallChild = NodeUtil.getBestNode(node);
-
-			} else {
-				smallChild = NodeUtil.getSmallestNode(node);
-
-			}
+			final AbstractNode smallChild = node.getSnakes().size() < BattleSnakeConstants.MINIMUN_SNAKE ? NodeUtil.getBestNode(node) :NodeUtil.getSmallestNode(node) ;
+			
 			if (smallChild == null) {
 				node.exp = false;
 				return node;

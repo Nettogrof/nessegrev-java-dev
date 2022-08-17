@@ -74,7 +74,6 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 
 		final AbstractNode root = genRoot(moveRequest);
 		root.exp = true;
-		final GameRuleset rules = new GameRuleset(moveRequest.get("game").get("ruleset"));
 		try {
 			treeSearch(root, startTime, rules);
 		} catch (ReflectiveOperationException e) {

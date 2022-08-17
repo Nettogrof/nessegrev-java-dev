@@ -37,7 +37,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.MctsSearch;
  */
 public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 
-	
 	/**
 	 * Int value use to check how much time does the snake have do to tree-search,
 	 * value define by json field
@@ -71,11 +70,6 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	protected String winning = "I'm your father";
 
 	/**
-	 * Ruleset that this game is played.
-	 */
-	protected String ruleset = "standard";
-
-	/**
 	 * Basic and unsed constructor
 	 */
 	protected AbstractSearchSnakeAI() {
@@ -88,7 +82,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	 * @param gameId String of the gameid field receive in the start request.
 	 */
 	protected AbstractSearchSnakeAI(final String gameId) {
-		super(gameId);		
+		super(gameId);
 	}
 
 	/**
@@ -99,7 +93,7 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	 */
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
 		Constructor<? extends AbstractSearch> searchtype;
-		switch (ruleset) {
+		switch (rules.getRuleset()) {
 		case "constrictor":
 			searchtype = ConstrictorSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
@@ -174,7 +168,8 @@ public abstract class AbstractSearchSnakeAI extends AbstractSnakeAI {
 	 * @param response the response that gonna be send to the server add shout
 	 * @return the best node
 	 */
-	private AbstractNode checkWinLost(final AbstractNode winner, final AbstractNode root, final Map<String, String> response) {
+	private AbstractNode checkWinLost(final AbstractNode winner, final AbstractNode root,
+			final Map<String, String> response) {
 		if (winner.getScoreRatio() < BASIC_SCORE) {
 			response.put(SHOUT, losing);
 			return lastChance(root);

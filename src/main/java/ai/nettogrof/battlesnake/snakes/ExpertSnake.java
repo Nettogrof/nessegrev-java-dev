@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ai.nettogrof.battlesnake.info.FoodInfo;
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
@@ -84,7 +85,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
-				if (ruleset.equals(SQUAD)) {
+				if (rules.getRuleset().equals(SQUAD)) {
 					snakes.add(new SnakeInfoSquad(currentSnake));
 				} else {
 					snakes.add(new SnakeInfo(currentSnake));
@@ -110,7 +111,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	public Map<String, String> start(final JsonNode startRequest) {
 
 		if (startRequest.get("game").get("ruleset") != null) {
-			ruleset = startRequest.get("game").get("ruleset").get(NAME).asText();
+			rules = new GameRuleset(startRequest.get("game").get("ruleset"));
 			apiversion = 1;
 		}
 
@@ -139,7 +140,7 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		AbstractNode node;
 		AbstractNode.width = width;
 		AbstractNode.height = height;
-		switch (ruleset) {
+		switch (rules.getRuleset()) {
 		case "royale":
 			node = snakes.size() > 2 ? new RoyaleFourNode(snakes, food, hazard)
 					: new RoyaleDuelNode(snakes, food, hazard);
