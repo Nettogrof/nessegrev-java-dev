@@ -48,12 +48,18 @@ public class SnakeInfo implements Cloneable {
 	 * If the snake is still alive
 	 */
 	protected boolean alive = true;
+	
+	/**
+	 * Name of the squad of the current snake
+	 */
+	private final String squad;
 
 	/**
 	 * Basic constructor with a empty body.
 	 */
 	public SnakeInfo() {
 		snakeBody = new TIntArrayList();
+		squad = "";
 	}
 
 	/**
@@ -67,6 +73,12 @@ public class SnakeInfo implements Cloneable {
 		name = snakeInfo.get("name").asText();
 		for (final JsonNode bodyPos : snakeInfo.get("body")) {
 			snakeBody.add(bodyPos.get("x").asInt() * 1000 + bodyPos.get("y").asInt());
+		}
+		if (snakeInfo.get("squad") == null) {
+			squad = "";
+			
+		} else {
+			squad = snakeInfo.get("squad").asText();
 		}
 	}
 
@@ -103,7 +115,15 @@ public class SnakeInfo implements Cloneable {
 			alive = false;
 		}
 		name = prevSnakeInfo.getName();
+		squad = prevSnakeInfo.getSquad();
 
+	}
+
+	/**
+	 * @return squad
+	 */
+	public String getSquad() {
+		return squad;
 	}
 
 	/**
@@ -133,6 +153,7 @@ public class SnakeInfo implements Cloneable {
 			alive = false;
 		}
 		name = prevSnakeInfo.getName();
+		squad = prevSnakeInfo.getSquad();
 
 	}
 
@@ -162,6 +183,26 @@ public class SnakeInfo implements Cloneable {
 	 */
 	public boolean isSnake(final int pos) {
 
+		if (eat) {
+			return snakeBody.contains(pos);
+		} else {
+			if (snakeBody.contains(pos)) {
+				return snakeBody.indexOf(pos) < snakeBody.size() - 1;
+			} else {
+				return false;
+			}
+
+		}
+	}
+	/**
+	 * Check if there will be a snake on square on next move
+	 * 
+	 * @param pos int square (based on square formula)
+	 * @param squad Squad name
+	 * @return If there's a snake body
+	 */
+	public boolean isSnake(final int pos,final String squad) {
+		//TODO  !!!!!!!
 		if (eat) {
 			return snakeBody.contains(pos);
 		} else {

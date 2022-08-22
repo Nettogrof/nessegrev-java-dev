@@ -3,10 +3,9 @@
  */
 package ai.nettogrof.battlesnake.treesearch.search.squad;
 
+import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleNode;
 
 /**
  * This squad search not used yet
@@ -44,10 +43,11 @@ public class SquadSearch extends AbstractSquadSearch {
 	 * @param height    Board height
 	 * @param starttime starting time for the search in millisecond
 	 * @param timeout   the time limit to run the search
+	 * @param rules     Game ruleset
 	 */
-	public SquadSearch(final AbstractRoyaleNode root, final int width, final int height, final long starttime,
-			final int timeout) {
-		super(root, width, height, starttime, timeout);
+	public SquadSearch(final AbstractNode root, final int width, final int height, final long starttime,
+			final int timeout,final GameRuleset rules) {
+		super(root, width, height, starttime, timeout, rules);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class SquadSearch extends AbstractSquadSearch {
 
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo currentSnake, final int newHead, final AbstractNode node) {
-		return new SnakeInfoSquad((SnakeInfoSquad) currentSnake, newHead, node.getFood().isFood(newHead));
+		return new SnakeInfo(currentSnake, newHead, node.getFood().isFood(newHead));
 	}
 
 }

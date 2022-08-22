@@ -1,5 +1,7 @@
 package ai.nettogrof.battlesnake.info;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -30,22 +32,18 @@ public class GameRuleset {
 	 * game type 0 = Standard 1 = constructor 2 = royale 3 = wrapped 4 = squad
 	 */
 	private final int gameType;
-
+	
 	/**
-	 * Object containing all game info
-	 * @param gameType				Game type
-	 * @param hazardDamage			Hazard damage per turn 
-	 * @param foodSpawnChance		food spawn chance	
-	 * @param minimumFood			minimum food on board
+	 * 
 	 */
-	public GameRuleset(final int gameType, final int hazardDamage, final int foodSpawnChance,
-			final int minimumFood) {
-		super();
-		this.hazardDamage = hazardDamage;
-		this.foodSpawnChance = foodSpawnChance;
-		this.minimumFood = minimumFood;
-		this.gameType = gameType;
-	}
+	private final int skrinkSpeed;
+	
+	/**
+	 * 
+	 */
+	private final SquadRuleset squad;
+
+	
 
 	/**
 	 * Object containing all game info
@@ -65,6 +63,9 @@ public class GameRuleset {
 		case "wrapped":
 			gameType = 3;
 			break;
+		case "squad":
+			gameType = 4;
+			break;
 
 		default:
 			gameType = 0;
@@ -74,6 +75,8 @@ public class GameRuleset {
 		this.hazardDamage = setting.get("hazardDamagePerTurn").asInt();
 		this.foodSpawnChance = setting.get("foodSpawnChance").asInt();
 		this.minimumFood = setting.get("minimumFood").asInt();
+		this.skrinkSpeed = setting.get("royale").get("shrinkEveryNTurns").asInt();
+		this.squad = new SquadRuleset(setting.get("squad"));
 	}
 
 	/**
@@ -116,6 +119,22 @@ public class GameRuleset {
 		final String[] ruleset = {"standard","constructor","royale","wrapped","squad"};
 		return ruleset[gameType];
 		
+	}
+	
+	
+	/**
+	 * Apply Squad rule to all snakes
+	 * @param snakes list of snakes
+	 */
+	public void applySquadRules(final List<SnakeInfo> snakes) {
+		squad.applyRules(snakes);
+	}
+
+	/**
+	 * @return skrink Speed (royale mode)
+	 */
+	public int getSkrinkSpeed() {
+		return skrinkSpeed;
 	}
 
 }

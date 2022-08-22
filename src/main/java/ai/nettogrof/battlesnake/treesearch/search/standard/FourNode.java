@@ -48,7 +48,6 @@ public class FourNode extends AbstractStandardNode {
 
 		final int head = snakes.get(0).getHead();
 		addScoreDistance(head);
-		adjustBorderScore(head);
 		addSizeCompareScore();
 
 		if (snakes.size() >= MINIMUN_SNAKE) {

@@ -39,23 +39,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 		score = new float[snakes.size()];
 	}
 
-	/**
-	 * Adjust our snake score if our snake is on the border of the board
-	 * 
-	 * @param head Square of the snake head
-	 */
-	protected void adjustBorderScore(final int head) {
-		final int headX = head / 1000;
-		final int headY = head % 1000;
-		if (headX == 0 || headX == width - 1) {
-			score[0] -= SnakeGeneticConstants.getBorderScore();
-		}
-
-		if (headY == 0 || headY == height - 1) {
-			score[0] -= SnakeGeneticConstants.getBorderScore();
-		}
-
-	}
+	
 
 	/**
 	 * Adjust our snake score for the distance between head and the nearest food

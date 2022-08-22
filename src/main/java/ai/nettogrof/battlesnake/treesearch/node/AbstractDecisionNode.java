@@ -91,9 +91,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 				}
 			}
 		} else {
-			for (int i = 0; i < score.length; i++) {
-				score[i] = 0;
-			}
+			Arrays.fill(score, 0);
 			for (final AbstractNode current : getChild()) {
 				for (int j = 0; j < current.score.length; j++) {
 					score[j] += current.score[j];
@@ -149,9 +147,8 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 				}
 
 				if (score.length > c.score.length) {
-					for (int i = c.score.length; i < score.length; i++) {
-						currentS[i] = BASIC_SCORE;
-					}
+					fillBasicScore(currentS,c,score);
+				
 				}
 			} else {
 				head.add(currentHead);
@@ -159,16 +156,25 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 				Arrays.fill(beta, INVALID_SCORE);
 					
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
-
-				for (int i = c.score.length; i < score.length; i++) {
-					beta[i] = BASIC_SCORE;
-				}
+				fillBasicScore(beta,c,score);
 
 				scores.add(beta);
 			}
 
 		}
 
+	}
+
+	/**
+	 * @param currentSnake Current snake
+	 * @param node current node
+	 * @param score socre array
+	 */
+	private void fillBasicScore(float[] currentSnake, AbstractNode node, float[] score) {
+		for (int i = node.score.length; i < score.length; i++) {
+			currentSnake[i] = BASIC_SCORE;
+		}
+		
 	}
 
 	/**

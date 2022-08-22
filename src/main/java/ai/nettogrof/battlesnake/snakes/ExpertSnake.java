@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
-import ai.nettogrof.battlesnake.info.SnakeInfoSquad;
 import ai.nettogrof.battlesnake.info.hazard.HazardSquare;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
 import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleDuelNode;
@@ -81,15 +80,15 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 */
 	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode expertSnake) {
 		final List<SnakeInfo> snakes = new ArrayList<>();
+		
 		snakes.add(new SnakeInfo(expertSnake));
+	
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
-				if (rules.getRuleset().equals(SQUAD)) {
-					snakes.add(new SnakeInfoSquad(currentSnake));
-				} else {
-					snakes.add(new SnakeInfo(currentSnake));
-				}
+				
+				snakes.add(new SnakeInfo(currentSnake));
+				
 
 			}
 		}

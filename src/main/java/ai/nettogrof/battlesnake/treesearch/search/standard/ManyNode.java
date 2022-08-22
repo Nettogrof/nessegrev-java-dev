@@ -41,7 +41,6 @@ public class ManyNode extends AbstractStandardNode {
 
 		final int head = snakes.get(0).getHead();
 		addScoreDistance(head);
-		adjustBorderScore(head);
 
 		if (snakes.size() >= MINIMUN_SNAKE) {
 			int nbAlive = 0;
