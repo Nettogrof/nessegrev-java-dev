@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.nettogrof.battlesnake.snakes.RightSnake;
+import ai.nettogrof.battlesnake.treesearch.search.fun.LimitedMoveRoyaleSearch;
 
 /**
  * Junit class test for Right Snake
@@ -89,6 +90,16 @@ class RightSnakeTest {
 		snakeAi.setCpuLimit(4);
 
 		snakeAi.start(parsedRequest);
+		for (final String uniqueTest : test) {
+			parsedRequest = json.readTree(uniqueTest);
+			snakeAi.move(parsedRequest);
+		}
+		LimitedMoveRoyaleSearch.setLeftOnly();
+		for (final String uniqueTest : test) {
+			parsedRequest = json.readTree(uniqueTest);
+			snakeAi.move(parsedRequest);
+		}
+		LimitedMoveRoyaleSearch.setJustTurn();
 		for (final String uniqueTest : test) {
 			parsedRequest = json.readTree(uniqueTest);
 			snakeAi.move(parsedRequest);

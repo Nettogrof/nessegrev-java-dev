@@ -18,23 +18,23 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
+public class LimitedMoveRoyaleSearch extends RoyaleSearch {
 	/**
 	 * Prevent left move if head - neck equals that amount
 	 */
-	protected int leftNeck = 5;
+	protected static int leftNeck = 5;
 	/**
 	 * Prevent right move if head - neck equals that amount
 	 */
-	protected int rightNeck = 5;
+	protected static int rightNeck = 5;
 	/**
 	 * Prevent down move if head - neck equals that amount
 	 */
-	protected int downNeck = 5;
+	protected static int downNeck = 5;
 	/**
 	 * Prevent up move if head - neck equals that amount
 	 */
-	protected int upNeck = 5;
+	protected static int upNeck = 5;
 
 	/**
 	 * Constructor used to expand to do the tree search.
@@ -46,7 +46,7 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 	 * @param timeout   the time limit to run the search
 	 * @param rules		the game ruleset info
 	 */
-	protected AbstractLimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
+	public LimitedMoveRoyaleSearch(final AbstractNode root, final int width, final int height,
 			final long starttime, final int timeout, final GameRuleset rules) {
 		super(root, width, height, starttime, timeout, rules);
 	}
@@ -102,5 +102,41 @@ public abstract class AbstractLimitedMoveRoyaleSearch extends RoyaleSearch {
 			addMove(head + 1, allSnakes, snakeInfo, node, listNewSnakeInfo);
 		}
 
+	}
+	
+	
+	/**
+	 *  Set config for Right snake (never turn left)
+	 */
+	public static void setRightOnly() {
+		leftNeck = 1;
+		rightNeck = -1;
+		downNeck = -1000;
+		upNeck = 1000;
+	}
+	
+	/**
+	 *  Set config for Left snake (never turn right)
+	 */
+	public static void setLeftOnly() {
+		leftNeck = -1;
+		rightNeck = 1;
+		downNeck = 1000;
+		upNeck = -1000;
+	}
+	
+	/**
+	 *  Set config for Just Turn snake (never go straight)
+	 */
+	public static void setJustTurn() {
+		leftNeck = -1000;
+		rightNeck = 1000;
+		downNeck = -1;
+		upNeck = 1;
+	}
+	
+	@Override
+	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
+		return new SnakeInfo(snake, newHead, currentNode.getFood().isFood(newHead), false, rules);
 	}
 }

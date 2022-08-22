@@ -50,6 +50,7 @@ class BasicSnakeTest {
 		final JsonNode parsedRequest = json.readTree(PRETEST);
 
 		final BasicSnake snakeAi = new BasicSnake("test");
+		snakeAi.ping();
 		assertTrue(snakeAi.start(parsedRequest).toString().contains("ok"), "Invalid response");
 		
 	}

@@ -28,7 +28,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.API_V1
 public class FloodFillSnake extends AbstractSimpleSnakeAI {
 
 	/**
-	 * Boardd of empty space
+	 * Board of empty space
 	 */
 	private int[][] space;
 

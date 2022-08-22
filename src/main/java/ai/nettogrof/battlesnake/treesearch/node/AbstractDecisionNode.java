@@ -134,7 +134,7 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	 */
 	private void initPayoffMatrix(final List<float[]> scores) {
 		final TIntArrayList head = new TIntArrayList();
-		float[] beta = new float[score.length];
+		final float[] beta = new float[score.length];
 		for (final AbstractNode c : getChild()) {
 			final int currentHead = c.getSnakes().get(0).getHead();
 			if (head.contains(currentHead)) {
@@ -145,17 +145,14 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 
 					currentS[i] = c.score[i] > currentS[i] ? c.score[i] : currentS[i];
 				}
+				fillBasicScore(currentS, c.score.length, score.length);
 
-				
-					fillBasicScore(currentS,c.score.length,score.length);
-				
 			} else {
 				head.add(currentHead);
-				
+
 				Arrays.fill(beta, INVALID_SCORE);
-					
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
-				fillBasicScore(beta,c.score.length,score.length);
+				fillBasicScore(beta, c.score.length, score.length);
 
 				scores.add(beta);
 			}
@@ -165,15 +162,15 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	}
 
 	/**
-	 * @param currentSnake Current snake
+	 * @param currentSnake  Current snake
 	 * @param currentLength current node length
-	 * @param scoreLength score array length
+	 * @param scoreLength   score array length
 	 */
-	private void fillBasicScore(float[] currentSnake, final int currentLength ,final  int scoreLength) {
+	private void fillBasicScore(float[] currentSnake, final int currentLength, final int scoreLength) {
 		for (int i = currentLength; i < scoreLength; i++) {
 			currentSnake[i] = BASIC_SCORE;
 		}
-		
+
 	}
 
 	/**
@@ -194,22 +191,19 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 		}
 
 	}
-	
+
 	/**
 	 * Count the number of snake still alive
 	 * 
 	 * @return Number of snake alive
 	 */
 	protected int countSnakeAlive() {
-
 		int nbAlive = 0;
-
 		for (final SnakeInfo s : snakes) {
 			if (s.isAlive()) {
 				nbAlive++;
 			}
 		}
-
 		return nbAlive;
 
 	}

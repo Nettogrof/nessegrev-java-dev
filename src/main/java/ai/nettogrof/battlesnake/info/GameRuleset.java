@@ -15,6 +15,16 @@ public class GameRuleset {
 	/**
 	 * Constant Field name
 	 */
+	private static final String WRAPPED = "wrapped";
+	
+	/**
+	 * Constant Field name
+	 */
+	private static final String CONSTRICTOR = "CONSTRICTOR";
+	
+	/**
+	 * Constant Field name
+	 */
 	private static final String STANDARD = "standard";
 	
 	/**
@@ -55,7 +65,7 @@ public class GameRuleset {
 	/**
 	 * 
 	 */
-	private final SquadRuleset squad;
+	private final SquadRuleset squadRules;
 
 	
 
@@ -68,13 +78,13 @@ public class GameRuleset {
 		final JsonNode setting = node.get("settings");
 
 		switch (node.get("name").asText()) {
-		case "constrictor":
+		case CONSTRICTOR:
 			gameType = 1;
 			break;
 		case ROYALE:
 			gameType = 2;
 			break;
-		case "wrapped":
+		case WRAPPED:
 			gameType = 3;
 			break;
 		case SQUAD:
@@ -90,7 +100,7 @@ public class GameRuleset {
 		this.foodSpawnChance = setting.get("foodSpawnChance").asInt();
 		this.minimumFood = setting.get("minimumFood").asInt();
 		this.skrinkSpeed = setting.get(ROYALE).get("shrinkEveryNTurns").asInt();
-		this.squad = new SquadRuleset(setting.get(SQUAD));
+		this.squadRules = new SquadRuleset(setting.get(SQUAD));
 	}
 
 	/**
@@ -130,7 +140,7 @@ public class GameRuleset {
 	 * @return the gameType
 	 */
 	public String getRuleset() {
-		final String[] ruleset = {STANDARD,"constructor",ROYALE,"wrapped",SQUAD};
+		final String[] ruleset = {STANDARD,CONSTRICTOR,ROYALE,WRAPPED,SQUAD};
 		return ruleset[gameType];
 		
 	}
@@ -141,7 +151,7 @@ public class GameRuleset {
 	 * @param snakes list of snakes
 	 */
 	public void applySquadRules(final List<SnakeInfo> snakes) {
-		squad.applyRules(snakes);
+		squadRules.applyRules(snakes);
 	}
 
 	/**

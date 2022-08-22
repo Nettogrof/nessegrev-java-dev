@@ -16,7 +16,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_HE
  * @version Spring 2021
  * 
  */
-public class SnakeInfo implements Cloneable {
+public class SnakeInfo implements Cloneable{
 
 	/**
 	 * Logging object
@@ -48,7 +48,7 @@ public class SnakeInfo implements Cloneable {
 	 * If the snake is still alive
 	 */
 	protected boolean alive = true;
-	
+
 	/**
 	 * Name of the squad of the current snake
 	 */
@@ -76,7 +76,7 @@ public class SnakeInfo implements Cloneable {
 		}
 		if (snakeInfo.get("squad") == null) {
 			squad = "";
-			
+
 		} else {
 			squad = snakeInfo.get("squad").asText();
 		}
@@ -89,7 +89,7 @@ public class SnakeInfo implements Cloneable {
 	 * @param moveSquare    The destination square of the snake move
 	 * @param eat           Is destination square a food
 	 * @param hazard        Is destination square a hazard
-	 * @param rules 		Game ruleset
+	 * @param rules         Game ruleset
 	 */
 	public SnakeInfo(final SnakeInfo prevSnakeInfo, final int moveSquare, final boolean eat, final boolean hazard,
 			final GameRuleset rules) {
@@ -173,8 +173,6 @@ public class SnakeInfo implements Cloneable {
 		alive = false;
 	}
 
-	
-
 	/**
 	 * Check if there will be a snake on square on next move
 	 * 
@@ -194,15 +192,16 @@ public class SnakeInfo implements Cloneable {
 
 		}
 	}
+
 	/**
 	 * Check if there will be a snake on square on next move
 	 * 
-	 * @param pos int square (based on square formula)
+	 * @param pos   int square (based on square formula)
 	 * @param squad Squad name
 	 * @return If there's a snake body
 	 */
-	public boolean isSnake(final int pos,final String squad) {
-		//TODO  !!!!!!!
+	public boolean isSnake(final int pos, final String squad) {
+		// TODO !!!!!!!
 		if (eat) {
 			return snakeBody.contains(pos);
 		} else {
@@ -242,7 +241,6 @@ public class SnakeInfo implements Cloneable {
 		return name;
 	}
 
-
 	/**
 	 * Get the health of the snake
 	 * 
@@ -252,7 +250,6 @@ public class SnakeInfo implements Cloneable {
 		return health;
 	}
 
-	
 	/**
 	 * Clone the snake
 	 * 
@@ -271,8 +268,6 @@ public class SnakeInfo implements Cloneable {
 
 	}
 
-	
-
 	/**
 	 * Return if the snake is alive or not
 	 * 
@@ -282,7 +277,6 @@ public class SnakeInfo implements Cloneable {
 		return alive;
 	}
 
-	
 	/**
 	 * Equals method
 	 * 
@@ -291,17 +285,19 @@ public class SnakeInfo implements Cloneable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		
-		// If the object is compared with itself then return true 
-        if (obj == this) {
-            return true;
-        }
- 
-        /* Check if o is an instance of Complex or not
-          "null instanceof [type]" also returns false */
-        if (!(obj instanceof SnakeInfo)) {
-            return false;
-        }
+
+		// If the object is compared with itself then return true
+		if (obj == this) {
+			return true;
+		}
+
+		/*
+		 * Check if o is an instance of Complex or not "null instanceof [type]" also
+		 * returns false
+		 */
+		if (!(obj instanceof SnakeInfo)) {
+			return false;
+		}
 		final SnakeInfo other = (SnakeInfo) obj;
 		if (!name.equals(other.name)) {
 			return false;

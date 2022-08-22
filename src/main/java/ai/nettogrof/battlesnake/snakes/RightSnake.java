@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.treesearch.AbstractSearch;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.fun.RightRoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.fun.LimitedMoveRoyaleSearch;
 
 /**
  * Right snake. This class is the "Nessegrev-Mystery" snake on Battlesnake. This
@@ -29,6 +29,7 @@ public class RightSnake extends ExpertSnake {
 		super(gameId);
 		fileConfig = "Right.properties";
 		setProperties();
+		LimitedMoveRoyaleSearch.setRightOnly();
 	}
 
 	@Override
@@ -44,9 +45,11 @@ public class RightSnake extends ExpertSnake {
 	 */
 	@Override
 	protected Constructor<? extends AbstractSearch> genSearchType() throws ReflectiveOperationException {
-		return  RightRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
+		return  LimitedMoveRoyaleSearch.class.getConstructor(AbstractNode.class, int.class, int.class, long.class,
 					int.class, GameRuleset.class);
 		
 
 	}
+	
+	
 }
