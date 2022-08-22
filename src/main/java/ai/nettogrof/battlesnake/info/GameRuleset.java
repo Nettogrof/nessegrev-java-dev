@@ -12,6 +12,20 @@ import com.fasterxml.jackson.databind.JsonNode;
  * @version Spring 2022
  */
 public class GameRuleset {
+	/**
+	 * Constant Field name
+	 */
+	private static final String STANDARD = "standard";
+	
+	/**
+	 * Constant Field name
+	 */
+	private static final String SQUAD = "squad";
+	
+	/**
+	 * Constant Field name
+	 */
+	private static final String ROYALE = "royale";
 
 	/**
 	 * Hazard damage per turn
@@ -57,13 +71,13 @@ public class GameRuleset {
 		case "constrictor":
 			gameType = 1;
 			break;
-		case "royale":
+		case ROYALE:
 			gameType = 2;
 			break;
 		case "wrapped":
 			gameType = 3;
 			break;
-		case "squad":
+		case SQUAD:
 			gameType = 4;
 			break;
 
@@ -75,8 +89,8 @@ public class GameRuleset {
 		this.hazardDamage = setting.get("hazardDamagePerTurn").asInt();
 		this.foodSpawnChance = setting.get("foodSpawnChance").asInt();
 		this.minimumFood = setting.get("minimumFood").asInt();
-		this.skrinkSpeed = setting.get("royale").get("shrinkEveryNTurns").asInt();
-		this.squad = new SquadRuleset(setting.get("squad"));
+		this.skrinkSpeed = setting.get(ROYALE).get("shrinkEveryNTurns").asInt();
+		this.squad = new SquadRuleset(setting.get(SQUAD));
 	}
 
 	/**
@@ -116,7 +130,7 @@ public class GameRuleset {
 	 * @return the gameType
 	 */
 	public String getRuleset() {
-		final String[] ruleset = {"standard","constructor","royale","wrapped","squad"};
+		final String[] ruleset = {STANDARD,"constructor",ROYALE,"wrapped",SQUAD};
 		return ruleset[gameType];
 		
 	}

@@ -71,10 +71,10 @@ public class SquadRuleset {
 	 * 
 	 */
 	public SquadRuleset(final JsonNode node) {
-		allowBodyCollisions = false;
-		sharedElimination = false;
-		sharedHealth = false;
-		sharedLength = false;
+		allowBodyCollisions = node.get("allowBodyCollisions").asBoolean();
+		sharedElimination = node.get("sharedElimination").asBoolean();
+		sharedHealth = node.get("sharedHealth").asBoolean();
+		sharedLength = node.get("sharedLength").asBoolean();
 		
 	}
 

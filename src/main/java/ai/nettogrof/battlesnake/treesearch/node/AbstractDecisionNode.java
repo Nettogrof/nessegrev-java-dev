@@ -146,17 +146,16 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 					currentS[i] = c.score[i] > currentS[i] ? c.score[i] : currentS[i];
 				}
 
-				if (score.length > c.score.length) {
-					fillBasicScore(currentS,c,score);
 				
-				}
+					fillBasicScore(currentS,c.score.length,score.length);
+				
 			} else {
 				head.add(currentHead);
 				
 				Arrays.fill(beta, INVALID_SCORE);
 					
 				System.arraycopy(c.score, 0, beta, 0, c.score.length);
-				fillBasicScore(beta,c,score);
+				fillBasicScore(beta,c.score.length,score.length);
 
 				scores.add(beta);
 			}
@@ -167,11 +166,11 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 
 	/**
 	 * @param currentSnake Current snake
-	 * @param node current node
-	 * @param score socre array
+	 * @param currentLength current node length
+	 * @param scoreLength score array length
 	 */
-	private void fillBasicScore(float[] currentSnake, AbstractNode node, float[] score) {
-		for (int i = node.score.length; i < score.length; i++) {
+	private void fillBasicScore(float[] currentSnake, final int currentLength ,final  int scoreLength) {
+		for (int i = currentLength; i < scoreLength; i++) {
 			currentSnake[i] = BASIC_SCORE;
 		}
 		
