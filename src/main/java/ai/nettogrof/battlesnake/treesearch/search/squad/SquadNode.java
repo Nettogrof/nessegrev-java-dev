@@ -13,7 +13,7 @@ import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.standard.DuelNode;
+import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -24,7 +24,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class SquadNode extends DuelNode {
+public class SquadNode extends AbstractStandardNode {
 	/**
 	 * Minimun number of snake for Squad Mode.  If number of snake smaller than this value, the game end
 	 */

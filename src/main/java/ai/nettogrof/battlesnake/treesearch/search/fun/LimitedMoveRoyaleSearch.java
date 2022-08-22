@@ -9,7 +9,7 @@ import java.util.List;
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
+import ai.nettogrof.battlesnake.treesearch.search.royale.AbstractRoyaleSearch;
 
 /**
  * This abstract Standard search based on RoyaleSearch provide methods to
@@ -18,7 +18,7 @@ import ai.nettogrof.battlesnake.treesearch.search.royale.RoyaleSearch;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class LimitedMoveRoyaleSearch extends RoyaleSearch {
+public class LimitedMoveRoyaleSearch extends AbstractRoyaleSearch {
 	/**
 	 * Prevent left move if head - neck equals that amount
 	 */
@@ -138,5 +138,14 @@ public class LimitedMoveRoyaleSearch extends RoyaleSearch {
 	@Override
 	protected SnakeInfo createSnakeInfo(final SnakeInfo snake, final int newHead, final AbstractNode currentNode) {
 		return new SnakeInfo(snake, newHead, currentNode.getFood().isFood(newHead), false, rules);
+	}
+	
+	@Override
+	public void run() {
+		for (int i = 0; i < 12; i++) {
+			generateChild(getSmallestChild(root));
+		}
+		executeMCTS();
+
 	}
 }
