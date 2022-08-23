@@ -66,7 +66,9 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 		final JsonNode expertSnake = moveRequest.get(YOU);
 		final List<SnakeInfo> snakes = genSnakeInfo(board, expertSnake);
 		final AbstractNode oldChild = findChildNewRoot(snakes, food, hazard);
-		return oldChild == null ? genNode(snakes, food, new HazardSquare(board)) : oldChild;
+		final BoardInfo boardInfo = new BoardInfo(moveRequest.get("board").get("width").asInt(),
+				moveRequest.get("board").get("height").asInt());
+		return oldChild == null ? genNode(snakes, food, new HazardSquare(board), boardInfo) : oldChild;
 
 	}
 
@@ -129,11 +131,12 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 * @param snakes List of snakes
 	 * @param food   Food Information
 	 * @param hazard Hazard Information
+	 * @param board  Board Information
 	 * @return Abstract node
 	 */
-	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard) {
+	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard,
+			final BoardInfo board) {
 		AbstractNode node;
-		BoardInfo board = new BoardInfo(height, width);
 
 		switch (rules.getRuleset()) {
 			case "royale":

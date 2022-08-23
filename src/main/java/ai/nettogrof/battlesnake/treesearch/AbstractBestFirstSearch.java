@@ -17,15 +17,14 @@ import gnu.trove.list.array.TFloatArrayList;
  */
 public abstract class AbstractBestFirstSearch extends AbstractSearch {
 
-	
 	/**
-	* Sole constructor. (For invocation by subclass 
-	* constructors, typically implicit.)
-	*/
+	 * Sole constructor. (For invocation by subclass constructors, typically
+	 * implicit.)
+	 */
 	protected AbstractBestFirstSearch() {
 		super();
 	}
-	
+
 	/**
 	 * This method just merge two lists and remove the duplicate node
 	 * 
@@ -61,9 +60,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 			final float score = branch.get(i).getScoreRatio();
 			branch.get(i).updateScore();
 			if (branch.get(i).getScoreRatio() == score && branch.get(i).isExp()) {
-				for (int j = 0; j < i; j++) {
-					branch.remove(0);
-				}
+				branch.subList(0, i - 1).clear();
 				return branch;
 			}
 		}
@@ -90,8 +87,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		}
 
 		final AbstractNode winner = getWinnerChild(node);
-				
-			
+
 		final List<AbstractNode> list = (winner == null) ? new ArrayList<>() : getBestPath(winner);
 		list.add(node);
 		return list;
@@ -99,7 +95,8 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 	}
 
 	/**
-	 * Get the best child/winner  from a node
+	 * Get the best child/winner from a node
+	 * 
 	 * @param node the parent node
 	 * @return the winner/best child
 	 */

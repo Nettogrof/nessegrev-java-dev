@@ -75,7 +75,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param nodelist     List of node that gonna to "rooted" in multithread search
 	 * @param expandedlist List of node to be updated after search
-	 * @param rules		   Game ruleset
+	 * @param rules        Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void expand(final List<AbstractNode> nodelist, final List<AbstractNode> expandedlist,
@@ -94,7 +94,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 					for (final AbstractNode c : oldroot.getChild()) {
 						nodelist.add(c);
 					}
-					
+
 				}
 			}
 		}
@@ -123,7 +123,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 	 * 
 	 * @param root      The root node
 	 * @param startTime The start time in millisecond
-	 * @param rules		Game ruleset
+	 * @param rules     Game ruleset
 	 * @throws ReflectiveOperationException In case of invalid search type
 	 */
 	protected void multiThreadtreeSearch(final AbstractNode root, final Long startTime, final GameRuleset rules)
@@ -150,6 +150,7 @@ public abstract class AbstractMultiThreadSnakeAI extends AbstractTreeSearchSnake
 		} catch (InterruptedException e) {
 
 			log.atSevere().log("Thread?!", e);
+			Thread.currentThread().interrupt();
 		}
 
 		for (final AbstractSearch search : listSearchThread) {

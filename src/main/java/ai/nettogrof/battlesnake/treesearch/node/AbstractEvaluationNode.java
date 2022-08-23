@@ -218,22 +218,22 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 		}
 		final int[][] board = initBoard();
 
-		final Int2IntOpenHashMap old = new Int2IntOpenHashMap();
-		final Int2IntOpenHashMap newHash = new Int2IntOpenHashMap();
+		final Int2IntOpenHashMap tempHash = new Int2IntOpenHashMap();
+		final Int2IntOpenHashMap currentHash = new Int2IntOpenHashMap();
 
 		for (int i = 0; i < snakes.size(); i++) {
-			newHash.put(snakes.get(i).getSnakeBody().get(0), i);
+			currentHash.put(snakes.get(i).getSnakeBody().get(0), i);
 		}
 
 		// while still new square assign to a snake control
-		while (newHash.size() != 0) {
-			old.clear();
-			applyNewHash(newHash, board);
-			generateHash(newHash, old, board);
-			newHash.clear();
-			if (old.size() != 0) {
-				applyNewHash(old, board);
-				generateHash(old, newHash, board);
+		while (currentHash.size() != 0) {
+			tempHash.clear();
+			applyNewHash(currentHash, board);
+			generateHash(currentHash, tempHash, board);
+			currentHash.clear();
+			if (tempHash.size() != 0) {
+				applyNewHash(tempHash, board);
+				generateHash(tempHash, currentHash, board);
 			}
 		}
 		adjustScodeBasedonBoardControl(board);
