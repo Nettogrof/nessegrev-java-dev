@@ -73,7 +73,7 @@ public abstract class AbstractTreeSearchSnakeAI extends AbstractSearchSnakeAI {
 		final Long startTime = System.currentTimeMillis();
 
 		final AbstractNode root = genRoot(moveRequest);
-		root.exp = true;
+		root.setExp(true);
 		try {
 			treeSearch(root, startTime, rules);
 		} catch (ReflectiveOperationException e) {

@@ -43,6 +43,10 @@ public final class SnakeGeneticConstants {
 	 */
 	private static float borderScore = 0.4f;
 
+	/**
+	 *  score to add/subtract in snake length comparison
+	 */
+	private static float sizeAdvantage = 0.4f;
 	
 
 	/**
@@ -151,6 +155,23 @@ public final class SnakeGeneticConstants {
 		return mctsBias;
 	}
 	
+	/**
+	 * @return the size Advantage value
+	 */
+	public static float getSizeAdvantage() {
+		return sizeAdvantage;
+		
+	}
+
+	/**
+	 * Set the size advantage
+	 * @param sizeAdvantage size advantage value
+	 */
+	public static void setSizeAdvantage(final float sizeAdvantage) {
+		SnakeGeneticConstants.sizeAdvantage = sizeAdvantage;
+		
+	}
+
 	/**
 	 * Load evaluation properties to get genetic value
 	 */

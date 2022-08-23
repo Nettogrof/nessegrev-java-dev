@@ -59,7 +59,7 @@ public class RegularSearch extends AbstractStandardSearch {
 		}
 
 		long currentTime = System.currentTimeMillis() - startTime;
-		while (cont && currentTime < timeout && root.exp) {
+		while (cont && currentTime < timeout && root.isExp()) {
 			final AbstractNode bestChild = getBestChild(root); // Find the best branch/leaf node
 			generateChild(bestChild); // Expand the best leaf node
 

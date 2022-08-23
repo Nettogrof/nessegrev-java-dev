@@ -132,7 +132,7 @@ public abstract class AbstractSearch implements Runnable {
 
 				for (final SnakeInfo si : snakes) {
 					final ArrayList<SnakeInfo> merged = new ArrayList<>(1);
-					merged.add(si.cloneSnake());
+					merged.add(new SnakeInfo(si));
 					ret.add(merged);
 				}
 
@@ -141,10 +141,10 @@ public abstract class AbstractSearch implements Runnable {
 					for (final ArrayList<SnakeInfo> s : list) {
 						final ArrayList<SnakeInfo> merged = new ArrayList<>(s.size() + 1);
 						for (final SnakeInfo si : s) {
-							merged.add(si.cloneSnake());
+							merged.add(new SnakeInfo(si));
 						}
 
-						merged.add(snakeinfo.cloneSnake());
+						merged.add(new SnakeInfo(snakeinfo));
 						ret.add(merged);
 					}
 
@@ -254,7 +254,7 @@ public abstract class AbstractSearch implements Runnable {
 
 			if (alphaMove.isEmpty()) {
 				node.getSnakes().get(0).die();
-				node.exp = false;
+				node.setExp(false);
 				node.score[0] = 0;
 				node.updateScoreRatio();
 
@@ -284,13 +284,13 @@ public abstract class AbstractSearch implements Runnable {
 				}
 				if (!stillAlive) {
 					node.getSnakes().get(0).die();
-					node.exp = false;
+					node.setExp(false);
 					node.score[0] = 0;
 					node.updateScoreRatio();
 				}
 			}
 		} else {
-			node.exp = false;
+			node.setExp(false);
 		}
 	}
 
@@ -308,7 +308,7 @@ public abstract class AbstractSearch implements Runnable {
 			final AbstractNode smallChild = node.getSnakes().size() < BattleSnakeConstants.MINIMUN_SNAKE ? NodeUtil.getBestNode(node) :NodeUtil.getSmallestNode(node) ;
 			
 			if (smallChild == null) {
-				node.exp = false;
+				node.setExp(false);
 				return node;
 			}
 

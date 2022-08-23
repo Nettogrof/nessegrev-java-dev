@@ -53,7 +53,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 
 		for (int i = 0; i < node.getChild().size() && winner == null; i++) {
 			final AbstractNode childNode = node.getChild().get(i);
-			if (mctsScore(node, childNode) == choiceValue && childNode.exp) {
+			if (mctsScore(node, childNode) == choiceValue && childNode.isExp()) {
 				winner = childNode;
 			}
 
@@ -91,7 +91,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (final AbstractNode child : node.getChild()) {
-			if (child.exp) {
+			if (child.isExp()) {
 				final int move = child.getSnakes().get(0).getHead();
 
 				if (move / 1000 < head / 1000) {
@@ -115,7 +115,7 @@ public abstract class AbstractMCTS extends AbstractBestFirstSearch {
 		long currentTime = System.currentTimeMillis() - startTime;
 		List<AbstractNode> retNode = new ArrayList<>();
 		retNode.add(root);
-		while (cont && currentTime < timeout && root.exp) {
+		while (cont && currentTime < timeout && root.isExp()) {
 			final List<AbstractNode> bestChild = getMCTSBestPath(retNode.get(0));
 
 			generateChild(bestChild.get(0));

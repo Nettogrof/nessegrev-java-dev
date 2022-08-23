@@ -77,7 +77,7 @@ public abstract class AbstractNode {
 	/**
 	 * Does that node can be explore
 	 */
-	public boolean exp = true;
+	protected boolean exp = true;
 
 	/**
 	 * Basic constructor
@@ -219,6 +219,21 @@ public abstract class AbstractNode {
 	 */
 	public void setPossibleMove(final int possibleMove) {
 		this.possibleMove = possibleMove;
+	}
+
+	/**
+	 * Does the node is Expendable
+	 * @return the exp
+	 */
+	public boolean isExp() {
+		return exp;
+	}
+
+	/**
+	 * @param exp the exp to set
+	 */
+	public void setExp(final boolean exp) {
+		this.exp = exp;
 	}
 
 }

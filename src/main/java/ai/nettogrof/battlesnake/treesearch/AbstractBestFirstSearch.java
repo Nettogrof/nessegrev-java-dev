@@ -60,7 +60,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		for (int i = 0; i < branch.size(); i++) {
 			final float score = branch.get(i).getScoreRatio();
 			branch.get(i).updateScore();
-			if (branch.get(i).getScoreRatio() == score && branch.get(i).exp) {
+			if (branch.get(i).getScoreRatio() == score && branch.get(i).isExp()) {
 				for (int j = 0; j < i; j++) {
 					branch.remove(0);
 				}
@@ -116,7 +116,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 
 		for (int i = 0; i < node.getChild().size() && winner == null; i++) {
 			final AbstractNode childNode = node.getChild().get(i);
-			if (childNode.getScoreRatio() == choiceValue && childNode.exp) {
+			if (childNode.getScoreRatio() == choiceValue && childNode.isExp()) {
 				winner = childNode;
 			}
 
@@ -139,7 +139,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		final int head = node.getSnakes().get(0).getHead();
 
 		for (final AbstractNode child : node.getChild()) {
-			if (child.exp) {
+			if (child.isExp()) {
 				final int move = child.getSnakes().get(0).getHead();
 
 				if (move / 1000 < head / 1000) {
@@ -210,7 +210,7 @@ public abstract class AbstractBestFirstSearch extends AbstractSearch {
 		node.updateScore();
 		final AbstractNode winner = getWinnerChild(node);
 		if (winner == null) {
-			node.exp = false;
+			node.setExp(false);
 			return node;
 
 		}

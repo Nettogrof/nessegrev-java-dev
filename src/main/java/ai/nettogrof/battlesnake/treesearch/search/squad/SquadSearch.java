@@ -52,8 +52,6 @@ public class SquadSearch extends AbstractSquadSearch {
 
 	@Override
 	public void run() {
-
-		// TODO Squad Search Need to test if it work.
 		for (int i = 0; i < 12; i++) {
 			generateChild(getSmallestChild(root));
 		}

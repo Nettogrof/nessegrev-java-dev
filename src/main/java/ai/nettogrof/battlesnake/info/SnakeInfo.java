@@ -16,7 +16,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MAX_HE
  * @version Spring 2021
  * 
  */
-public class SnakeInfo implements Cloneable{
+public class SnakeInfo {
 
 	/**
 	 * Logging object
@@ -60,6 +60,20 @@ public class SnakeInfo implements Cloneable{
 	public SnakeInfo() {
 		snakeBody = new TIntArrayList();
 		squad = "";
+	}
+
+	/**
+	 * copy constructor .
+	 * 
+	 * @param snakeInfo the snake info to copy
+	 */
+	public SnakeInfo(final SnakeInfo snakeInfo) {
+		this.name = snakeInfo.name;
+		this.squad = snakeInfo.squad;
+		this.alive = snakeInfo.alive;
+		this.eat = snakeInfo.eat;
+		this.health = snakeInfo.health;
+		this.snakeBody = new TIntArrayList(snakeInfo.getSnakeBody());
 	}
 
 	/**
@@ -201,17 +215,19 @@ public class SnakeInfo implements Cloneable{
 	 * @return If there's a snake body
 	 */
 	public boolean isSnake(final int pos, final String squad) {
-		// TODO !!!!!!!
-		if (eat) {
-			return snakeBody.contains(pos);
-		} else {
-			if (snakeBody.contains(pos)) {
-				return snakeBody.indexOf(pos) < snakeBody.size() - 1;
+		if (this.squad.equals(squad)) {
+			if (eat) {
+				return snakeBody.contains(pos);
 			} else {
-				return false;
-			}
+				if (snakeBody.contains(pos)) {
+					return snakeBody.indexOf(pos) < snakeBody.size() - 1;
+				} else {
+					return false;
+				}
 
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -248,24 +264,6 @@ public class SnakeInfo implements Cloneable{
 	 */
 	public int getHealth() {
 		return health;
-	}
-
-	/**
-	 * Clone the snake
-	 * 
-	 * @return the new object clone
-	 */
-	public SnakeInfo cloneSnake() {
-		SnakeInfo clonedSnake = null;
-		try {
-			clonedSnake = (SnakeInfo) clone();
-		} catch (CloneNotSupportedException e) {
-
-			log.atWarning().log(e.getMessage() + "\n" + e.getStackTrace());
-
-		}
-		return clonedSnake;
-
 	}
 
 	/**
