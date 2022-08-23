@@ -3,6 +3,7 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 import java.util.Arrays;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
@@ -21,16 +22,17 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  */
 public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 
-	
 	/**
 	 * Constructor with snakes and food information
 	 * 
-	 * @param snakes  List of snakes
-	 * @param food    Food information
-	 * @param hazard2 Hazard Info
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param hazard2   Hazard Info
+	 * @param boardInfo Board Information
 	 */
-	protected AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard2) {
-		super(snakes, food);
+	protected AbstractRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard2,
+			final BoardInfo boardInfo) {
+		super(snakes, food, boardInfo);
 		this.hazard = hazard2;
 	}
 
@@ -118,8 +120,8 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	protected void adjustScodeBasedonBoardControl(final int[][] board) {
 		final int biggestSnake = snakes.get(0).getSnakeBody().size() > snakes.get(1).getSnakeBody().size() ? 0 : 1;
 		int[] count = new int[snakes.size()];
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+		for (int i = 0; i < boardInfo.getWidth(); i++) {
+			for (int j = 0; j < boardInfo.getWidth(); j++) {
 				if (board[i][j] > 0) {
 					count[board[i][j] - 1]++;
 				} else if (board[i][j] == BattleSnakeConstants.SPLIT_AREA) {
@@ -152,8 +154,8 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	/**
 	 * Adding value if a food is in the controlled area
 	 * 
-	 * @param board  Board array
-	 * @param count Count array 
+	 * @param board Board array
+	 * @param count Count array
 	 */
 	private void addFoodValue(final int[][] board, int[] count) {
 		for (int i = 0; i < food.getPosition().size(); i++) {
@@ -172,8 +174,8 @@ public abstract class AbstractRoyaleNode extends AbstractEvaluationNode {
 	 */
 	@Override
 	protected int[][] initBoard() {
-		int[][] board = new int[width][height];
-		for (int i = 0; i < width; i++) {
+		int[][] board = new int[boardInfo.getWidth()][boardInfo.getHeight()];
+		for (int i = 0; i < boardInfo.getWidth(); i++) {
 			Arrays.fill(board[i], BattleSnakeConstants.EMPTY_AREA);
 		}
 		for (final SnakeInfo snake : snakes) {

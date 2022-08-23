@@ -8,12 +8,13 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.EMPTY_
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
+import ai.nettogrof.battlesnake.treesearch.node.AbstractEvaluationNode;
 import ai.nettogrof.battlesnake.treesearch.node.AbstractNode;
-import ai.nettogrof.battlesnake.treesearch.search.standard.AbstractStandardNode;
 import gnu.trove.list.array.TIntArrayList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -24,19 +25,22 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
  * @author carl.lajeunesse
  * @version Summer 2021
  */
-public class SquadNode extends AbstractStandardNode {
+public class SquadNode extends AbstractEvaluationNode {
 	/**
-	 * Minimun number of snake for Squad Mode.  If number of snake smaller than this value, the game end
+	 * Minimun number of snake for Squad Mode. If number of snake smaller than this
+	 * value, the game end
 	 */
 	protected static final int MINIMUN_SNAKE = 4;
+
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param boardInfo Board Information
 	 */
-	public SquadNode(final List< SnakeInfo> snakes, final FoodInfo food) {
-		super(snakes, food);
+	public SquadNode(final List<SnakeInfo> snakes, final FoodInfo food, final BoardInfo boardInfo) {
+		super(snakes, food, boardInfo);
 		setSquadScore();
 	}
 
@@ -49,7 +53,7 @@ public class SquadNode extends AbstractStandardNode {
 			// to surviving team
 			setWinnerMaxScore();
 		} else {
-			
+
 			addBasicLengthScore();
 		}
 
@@ -59,13 +63,13 @@ public class SquadNode extends AbstractStandardNode {
 
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakes, final AbstractNode currentNode) {
-		return new SquadNode(snakes, currentNode.getFood());
+		return new SquadNode(snakes, currentNode.getFood(), boardInfo);
 	}
-	
+
 	@Override
 	public float getScoreRatio() {
 		float totalOther;
-		if ("".equals( snakes.get(0).getSquad())) {
+		if ("".equals(snakes.get(0).getSquad())) {
 			totalOther = 1;
 			for (int i = 1; i < score.length; i++) {
 				totalOther += score[i];
@@ -93,7 +97,7 @@ public class SquadNode extends AbstractStandardNode {
 	@Override
 	protected int[][] initBoard() {
 
-		int[][] board = new int[width][height];
+		int[][] board = new int[boardInfo.getWidth()][boardInfo.getHeight()];
 
 		for (final SnakeInfo snake : snakes) {
 			final int value = -getPartnerIndex(snake);
@@ -116,8 +120,7 @@ public class SquadNode extends AbstractStandardNode {
 	 */
 	private int getPartnerIndex(final SnakeInfo snake) {
 		for (int i = 0; i < snakes.size(); i++) {
-			if (snake.getSquad().equals(snakes.get(i).getSquad())
-					&& !snake.getName().equals(snakes.get(i).getName())) {
+			if (snake.getSquad().equals(snakes.get(i).getSquad()) && !snake.getName().equals(snakes.get(i).getName())) {
 				return i;
 			}
 		}
@@ -139,7 +142,7 @@ public class SquadNode extends AbstractStandardNode {
 			final int posX = position / 1000;
 			final int posY = position % 1000;
 
-			if (posX + 1 < width && checkBoardHash(posX + 1, posY, board, value)) {
+			if (posX + 1 < boardInfo.getWidth() && checkBoardHash(posX + 1, posY, board, value)) {
 				addToHash(newHash, position + 1000, value);
 
 			}
@@ -148,7 +151,7 @@ public class SquadNode extends AbstractStandardNode {
 
 			}
 
-			if (posY + 1 < height && checkBoardHash(posX, posY + 1, board, value)) {
+			if (posY + 1 < boardInfo.getHeight() && checkBoardHash(posX, posY + 1, board, value)) {
 				addToHash(newHash, position + 1, value);
 			}
 			if (posY - 1 >= 0 && checkBoardHash(posX, posY - 1, board, value)) {

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import gnu.trove.list.array.TIntArrayList;
@@ -35,11 +36,12 @@ public abstract class AbstractDecisionNode extends AbstractNode {
 	/**
 	 * Basic constructor
 	 * 
-	 * @param snakes list of snakes, and food info
-	 * @param food   food info
+	 * @param snakes    list of snakes, and food info
+	 * @param food      food info
+	 * @param boardInfo Board Information
 	 */
-	protected AbstractDecisionNode(final List<SnakeInfo> snakes, final FoodInfo food) {
-		super(snakes, food);
+	protected AbstractDecisionNode(final List<SnakeInfo> snakes, final FoodInfo food, final BoardInfo boardInfo) {
+		super(snakes, food, boardInfo);
 	}
 
 	/**

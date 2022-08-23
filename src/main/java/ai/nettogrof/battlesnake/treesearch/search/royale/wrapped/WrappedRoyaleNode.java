@@ -7,6 +7,7 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMU
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
@@ -25,18 +26,21 @@ public class WrappedRoyaleNode extends AbstractRoyaleNode {
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes   List of snakes
-	 * @param food Food information
-	 * @param hazard   Hazard Info
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param hazard    Hazard Info
+	 * @param boardInfo Board Information
 	 */
-	public WrappedRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard) {
-		super(snakes, food, hazard);
+	public WrappedRoyaleNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard,
+			final BoardInfo boardInfo) {
+		super(snakes, food, hazard, boardInfo);
 		setScore();
 	}
 
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakes, final AbstractNode currentNode) {
-		return new WrappedRoyaleNode(snakes, currentNode.getFood(), ((WrappedRoyaleNode) currentNode).getHazard());
+		return new WrappedRoyaleNode(snakes, currentNode.getFood(), ((WrappedRoyaleNode) currentNode).getHazard(),
+				boardInfo);
 	}
 
 	/**
@@ -49,7 +53,6 @@ public class WrappedRoyaleNode extends AbstractRoyaleNode {
 
 			addBasicLengthScore();
 
-			
 			addScoreDistanceAll();
 
 		}

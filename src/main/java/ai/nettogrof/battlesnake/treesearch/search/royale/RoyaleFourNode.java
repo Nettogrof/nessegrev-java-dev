@@ -2,6 +2,7 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
@@ -17,21 +18,23 @@ import static ai.nettogrof.battlesnake.snakes.common.BattleSnakeConstants.MINIMU
  * @version Spring 2021
  */
 public class RoyaleFourNode extends AbstractRoyaleNode {
-	
+
 	/**
 	 * 
 	 */
 	private static final int FOUR = 4;
-	
+
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes   List of snakes
-	 * @param foodInfo Food information
-	 * @param hazard   Hazard Info
+	 * @param snakes    List of snakes
+	 * @param foodInfo  Food information
+	 * @param hazard    Hazard Info
+	 * @param boardInfo board information
 	 */
-	public RoyaleFourNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo, final AbstractHazard hazard) {
-		super(snakes, foodInfo, hazard);
+	public RoyaleFourNode(final List<SnakeInfo> snakes, final FoodInfo foodInfo, final AbstractHazard hazard,
+			final BoardInfo boardInfo) {
+		super(snakes, foodInfo, hazard, boardInfo);
 		setScore();
 
 	}
@@ -43,12 +46,12 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 		if (countSnakeAlive() < MINIMUN_SNAKE) {
 			setWinnerMaxScore();
 		} else {
-			
+
 			addBasicLengthScore();
 			if (snakes.size() < FOUR) {
 				listAreaControl();
 				adjustHazardScore();
-			}else {
+			} else {
 				addScoreDistance(snakes.get(0).getHead());
 			}
 
@@ -63,7 +66,8 @@ public class RoyaleFourNode extends AbstractRoyaleNode {
 	 */
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakeInfo, final AbstractNode currentNode) {
-		return new RoyaleFourNode(snakeInfo, currentNode.getFood(), ((RoyaleFourNode) currentNode).getHazard());
+		return new RoyaleFourNode(snakeInfo, currentNode.getFood(), ((RoyaleFourNode) currentNode).getHazard(),
+				boardInfo);
 	}
 
 }

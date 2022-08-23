@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.GameRuleset;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
@@ -29,8 +30,6 @@ import ai.nettogrof.battlesnake.treesearch.search.standard.ManyNode;
  * @version Summer 2022
  */
 public class ExpertSnake extends AbstractMultiThreadSnakeAI {
-
-	
 
 	/**
 	 * Basic Constructor
@@ -80,23 +79,20 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 */
 	private List<SnakeInfo> genSnakeInfo(final JsonNode board, final JsonNode expertSnake) {
 		final List<SnakeInfo> snakes = new ArrayList<>();
-		
+
 		snakes.add(new SnakeInfo(expertSnake));
-	
+
 		for (int i = 0; i < board.get(SNAKES).size(); i++) {
 			final JsonNode currentSnake = board.get(SNAKES).get(i);
 			if (!currentSnake.get("id").asText().equals(expertSnake.get("id").asText())) {
-				
+
 				snakes.add(new SnakeInfo(currentSnake));
-				
 
 			}
 		}
 		return snakes;
 
 	}
-
-	
 
 	/**
 	 * This method was used in API v0 to retrieve snake info, but in API v1 the
@@ -137,32 +133,32 @@ public class ExpertSnake extends AbstractMultiThreadSnakeAI {
 	 */
 	protected AbstractNode genNode(final List<SnakeInfo> snakes, final FoodInfo food, final HazardSquare hazard) {
 		AbstractNode node;
-		AbstractNode.width = width;
-		AbstractNode.height = height;
-		switch (rules.getRuleset()) {
-		case "royale":
-			node = snakes.size() > 2 ? new RoyaleFourNode(snakes, food, hazard)
-					: new RoyaleDuelNode(snakes, food, hazard);
-			break;
-		case "constrictor":
-			node = new DuelNode(snakes, food);
-			break;
-		case "squad":
-			node = new SquadNode(snakes, food);
-			break;
+		BoardInfo board = new BoardInfo(height, width);
 
-		case "wrapped":
-			node = new WrappedRoyaleNode(snakes, food, hazard);
-			break;
-		default:
-			if (snakes.size() > FOUR_SNAKE) {
-				node = new ManyNode(snakes, food);
-			} else if (snakes.size() > TWO_SNAKE) {
-				node = new FourNode(snakes, food);
-			} else {
-				node = new DuelNode(snakes, food);
-			}
-			break;
+		switch (rules.getRuleset()) {
+			case "royale":
+				node = snakes.size() > 2 ? new RoyaleFourNode(snakes, food, hazard, board)
+						: new RoyaleDuelNode(snakes, food, hazard, board);
+				break;
+			case "constrictor":
+				node = new DuelNode(snakes, food, board);
+				break;
+			case "squad":
+				node = new SquadNode(snakes, food, board);
+				break;
+
+			case "wrapped":
+				node = new WrappedRoyaleNode(snakes, food, hazard, board);
+				break;
+			default:
+				if (snakes.size() > FOUR_SNAKE) {
+					node = new ManyNode(snakes, food, board);
+				} else if (snakes.size() > TWO_SNAKE) {
+					node = new FourNode(snakes, food, board);
+				} else {
+					node = new DuelNode(snakes, food, board);
+				}
+				break;
 		}
 
 		return node;

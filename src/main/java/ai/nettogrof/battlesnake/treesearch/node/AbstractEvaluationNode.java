@@ -6,6 +6,7 @@ package ai.nettogrof.battlesnake.treesearch.node;
 import java.util.Arrays;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.snakes.common.SnakeGeneticConstants;
@@ -31,11 +32,12 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	/**
 	 * Constructor with snakes and food information
 	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param boardInfo Board Information
 	 */
-	protected AbstractEvaluationNode(final List<SnakeInfo> snakes, final FoodInfo food) {
-		super(snakes, food);
+	protected AbstractEvaluationNode(final List<SnakeInfo> snakes, final FoodInfo food, final BoardInfo boardInfo) {
+		super(snakes, food, boardInfo);
 		score = new float[snakes.size()];
 	}
 
@@ -45,7 +47,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * @param head Square of the snake head
 	 */
 	protected void addScoreDistance(final int head) {
-		score[0] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
+		score[0] += (boardInfo.getWidth() - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 	}
 
 	/**
@@ -55,7 +57,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	protected void addScoreDistanceAll() {
 		for (int i = 0; i < snakes.size(); i++) {
 			final int head = snakes.get(i).getHead();
-			score[i] += (width - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
+			score[i] += (boardInfo.getWidth() - food.getShortestDistance(head / 1000, head % 1000)) * 0.095f;
 		}
 	}
 
@@ -84,7 +86,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 			final int posX = position / 1000;
 			final int posY = position % 1000;
 
-			if (posX + 1 < width && board[posX + 1][posY] == EMPTY_AREA) {
+			if (posX + 1 < boardInfo.getWidth() && board[posX + 1][posY] == EMPTY_AREA) {
 				addToHash(newHash, position + 1000, valeur);
 
 			}
@@ -93,7 +95,7 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 
 			}
 
-			if (posY + 1 < height && board[posX][posY + 1] == EMPTY_AREA) {
+			if (posY + 1 < boardInfo.getHeight() && board[posX][posY + 1] == EMPTY_AREA) {
 				addToHash(newHash, position + 1, valeur);
 			}
 			if (posY - 1 >= 0 && board[posX][posY - 1] == EMPTY_AREA) {
@@ -153,8 +155,8 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	protected void adjustScodeBasedonBoardControl(final int[][] board) {
 
 		int[] count = new int[snakes.size()];
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+		for (int i = 0; i < boardInfo.getWidth(); i++) {
+			for (int j = 0; j < boardInfo.getHeight(); j++) {
 				if (board[i][j] >= 0) {
 					count[board[i][j]]++;
 				}
@@ -187,8 +189,8 @@ public abstract class AbstractEvaluationNode extends AbstractDecisionNode {
 	 * @return board array
 	 */
 	protected int[][] initBoard() {
-		int[][] board = new int[width][height];
-		for (int i = 0; i < width; i++) {
+		int[][] board = new int[boardInfo.getWidth()][boardInfo.getHeight()];
+		for (int i = 0; i < boardInfo.getWidth(); i++) {
 			Arrays.fill(board[i], EMPTY_AREA);
 		}
 		for (final SnakeInfo snake : snakes) {

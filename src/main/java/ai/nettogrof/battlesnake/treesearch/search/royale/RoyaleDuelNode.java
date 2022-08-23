@@ -5,6 +5,7 @@ package ai.nettogrof.battlesnake.treesearch.search.royale;
 
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
@@ -24,12 +25,14 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	/**
 	 * Constructor, set the information and evaluate/ set score directly
 	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
-	 * @param hazard Hazard Information
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param hazard    Hazard Information
+	 * @param boardInfo Board Information
 	 */
-	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard) {
-		super(snakes, food, hazard);
+	public RoyaleDuelNode(final List<SnakeInfo> snakes, final FoodInfo food, final AbstractHazard hazard,
+			final BoardInfo boardInfo) {
+		super(snakes, food, hazard, boardInfo);
 		setScore();
 	}
 
@@ -52,7 +55,8 @@ public class RoyaleDuelNode extends AbstractRoyaleNode {
 	 */
 	@Override
 	public AbstractNode createNode(final List<SnakeInfo> snakeInfo, final AbstractNode currentNode) {
-		return new RoyaleDuelNode(snakeInfo, currentNode.getFood(), ((RoyaleDuelNode) currentNode).getHazard());
+		return new RoyaleDuelNode(snakeInfo, currentNode.getFood(), ((RoyaleDuelNode) currentNode).getHazard(),
+				boardInfo);
 	}
 
 }

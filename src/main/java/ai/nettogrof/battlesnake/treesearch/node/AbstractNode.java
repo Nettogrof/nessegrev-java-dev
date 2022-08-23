@@ -3,6 +3,7 @@ package ai.nettogrof.battlesnake.treesearch.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.nettogrof.battlesnake.info.BoardInfo;
 import ai.nettogrof.battlesnake.info.FoodInfo;
 import ai.nettogrof.battlesnake.info.SnakeInfo;
 import ai.nettogrof.battlesnake.info.hazard.AbstractHazard;
@@ -22,12 +23,7 @@ public abstract class AbstractNode {
 	/**
 	 * Board width useful for some evaluation method
 	 */
-	public static int width;
-
-	/**
-	 * Board height useful for some evaluation method
-	 */
-	public static int height;
+	protected BoardInfo boardInfo;
 
 	/**
 	 * Single posssible move
@@ -89,12 +85,14 @@ public abstract class AbstractNode {
 	/**
 	 * Constructor with the minimal info needed
 	 * 
-	 * @param snakes List of snakes
-	 * @param food   Food information
+	 * @param snakes    List of snakes
+	 * @param food      Food information
+	 * @param boardInfo Board Info
 	 */
-	protected AbstractNode(final List<SnakeInfo> snakes, final FoodInfo food) {
+	protected AbstractNode(final List<SnakeInfo> snakes, final FoodInfo food, final BoardInfo boardInfo) {
 		this.snakes = snakes;
 		this.food = food;
+		this.boardInfo = boardInfo;
 	}
 
 	/**
@@ -223,6 +221,7 @@ public abstract class AbstractNode {
 
 	/**
 	 * Does the node is Expendable
+	 * 
 	 * @return the exp
 	 */
 	public boolean isExp() {
@@ -234,6 +233,13 @@ public abstract class AbstractNode {
 	 */
 	public void setExp(final boolean exp) {
 		this.exp = exp;
+	}
+
+	/**
+	 * @return the boardInfo
+	 */
+	public BoardInfo getBoardInfo() {
+		return boardInfo;
 	}
 
 }
